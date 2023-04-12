@@ -93,12 +93,9 @@ public class JJDoc : JJDocGlobals
     {
         gen.TokensStart();
         // FIXME there are many empty productions here
-        for (Iterator it = prods.iterator(); it.hasNext();)
+        foreach (TokenProduction tp in prods)
         {
-            TokenProduction tp = (TokenProduction)it.next();
             emitTopLevelSpecialTokens(tp.firstToken, gen);
-
-
 
             gen.HandleTokenProduction(tp);
 
@@ -139,10 +136,14 @@ public class JJDoc : JJDocGlobals
                 token += " [IGNORE_CASE]";
             }
             token += " : {\n";
-            for (Iterator it2 = tp.respecs.iterator(); it2.hasNext();)
+            var first = true;
+            foreach (RegExprSpec res in tp.respecs)
             {
-                RegExprSpec res = (RegExprSpec)it2.next();
-
+                if (!first)
+                {
+                    token += "| ";
+                }
+                first = false;
                 token += emitRE(res.rexp);
 
                 if (res.nsTok != null)
@@ -151,10 +152,6 @@ public class JJDoc : JJDocGlobals
                 }
 
                 token += "\n";
-                if (it2.hasNext())
-                {
-                    token += "| ";
-                }
             }
             token += "}\n\n";
         }
@@ -164,9 +161,8 @@ public class JJDoc : JJDocGlobals
     private static void emitNormalProductions(Generator gen, List<NormalProduction> prods)
     {
         gen.NonterminalsStart();
-        for (Iterator it = prods.iterator(); it.hasNext();)
+        foreach (NormalProduction np in prods)
         {
-            NormalProduction np = (NormalProduction)it.next();
             emitTopLevelSpecialTokens(np.getFirstToken(), gen);
             if (np is BNFProduction)
             {
@@ -175,9 +171,8 @@ public class JJDoc : JJDocGlobals
                 {
                     bool first = true;
                     Choice c = (Choice)np.getExpansion();
-                    for (Iterator expansionsIterator = c.getChoices().iterator(); expansionsIterator.hasNext();)
+                    foreach (Expansion e in c.getChoices())
                     {
-                        Expansion e = (Expansion)(expansionsIterator.next());
                         gen.ExpansionStart(e, first);
                         emitExpansionTree(e, gen);
                         gen.ExpansionEnd(e, first);
@@ -258,7 +253,7 @@ public class JJDoc : JJDocGlobals
     private static void emitExpansionChoice(Choice c, Generator gen)
     {
         var first = true;
-        foreach(Expansion e in c.getChoices())
+        foreach (Expansion e in c.getChoices())
         {
             if (!first)
             {
@@ -297,7 +292,7 @@ public class JJDoc : JJDocGlobals
     private static void emitExpansionSequence(Sequence s, Generator gen)
     {
         bool firstUnit = true;
-        foreach(var e in s.units)
+        foreach (var e in s.units)
         {
             if (e is Lookahead || e is Action)
             {
@@ -380,7 +375,7 @@ public class JJDoc : JJDocGlobals
             }
             returnString += "[";
             var first = true;
-            foreach(var o in cl.descriptors)
+            foreach (var o in cl.descriptors)
             {
                 if (!first)
                 {
@@ -415,7 +410,7 @@ public class JJDoc : JJDocGlobals
         {
             RChoice c = (RChoice)re;
             var first = true;
-            foreach(RegularExpression sub in c.getChoices() )
+            foreach (RegularExpression sub in c.getChoices())
             {
                 if (!first)
                 {
@@ -445,7 +440,7 @@ public class JJDoc : JJDocGlobals
         {
             RSequence s = (RSequence)re;
             var first = true;
-            foreach(RegularExpression sub in s.units)
+            foreach (RegularExpression sub in s.units)
             {
                 if (!first)
                 {
