@@ -81,7 +81,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 jjtree.closeNodeScope(jjtn001, true);
                 jjtc001 = false;
                 jjtreeCloseNodeScope(jjtn001);
-                if (JJTreeOptions.getNodePackage().equals(""))
+                if (JJTreeOptions.getNodePackage().Equals(""))
                 {
                     JJTreeGlobals.nodePackageName = JJTreeGlobals.packageName;
                 }
@@ -230,7 +230,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
 
     public void javacc_options()
     {
-        if (getToken(1).image.equals("options"))
+        if (getToken(1).image.Equals("options"))
         {
             ASTOptions jjtn001 = new ASTOptions(JJTOPTIONS);
             bool jjtc001 = true;
@@ -3050,7 +3050,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 jj_la1[64] = jj_gen;
                 ;
         }
-        if (s.equals(JJTreeGlobals.parserName))
+        if (s.Equals(JJTreeGlobals.parserName))
         {
             if (t != null)
             {

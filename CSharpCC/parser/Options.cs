@@ -34,7 +34,10 @@ using System.Text;
 namespace org.javacc.parser;
 
 
-
+public enum Language
+{
+    java, cpp
+}
 /**
  * A class with static state that stores all option information.
  */
@@ -121,10 +124,7 @@ public class Options
     public static readonly string OUTPUT_LANGUAGE__CPP = "c++";
     public static readonly string OUTPUT_LANGUAGE__JAVA = "java";
 
-    public enum Language
-    {
-        java, cpp
-    }
+
 
     public static Language language = Language.java;
 
@@ -399,14 +399,14 @@ public class Options
 
             bool isIndirectProperty = nameUpperCase.equalsIgnoreCase(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING);
 
-            object object = null;
+            object o = null;
             if (value is List)
             {
-                object = ((List <?>)value).get(0);
+                o = ((List <?>)value).get(0);
             }
             else
             {
-                object = value;
+                o = value;
             }
             bool isValidInteger = (object is Integer && ((Integer)value).intValue() <= 0);
             if (isIndirectProperty || (existingValue.getClass() != object.getClass())
@@ -906,8 +906,8 @@ public class Options
      */
     public static bool isLegacyExceptionHandling()
     {
-        bool booleanValue = booleanValue(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING);
-        return booleanValue;
+        bool v = booleanValue(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING);
+        return v;
     }
 
     /**

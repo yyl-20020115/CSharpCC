@@ -2,6 +2,7 @@
 
 
 using org.javacc.jjtree;
+using System.Text;
 /**
 * This file contains the code for JavaCCParser generated
 * by JavaCCParser itself.
@@ -9,7 +10,7 @@ using org.javacc.jjtree;
 namespace org.javacc.parser;
 
 
-public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
+public class JavaCCParser : JavaCCParserInternals
 {
 
     /**
@@ -52,11 +53,11 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
 
     protected static bool isJavaLanguage()
     {
-        return language == Language.java;
+        return Options.language == Language.java;
     }
     protected static bool isCppLanguage()
     {
-        return language == Language.cpp;
+        return Options.language == Language.cpp;
     }
 
     /*
@@ -86,7 +87,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
     /**
      * Class to hold modifiers.
      */
-    static public class ModifierSet
+    public class ModifierSet
     {
         /* Definitions of the bits in the modifiers field.  */
         public const int PUBLIC = 0x0001;
@@ -368,10 +369,11 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
 
     public List<String> StringList()
     {
-        List<String> strings = new ArrayList<String>(); String string;
+        List<String> strings = new ArrayList<String>(); 
+        String s;
         jj_consume_token(LPAREN);
-        string = StringLiteral();
-        strings.Add(string);
+        s = StringLiteral();
+        strings.Add(s);
     label_3:
         while (true)
         {
@@ -385,8 +387,8 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                     break label_3;
             }
             jj_consume_token(COMMA);
-            string = StringLiteral();
-            strings.Add(string);
+            s = StringLiteral();
+            strings.Add(s);
         }
         jj_consume_token(RPAREN);
         { if (true) return strings; }
@@ -1130,11 +1132,11 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                 break;
             case TRY:
                 Container expch = new Container();
-                List types = new ArrayList();
-                List ids = new ArrayList();
-                List catchblks = new ArrayList();
+                List types = new();
+                List ids = new();
+                List catchblks = new();
                 List finallyblk = null;
-                List vec = new ArrayList();
+                List vec = new();
                 Token t0;
                 t0 = jj_consume_token(TRY);
                 jj_consume_token(LBRACE);
@@ -10368,408 +10370,409 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
     static private int[] jj_la1_2;
     static private int[] jj_la1_3;
     static private int[] jj_la1_4;
-    static {
-      jj_la1_init_0();
-    jj_la1_init_1();
-    jj_la1_init_2();
-    jj_la1_init_3();
-    jj_la1_init_4();
-}
-private static void jj_la1_init_0()
-{
-    jj_la1_0 = new int[] { 0x40000fe0, 0xe, 0xe, 0x0, 0x0, 0x40000fe0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x780, 0x0, 0x0, 0x0, 0x2, 0x0, 0x40001fbe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1fbe, 0x0, 0x10000000, 0x0, 0x0, 0x10000000, 0x0, 0x10000000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10001fbe, 0x0, 0x50001fbe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x50001fbe, 0x0, 0x40000000, 0x50001fbe, 0x0, 0x0, 0x0, 0x40001fbe, 0x40001fbe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x50000000, 0x0, 0x0, 0x0, 0x0, 0x0, 0xf0001fbe, 0x40001fbe, 0x0, 0x40000000, 0x0, 0x40000000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x40000000, 0x0, 0x40000000, 0x0, 0x40000000, 0x0, 0x0, 0x0, 0x0, 0x40000000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x40001fbe, 0x0, 0x0, 0x40001fbe, 0x1fbe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1fbe, 0x0, 0x0, 0x0, 0x40001fbe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xe0001fbe, 0x0, 0xf0001fbe, 0xe0001fbe, 0x0, 0x0, 0x0, 0x40001fbe, 0x0, 0xf0001fbe, 0x0, 0x0, 0x50001fbe, 0x40001fbe, 0x40001fbe, 0x50001fbe, 0x40001fbe, 0x0, 0x1fbe, 0x1fbe, 0x40001fbe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1fbe, 0x0, 0x40001fbe, 0x0, 0x50000000, 0x0, 0x40000000, 0x50000000, };
-}
-private static void jj_la1_init_1()
-{
-    jj_la1_1 = new int[] { 0xc2810229, 0x0, 0x0, 0x2000, 0x0, 0xc2810229, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc0000000, 0xc0000000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1a812229, 0x4, 0x8000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x200000, 0xc5004810, 0x0, 0x0, 0xc4004000, 0x1000810, 0xc5004810, 0x1000010, 0x0, 0x1000, 0x100000, 0x0, 0x0, 0x100000, 0xc4004000, 0x0, 0xc7814a39, 0x0, 0x0, 0x0, 0x0, 0x1000, 0x0, 0xc7814a39, 0x1000810, 0x2810229, 0xc7814a39, 0x0, 0x0, 0x0, 0x1a812229, 0x1a812229, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc6814209, 0x0, 0x0, 0x0, 0x0, 0x0, 0xdf8b6379, 0x1a812229, 0x0, 0x2810209, 0x0, 0x2810209, 0x0, 0x0, 0x10, 0x0, 0x0, 0x0, 0x0, 0x2810209, 0x1000, 0x2810209, 0x1000, 0x2810209, 0x0, 0x20, 0x0, 0x0, 0x2810229, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x400000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1a812229, 0x0, 0x0, 0x1a812229, 0x18002000, 0x0, 0x0, 0x0, 0x0, 0x18002000, 0x0, 0x0, 0x10002000, 0x2000, 0x1a812229, 0x0, 0x0, 0x0, 0x0, 0x8000000, 0x0, 0x0, 0x1a8b2369, 0x0, 0xdf8b6379, 0x1b8b2379, 0x0, 0x0, 0x0, 0x1a812229, 0x82, 0xdf8b6379, 0x82, 0x400, 0xde816229, 0x1a812229, 0x1a812229, 0xde816229, 0x1a812229, 0x0, 0x0, 0x0, 0x1a812229, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x4, 0x8000, 0x0, 0x0, 0x0, 0x1a812229, 0x0, 0xc7814a19, 0x80, 0x3810a19, 0xc7814a19, };
-}
-private static void jj_la1_init_2()
-{
-    jj_la1_2 = new int[] { 0x24005, 0x8, 0x8, 0xc0081000, 0x0, 0x24005, 0x0, 0x400, 0x0, 0x400, 0x0, 0x400, 0x1, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x80000, 0xe10a5124, 0x0, 0x0, 0x0, 0x0, 0x40000000, 0x0, 0x0, 0x2000, 0x80000000, 0x0, 0x0, 0x40000000, 0x0, 0x0, 0xc0000000, 0x80000, 0x0, 0x0, 0x0, 0xc0000000, 0x0, 0x0, 0x40000000, 0x0, 0x20000, 0x0, 0x8899, 0x8, 0x0, 0x8899, 0x0, 0x8899, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x28899, 0x0, 0x2c89d, 0x0, 0x80000000, 0x0, 0x0, 0x0, 0x0, 0x2c89d, 0x0, 0x24004, 0x2c89d, 0x0, 0x0, 0x0, 0xe10a5124, 0xe10a5124, 0x0, 0x0, 0x400, 0x0, 0x0, 0x0, 0x2889d, 0x0, 0x0, 0x0, 0x0, 0x400, 0xe10bfbff, 0xe10a5124, 0x8, 0x4, 0x20000, 0x20004, 0x0, 0x0, 0x40000, 0x0, 0x0, 0x0, 0x0, 0x20004, 0x20, 0x20004, 0x20, 0x4, 0x0, 0x0, 0x0, 0x0, 0x24004, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xe10a5124, 0x0, 0x0, 0xe10a5124, 0xe10a1120, 0x80000000, 0x0, 0x0, 0x80000000, 0xe1081120, 0x20000, 0x80000000, 0x61081000, 0x1000, 0xe10a5124, 0x0, 0x0, 0x0, 0x80000000, 0x0, 0x0, 0x0, 0xe10b73e6, 0x0, 0xe10bfbff, 0xe10b73e6, 0x0, 0x0, 0x0, 0xe10a5124, 0x0, 0xe10bfbff, 0x0, 0x0, 0xe10ad9bd, 0xe10a5124, 0xe10a5124, 0xe10ad9bd, 0xe10a5124, 0x0, 0x20000, 0x20000, 0xe10a5124, 0x0, 0x0, 0x0, 0x0, 0x0, 0x80000000, 0x0, 0x0, 0x0, 0x20000, 0x0, 0xe10a5124, 0x0, 0x2889d, 0x0, 0x20004, 0x2889d, };
-}
-private static void jj_la1_init_3()
-{
-    jj_la1_3 = new int[] { 0x4200, 0x0, 0x0, 0x0, 0x40, 0x4200, 0x40, 0x0, 0x40, 0x0, 0x40, 0x0, 0x0, 0x0, 0x40, 0x200, 0x200, 0x8, 0x10000000, 0x2, 0x0, 0x2, 0x2000, 0x10000000, 0x0, 0x0, 0x1e04c00, 0x0, 0x0, 0x200, 0x80, 0x200, 0x2801000, 0x2801000, 0xa, 0x0, 0x0, 0x0, 0x0, 0x200, 0x10000000, 0xa08, 0x0, 0x40, 0x2801002, 0x2801002, 0xa08, 0x800, 0x40, 0x0, 0x1000000, 0x0, 0x0, 0x20, 0x0, 0x80, 0x0, 0x0, 0x20, 0x0, 0x200, 0x0, 0x0, 0x40, 0x40, 0x0, 0x0, 0x40, 0x4222, 0x20, 0x0, 0x2, 0x40, 0x0, 0x8000000, 0x4222, 0x0, 0x4200, 0x4220, 0x40, 0x100, 0x8, 0x1e04c02, 0x1e04c02, 0x40, 0x200, 0x0, 0x22, 0x8, 0x40, 0x4000, 0xa000000, 0xa000000, 0xa000000, 0x200, 0x0, 0x604022, 0x4000, 0x0, 0x0, 0x0, 0x4000, 0x40, 0x0, 0x0, 0x4000, 0x4080, 0x40, 0x0, 0x5000, 0x0, 0x5000, 0x0, 0x0, 0x2000000, 0x0, 0xa000000, 0xa000000, 0x4000, 0x40, 0x80000100, 0x1000, 0x80000, 0x100000, 0x10000000, 0x20000000, 0x8000000, 0x48000, 0x48000, 0x0, 0x30200, 0x30200, 0x0, 0x1800000, 0x1800000, 0x46000000, 0x46000000, 0x1800000, 0x1e04c00, 0xc00, 0xc00, 0x4000, 0xc00, 0x0, 0x600000, 0x600000, 0x0, 0x0, 0x0, 0x88, 0x0, 0x0, 0x1e04c00, 0x40, 0x200, 0x2, 0x8, 0x0, 0x8, 0x8, 0x604022, 0x2000, 0x604022, 0x604022, 0x40, 0x80600100, 0x80600100, 0x604000, 0x0, 0x604022, 0x0, 0x0, 0x604000, 0x1e04c00, 0x604000, 0x604020, 0x604000, 0x40, 0x0, 0x0, 0x1e04c00, 0xa000000, 0xa000000, 0xa000000, 0x10000000, 0x20, 0x0, 0x0, 0x0, 0x0, 0x0, 0x40, 0x1e04c02, 0x40, 0x4020, 0x0, 0x4000, 0x4020, };
-}
-private static void jj_la1_init_4()
-{
-    jj_la1_4 = new int[] { 0x800000, 0x800000, 0x800000, 0x0, 0x0, 0x800000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x400, 0x800400, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x400000, 0x0, 0x0, 0x400000, 0x400000, 0x400000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc1f800, 0x0, 0xc1f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc1f800, 0x0, 0x800000, 0xc1f800, 0x0, 0x0, 0x0, 0x81f800, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc00000, 0x0, 0x20000, 0x20000, 0x0, 0x0, 0xc1f800, 0x81f800, 0x0, 0x0, 0x0, 0x800000, 0x0, 0x20000, 0x0, 0x0, 0x0, 0x0, 0x20000, 0x800000, 0x0, 0x800000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x800000, 0x0, 0x1c007f, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x200, 0x200, 0x200000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x81f800, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0xc1f800, 0x81f800, 0x0, 0x1c007f, 0x1c007f, 0x81f800, 0x0, 0xc1f800, 0x0, 0x0, 0xc1f800, 0x81f800, 0x81f800, 0xc1f800, 0x81f800, 0x0, 0x81f800, 0x81f800, 0x81f800, 0x0, 0x20000, 0x20000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x400000, 0x81f800, 0x0, 0xc1f800, 0x0, 0xc00000, 0x0, 0xc00000, 0xc00000, };
-}
-private JJCalls[] jj_2_rtns = new JJCalls[49];
-private bool jj_rescan = false;
-private int jj_gc = 0;
-
-/** Constructor with InputStream. */
-public JavaCCParser(Stream stream)
-{
-    this(stream, null);
-}
-/** Constructor with InputStream and supplied encoding */
-public JavaCCParser(Stream stream, String encoding)
-{
-    try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (Exception e) { throw new Exception(e); }
-    token_source = new JavaCCParserTokenManager(jj_input_stream);
-    token = new Token();
-    jj_ntk = -1;
-    jj_gen = 0;
-    for (int i = 0; i < 198; i++) jj_la1[i] = -1;
-    for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
-}
-
-/** Reinitialise. */
-public void ReInit(Stream stream)
-{
-    ReInit(stream, null);
-}
-/** Reinitialise. */
-public void ReInit(Stream stream, String encoding)
-{
-    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (Exception e) { throw new Exception(e); }
-    token_source.ReInit(jj_input_stream);
-    token = new Token();
-    jj_ntk = -1;
-    jj_gen = 0;
-    for (int i = 0; i < 198; i++) jj_la1[i] = -1;
-    for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
-}
-
-/** Constructor. */
-public JavaCCParser(TextReader stream)
-{
-    jj_input_stream = new JavaCharStream(stream, 1, 1);
-    token_source = new JavaCCParserTokenManager(jj_input_stream);
-    token = new Token();
-    jj_ntk = -1;
-    jj_gen = 0;
-    for (int i = 0; i < 198; i++) jj_la1[i] = -1;
-    for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
-}
-
-/** Reinitialise. */
-public void ReInit(TextReader stream)
-{
-    jj_input_stream.ReInit(stream, 1, 1);
-    token_source.ReInit(jj_input_stream);
-    token = new Token();
-    jj_ntk = -1;
-    jj_gen = 0;
-    for (int i = 0; i < 198; i++) jj_la1[i] = -1;
-    for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
-}
-
-/** Constructor with generated Token Manager. */
-public JavaCCParser(JavaCCParserTokenManager tm)
-{
-    token_source = tm;
-    token = new Token();
-    jj_ntk = -1;
-    jj_gen = 0;
-    for (int i = 0; i < 198; i++) jj_la1[i] = -1;
-    for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
-}
-
-/** Reinitialise. */
-public void ReInit(JavaCCParserTokenManager tm)
-{
-    token_source = tm;
-    token = new Token();
-    jj_ntk = -1;
-    jj_gen = 0;
-    for (int i = 0; i < 198; i++) jj_la1[i] = -1;
-    for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
-}
-
-private Token jj_consume_token(int kind)
-{
-    Token oldToken;
-    if ((oldToken = token).next != null) token = token.next;
-    else token = token.next = token_source.getNextToken();
-    jj_ntk = -1;
-    if (token.kind == kind)
+    static JavaCCParser()
     {
-        jj_gen++;
-        if (++jj_gc > 100)
+        jj_la1_init_0();
+        jj_la1_init_1();
+        jj_la1_init_2();
+        jj_la1_init_3();
+        jj_la1_init_4();
+    }
+    private static void jj_la1_init_0()
+    {
+        jj_la1_0 = new int[] { 0x40000fe0, 0xe, 0xe, 0x0, 0x0, 0x40000fe0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x780, 0x0, 0x0, 0x0, 0x2, 0x0, 0x40001fbe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1fbe, 0x0, 0x10000000, 0x0, 0x0, 0x10000000, 0x0, 0x10000000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10001fbe, 0x0, 0x50001fbe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x50001fbe, 0x0, 0x40000000, 0x50001fbe, 0x0, 0x0, 0x0, 0x40001fbe, 0x40001fbe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x50000000, 0x0, 0x0, 0x0, 0x0, 0x0, 0xf0001fbe, 0x40001fbe, 0x0, 0x40000000, 0x0, 0x40000000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x40000000, 0x0, 0x40000000, 0x0, 0x40000000, 0x0, 0x0, 0x0, 0x0, 0x40000000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x40001fbe, 0x0, 0x0, 0x40001fbe, 0x1fbe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1fbe, 0x0, 0x0, 0x0, 0x40001fbe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xe0001fbe, 0x0, 0xf0001fbe, 0xe0001fbe, 0x0, 0x0, 0x0, 0x40001fbe, 0x0, 0xf0001fbe, 0x0, 0x0, 0x50001fbe, 0x40001fbe, 0x40001fbe, 0x50001fbe, 0x40001fbe, 0x0, 0x1fbe, 0x1fbe, 0x40001fbe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1fbe, 0x0, 0x40001fbe, 0x0, 0x50000000, 0x0, 0x40000000, 0x50000000, };
+    }
+    private static void jj_la1_init_1()
+    {
+        jj_la1_1 = new int[] { 0xc2810229, 0x0, 0x0, 0x2000, 0x0, 0xc2810229, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc0000000, 0xc0000000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1a812229, 0x4, 0x8000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x200000, 0xc5004810, 0x0, 0x0, 0xc4004000, 0x1000810, 0xc5004810, 0x1000010, 0x0, 0x1000, 0x100000, 0x0, 0x0, 0x100000, 0xc4004000, 0x0, 0xc7814a39, 0x0, 0x0, 0x0, 0x0, 0x1000, 0x0, 0xc7814a39, 0x1000810, 0x2810229, 0xc7814a39, 0x0, 0x0, 0x0, 0x1a812229, 0x1a812229, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc6814209, 0x0, 0x0, 0x0, 0x0, 0x0, 0xdf8b6379, 0x1a812229, 0x0, 0x2810209, 0x0, 0x2810209, 0x0, 0x0, 0x10, 0x0, 0x0, 0x0, 0x0, 0x2810209, 0x1000, 0x2810209, 0x1000, 0x2810209, 0x0, 0x20, 0x0, 0x0, 0x2810229, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x400000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1a812229, 0x0, 0x0, 0x1a812229, 0x18002000, 0x0, 0x0, 0x0, 0x0, 0x18002000, 0x0, 0x0, 0x10002000, 0x2000, 0x1a812229, 0x0, 0x0, 0x0, 0x0, 0x8000000, 0x0, 0x0, 0x1a8b2369, 0x0, 0xdf8b6379, 0x1b8b2379, 0x0, 0x0, 0x0, 0x1a812229, 0x82, 0xdf8b6379, 0x82, 0x400, 0xde816229, 0x1a812229, 0x1a812229, 0xde816229, 0x1a812229, 0x0, 0x0, 0x0, 0x1a812229, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x4, 0x8000, 0x0, 0x0, 0x0, 0x1a812229, 0x0, 0xc7814a19, 0x80, 0x3810a19, 0xc7814a19, };
+    }
+    private static void jj_la1_init_2()
+    {
+        jj_la1_2 = new int[] { 0x24005, 0x8, 0x8, 0xc0081000, 0x0, 0x24005, 0x0, 0x400, 0x0, 0x400, 0x0, 0x400, 0x1, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x80000, 0xe10a5124, 0x0, 0x0, 0x0, 0x0, 0x40000000, 0x0, 0x0, 0x2000, 0x80000000, 0x0, 0x0, 0x40000000, 0x0, 0x0, 0xc0000000, 0x80000, 0x0, 0x0, 0x0, 0xc0000000, 0x0, 0x0, 0x40000000, 0x0, 0x20000, 0x0, 0x8899, 0x8, 0x0, 0x8899, 0x0, 0x8899, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x28899, 0x0, 0x2c89d, 0x0, 0x80000000, 0x0, 0x0, 0x0, 0x0, 0x2c89d, 0x0, 0x24004, 0x2c89d, 0x0, 0x0, 0x0, 0xe10a5124, 0xe10a5124, 0x0, 0x0, 0x400, 0x0, 0x0, 0x0, 0x2889d, 0x0, 0x0, 0x0, 0x0, 0x400, 0xe10bfbff, 0xe10a5124, 0x8, 0x4, 0x20000, 0x20004, 0x0, 0x0, 0x40000, 0x0, 0x0, 0x0, 0x0, 0x20004, 0x20, 0x20004, 0x20, 0x4, 0x0, 0x0, 0x0, 0x0, 0x24004, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xe10a5124, 0x0, 0x0, 0xe10a5124, 0xe10a1120, 0x80000000, 0x0, 0x0, 0x80000000, 0xe1081120, 0x20000, 0x80000000, 0x61081000, 0x1000, 0xe10a5124, 0x0, 0x0, 0x0, 0x80000000, 0x0, 0x0, 0x0, 0xe10b73e6, 0x0, 0xe10bfbff, 0xe10b73e6, 0x0, 0x0, 0x0, 0xe10a5124, 0x0, 0xe10bfbff, 0x0, 0x0, 0xe10ad9bd, 0xe10a5124, 0xe10a5124, 0xe10ad9bd, 0xe10a5124, 0x0, 0x20000, 0x20000, 0xe10a5124, 0x0, 0x0, 0x0, 0x0, 0x0, 0x80000000, 0x0, 0x0, 0x0, 0x20000, 0x0, 0xe10a5124, 0x0, 0x2889d, 0x0, 0x20004, 0x2889d, };
+    }
+    private static void jj_la1_init_3()
+    {
+        jj_la1_3 = new int[] { 0x4200, 0x0, 0x0, 0x0, 0x40, 0x4200, 0x40, 0x0, 0x40, 0x0, 0x40, 0x0, 0x0, 0x0, 0x40, 0x200, 0x200, 0x8, 0x10000000, 0x2, 0x0, 0x2, 0x2000, 0x10000000, 0x0, 0x0, 0x1e04c00, 0x0, 0x0, 0x200, 0x80, 0x200, 0x2801000, 0x2801000, 0xa, 0x0, 0x0, 0x0, 0x0, 0x200, 0x10000000, 0xa08, 0x0, 0x40, 0x2801002, 0x2801002, 0xa08, 0x800, 0x40, 0x0, 0x1000000, 0x0, 0x0, 0x20, 0x0, 0x80, 0x0, 0x0, 0x20, 0x0, 0x200, 0x0, 0x0, 0x40, 0x40, 0x0, 0x0, 0x40, 0x4222, 0x20, 0x0, 0x2, 0x40, 0x0, 0x8000000, 0x4222, 0x0, 0x4200, 0x4220, 0x40, 0x100, 0x8, 0x1e04c02, 0x1e04c02, 0x40, 0x200, 0x0, 0x22, 0x8, 0x40, 0x4000, 0xa000000, 0xa000000, 0xa000000, 0x200, 0x0, 0x604022, 0x4000, 0x0, 0x0, 0x0, 0x4000, 0x40, 0x0, 0x0, 0x4000, 0x4080, 0x40, 0x0, 0x5000, 0x0, 0x5000, 0x0, 0x0, 0x2000000, 0x0, 0xa000000, 0xa000000, 0x4000, 0x40, 0x80000100, 0x1000, 0x80000, 0x100000, 0x10000000, 0x20000000, 0x8000000, 0x48000, 0x48000, 0x0, 0x30200, 0x30200, 0x0, 0x1800000, 0x1800000, 0x46000000, 0x46000000, 0x1800000, 0x1e04c00, 0xc00, 0xc00, 0x4000, 0xc00, 0x0, 0x600000, 0x600000, 0x0, 0x0, 0x0, 0x88, 0x0, 0x0, 0x1e04c00, 0x40, 0x200, 0x2, 0x8, 0x0, 0x8, 0x8, 0x604022, 0x2000, 0x604022, 0x604022, 0x40, 0x80600100, 0x80600100, 0x604000, 0x0, 0x604022, 0x0, 0x0, 0x604000, 0x1e04c00, 0x604000, 0x604020, 0x604000, 0x40, 0x0, 0x0, 0x1e04c00, 0xa000000, 0xa000000, 0xa000000, 0x10000000, 0x20, 0x0, 0x0, 0x0, 0x0, 0x0, 0x40, 0x1e04c02, 0x40, 0x4020, 0x0, 0x4000, 0x4020, };
+    }
+    private static void jj_la1_init_4()
+    {
+        jj_la1_4 = new int[] { 0x800000, 0x800000, 0x800000, 0x0, 0x0, 0x800000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x400, 0x800400, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x400000, 0x0, 0x0, 0x400000, 0x400000, 0x400000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc1f800, 0x0, 0xc1f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc1f800, 0x0, 0x800000, 0xc1f800, 0x0, 0x0, 0x0, 0x81f800, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc00000, 0x0, 0x20000, 0x20000, 0x0, 0x0, 0xc1f800, 0x81f800, 0x0, 0x0, 0x0, 0x800000, 0x0, 0x20000, 0x0, 0x0, 0x0, 0x0, 0x20000, 0x800000, 0x0, 0x800000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x800000, 0x0, 0x1c007f, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x200, 0x200, 0x200000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x81f800, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0xc1f800, 0x81f800, 0x0, 0x1c007f, 0x1c007f, 0x81f800, 0x0, 0xc1f800, 0x0, 0x0, 0xc1f800, 0x81f800, 0x81f800, 0xc1f800, 0x81f800, 0x0, 0x81f800, 0x81f800, 0x81f800, 0x0, 0x20000, 0x20000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x400000, 0x81f800, 0x0, 0xc1f800, 0x0, 0xc00000, 0x0, 0xc00000, 0xc00000, };
+    }
+    private JJCalls[] jj_2_rtns = new JJCalls[49];
+    private bool jj_rescan = false;
+    private int jj_gc = 0;
+
+    /** Constructor with InputStream. */
+    public JavaCCParser(Stream stream)
+        : this(stream, null)
+    {
+    }
+    /** Constructor with InputStream and supplied encoding */
+    public JavaCCParser(Stream stream, Encoding encoding)
+    {
+        try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (Exception e) { throw new Exception(e); }
+        token_source = new JavaCCParserTokenManager(jj_input_stream);
+        token = new Token();
+        jj_ntk = -1;
+        jj_gen = 0;
+        for (int i = 0; i < 198; i++) jj_la1[i] = -1;
+        for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+    }
+
+    /** Reinitialise. */
+    public void ReInit(Stream stream)
+    {
+        ReInit(stream, null);
+    }
+    /** Reinitialise. */
+    public void ReInit(Stream stream, Encoding encoding)
+    {
+        try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (Exception e) { throw new Exception(e); }
+        token_source.ReInit(jj_input_stream);
+        token = new Token();
+        jj_ntk = -1;
+        jj_gen = 0;
+        for (int i = 0; i < 198; i++) jj_la1[i] = -1;
+        for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+    }
+
+    /** Constructor. */
+    public JavaCCParser(TextReader stream)
+    {
+        jj_input_stream = new JavaCharStream(stream, 1, 1);
+        token_source = new JavaCCParserTokenManager(jj_input_stream);
+        token = new Token();
+        jj_ntk = -1;
+        jj_gen = 0;
+        for (int i = 0; i < 198; i++) jj_la1[i] = -1;
+        for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+    }
+
+    /** Reinitialise. */
+    public void ReInit(TextReader stream)
+    {
+        jj_input_stream.ReInit(stream, 1, 1);
+        token_source.ReInit(jj_input_stream);
+        token = new Token();
+        jj_ntk = -1;
+        jj_gen = 0;
+        for (int i = 0; i < 198; i++) jj_la1[i] = -1;
+        for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+    }
+
+    /** Constructor with generated Token Manager. */
+    public JavaCCParser(JavaCCParserTokenManager tm)
+    {
+        token_source = tm;
+        token = new Token();
+        jj_ntk = -1;
+        jj_gen = 0;
+        for (int i = 0; i < 198; i++) jj_la1[i] = -1;
+        for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+    }
+
+    /** Reinitialise. */
+    public void ReInit(JavaCCParserTokenManager tm)
+    {
+        token_source = tm;
+        token = new Token();
+        jj_ntk = -1;
+        jj_gen = 0;
+        for (int i = 0; i < 198; i++) jj_la1[i] = -1;
+        for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+    }
+
+    private Token jj_consume_token(int kind)
+    {
+        Token oldToken;
+        if ((oldToken = token).next != null) token = token.next;
+        else token = token.next = token_source.getNextToken();
+        jj_ntk = -1;
+        if (token.kind == kind)
         {
-            jj_gc = 0;
-            for (int i = 0; i < jj_2_rtns.Length; i++)
+            jj_gen++;
+            if (++jj_gc > 100)
             {
-                JJCalls c = jj_2_rtns[i];
-                while (c != null)
+                jj_gc = 0;
+                for (int i = 0; i < jj_2_rtns.Length; i++)
                 {
-                    if (c.gen < jj_gen) c.first = null;
-                    c = c.next;
+                    JJCalls c = jj_2_rtns[i];
+                    while (c != null)
+                    {
+                        if (c.gen < jj_gen) c.first = null;
+                        c = c.next;
+                    }
                 }
             }
+            return token;
         }
-        return token;
+        token = oldToken;
+        jj_kind = kind;
+        throw generateParseException();
     }
-    token = oldToken;
-    jj_kind = kind;
-    throw generateParseException();
-}
 
-class LookaheadSuccess : Error { }
-private LookaheadSuccess jj_ls = new LookaheadSuccess();
-private bool jj_scan_token(int kind)
-{
-    if (jj_scanpos == jj_lastpos)
+    class LookaheadSuccess : Error { }
+    private LookaheadSuccess jj_ls = new LookaheadSuccess();
+    private bool jj_scan_token(int kind)
     {
-        jj_la--;
-        if (jj_scanpos.next == null)
+        if (jj_scanpos == jj_lastpos)
         {
-            jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.getNextToken();
+            jj_la--;
+            if (jj_scanpos.next == null)
+            {
+                jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.getNextToken();
+            }
+            else
+            {
+                jj_lastpos = jj_scanpos = jj_scanpos.next;
+            }
         }
         else
         {
-            jj_lastpos = jj_scanpos = jj_scanpos.next;
+            jj_scanpos = jj_scanpos.next;
         }
-    }
-    else
-    {
-        jj_scanpos = jj_scanpos.next;
-    }
-    if (jj_rescan)
-    {
-        int i = 0; Token tok = token;
-        while (tok != null && tok != jj_scanpos) { i++; tok = tok.next; }
-        if (tok != null) jj_add_error_token(kind, i);
-    }
-    if (jj_scanpos.kind != kind) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;
-    return false;
-}
-
-
-/** Get the next Token. */
-public Token getNextToken()
-{
-    if (token.next != null) token = token.next;
-    else token = token.next = token_source.getNextToken();
-    jj_ntk = -1;
-    jj_gen++;
-    return token;
-}
-
-/** Get the specific Token. */
-public Token getToken(int index)
-{
-    Token t = jj_lookingAhead ? jj_scanpos : token;
-    for (int i = 0; i < index; i++)
-    {
-        if (t.next != null) t = t.next;
-        else t = t.next = token_source.getNextToken();
-    }
-    return t;
-}
-
-private int jj_ntk()
-{
-    if ((jj_nt = token.next) == null)
-        return (jj_ntk = (token.next = token_source.getNextToken()).kind);
-    else
-        return (jj_ntk = jj_nt.kind);
-}
-
-private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
-private int[] jj_expentry;
-private int jj_kind = -1;
-private int[] jj_lasttokens = new int[100];
-private int jj_endpos;
-
-private void jj_add_error_token(int kind, int pos)
-{
-    if (pos >= 100) return;
-    if (pos == jj_endpos + 1)
-    {
-        jj_lasttokens[jj_endpos++] = kind;
-    }
-    else if (jj_endpos != 0)
-    {
-        jj_expentry = new int[jj_endpos];
-        for (int i = 0; i < jj_endpos; i++)
+        if (jj_rescan)
         {
-            jj_expentry[i] = jj_lasttokens[i];
+            int i = 0; Token tok = token;
+            while (tok != null && tok != jj_scanpos) { i++; tok = tok.next; }
+            if (tok != null) jj_add_error_token(kind, i);
         }
-    jj_entries_loop: for (java.util.Iterator <?> it = jj_expentries.iterator(); it.hasNext();)
+        if (jj_scanpos.kind != kind) return true;
+        if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;
+        return false;
+    }
+
+
+    /** Get the next Token. */
+    public Token getNextToken()
+    {
+        if (token.next != null) token = token.next;
+        else token = token.next = token_source.getNextToken();
+        jj_ntk = -1;
+        jj_gen++;
+        return token;
+    }
+
+    /** Get the specific Token. */
+    public Token getToken(int index)
+    {
+        Token t = jj_lookingAhead ? jj_scanpos : token;
+        for (int i = 0; i < index; i++)
         {
-            int[] oldentry = (int[])(it.next());
-            if (oldentry.Length == jj_expentry.Length)
+            if (t.next != null) t = t.next;
+            else t = t.next = token_source.getNextToken();
+        }
+        return t;
+    }
+
+    private int jj_ntk()
+    {
+        if ((jj_nt = token.next) == null)
+            return (jj_ntk = (token.next = token_source.getNextToken()).kind);
+        else
+            return (jj_ntk = jj_nt.kind);
+    }
+
+    private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
+    private int[] jj_expentry;
+    private int jj_kind = -1;
+    private int[] jj_lasttokens = new int[100];
+    private int jj_endpos;
+
+    private void jj_add_error_token(int kind, int pos)
+    {
+        if (pos >= 100) return;
+        if (pos == jj_endpos + 1)
+        {
+            jj_lasttokens[jj_endpos++] = kind;
+        }
+        else if (jj_endpos != 0)
+        {
+            jj_expentry = new int[jj_endpos];
+            for (int i = 0; i < jj_endpos; i++)
             {
-                for (int i = 0; i < jj_expentry.Length; i++)
+                jj_expentry[i] = jj_lasttokens[i];
+            }
+        jj_entries_loop: for (java.util.Iterator <?> it = jj_expentries.iterator(); it.hasNext();)
+            {
+                int[] oldentry = (int[])(it.next());
+                if (oldentry.Length == jj_expentry.Length)
                 {
-                    if (oldentry[i] != jj_expentry[i])
+                    for (int i = 0; i < jj_expentry.Length; i++)
                     {
-                        continue jj_entries_loop;
+                        if (oldentry[i] != jj_expentry[i])
+                        {
+                            continue jj_entries_loop;
+                        }
+                    }
+                    jj_expentries.Add(jj_expentry);
+                    break jj_entries_loop;
+                }
+            }
+            if (pos != 0) jj_lasttokens[(jj_endpos = pos) - 1] = kind;
+        }
+    }
+
+    /** Generate ParseException. */
+    public ParseException generateParseException()
+    {
+        jj_expentries.Clear();
+        bool[] la1tokens = new bool[155];
+        if (jj_kind >= 0)
+        {
+            la1tokens[jj_kind] = true;
+            jj_kind = -1;
+        }
+        for (int i = 0; i < 198; i++)
+        {
+            if (jj_la1[i] == jj_gen)
+            {
+                for (int j = 0; j < 32; j++)
+                {
+                    if ((jj_la1_0[i] & (1 << j)) != 0)
+                    {
+                        la1tokens[j] = true;
+                    }
+                    if ((jj_la1_1[i] & (1 << j)) != 0)
+                    {
+                        la1tokens[32 + j] = true;
+                    }
+                    if ((jj_la1_2[i] & (1 << j)) != 0)
+                    {
+                        la1tokens[64 + j] = true;
+                    }
+                    if ((jj_la1_3[i] & (1 << j)) != 0)
+                    {
+                        la1tokens[96 + j] = true;
+                    }
+                    if ((jj_la1_4[i] & (1 << j)) != 0)
+                    {
+                        la1tokens[128 + j] = true;
                     }
                 }
+            }
+        }
+        for (int i = 0; i < 155; i++)
+        {
+            if (la1tokens[i])
+            {
+                jj_expentry = new int[1];
+                jj_expentry[0] = i;
                 jj_expentries.Add(jj_expentry);
-                break jj_entries_loop;
             }
         }
-        if (pos != 0) jj_lasttokens[(jj_endpos = pos) - 1] = kind;
-    }
-}
-
-/** Generate ParseException. */
-public ParseException generateParseException()
-{
-    jj_expentries.Clear();
-    bool[] la1tokens = new bool[155];
-    if (jj_kind >= 0)
-    {
-        la1tokens[jj_kind] = true;
-        jj_kind = -1;
-    }
-    for (int i = 0; i < 198; i++)
-    {
-        if (jj_la1[i] == jj_gen)
+        jj_endpos = 0;
+        jj_rescan_token();
+        jj_add_error_token(0, 0);
+        int[][] exptokseq = new int[jj_expentries.Count][];
+        for (int i = 0; i < jj_expentries.Count; i++)
         {
-            for (int j = 0; j < 32; j++)
-            {
-                if ((jj_la1_0[i] & (1 << j)) != 0)
-                {
-                    la1tokens[j] = true;
-                }
-                if ((jj_la1_1[i] & (1 << j)) != 0)
-                {
-                    la1tokens[32 + j] = true;
-                }
-                if ((jj_la1_2[i] & (1 << j)) != 0)
-                {
-                    la1tokens[64 + j] = true;
-                }
-                if ((jj_la1_3[i] & (1 << j)) != 0)
-                {
-                    la1tokens[96 + j] = true;
-                }
-                if ((jj_la1_4[i] & (1 << j)) != 0)
-                {
-                    la1tokens[128 + j] = true;
-                }
-            }
+            exptokseq[i] = jj_expentries.get(i);
         }
+        return new ParseException(token, exptokseq, tokenImage);
     }
-    for (int i = 0; i < 155; i++)
+
+    /** Enable tracing. */
+    public void enable_tracing()
     {
-        if (la1tokens[i])
+    }
+
+    /** Disable tracing. */
+    public void disable_tracing()
+    {
+    }
+
+    private void jj_rescan_token()
+    {
+        jj_rescan = true;
+        for (int i = 0; i < 49; i++)
         {
-            jj_expentry = new int[1];
-            jj_expentry[0] = i;
-            jj_expentries.Add(jj_expentry);
-        }
-    }
-    jj_endpos = 0;
-    jj_rescan_token();
-    jj_add_error_token(0, 0);
-    int[][] exptokseq = new int[jj_expentries.Count][];
-    for (int i = 0; i < jj_expentries.Count; i++)
-    {
-        exptokseq[i] = jj_expentries.get(i);
-    }
-    return new ParseException(token, exptokseq, tokenImage);
-}
-
-/** Enable tracing. */
-public void enable_tracing()
-{
-}
-
-/** Disable tracing. */
-public void disable_tracing()
-{
-}
-
-private void jj_rescan_token()
-{
-    jj_rescan = true;
-    for (int i = 0; i < 49; i++)
-    {
-        try
-        {
-            JJCalls p = jj_2_rtns[i];
-            do
+            try
             {
-                if (p.gen > jj_gen)
+                JJCalls p = jj_2_rtns[i];
+                do
                 {
-                    jj_la = p.arg; jj_lastpos = jj_scanpos = p.first;
-                    switch (i)
+                    if (p.gen > jj_gen)
                     {
-                        case 0: jj_3_1(); break;
-                        case 1: jj_3_2(); break;
-                        case 2: jj_3_3(); break;
-                        case 3: jj_3_4(); break;
-                        case 4: jj_3_5(); break;
-                        case 5: jj_3_6(); break;
-                        case 6: jj_3_7(); break;
-                        case 7: jj_3_8(); break;
-                        case 8: jj_3_9(); break;
-                        case 9: jj_3_10(); break;
-                        case 10: jj_3_11(); break;
-                        case 11: jj_3_12(); break;
-                        case 12: jj_3_13(); break;
-                        case 13: jj_3_14(); break;
-                        case 14: jj_3_15(); break;
-                        case 15: jj_3_16(); break;
-                        case 16: jj_3_17(); break;
-                        case 17: jj_3_18(); break;
-                        case 18: jj_3_19(); break;
-                        case 19: jj_3_20(); break;
-                        case 20: jj_3_21(); break;
-                        case 21: jj_3_22(); break;
-                        case 22: jj_3_23(); break;
-                        case 23: jj_3_24(); break;
-                        case 24: jj_3_25(); break;
-                        case 25: jj_3_26(); break;
-                        case 26: jj_3_27(); break;
-                        case 27: jj_3_28(); break;
-                        case 28: jj_3_29(); break;
-                        case 29: jj_3_30(); break;
-                        case 30: jj_3_31(); break;
-                        case 31: jj_3_32(); break;
-                        case 32: jj_3_33(); break;
-                        case 33: jj_3_34(); break;
-                        case 34: jj_3_35(); break;
-                        case 35: jj_3_36(); break;
-                        case 36: jj_3_37(); break;
-                        case 37: jj_3_38(); break;
-                        case 38: jj_3_39(); break;
-                        case 39: jj_3_40(); break;
-                        case 40: jj_3_41(); break;
-                        case 41: jj_3_42(); break;
-                        case 42: jj_3_43(); break;
-                        case 43: jj_3_44(); break;
-                        case 44: jj_3_45(); break;
-                        case 45: jj_3_46(); break;
-                        case 46: jj_3_47(); break;
-                        case 47: jj_3_48(); break;
-                        case 48: jj_3_49(); break;
+                        jj_la = p.arg; jj_lastpos = jj_scanpos = p.first;
+                        switch (i)
+                        {
+                            case 0: jj_3_1(); break;
+                            case 1: jj_3_2(); break;
+                            case 2: jj_3_3(); break;
+                            case 3: jj_3_4(); break;
+                            case 4: jj_3_5(); break;
+                            case 5: jj_3_6(); break;
+                            case 6: jj_3_7(); break;
+                            case 7: jj_3_8(); break;
+                            case 8: jj_3_9(); break;
+                            case 9: jj_3_10(); break;
+                            case 10: jj_3_11(); break;
+                            case 11: jj_3_12(); break;
+                            case 12: jj_3_13(); break;
+                            case 13: jj_3_14(); break;
+                            case 14: jj_3_15(); break;
+                            case 15: jj_3_16(); break;
+                            case 16: jj_3_17(); break;
+                            case 17: jj_3_18(); break;
+                            case 18: jj_3_19(); break;
+                            case 19: jj_3_20(); break;
+                            case 20: jj_3_21(); break;
+                            case 21: jj_3_22(); break;
+                            case 22: jj_3_23(); break;
+                            case 23: jj_3_24(); break;
+                            case 24: jj_3_25(); break;
+                            case 25: jj_3_26(); break;
+                            case 26: jj_3_27(); break;
+                            case 27: jj_3_28(); break;
+                            case 28: jj_3_29(); break;
+                            case 29: jj_3_30(); break;
+                            case 30: jj_3_31(); break;
+                            case 31: jj_3_32(); break;
+                            case 32: jj_3_33(); break;
+                            case 33: jj_3_34(); break;
+                            case 34: jj_3_35(); break;
+                            case 35: jj_3_36(); break;
+                            case 36: jj_3_37(); break;
+                            case 37: jj_3_38(); break;
+                            case 38: jj_3_39(); break;
+                            case 39: jj_3_40(); break;
+                            case 40: jj_3_41(); break;
+                            case 41: jj_3_42(); break;
+                            case 42: jj_3_43(); break;
+                            case 43: jj_3_44(); break;
+                            case 44: jj_3_45(); break;
+                            case 45: jj_3_46(); break;
+                            case 46: jj_3_47(); break;
+                            case 47: jj_3_48(); break;
+                            case 48: jj_3_49(); break;
+                        }
                     }
-                }
-                p = p.next;
-            } while (p != null);
+                    p = p.next;
+                } while (p != null);
+            }
+            catch (LookaheadSuccess ls) { }
         }
-        catch (LookaheadSuccess ls) { }
+        jj_rescan = false;
     }
-    jj_rescan = false;
-}
 
-private void jj_save(int index, int xla)
-{
-    JJCalls p = jj_2_rtns[index];
-    while (p.gen > jj_gen)
+    private void jj_save(int index, int xla)
     {
-        if (p.next == null) { p = p.next = new JJCalls(); break; }
-        p = p.next;
+        JJCalls p = jj_2_rtns[index];
+        while (p.gen > jj_gen)
+        {
+            if (p.next == null) { p = p.next = new JJCalls(); break; }
+            p = p.next;
+        }
+        p.gen = jj_gen + xla - jj_la; p.first = token; p.arg = xla;
     }
-    p.gen = jj_gen + xla - jj_la; p.first = token; p.arg = xla;
-}
 
-public class JJCalls
-{
-    public int gen;
-    public Token first;
-    public int arg;
-    public JJCalls next;
-}
+    public class JJCalls
+    {
+        public int gen;
+        public Token first;
+        public int arg;
+        public JJCalls next;
+    }
 
 }

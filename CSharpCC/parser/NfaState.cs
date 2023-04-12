@@ -3255,17 +3255,17 @@ public class NfaState
       done = false;
       mark = null;
       stateDone = null;
-      allStates = new ArrayList();
-      indexedAllStates = new ArrayList();
-      nonAsciiTableForMethod = new ArrayList();
-      equivStatesTable = new Hashtable();
-      allNextStates = new Hashtable();
-      lohiByteTab = new Hashtable();
-      stateNameForComposite = new Hashtable();
-      compositeStateTable = new Hashtable();
-      stateBlockTable = new Hashtable();
-      stateSetsToFix = new Hashtable();
-      allBitVectors = new ArrayList();
+      allStates = new ();
+      indexedAllStates = new ();
+      nonAsciiTableForMethod = new ();
+      equivStatesTable = new ();
+      allNextStates = new ();
+      lohiByteTab = new ();
+      stateNameForComposite = new ();
+      compositeStateTable = new ();
+      stateBlockTable = new ();
+      stateSetsToFix = new ();
+      allBitVectors = new ();
       tmpIndices = new int[512];
       allBits = "{\n   0xffffffffffffffffL, " +
                     "0xffffffffffffffffL, " +
@@ -3281,19 +3281,19 @@ public class NfaState
       statesForState = null;
    }
 
-   private static readonly Dictionary<Integer, NfaState> initialStates =
-       new Dictionary<Integer, NfaState>();
-   private static readonly Dictionary<Integer, List<NfaState>> statesForLexicalState =
-       new Dictionary<Integer, List<NfaState>>();
-   private static readonly Dictionary<Integer, Integer> nfaStateOffset =
-       new Dictionary<Integer, Integer>();
-   private static readonly Dictionary<Integer, Integer> matchAnyChar =
-       new Dictionary<Integer, Integer>();
+   private static readonly Dictionary<int, NfaState> initialStates =
+       new Dictionary<int, NfaState>();
+   private static readonly Dictionary<int, List<NfaState>> statesForLexicalState =
+       new Dictionary<int, List<NfaState>>();
+   private static readonly Dictionary<int, int> nfaStateOffset =
+       new Dictionary<int, int>();
+   private static readonly Dictionary<int, int> matchAnyChar =
+       new Dictionary<int, int>();
    static void UpdateNfaData(
        int maxState, int startStateName, int lexicalStateIndex,
        int matchAnyCharKind) {
      // Cleanup the state set.
-     HashSet<Integer> done = new HashSet<Integer>();
+     HashSet<int> done = new HashSet<int>();
      List<NfaState> cleanStates = new ();
      NfaState startState = null;
      for (int i = 0; i < allStates.Count; i++) {
@@ -3331,18 +3331,18 @@ public class NfaState
        cleanStateList.addAll(states);
      }
      cleanStates = new NfaState[cleanStateList.Count];
-     for (NfaState s : cleanStateList) {
-       assert(cleanStates[s.stateName] == null);
+     foreach (NfaState s in cleanStateList) {
+       //assert(cleanStates[s.stateName] == null);
        cleanStates[s.stateName] = s;
        HashSet<char> chars = new HashSet<char>();
-       for (int c = 0; c <= char.MAX_VALUE; c++) {
+       for (int c = 0; c <= char.MaxValue; c++) {
          if (s.CanMoveUsingChar((char)c)) {
            chars.Add((char)c);
          }
        }
-       HashSet<Integer> nextStates = new HashSet<Integer>();
+       HashSet<int> nextStates = new HashSet<int>();
        if (s.next != null) {
-         for (NfaState next : s.next.epsilonMoveArray) {
+         foreach (NfaState next in s.next.epsilonMoveArray) {
            nextStates.Add(next.stateName);
          }
        }
@@ -3353,8 +3353,8 @@ public class NfaState
        tokenizerData.addNfaState(
            s.stateName, chars, nextStates, composite, s.kindToPrint);
      }
-     Dictionary<Integer, Integer> initStates = new Dictionary<Integer, Integer>();
-     for (int l : initialStates.keySet()) {
+     Dictionary<int, int> initStates = new Dictionary<int, int>();
+     foreach (int l in initialStates.keySet()) {
        if (initialStates.get(l) == null) {
          initStates.Add(l, -1);
        } else {
@@ -3367,10 +3367,10 @@ public class NfaState
 
    static NfaState getNfaState(int index) {
      if (index == -1) return null;
-     for (NfaState s : allStates) {
+     foreach (NfaState s in allStates) {
        if (s.stateName == index) return s;
      }
-     assert(false);
+     //assert(false);
      return null;
    }
 }

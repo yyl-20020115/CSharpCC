@@ -34,7 +34,7 @@ namespace org.javacc.parser;
  * a JavaCC input file.  This data is what is used by the back-ends of JavaCC as
  * well as any other back-end of JavaCC related tools such as JJTree.
  */
-public class JavaCCGlobals
+public class JavaCCGlobals : JavaCCParserConstants
 {
 
     /**
@@ -70,12 +70,12 @@ public class JavaCCGlobals
      */
     static public void bannerLine(string fullName, string ver)
     {
-        System.out.print("Java Compiler Compiler Version " + Version.versionNumber + " (" + fullName);
+        Console.print("Java Compiler Compiler Version " + Version.versionNumber + " (" + fullName);
         if (!ver == (""))
         {
-            System.out.print(" Version " + ver);
+            Console.print(" Version " + ver);
         }
-        System.out.WriteLine(")");
+        Console.WriteLine(")");
     }
 
     /**
@@ -228,7 +228,7 @@ public class JavaCCGlobals
 
         if (toolNamePrefix.Length > 200)
         {
-            System.out.WriteLine("Tool names too long.");
+            Console.WriteLine("Tool names too long.");
             throw new Error();
         }
 

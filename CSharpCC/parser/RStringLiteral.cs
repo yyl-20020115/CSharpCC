@@ -1838,7 +1838,7 @@ public class RStringLiteral : RegularExpression
     public static void BuildTokenizerData(TokenizerData tokenizerData)
     {
         Dictionary<int, int> nfaStateIndices = new Dictionary<int, int>();
-        for (int kind : nfaStateMap.keySet())
+        foreach (int kind in nfaStateMap.keySet())
         {
             if (nfaStateMap.get(kind) != null)
             {

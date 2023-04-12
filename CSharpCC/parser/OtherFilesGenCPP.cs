@@ -34,7 +34,7 @@ namespace org.javacc.parser;
 /**
  * Generates the Constants file.
  */
-public class OtherFilesGenCPP:JavaCCGlobals : JavaCCParserConstants {
+public class OtherFilesGenCPP:JavaCCGlobals , JavaCCParserConstants {
 
   static public void start() {
 

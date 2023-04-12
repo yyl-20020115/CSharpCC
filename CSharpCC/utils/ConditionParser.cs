@@ -228,11 +228,12 @@ public class ConditionParser : ConditionParserConstants
 
     /** Constructor with InputStream. */
     public ConditionParser(Stream stream)
+        : this(stream, null)
     {
-        this(stream, null);
+        ;
     }
     /** Constructor with InputStream and supplied encoding */
-    public ConditionParser(Stream stream, String encoding)
+    public ConditionParser(Stream stream, Encoding encoding)
     {
         try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (Exception e) { throw new RuntimeException(e); }
         token_source = new ConditionParserTokenManager(jj_input_stream);

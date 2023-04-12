@@ -50,7 +50,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
 
     static protected void compare(Token t, string id1, string id2)
     {
-        if (!id2 == (id1))
+        if (id2 != (id1))
         {
             JavaCCErrors.parse_error(t, "Name " + id2 + " must be the same as that used at PARSER_BEGIN (" + id1 + ")");
         }
@@ -125,7 +125,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         rexprlist.Add(p);
         if (Options.getUserTokenManager())
         {
-            if (p.lexStates == null || p.lexStates.Length != 1 || !p.lexStates[0] == ("DEFAULT"))
+            if (p.lexStates == null || p.lexStates.Length != 1 || p.lexStates[0] != ("DEFAULT"))
             {
                 JavaCCErrors.warning(p, "Ignoring lexical state specifications since option " +
                                         "USER_TOKEN_MANAGER has been set to true.");
@@ -175,7 +175,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
     {
         if (!(r is REndOfFile))
         {
-            TokenProduction p = new TokenProduction();
+            var p = new TokenProduction();
             p.isExplicit = false;
             p.lexStates = new String[] { "DEFAULT" };
             p.kind = TokenProduction.TOKEN;
@@ -213,13 +213,13 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         int ordinal;
         while (index < str.Length - 1)
         {
-            if (str.charAt(index) != '\\')
+            if (str[index] != '\\')
             {
-                retval += str.charAt(index); index++;
+                retval += str[index]; index++;
                 continue;
             }
             index++;
-            ch = str.charAt(index);
+            ch = str[index];
             if (ch == 'b')
             {
                 retval += '\b'; index++;
@@ -263,11 +263,11 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
             if (ch >= '0' && ch <= '7')
             {
                 ordinal = ((int)ch) - ((int)'0'); index++;
-                ch1 = str.charAt(index);
+                ch1 = str[index];
                 if (ch1 >= '0' && ch1 <= '7')
                 {
                     ordinal = ordinal * 8 + ((int)ch1) - ((int)'0'); index++;
-                    ch1 = str.charAt(index);
+                    ch1 = str[index];
                     if (ch <= '3' && ch1 >= '0' && ch1 <= '7')
                     {
                         ordinal = ordinal * 8 + ((int)ch1) - ((int)'0'); index++;
@@ -278,19 +278,19 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
             }
             if (ch == 'u')
             {
-                index++; ch = str.charAt(index);
+                index++; ch = str[index];
                 if (hexchar(ch))
                 {
                     ordinal = hexval(ch);
-                    index++; ch = str.charAt(index);
+                    index++; ch = str[index];
                     if (hexchar(ch))
                     {
                         ordinal = ordinal * 16 + hexval(ch);
-                        index++; ch = str.charAt(index);
+                        index++; ch = str[index];
                         if (hexchar(ch))
                         {
                             ordinal = ordinal * 16 + hexval(ch);
-                            index++; ch = str.charAt(index);
+                            index++; ch = str[index];
                             if (hexchar(ch))
                             {
                                 ordinal = ordinal * 16 + hexval(ch);
@@ -321,7 +321,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         }
         else
         {
-            return s.charAt(0);
+            return s[0];
         }
     }
 
@@ -332,15 +332,15 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
             JavaCCErrors.parse_error(t, "String in character list may contain only one character.");
             return ' ';
         }
-        else if ((int)(left.charAt(0)) > (int)(s.charAt(0)))
+        else if ((int)(left[0]) > (int)(s[0]))
         {
             JavaCCErrors.parse_error(t, "Right end of character range \'" + s +
                     "\' has a lower ordinal value than the left end of character range \'" + left + "\'.");
-            return left.charAt(0);
+            return left[0];
         }
         else
         {
-            return s.charAt(0);
+            return s[0];
         }
     }
 

@@ -57,16 +57,16 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
     private void dumpDfaTables(
         CodeGenerator codeGenerator, TokenizerData tokenizerData)
     {
-        Dictionary<Integer, int[]> startAndSize = new Dictionary<Integer, int[]>();
+        Dictionary<int, int[]> startAndSize = new Dictionary<int, int[]>();
         int i = 0;
 
         codeGenerator.genCodeLine(
             "private static final int[] stringLiterals = {");
-        for (int key : tokenizerData.literalSequence.keySet())
+        foreach (int key in tokenizerData.literalSequence.keySet())
         {
             int[] arr = new int[2];
             List<String> l = tokenizerData.literalSequence.get(key);
-            List<Integer> kinds = tokenizerData.literalKinds.get(key);
+            List<int> kinds = tokenizerData.literalKinds.get(key);
             arr[0] = i;
             arr[1] = l.Count;
             int j = 0;
@@ -113,7 +113,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         // WE do the following for java so that the generated code is reasonable
         // size and can be compiled. May not be needed for other languages.
         codeGenerator.genCodeLine("private static final long[][] jjCharData = {");
-        Dictionary<Integer, TokenizerData.NfaState> nfa = tokenizerData.nfa;
+        Dictionary<int, TokenizerData.NfaState> nfa = tokenizerData.nfa;
         for (int i = 0; i < nfa.Count; i++)
         {
             TokenizerData.NfaState tmp = nfa.get(i);
@@ -220,7 +220,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             }
             int k = 0;
             codeGenerator.genCode("{");
-            for (int s : tmp.nextStates)
+            foreach (int s in tmp.nextStates)
             {
                 if (k++ > 0) codeGenerator.genCode(", ");
                 codeGenerator.genCode(s);
@@ -253,7 +253,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
     private void dumpMatchInfo(
         CodeGenerator codeGenerator, TokenizerData tokenizerData)
     {
-        Dictionary<Integer, TokenizerData.MatchInfo> allMatches =
+        Dictionary<int, TokenizerData.MatchInfo> allMatches =
             tokenizerData.allMatches;
 
         // A bit ugly.
