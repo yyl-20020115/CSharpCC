@@ -23,6 +23,8 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using org.javacc.parser;
+
 namespace org.javacc.utils;
 
 
@@ -195,7 +197,7 @@ public class OutputFileGenerator {
 
   private void write(TextWriter _out, string text)
   {
-    while ( text.indexOf("${") != -1)
+    while ( text.IndexOf("${") != -1)
     {
     text = substitute(text);
     }
@@ -205,18 +207,18 @@ public class OutputFileGenerator {
     }
 
     // TODO :: Added by Sreenivas on 12 June 2013 for 6.0 release, merged in to 6.1 release for sake of compatibility by cainsley ... This needs to be removed urgently!!!
-    if (text.startsWith("\\#")) { // Hack to escape # for C++
-      text = text.substring(1);
+    if (text.StartsWith("\\#")) { // Hack to escape # for C++
+      text = text[1..];
     }
     _out.WriteLine(text);
   }
 
-  private void process(BufferedReader in, TextWriter _out, bool ignoring)
+  private void process(TextReader _in, TextWriter _out, bool ignoring)
       {
     //    _out.WriteLine("*** process ignore=" + ignoring + " : " + peekLine(in));
-    while ( peekLine(in) != null)
+    while ( peekLine(_in) != null)
     {
-      if (peekLine(in).Trim().startsWith("#if"))
+      if (peekLine(_in).Trim().startsWith("#if"))
       {
         processIf(in, out, ignoring);
       }
@@ -234,7 +236,7 @@ public class OutputFileGenerator {
     _out.flush();
   }
 
-  private void processIf(BufferedReader in, TextWriter out, bool ignoring) 
+  private void processIf(BufferedReader _in, TextWriter _out, bool ignoring) 
   {
         string line = getLine(in).Trim();
     assert line.Trim().startsWith("#if");
@@ -268,7 +270,7 @@ public class OutputFileGenerator {
       }
 
 
-  public static void main(String[] args) throws Exception
+  public static void main(String[] args)
   {
     Dictionary map = new Dictionary();
     map.Add("falseArg", false);

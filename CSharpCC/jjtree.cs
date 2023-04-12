@@ -32,7 +32,6 @@
  */
 public static class jjtree {
 
-  private jjtree() {}
 
   public static void main(string[] args) {
     org.javacc.jjtree.Main.main(args);

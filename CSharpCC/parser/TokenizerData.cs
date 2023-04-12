@@ -18,15 +18,15 @@ public class TokenizerData {
   // just going through the sequence in the order.
   // Since they are all literals, there is no duplication (JavaCC checks that)
   // and hence if a longer match is matched, no need to check the shorter match.
-  public Dictionary<Integer, List<String>> literalSequence;
+  public Dictionary<int, List<String>> literalSequence;
 
   // A map of list of kind values indexed by ((int0LexicalState << 16 | (int)c)
   // same key as before.
-  public Dictionary<Integer, List<Integer>> literalKinds;
+  public Dictionary<int, List<int>> literalKinds;
 
   // The NFA start state for a given string literal match. We use this to start
   // the NFA if needed after a literal match is completed.
-  public Dictionary<Integer, Integer> kindToNfaStartState;
+  public Dictionary<int, int> kindToNfaStartState;
 
   // Class representing NFA state.
   public static class NfaState {
@@ -35,16 +35,16 @@ public class TokenizerData {
     // Set of allowed characters.
     public HashSet<Character> characters;
     // Next state indices.
-    public HashSet<Integer> nextStates;
+    public HashSet<int> nextStates;
     // Initial state needs to transition to multiple states so the NFA will try
     // all possibilities.
     // TODO(sreeni) : Try and get rid of it at some point.
-    public HashSet<Integer> compositeStates;
-    // match kind if any. Integer.MAX_VALUE if this is not a final state.
+    public HashSet<int> compositeStates;
+    // match kind if any. int.MAX_VALUE if this is not a final state.
     public int kind;
 
     NfaState(int index, HashSet<Character> characters,
-             HashSet<Integer> nextStates, HashSet<Integer> compositeStates, int kind) {
+             HashSet<int> nextStates, HashSet<int> compositeStates, int kind) {
       this.index = index;
       this.characters = characters;
       this.nextStates = nextStates;
@@ -54,7 +54,7 @@ public class TokenizerData {
   }
 
   // The main nfa.
-  public readonly Dictionary<Integer, NfaState> nfa = new Dictionary<Integer, NfaState>();
+  public readonly Dictionary<int, NfaState> nfa = new Dictionary<int, NfaState>();
 
   public static enum MatchType {
     SKIP,
@@ -87,13 +87,13 @@ public class TokenizerData {
   }
 
   // On match info indexed by the match kind.
-  public Dictionary<Integer, MatchInfo> allMatches = new Dictionary<Integer, MatchInfo>();
+  public Dictionary<int, MatchInfo> allMatches = new Dictionary<int, MatchInfo>();
 
   // Initial nfa states indexed by lexical state.
-  public Dictionary<Integer, Integer> initialStates;
+  public Dictionary<int, int> initialStates;
 
   // Kind of the wildcard match (~[]) indexed by lexical state.
-  public Dictionary<Integer, Integer> wildcardKind;
+  public Dictionary<int, int> wildcardKind;
 
   // Name of lexical state - for debugging.
   public String[] lexStateNames;
@@ -109,32 +109,32 @@ public class TokenizerData {
     this.decls = decls;
   }
 
-  public void setLiteralSequence(Dictionary<Integer, List<String>> literalSequence) {
+  public void setLiteralSequence(Dictionary<int, List<String>> literalSequence) {
     this.literalSequence = literalSequence;
   }
 
-  public void setLiteralKinds(Dictionary<Integer, List<Integer>> literalKinds) {
+  public void setLiteralKinds(Dictionary<int, List<int>> literalKinds) {
     this.literalKinds = literalKinds;
   }
 
   public void setKindToNfaStartState(
-      Dictionary<Integer, Integer> kindToNfaStartState) {
+      Dictionary<int, int> kindToNfaStartState) {
     this.kindToNfaStartState = kindToNfaStartState;
   }
 
   public void addNfaState(int index, HashSet<Character> characters,
-                          HashSet<Integer> nextStates,
-                          HashSet<Integer> compositeStates, int kind) {
+                          HashSet<int> nextStates,
+                          HashSet<int> compositeStates, int kind) {
     NfaState nfaState =
         new NfaState(index, characters, nextStates, compositeStates, kind);
     nfa.Add(index, nfaState);
   }
 
-  public void setInitialStates(Dictionary<Integer, Integer> initialStates) {
+  public void setInitialStates(Dictionary<int, int> initialStates) {
     this.initialStates = initialStates;
   }
 
-  public void setWildcardKind(Dictionary<Integer, Integer> wildcardKind) {
+  public void setWildcardKind(Dictionary<int, int> wildcardKind) {
     this.wildcardKind = wildcardKind;
   }
 
@@ -146,7 +146,7 @@ public class TokenizerData {
     this.defaultLexState = defaultLexState;
   }
 
-  public void updateMatchInfo(Dictionary<Integer, String> actions,
+  public void updateMatchInfo(Dictionary<int, String> actions,
                               int[] newLexStateIndices,
                               long[] toSkip, long[] toSpecial,
                               long[] toMore, long[] toToken) {

@@ -6,7 +6,7 @@ namespace org.javacc.utils;
  * Describes the input token stream.
  */
 
-public class Token : java.io.Serializable
+public class Token
 {
 
     /**

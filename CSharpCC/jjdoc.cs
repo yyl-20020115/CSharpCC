@@ -32,8 +32,6 @@
  */
 public static class jjdoc {
 
-  private jjdoc() {}
-
   public static void main(String[] args) {
     org.javacc.jjdoc.JJDocMain.main(args);
   }

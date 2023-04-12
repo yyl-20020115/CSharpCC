@@ -651,11 +651,11 @@ public class Semanticize:JavaCCGlobals {
 
     public RegularExpression root;
 
-    public bool goDeeper(Expansion e) {
+    public bool GoDeeper(Expansion e) {
       return true;
     }
 
-    public void action(Expansion e) {
+    public void Action(Expansion e) {
       if (e is RJustName) {
         RJustName jn = (RJustName)e;
         RegularExpression rexp = (RegularExpression)named_tokens_table.get(jn.label);
@@ -678,7 +678,7 @@ public class Semanticize:JavaCCGlobals {
 
   static class LookaheadFixer:JavaCCGlobals , TreeWalkerOp {
 
-    public bool goDeeper(Expansion e) {
+    public bool GoDeeper(Expansion e) {
       if (e is RegularExpression) {
         return false;
       } else {
@@ -686,7 +686,7 @@ public class Semanticize:JavaCCGlobals {
       }
     }
 
-    public void action(Expansion e) {
+    public void Action(Expansion e) {
       if (e is Sequence) {
         if (e.parent is Choice || e.parent is ZeroOrMore ||
             e.parent is OneOrMore || e.parent is ZeroOrOne) {
@@ -737,7 +737,7 @@ public class Semanticize:JavaCCGlobals {
 
   static class ProductionDefinedChecker : JavaCCGlobals , TreeWalkerOp {
 
-    public bool goDeeper(Expansion e) {
+    public bool GoDeeper(Expansion e) {
       if (e is RegularExpression) {
         return false;
       } else {
@@ -745,7 +745,7 @@ public class Semanticize:JavaCCGlobals {
       }
     }
 
-    public void action(Expansion e) {
+    public void Action(Expansion e) {
       if (e is NonTerminal) {
         NonTerminal nt = (NonTerminal)e;
         if ((nt.setProd((NormalProduction)production_table.get(nt.getName()))) == null) {
@@ -760,7 +760,7 @@ public class Semanticize:JavaCCGlobals {
 
   static class EmptyChecker:JavaCCGlobals implements TreeWalkerOp {
 
-    public bool goDeeper(Expansion e) {
+    public bool GoDeeper(Expansion e) {
       if (e is RegularExpression) {
         return false;
       } else {
@@ -768,7 +768,7 @@ public class Semanticize:JavaCCGlobals {
       }
     }
 
-    public void action(Expansion e) {
+    public void Action(Expansion e) {
       if (e is OneOrMore) {
         if (Semanticize.emptyExpansionExists(((OneOrMore)e).expansion)) {
           JavaCCErrors.semantic_error(e, "Expansion within \"(...)+\" can be matched by empty string.");
@@ -788,7 +788,7 @@ public class Semanticize:JavaCCGlobals {
 
   static class LookaheadChecker:JavaCCGlobals implements TreeWalkerOp {
 
-    public bool goDeeper(Expansion e) {
+    public bool GoDeeper(Expansion e) {
       if (e is RegularExpression) {
         return false;
       } else if (e is Lookahead) {
@@ -798,7 +798,7 @@ public class Semanticize:JavaCCGlobals {
       }
     }
 
-    public void action(Expansion e) {
+    public void Action(Expansion e) {
       if (e is Choice) {
         if (Options.getLookahead() == 1 || Options.getForceLaCheck()) {
           LookaheadCalc.choiceCalc((Choice)e);

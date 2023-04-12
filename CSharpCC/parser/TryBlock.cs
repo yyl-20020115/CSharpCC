@@ -25,6 +25,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+using System.Text;
+
 namespace org.javacc.parser;
 
 
@@ -32,44 +34,46 @@ namespace org.javacc.parser;
  * Describes expansions of the form "try {...} ...".
  */
 
-public class TryBlock:Expansion {
+public class TryBlock : Expansion
+{
 
-  /**
-   * The expansion contained within the try block.
-   */
-  public Expansion exp;
+    /**
+     * The expansion contained within the try block.
+     */
+    public Expansion exp;
 
-  /**
-   * The types of each catch block.  Each list entry is itself a
-   * list which in turn contains tokens as entries.
-   */
-  public List<List<Token>> types;
+    /**
+     * The types of each catch block.  Each list entry is itself a
+     * list which in turn contains tokens as entries.
+     */
+    public List<List<Token>> types;
 
-  /**
-   * The exception identifiers of each catch block.  Each list entry
-   * is a token.
-   */
-  public List<Token> ids;
+    /**
+     * The exception identifiers of each catch block.  Each list entry
+     * is a token.
+     */
+    public List<Token> ids;
 
-  /**
-   * The block part of each catch block.  Each list entry is itself a
-   * list which in turn contains tokens as entries.
-   */
-  public List<List<Token>> catchblks;
+    /**
+     * The block part of each catch block.  Each list entry is itself a
+     * list which in turn contains tokens as entries.
+     */
+    public List<List<Token>> catchblks;
 
-  /**
-   * The block part of the finally block.  Each list entry is a token.
-   * If there is no finally block, this is null.
-   */
-  public List<Token> finallyblk;
+    /**
+     * The block part of the finally block.  Each list entry is a token.
+     * If there is no finally block, this is null.
+     */
+    public List<Token> finallyblk;
 
-  public StringBuilder dump(int indent, Set alreadyDumped) {
-    StringBuilder sb = base.dump(indent, alreadyDumped);
-    if (alreadyDumped.Contains(this))
-      return sb;
-    alreadyDumped.Add(this);
-    sb.Append(eol).Append(exp.dump(indent + 1, alreadyDumped));
-    return sb;
-  }
+    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
+    {
+        var sb = base.dump(indent, alreadyDumped);
+        if (alreadyDumped.Contains(this))
+            return sb;
+        alreadyDumped.Add(this);
+        sb.Append(eol).Append(exp.dump(indent + 1, alreadyDumped));
+        return sb;
+    }
 
 }

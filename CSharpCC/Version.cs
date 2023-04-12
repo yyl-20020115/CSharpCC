@@ -46,14 +46,14 @@ public class Version {
   public static readonly string majorDotMinor;
   public static readonly string versionNumber;
 
-  static {
+  static Version(){
     string major = "??";
     string minor = "??";
     string patch = "??";
 
     Properties props = new Properties();
-    InputStream is = Version.class.getResourceAsStream("/version.properties");
-    if (is != null)
+    InputStream _is = Version.GetType().getResourceAsStream("/version.properties");
+    if (_is != null)
     {
       try
       {

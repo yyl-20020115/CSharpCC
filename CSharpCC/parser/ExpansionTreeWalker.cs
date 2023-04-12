@@ -41,8 +41,8 @@ public static class ExpansionTreeWalker {
    * children.
    */
   static void preOrderWalk(Expansion node, TreeWalkerOp opObj) {
-    opObj.action(node);
-    if (opObj.goDeeper(node)) {
+    opObj.Action(node);
+    if (opObj.GoDeeper(node)) {
       if (node is Choice) {
         for (Iterator it = ((Choice)node).getChoices().iterator(); it.hasNext();) {
           preOrderWalk((Expansion)it.next(), opObj);
@@ -90,7 +90,7 @@ public static class ExpansionTreeWalker {
    * opObj.action.
    */
   static void postOrderWalk(Expansion node, TreeWalkerOp opObj) {
-    if (opObj.goDeeper(node)) {
+    if (opObj.GoDeeper(node)) {
       if (node is Choice) {
         for (Iterator it = ((Choice)node).getChoices().iterator(); it.hasNext();) {
           postOrderWalk((Expansion)it.next(), opObj);
@@ -130,7 +130,7 @@ public static class ExpansionTreeWalker {
         postOrderWalk(((RRepetitionRange)node).regexpr, opObj);
       }
     }
-    opObj.action(node);
+    opObj.Action(node);
   }
 
 }

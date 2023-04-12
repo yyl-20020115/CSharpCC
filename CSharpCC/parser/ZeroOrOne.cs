@@ -35,28 +35,31 @@ namespace org.javacc.parser;
  * Describes zero-or-one expansions (e.g., [foo], foo?).
  */
 
-public class ZeroOrOne:Expansion {
+public class ZeroOrOne : Expansion
+{
 
-  /**
-   * The expansion which is repeated zero or one times.
-   */
-  public Expansion expansion;
+    /**
+     * The expansion which is repeated zero or one times.
+     */
+    public Expansion expansion;
 
-  public ZeroOrOne() {}
+    public ZeroOrOne() { }
 
-    public ZeroOrOne(Token t, Expansion e) {
+    public ZeroOrOne(Token t, Expansion e)
+    {
         this.setLine(t.beginLine);
         this.setColumn(t.beginColumn);
         this.expansion = e;
         e.parent = this;
     }
 
-    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped) {
-      StringBuilder sb = base.dump(indent, alreadyDumped);
-      if (alreadyDumped.Contains(this))
+    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
+    {
+        var sb = base.dump(indent, alreadyDumped);
+        if (alreadyDumped.Contains(this))
+            return sb;
+        alreadyDumped.Add(this);
+        sb.Append(eol).Append(expansion.dump(indent + 1, alreadyDumped));
         return sb;
-      alreadyDumped.Add(this);
-      sb.Append(eol).Append(expansion.dump(indent + 1, alreadyDumped));
-      return sb;
     }
 }

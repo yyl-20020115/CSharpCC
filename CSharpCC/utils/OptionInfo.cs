@@ -50,7 +50,7 @@ public class OptionInfo : IComparable<OptionInfo>
     }
 
     //@Override
-    public override bool Equals([NotNull] object obj)
+    public override bool Equals([NotNull] object? obj)
     {
         if (this == obj)
             return true;

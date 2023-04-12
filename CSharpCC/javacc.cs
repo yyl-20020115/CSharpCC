@@ -31,7 +31,6 @@
  * independent.
  */
 public static class javacc {
-  private javacc() {}
   public static void main(String[] args) {
     org.javacc.parser.Main.main(args);
   }
