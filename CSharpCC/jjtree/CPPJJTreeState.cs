@@ -13,19 +13,19 @@ namespace org.javacc.jjtree;
 public static class CPPJJTreeState
 {
 
-    static readonly string JJTStateVersion = Version.majorDotMinor;
+    static readonly string JJTStateVersion = Version.MajorDotMinor;
 
-    static void generateTreeState()
+    public static void GenerateTreeState()
     {
         var options = JJTreeOptions.getOptions();
         options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
         string filePrefix = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "JJT" + JJTreeGlobals.parserName + "State");
 
         OutputFile outputFile = new OutputFile((filePrefix + ".h"), JJTStateVersion, new String[0]);
-        CPPNodeFiles.generateFile(outputFile, "/templates/cpp/JJTTreeState.h.template", options);
+        CPPNodeFiles.GenerateFile(outputFile, "/templates/cpp/JJTTreeState.h.template", options);
 
         outputFile = new OutputFile((filePrefix + ".cc"), JJTStateVersion, new String[0]);
-        CPPNodeFiles.generateFile(outputFile, "/templates/cpp/JJTTreeState.cc.template", options);
+        CPPNodeFiles.GenerateFile(outputFile, "/templates/cpp/JJTTreeState.cc.template", options);
 
     }
 

@@ -15,8 +15,6 @@ public class ASTCharDescriptor : JJTreeNode
 
     /** Accept the visitor. **/
     public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+        => visitor.visit(this, data);
 }
 /* JavaCC - OriginalChecksum=34443ffa81002e24122bb38aa8cf7556 (do not edit this line) */

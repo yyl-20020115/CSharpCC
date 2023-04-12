@@ -49,7 +49,7 @@ public class NodeScope
             {
                 nm = "void";
             }
-            node_descriptor = ASTNodeDescriptor.indefinite(nm);
+            node_descriptor = ASTNodeDescriptor.Indefinite(nm);
         }
         else
         {
@@ -65,7 +65,7 @@ public class NodeScope
 
     public bool isVoid()
     {
-        return node_descriptor.isVoid();
+        return node_descriptor.IsVoid;
     }
 
 
@@ -77,7 +77,7 @@ public class NodeScope
 
     public string getNodeDescriptorText()
     {
-        return node_descriptor.getDescriptor();
+        return node_descriptor.GetDescriptor();
     }
 
 
@@ -103,21 +103,21 @@ public class NodeScope
     {
         if (node is ASTBNFDeclaration)
         {
-            return ((ASTBNFDeclaration)node).node_scope;
+            return ((ASTBNFDeclaration)node).NodeScope;
         }
         for (Node n = node.jjtGetParent(); n != null; n = n.jjtGetParent())
         {
             if (n is ASTBNFDeclaration)
             {
-                return ((ASTBNFDeclaration)n).node_scope;
+                return ((ASTBNFDeclaration)n).NodeScope;
             }
             else if (n is ASTBNFNodeScope)
             {
-                return ((ASTBNFNodeScope)n).node_scope;
+                return ((ASTBNFNodeScope)n).NodeScope;
             }
             else if (n is ASTExpansionNodeScope)
             {
-                return ((ASTExpansionNodeScope)n).node_scope;
+                return ((ASTExpansionNodeScope)n).NodeScope;
             }
         }
         return null;

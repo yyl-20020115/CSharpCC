@@ -190,7 +190,7 @@ public class Main
 
         if (args.Length == 1 && args[args.Length - 1].Equals("-version",StringComparison.InvariantCultureIgnoreCase))
         {
-            Console.WriteLine(Version.versionNumber);
+            Console.WriteLine(Version.VersionNumber);
             return 0;
         }
 

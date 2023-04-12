@@ -14,9 +14,7 @@ public class ASTBNFChoice : JJTreeNode
 
 
     /** Accept the visitor. **/
-    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
+        => visitor.Visit(this, data);
 }
 /* JavaCC - OriginalChecksum=c6136f2093e7bd7093fb5ebfc93097da (do not edit this line) */

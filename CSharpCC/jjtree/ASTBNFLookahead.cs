@@ -14,9 +14,7 @@ public class ASTBNFLookahead : JJTreeNode
 
 
     /** Accept the visitor. **/
-    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
+        => visitor.Visit(this, data);
 }
 /* JavaCC - OriginalChecksum=d4584298bda5bb506801d1a537cf1471 (do not edit this line) */

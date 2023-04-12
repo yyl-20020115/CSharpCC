@@ -16,8 +16,6 @@ class ASTBNFAssignment : JJTreeNode
 
     /** Accept the visitor. **/
     public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+        => visitor.Visit(this, data);
 }
 /* JavaCC - OriginalChecksum=abf306a83b75e794e7006b68a9512e78 (do not edit this line) */

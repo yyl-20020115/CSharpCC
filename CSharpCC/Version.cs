@@ -37,13 +37,13 @@ namespace org.javacc;
  */
 public static class Version
 {
-    public static readonly string majorVersion;
-    public static readonly string minorVersion;
-    public static readonly string patchVersion;
+    public static readonly string MajorVersion;
+    public static readonly string MinorVersion;
+    public static readonly string PatchVersion;
 
 
-    public static readonly string majorDotMinor;
-    public static readonly string versionNumber;
+    public static readonly string MajorDotMinor;
+    public static readonly string VersionNumber;
 
     static Version()
     {
@@ -68,11 +68,11 @@ public static class Version
             patch = props.getProperty("version.patch", patch);
         }
 
-        majorVersion = major;
-        minorVersion = minor;
-        patchVersion = patch;
-        majorDotMinor = majorVersion + "." + minorVersion;
-        versionNumber = majorVersion + "." + minorVersion +
+        MajorVersion = major;
+        MinorVersion = minor;
+        PatchVersion = patch;
+        MajorDotMinor = MajorVersion + "." + MinorVersion;
+        VersionNumber = MajorVersion + "." + MinorVersion +
                         (patch == ("") ? "" : "." + patch);
     }
 

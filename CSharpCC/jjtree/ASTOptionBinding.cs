@@ -37,7 +37,7 @@ public class ASTOptionBinding : JJTreeNode
     private bool suppressed = false;
     private string name;
 
-    public void initialize(string n, string v)
+    public void Initialize(string n, string v)
     {
         name = n;
 
@@ -51,18 +51,15 @@ public class ASTOptionBinding : JJTreeNode
     }
 
 
-    public bool isSuppressed()
-    {
-        return suppressed;
-    }
+    public bool IsSuppressed => suppressed;
 
-    public void suppressOption(bool s)
+    public void SuppressOption(bool s)
     {
         suppressed = s;
     }
 
 
-    public override string translateImage(Token t)
+    public override string TranslateImage(Token t)
     {
         if (suppressed)
         {

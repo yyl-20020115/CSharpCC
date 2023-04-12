@@ -43,29 +43,29 @@ public class JavaFiles:JavaCCGlobals
    * ID of the latest version (of JavaCC) in which one of the CharStream classes
    * or the CharStream interface is modified.
    */
-  static readonly string charStreamVersion = Version.majorDotMinor;
+  static readonly string charStreamVersion = Version.MajorDotMinor;
 
   /**
    * ID of the latest version (of JavaCC) in which the TokenManager interface is modified.
    */
-  static readonly string tokenManagerVersion = Version.majorDotMinor;
+  static readonly string tokenManagerVersion = Version.MajorDotMinor;
 
   /**
    * ID of the latest version (of JavaCC) in which the Token class is modified.
    */
-  static readonly string tokenVersion = Version.majorDotMinor;
+  static readonly string tokenVersion = Version.MajorDotMinor;
 
   /**
    * ID of the latest version (of JavaCC) in which the ParseException class is
    * modified.
    */
-  static readonly string parseExceptionVersion = Version.majorDotMinor;
+  static readonly string parseExceptionVersion = Version.MajorDotMinor;
 
   /**
    * ID of the latest version (of JavaCC) in which the TokenMgrError class is
    * modified.
    */
-  static readonly string tokenMgrErrorVersion = Version.majorDotMinor;
+  static readonly string tokenMgrErrorVersion = Version.MajorDotMinor;
 
 
   public interface JavaResourceTemplateLocations {
@@ -188,7 +188,7 @@ public class JavaFiles:JavaCCGlobals
     if (!file.exists()) {
       // Has not yet been created, so it must be up to date.
       try {
-        string majorVersion = Version.majorDotMinor.replaceAll("[^0-9.]+.*", "");
+        string majorVersion = Version.MajorDotMinor.replaceAll("[^0-9.]+.*", "");
         return Double.parseDouble(majorVersion);
       } catch (NumberFormatException e) {
         return 0.0; // Should never happen
@@ -249,7 +249,7 @@ public class JavaFiles:JavaCCGlobals
       File file = new File(Options.getOutputDirectory(), "JavaCharStream.java");
       OutputFile outputFile = new OutputFile(file, charStreamVersion, new String[] {Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
 
-      if (!outputFile.needToWrite)
+      if (!outputFile.NeedToWrite)
       {
         return;
       }
@@ -296,7 +296,7 @@ public class JavaFiles:JavaCCGlobals
       File file = new File(Options.getOutputDirectory(), "SimpleCharStream.java");
       OutputFile outputFile = new OutputFile(file, charStreamVersion, new String[] {Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
 
-      if (!outputFile.needToWrite)
+      if (!outputFile.NeedToWrite)
       {
         return;
       }
@@ -343,7 +343,7 @@ public class JavaFiles:JavaCCGlobals
       File file = new File(Options.getOutputDirectory(), "CharStream.java");
       OutputFile outputFile = new OutputFile(file, charStreamVersion, new String[] {Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
 
-      if (!outputFile.needToWrite)
+      if (!outputFile.NeedToWrite)
       {
         return;
       }
@@ -395,7 +395,7 @@ public class JavaFiles:JavaCCGlobals
 	  File file = new File(Options.getOutputDirectory(), fileName);
 	  OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new String[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN});
 
-	  if (!outputFile.needToWrite)
+	  if (!outputFile.NeedToWrite)
 	  {
 	    return;
 	  }
@@ -437,7 +437,7 @@ public class JavaFiles:JavaCCGlobals
       File file = new File(Options.getOutputDirectory(), "ParseException.java");
       OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new String[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN});
 
-      if (!outputFile.needToWrite)
+      if (!outputFile.NeedToWrite)
       {
         return;
       }
@@ -486,7 +486,7 @@ public class JavaFiles:JavaCCGlobals
 	File file = new File(Options.getOutputDirectory(), filename);
       OutputFile outputFile = new OutputFile(file, tokenMgrErrorVersion, new String[0]);
 
-      if (!outputFile.needToWrite)
+      if (!outputFile.NeedToWrite)
       {
         return;
       }
@@ -533,7 +533,7 @@ public class JavaFiles:JavaCCGlobals
       File file = new File(Options.getOutputDirectory(), "Token.java");
       OutputFile outputFile = new OutputFile(file, tokenVersion, new String[] {Options.USEROPTION__TOKEN_EXTENDS, Options.USEROPTION__KEEP_LINE_COLUMN, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
 
-      if (!outputFile.needToWrite)
+      if (!outputFile.NeedToWrite)
       {
         return;
       }
@@ -577,7 +577,7 @@ public class JavaFiles:JavaCCGlobals
       File file = new File(Options.getOutputDirectory(), "TokenManager.java");
       OutputFile outputFile = new OutputFile(file, tokenManagerVersion, new String[] {Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
 
-      if (!outputFile.needToWrite)
+      if (!outputFile.NeedToWrite)
       {
         return;
       }

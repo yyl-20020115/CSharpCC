@@ -130,7 +130,7 @@ public class OutputFile
             if (existingMD5 == null || !existingMD5 == (calculatedDigest))
             {
                 // No checksum in file, or checksum differs.
-                needToWrite = false;
+                NeedToWrite = false;
 
                 if (compatibleVersion != null)
                 {
@@ -149,14 +149,14 @@ public class OutputFile
                 // Rebuild it.
                 Console.WriteLine("File \"" + file
                     + "\" is being rebuilt.");
-                needToWrite = true;
+                NeedToWrite = true;
             }
         }
         else
         {
             // File does not exist
             Console.WriteLine("File \"" + file + "\" does not exist.  Will create one.");
-            needToWrite = true;
+            NeedToWrite = true;
         }
     }
 
@@ -166,7 +166,7 @@ public class OutputFile
        
     }
 
-    public bool needToWrite = true;
+    public bool NeedToWrite = true;
 
     /**
      * Output a warning if the file was created with an incompatible version
@@ -283,7 +283,7 @@ public class OutputFile
             pw = new TrapClosePrintWriter(dos);
 
             // Write the headers....
-            string version = compatibleVersion == null ? Version.versionNumber : compatibleVersion;
+            string version = compatibleVersion == null ? Version.VersionNumber : compatibleVersion;
             pw.WriteLine("/* "
                 + JavaCCGlobals.getIdString(toolName, file)
                 + " Version " + version + " */");
@@ -301,7 +301,7 @@ public class OutputFile
      * (such as a checksum).
      * @throws IOException
      */
-    public void close()
+    public void Close()
     {
 
         // Write the trailer (checksum).

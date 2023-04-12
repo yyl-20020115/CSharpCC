@@ -80,7 +80,7 @@ public class JJTreeNode : SimpleNode
     public Token getLastToken() { return last; }
     public void setLastToken(Token t) { last = t; }
 
-    public virtual string translateImage(Token t)
+    public virtual string TranslateImage(Token t)
     {
         return t.image;
     }
@@ -117,7 +117,7 @@ public class JJTreeNode : SimpleNode
             while (tt.specialToken != null) tt = tt.specialToken;
             while (tt != null)
             {
-                io.print(TokenUtils.addUnicodeEscapes(translateImage(tt)));
+                io.Print(TokenUtils.addUnicodeEscapes(TranslateImage(tt)));
                 tt = tt.next;
             }
         }
@@ -136,13 +136,13 @@ public class JJTreeNode : SimpleNode
         {
             /* Not within a node scope so we don't need to modify the
                source. */
-            io.print(TokenUtils.addUnicodeEscapes(translateImage(t)));
+            io.Print(TokenUtils.addUnicodeEscapes(TranslateImage(t)));
             return;
         }
 
         if (t.image == ("jjtThis"))
         {
-            io.print(s.getNodeVariable());
+            io.Print(s.getNodeVariable());
             return;
         }
         else if (t.image == ("jjtree"))
@@ -168,24 +168,24 @@ public class JJTreeNode : SimpleNode
         {
             if (t.image == ("jjtree"))
             {
-                io.print(s.getNodeVariable());
-                io.print(" ");
+                io.Print(s.getNodeVariable());
+                io.Print(" ");
             }
             else if (t.image == (")"))
             {
-                io.print(" ");
+                io.Print(" ");
                 whitingOut = false;
             }
             else
             {
                 for (int i = 0; i < t.image.Length; ++i)
                 {
-                    io.print(" ");
+                    io.Print(" ");
                 }
             }
             return;
         }
 
-        io.print(TokenUtils.addUnicodeEscapes(translateImage(t)));
+        io.Print(TokenUtils.addUnicodeEscapes(TranslateImage(t)));
     }
 }

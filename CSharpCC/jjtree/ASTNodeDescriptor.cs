@@ -39,7 +39,7 @@ public class ASTNodeDescriptor : JJTreeNode
 
     private bool faked = false;
 
-    public static ASTNodeDescriptor indefinite(string s)
+    public static ASTNodeDescriptor Indefinite(string s)
     {
         var nd = new ASTNodeDescriptor(JJTreeParserTreeConstants.JJTNODEDESCRIPTOR)
         {
@@ -47,40 +47,31 @@ public class ASTNodeDescriptor : JJTreeNode
             faked = true
         };
 
-        nd.setNodeIdValue();
+        nd.SetNodeIdValue();
         return nd;
     }
 
 
-    public static List<string> nodeIds = new();
-    public static List<string> nodeNames = new();
+    public static List<string> NodeIds = new();
+    public static List<string> NodeNames = new();
     public static Dictionary<string, string> nodeSeen = new ();
 
-    public static List<string> getNodeIds()
-    {
-        return nodeIds;
-    }
+    public static List<string> GetNodeIds() => NodeIds;
 
-    public static List<string> getNodeNames()
-    {
-        return nodeNames;
-    }
+    public static List<string> GetNodeNames() => NodeNames;
 
-    public void setNodeIdValue()
+    public void SetNodeIdValue()
     {
-        var k = getNodeId();
+        var k = GetNodeId();
         if (!nodeSeen.ContainsKey(k))
         {
             nodeSeen.Add(k, k);
-            nodeNames.Add(name);
-            nodeIds.Add(k);
+            NodeNames.Add(name);
+            NodeIds.Add(k);
         }
     }
 
-    public string getNodeId()
-    {
-        return "JJT" + name.ToUpper().Replace('.', '_');
-    }
+    public string GetNodeId() => "JJT" + name.ToUpper().Replace('.', '_');
 
 
     public string name;
@@ -88,41 +79,23 @@ public class ASTNodeDescriptor : JJTreeNode
     public ASTNodeDescriptorExpression expression;
 
 
-    public bool isVoid()
-    {
-        return name == ("void");
-    }
+    public bool IsVoid => name == ("void");
 
-    public override string ToString()
-    {
-        return faked ? "(faked) " + name : base.ToString() + ": " + name;
-    }
+    public override string ToString() => faked ? "(faked) " + name : base.ToString() + ": " + name;
 
 
-    public string getDescriptor()
-    {
-        return expression == null ? name : "#" + name + "(" + (isGT ? ">" : "") + expression_text() + ")";
-    }
+    public string GetDescriptor() => expression == null ? name : $"#{name}({(isGT ? ">" : "")}{ExpressionText()})";
 
-    public string getNodeType()
-    {
-        return JJTreeOptions.getMulti() ? JJTreeOptions.getNodePrefix() + name : "SimpleNode";
-    }
+    public string GetNodeType() => JJTreeOptions.getMulti() ? JJTreeOptions.getNodePrefix() + name : "SimpleNode";
 
 
-    public string getNodeName()
-    {
-        return name;
-    }
+    public string GetNodeName() => name;
 
 
-    public string openNode(string nodeVar)
-    {
-        return "jjtree.openNodeScope(" + nodeVar + ");";
-    }
+    public string OpenNode(string nodeVar) => $"jjtree.openNodeScope({nodeVar});";
 
 
-    public string expression_text()
+    public string ExpressionText()
     {
         if (expression.getFirstToken().image == (")") &&
           expression.getLastToken().image == ("("))
@@ -145,7 +118,7 @@ public class ASTNodeDescriptor : JJTreeNode
     }
 
 
-    public string closeNode(string nodeVar)
+    public string CloseNode(string nodeVar)
     {
         if (expression == null)
         {
@@ -154,26 +127,21 @@ public class ASTNodeDescriptor : JJTreeNode
         else if (isGT)
         {
             return "jjtree.closeNodeScope(" + nodeVar + ", jjtree.nodeArity() >" +
-                expression_text() + ");";
+                ExpressionText() + ");";
         }
         else
         {
             return "jjtree.closeNodeScope(" + nodeVar + ", " +
-                expression_text() + ");";
+                ExpressionText() + ");";
         }
     }
 
 
-    public override string translateImage(Token t)
-    {
-        return whiteOut(t);
-    }
+    public override string TranslateImage(Token t) => whiteOut(t);
 
     /** Accept the visitor. **/
-    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
+        => visitor.visit(this, data);
 
 }
 

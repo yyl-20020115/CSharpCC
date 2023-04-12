@@ -50,10 +50,10 @@ public static class JJTreeState
             s = "";
         }
 
-        io.println();
-        io.println("  protected " + s + nameState() +
+        io.Println();
+        io.Println("  protected " + s + nameState() +
              " jjtree = new " + nameState() + "();");
-        io.println();
+        io.Println();
     }
 
 
@@ -73,7 +73,7 @@ public static class JJTreeState
             TextWriter ostr = outputFile.getPrintWriter();
             NodeFiles.generatePrologue(ostr);
             insertState(ostr);
-            outputFile.close();
+            outputFile.Close();
         }
         catch (IOException e)
         {

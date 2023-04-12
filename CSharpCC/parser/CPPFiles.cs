@@ -19,29 +19,29 @@ public class CPPFiles : JavaCCGlobals
     * ID of the latest version (of JavaCC) in which one of the CharStream classes
     * or the CharStream interface is modified.
     */
-    static readonly string charStreamVersion = Version.majorDotMinor;
+    static readonly string charStreamVersion = Version.MajorDotMinor;
 
     /**
      * ID of the latest version (of JavaCC) in which the TokenManager interface is modified.
      */
-    static readonly string tokenManagerVersion = Version.majorDotMinor;
+    static readonly string tokenManagerVersion = Version.MajorDotMinor;
 
     /**
      * ID of the latest version (of JavaCC) in which the Token class is modified.
      */
-    static readonly string tokenVersion = Version.majorDotMinor;
+    static readonly string tokenVersion = Version.MajorDotMinor;
 
     /**
      * ID of the latest version (of JavaCC) in which the ParseException class is
      * modified.
      */
-    static readonly string parseExceptionVersion = Version.majorDotMinor;
+    static readonly string parseExceptionVersion = Version.MajorDotMinor;
 
     /**
      * ID of the latest version (of JavaCC) in which the TokenMgrError class is
      * modified.
      */
-    static readonly string tokenMgrErrorVersion = Version.majorDotMinor;
+    static readonly string tokenMgrErrorVersion = Version.MajorDotMinor;
 
     /**
      * Replaces all backslahes with double backslashes.
@@ -86,7 +86,7 @@ public class CPPFiles : JavaCCGlobals
             // Has not yet been created, so it must be up to date.
             try
             {
-                string majorVersion = Version.versionNumber.replaceAll("[^0-9.]+.*", "");
+                string majorVersion = Version.VersionNumber.replaceAll("[^0-9.]+.*", "");
                 return Double.parseDouble(majorVersion);
             }
             catch (NumberFormatException e)
@@ -149,7 +149,7 @@ public class CPPFiles : JavaCCGlobals
         {
             OutputFile outputFile = new OutputFile(file, version, parameters);
 
-            if (!outputFile.needToWrite)
+            if (!outputFile.NeedToWrite)
             {
                 return;
             }

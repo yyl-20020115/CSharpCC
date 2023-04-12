@@ -41,7 +41,7 @@ public class JJTree
 
     private void p(string s)
     {
-        io.getMsg().WriteLine(s);
+        io.GetMsg().WriteLine(s);
     }
 
     private void help_message()
@@ -110,8 +110,8 @@ public class JJTree
     {
 
         // initialize static state for allowing repeat runs without exiting
-        ASTNodeDescriptor.nodeIds = new ();
-        ASTNodeDescriptor.nodeNames = new ();
+        ASTNodeDescriptor.NodeIds = new ();
+        ASTNodeDescriptor.NodeNames = new ();
         ASTNodeDescriptor.nodeSeen = new ();
         org.javacc.parser.Main.reInitAll();
 
@@ -155,21 +155,21 @@ public class JJTree
 
             try
             {
-                io.setInput(fn);
+                io.SetInput(fn);
             }
             catch (JJTreeIOException ioe)
             {
                 p("Error setting input: " + ioe.Message);
                 return 1;
             }
-            p("Reading from file " + io.getInputFileName() + " . . .");
+            p("Reading from file " + io.GetInputFileName() + " . . .");
 
             JJTreeGlobals.toolList = JavaCCGlobals.getToolNames(fn);
             JJTreeGlobals.toolList.Add("JJTree");
 
             try
             {
-                var parser = new JJTreeParser(io.getIn());
+                var parser = new JJTreeParser(io.GetIn());
                 parser.javacc_input();
 
                 ASTGrammar root = (ASTGrammar)parser.jjtree.rootNode();
@@ -179,7 +179,7 @@ public class JJTree
                 }
                 try
                 {
-                    io.setOutput();
+                    io.SetOutput();
                 }
                 catch (JJTreeIOException ioe)
                 {
@@ -187,7 +187,7 @@ public class JJTree
                     return 1;
                 }
                 root.Generate(io);
-                io.getOut().Close();
+                io.GetOut().Close();
 
                 string outputLanguage = JJTreeOptions.getOutputLanguage();
 
@@ -202,10 +202,10 @@ public class JJTree
                 }
                 else if (JJTreeOptions.isOutputLanguageCpp())
                 {
-                    CPPNodeFiles.generateTreeConstants();
-                    CPPNodeFiles.generateVisitors();
+                    CPPNodeFiles.GenerateTreeConstants();
+                    CPPNodeFiles.GenerateVisitors();
                     //CPPNodeFiles.generateDefaultVisitor();
-                    CPPJJTreeState.generateTreeState();
+                    CPPJJTreeState.GenerateTreeState();
                     //CPPNodeFiles.generateJJTreeH();
                 }
                 else
@@ -215,7 +215,7 @@ public class JJTree
                 }
 
                 p("Annotated grammar generated successfully in " +
-                      io.getOutputFileName());
+                      io.GetOutputFileName());
 
             }
             catch (ParseException pe)
@@ -226,7 +226,7 @@ public class JJTree
             catch (Exception e)
             {
                 p("Error parsing input: " + e.ToString());
-                e.printStackTrace(io.getMsg());
+                //e.printStackTrace(io.GetMsg());
                 return 1;
             }
 
@@ -235,7 +235,7 @@ public class JJTree
         }
         finally
         {
-            io.closeAll();
+            io.CloseAll();
         }
     }
 

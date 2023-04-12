@@ -33,8 +33,6 @@ using org.javacc.parser;
 
 namespace org.javacc.jjtree;
 
-
-
 public class ASTGrammar : JJTreeNode
 {
     public ASTGrammar(int id):base(id)
@@ -51,8 +49,8 @@ public class ASTGrammar : JJTreeNode
         }
         else if (JJTreeOptions.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
-            new CPPCodeGenerator().visit(this, io);
-            CPPNodeFiles.generateTreeClasses();
+            new CPPCodeGenerator().Visit(this, io);
+            CPPNodeFiles.GenerateTreeClasses();
         }
         else
         {
@@ -62,10 +60,8 @@ public class ASTGrammar : JJTreeNode
     }
 
     /** Accept the visitor. **/
-    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
+        => visitor.Visit(this, data);
 }
 
 /*end*/

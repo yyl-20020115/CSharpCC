@@ -15,8 +15,6 @@ public class ASTBNFOneOrMore : JJTreeNode
 
     /** Accept the visitor. **/
     public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+        => visitor.visit(this, data);
 }
 /* JavaCC - OriginalChecksum=ba509f753bd5e4d1bd507fdc6dceb243 (do not edit this line) */

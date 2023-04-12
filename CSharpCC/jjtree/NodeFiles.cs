@@ -43,7 +43,7 @@ public static class NodeFiles
      * ID of the latest version (of JJTree) in which one of the Node classes
      * was modified.
      */
-    static readonly string nodeVersion = Version.majorDotMinor;
+    static readonly string nodeVersion = Version.MajorDotMinor;
 
     static HashSet<Node> nodesGenerated = new ();
 
@@ -83,7 +83,7 @@ public static class NodeFiles
 
             nodesGenerated.Add(file);
 
-            if (!outputFile.needToWrite)
+            if (!outputFile.NeedToWrite)
             {
                 return;
             }
@@ -101,7 +101,7 @@ public static class NodeFiles
                 generateMULTINode_java(outputFile, nodeType);
             }
 
-            outputFile.close();
+            outputFile.Close();
 
         }
         catch (IOException e)
@@ -147,8 +147,8 @@ public static class NodeFiles
             OutputFile outputFile = new OutputFile(file);
             TextWriter ostr = outputFile.getPrintWriter();
 
-            var nodeIds = ASTNodeDescriptor.getNodeIds();
-            var nodeNames = ASTNodeDescriptor.getNodeNames();
+            var nodeIds = ASTNodeDescriptor.GetNodeIds();
+            var nodeNames = ASTNodeDescriptor.GetNodeNames();
 
             generatePrologue(ostr);
             ostr.WriteLine("public interface " + name);
@@ -202,7 +202,7 @@ public static class NodeFiles
             OutputFile outputFile = new OutputFile(file);
             TextWriter ostr = outputFile.getPrintWriter();
 
-            List nodeNames = ASTNodeDescriptor.getNodeNames();
+            List nodeNames = ASTNodeDescriptor.GetNodeNames();
 
             generatePrologue(ostr);
             ostr.WriteLine("public interface " + name);
@@ -278,7 +278,7 @@ public static class NodeFiles
             OutputFile outputFile = new OutputFile(file);
             TextWriter ostr = outputFile.getPrintWriter();
 
-            List nodeNames = ASTNodeDescriptor.getNodeNames();
+            List nodeNames = ASTNodeDescriptor.GetNodeNames();
 
             generatePrologue(ostr);
             ostr.WriteLine("public class " + className + " implements " + visitorClass() + "{");

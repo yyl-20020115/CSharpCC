@@ -15,8 +15,6 @@ public class ASTRRepetitionRange : JJTreeNode
 
     /** Accept the visitor. **/
     public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+        => visitor.Visit(this, data);
 }
 /* JavaCC - OriginalChecksum=d3ae5251edbeb55e9e6e051b8dd48bf6 (do not edit this line) */

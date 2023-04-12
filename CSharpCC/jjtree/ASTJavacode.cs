@@ -34,13 +34,11 @@ public class ASTJavacode : ASTProduction
     {
     }
 
-    public Token stmBeginLoc;
+    public Token StatementBeginLocation;
 
     /** Accept the visitor. **/
     public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+        => visitor.Visit(this, data);
 }
 
 /*end*/

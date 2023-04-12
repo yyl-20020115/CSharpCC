@@ -72,7 +72,7 @@ public class JavaCCGlobals : JavaCCParserConstants
      */
     static public void bannerLine(string fullName, string ver)
     {
-        Console.Write("Java Compiler Compiler Version " + Version.versionNumber + " (" + fullName);
+        Console.Write("Java Compiler Compiler Version " + Version.VersionNumber + " (" + fullName);
         if (ver != (""))
         {
             Console.Write(" Version " + ver);

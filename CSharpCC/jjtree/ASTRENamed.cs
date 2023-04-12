@@ -15,8 +15,6 @@ public class ASTRENamed : JJTreeNode
 
     /** Accept the visitor. **/
     public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+        => visitor.Visit(this, data);
 }
 /* JavaCC - OriginalChecksum=c682f46a7200eb41e7452664347bb04b (do not edit this line) */

@@ -64,7 +64,7 @@ public class SimpleNode : Node
     /** Accept the visitor. **/
     public virtual object jjtAccept(JJTreeParserVisitor visitor, object data)
     {
-        return visitor.visit(this, data);
+        return visitor.Visit(this, data);
     }
 
     /** Accept the visitor. **/

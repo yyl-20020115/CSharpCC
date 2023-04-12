@@ -35,112 +35,79 @@ using System.Text;
 
 namespace org.javacc.jjtree;
 
-
-
 public static class CPPNodeFiles
 {
 
-    private static List<string> headersForJJTreeH = new();
+    private static readonly List<string> HeadersForJJTreeH = new();
     /**
      * ID of the latest version (of JJTree) in which one of the Node classes
      * was modified.
      */
-    static readonly string nodeVersion = Version.majorDotMinor;
+    static readonly string NodeVersion = Version.MajorDotMinor;
 
-    static HashSet<string> nodesToGenerate = new HashSet<string>();
+    static readonly HashSet<string> NodesToGenerate = new();
 
-    public static void addType(string type)
+    public static void AddType(string type)
     {
         if (type != ("Node") && type != ("SimpleNode"))
         {
-            nodesToGenerate.Add(type);
+            NodesToGenerate.Add(type);
         }
     }
 
-    public static string nodeIncludeFile()
-    {
-        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "Node.h");
-    }
+    public static string NodeIncludeFile() => Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "Node.h");
 
-    public static string simpleNodeIncludeFile()
-    {
-        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "SimpleNode.h");
-    }
+    public static string SimpleNodeIncludeFile() => Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "SimpleNode.h");
 
-    public static string simpleNodeCodeFile()
-    {
-        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "SimpleNode.cc");
-    }
+    public static string SimpleNodeCodeFile() => Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "SimpleNode.cc");
 
-    public static string jjtreeIncludeFile()
-    {
-        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), JJTreeGlobals.parserName + "Tree.h");
-    }
+    public static string JjtreeIncludeFile() => Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), JJTreeGlobals.parserName + "Tree.h");
 
-    public static string jjtreeImplFile()
-    {
-        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), JJTreeGlobals.parserName + "Tree.cc");
-    }
+    public static string JjtreeImplFile() => Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), JJTreeGlobals.parserName + "Tree.cc");
 
-    public static string jjtreeIncludeFile(string s)
-    {
-        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), s + ".h");
-    }
+    public static string JjtreeIncludeFile(string s) => Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), s + ".h");
 
-    public static string jjtreeImplFile(string s)
-    {
-        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), s + ".cc");
-    }
+    public static string JjtreeImplFile(string s) => Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), s + ".cc");
 
-    public static string jjtreeASTIncludeFile(string ASTNode)
-    {
-        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), ASTNode + ".h");
-    }
+    public static string JjtreeASTIncludeFile(string ASTNode) => Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), ASTNode + ".h");
 
-    public static string jjtreeASTCodeFile(string ASTNode)
-    {
-        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), ASTNode + ".cc");
-    }
+    public static string JjtreeASTCodeFile(string ASTNode) => Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), ASTNode + ".cc");
 
-    private static string visitorIncludeFile()
-    {
-        string name = visitorClass();
-        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), name + ".h");
-    }
+    private static string VisitorIncludeFile() => Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), VisitorClass() + ".h");
 
-    public static void generateTreeClasses()
+    public static void GenerateTreeClasses()
     {
-        generateNodeHeader();
+        GenerateNodeHeader();
         generateSimpleNodeHeader();
-        generateSimpleNodeCode();
-        generateMultiTreeInterface();
-        generateMultiTreeImpl();
-        generateOneTreeInterface();
+        GenerateSimpleNodeCode();
+        GenerateMultiTreeInterface();
+        GenerateMultiTreeImpl();
+        GenerateOneTreeInterface();
         //    generateOneTreeImpl();
     }
 
-    private static void generateNodeHeader()
+    private static void GenerateNodeHeader()
     {
-        string file = nodeIncludeFile();
+        string file = NodeIncludeFile();
         OutputFile outputFile = null;
 
         try
         {
             String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-            outputFile = new OutputFile(file, nodeVersion, options);
+            outputFile = new OutputFile(file, NodeVersion, options);
             outputFile.setToolName("JJTree");
 
-            if (file.exists() && !outputFile.needToWrite)
+            if (File.Exists(file) && !outputFile.NeedToWrite)
             {
                 return;
             }
 
             Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
             optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
-            optionMap.Add("VISITOR_RETURN_TYPE", getVisitorReturnType());
-            optionMap.Add("VISITOR_DATA_TYPE", getVisitorArgumentType());
-            optionMap.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(getVisitorReturnType() == ("void")));
-            generateFile(outputFile, "/templates/cpp/Node.h.template", optionMap, false);
+            optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
+            optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
+            optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
+            GenerateFile(outputFile, "/templates/cpp/Node.h.template", optionMap, false);
         }
         catch (IOException e)
         {
@@ -153,26 +120,26 @@ public static class CPPNodeFiles
     }
     private static void generateSimpleNodeHeader()
     {
-        string file = (simpleNodeIncludeFile());
+        string file = (SimpleNodeIncludeFile());
         OutputFile outputFile = null;
 
         try
         {
             String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-            outputFile = new OutputFile(file, nodeVersion, options);
+            outputFile = new OutputFile(file, NodeVersion, options);
             outputFile.setToolName("JJTree");
 
-            if (file.exists() && !outputFile.needToWrite)
+            if (File.Exists(file) && !outputFile.NeedToWrite)
             {
                 return;
             }
 
             Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
             optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
-            optionMap.Add("VISITOR_RETURN_TYPE", getVisitorReturnType());
-            optionMap.Add("VISITOR_DATA_TYPE", getVisitorArgumentType());
-            optionMap.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(getVisitorReturnType() == ("void")));
-            generateFile(outputFile, "/templates/cpp/SimpleNode.h.template", optionMap, false);
+            optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
+            optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
+            optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
+            GenerateFile(outputFile, "/templates/cpp/SimpleNode.h.template", optionMap, false);
         }
         catch (IOException e)
         {
@@ -183,28 +150,28 @@ public static class CPPNodeFiles
             if (outputFile != null) { try { outputFile.Close(); } catch (IOException ioe) { } }
         }
     }
-    private static void generateSimpleNodeCode()
+    private static void GenerateSimpleNodeCode()
     {
-        string file = new File(simpleNodeCodeFile());
+        string file = (SimpleNodeCodeFile());
         OutputFile outputFile = null;
 
         try
         {
             String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-            outputFile = new OutputFile(file, nodeVersion, options);
+            outputFile = new OutputFile(file, NodeVersion, options);
             outputFile.setToolName("JJTree");
 
-            if (file.exists() && !outputFile.needToWrite)
+            if (File.Exists(file) && !outputFile.NeedToWrite)
             {
                 return;
             }
 
             Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
             optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
-            optionMap.Add("VISITOR_RETURN_TYPE", getVisitorReturnType());
-            optionMap.Add("VISITOR_DATA_TYPE", getVisitorArgumentType());
-            optionMap.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(getVisitorReturnType() == ("void")));
-            generateFile(outputFile, "/templates/cpp/SimpleNode.cc.template", optionMap, false);
+            optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
+            optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
+            optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
+            GenerateFile(outputFile, "/templates/cpp/SimpleNode.cc.template", optionMap, false);
         }
         catch (IOException e)
         {
@@ -216,34 +183,33 @@ public static class CPPNodeFiles
         }
     }
 
-    private static void generateMultiTreeInterface()
+    private static void GenerateMultiTreeInterface()
     {
         OutputFile outputFile = null;
 
         try
         {
-            for (Iterator<string> i = nodesToGenerate.iterator(); i.hasNext();)
+            foreach (string node in NodesToGenerate)
             {
-                string node = (String)i.next();
-                File file = new File(jjtreeIncludeFile(node));
+                string file = (JjtreeIncludeFile(node));
                 String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-                outputFile = new OutputFile(file, nodeVersion, options);
+                outputFile = new OutputFile(file, NodeVersion, options);
                 outputFile.setToolName("JJTree");
 
-                if (file.exists() && !outputFile.needToWrite)
+                if (File.Exists(file) && !outputFile.NeedToWrite)
                 {
                     return;
                 }
 
                 Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
                 optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
-                optionMap.Add("VISITOR_RETURN_TYPE", getVisitorReturnType());
-                optionMap.Add("VISITOR_DATA_TYPE", getVisitorArgumentType());
-                optionMap.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(getVisitorReturnType() == ("void")));
+                optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
+                optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
+                optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
 
                 TextWriter ostr = outputFile.getPrintWriter();
                 optionMap.Add("NODE_TYPE", node);
-                generateFile(outputFile, "/templates/cpp/MultiNodeInterface.template", optionMap, false);
+                GenerateFile(outputFile, "/templates/cpp/MultiNodeInterface.template", optionMap, false);
 
             }
         }
@@ -257,34 +223,33 @@ public static class CPPNodeFiles
         }
     }
 
-    private static void generateMultiTreeImpl()
+    private static void GenerateMultiTreeImpl()
     {
         OutputFile outputFile = null;
 
         try
         {
-            for (Iterator<string> i = nodesToGenerate.iterator(); i.hasNext();)
+            foreach (string node in NodesToGenerate)
             {
-                string node = (String)i.next();
-                string file = (jjtreeImplFile(node));
+                string file = (JjtreeImplFile(node));
                 String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-                outputFile = new OutputFile(file, nodeVersion, options);
+                outputFile = new OutputFile(file, NodeVersion, options);
                 outputFile.setToolName("JJTree");
 
-                if (file.exists() && !outputFile.needToWrite)
+                if (File.Exists(file) && !outputFile.NeedToWrite)
                 {
                     return;
                 }
 
                 Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
                 optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
-                optionMap.Add("VISITOR_RETURN_TYPE", getVisitorReturnType());
-                optionMap.Add("VISITOR_DATA_TYPE", getVisitorArgumentType());
-                optionMap.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(getVisitorReturnType() == ("void")));
+                optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
+                optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
+                optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
 
                 TextWriter ostr = outputFile.getPrintWriter();
                 optionMap.Add("NODE_TYPE", node);
-                generateFile(outputFile, "/templates/cpp/MultiNodeImpl.template", optionMap, false);
+                GenerateFile(outputFile, "/templates/cpp/MultiNodeImpl.template", optionMap, false);
 
             }
         }
@@ -299,36 +264,35 @@ public static class CPPNodeFiles
     }
 
 
-    private static void generateOneTreeInterface()
+    private static void GenerateOneTreeInterface()
     {
-        string file = (jjtreeIncludeFile());
+        string file = (JjtreeIncludeFile());
         OutputFile outputFile = null;
 
         try
         {
             String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-            outputFile = new OutputFile(file, nodeVersion, options);
+            outputFile = new OutputFile(file, NodeVersion, options);
             outputFile.setToolName("JJTree");
 
-            if (file.exists() && !outputFile.needToWrite)
+            if (File.Exists(file) && !outputFile.NeedToWrite)
             {
                 return;
             }
 
             Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
             optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
-            optionMap.Add("VISITOR_RETURN_TYPE", getVisitorReturnType());
-            optionMap.Add("VISITOR_DATA_TYPE", getVisitorArgumentType());
-            optionMap.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(getVisitorReturnType() == ("void")));
+            optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
+            optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
+            optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
 
             TextWriter ostr = outputFile.getPrintWriter();
-            string includeName = file.getName().Replace('.', '_').ToUpper();
+            string includeName = file.Replace('.', '_').ToUpper();
             ostr.WriteLine("#ifndef " + includeName);
             ostr.WriteLine("#define " + includeName);
             ostr.WriteLine("#include \"SimpleNode.h\"");
-            for (Iterator<string> i = nodesToGenerate.iterator(); i.hasNext();)
+            foreach (string s in NodesToGenerate)
             {
-                string s = (String)i.next();
                 ostr.WriteLine("#include \"" + s + ".h\"");
             }
             ostr.WriteLine("#endif");
@@ -343,28 +307,28 @@ public static class CPPNodeFiles
         }
     }
 
-    private static void generateOneTreeImpl()
+    private static void GenerateOneTreeImpl()
     {
-        string file = (jjtreeImplFile());
+        string file = (JjtreeImplFile());
         OutputFile outputFile = null;
 
         try
         {
-            String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-            outputFile = new OutputFile(file, nodeVersion, options);
+            var options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+            outputFile = new OutputFile(file, NodeVersion, options);
             outputFile.setToolName("JJTree");
 
-            if (file.exists() && !outputFile.needToWrite)
+            if (File.Exists(file) && !outputFile.NeedToWrite)
             {
                 return;
             }
 
             Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
             optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
-            optionMap.Add("VISITOR_RETURN_TYPE", getVisitorReturnType());
-            optionMap.Add("VISITOR_DATA_TYPE", getVisitorArgumentType());
-            optionMap.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(getVisitorReturnType() == ("void")));
-            generateFile(outputFile, "/templates/cpp/TreeImplHeader.template", optionMap, false);
+            optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
+            optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
+            optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
+            GenerateFile(outputFile, "/templates/cpp/TreeImplHeader.template", optionMap, false);
 
             bool hasNamespace = JJTreeOptions.stringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0;
             if (hasNamespace)
@@ -372,11 +336,10 @@ public static class CPPNodeFiles
                 outputFile.getPrintWriter().WriteLine("namespace " + JJTreeOptions.stringValue("NAMESPACE_OPEN"));
             }
 
-            for (Iterator<string> i = nodesToGenerate.iterator(); i.hasNext();)
+            foreach (string s in NodesToGenerate)
             {
-                string s = (String)i.next();
                 optionMap.Add("NODE_TYPE", s);
-                generateFile(outputFile, "/templates/cpp/MultiNodeImpl.template", optionMap, false);
+                GenerateFile(outputFile, "/templates/cpp/MultiNodeImpl.template", optionMap, false);
             }
 
             if (hasNamespace)
@@ -394,34 +357,34 @@ public static class CPPNodeFiles
         }
     }
 
-    static void generatePrologue(TextWriter ostr)
+    static void GeneratePrologue(TextWriter ostr)
     {
         // Output the node's namespace name?
     }
 
 
-    static string nodeConstants()
+    static string NodeConstants()
     {
         return JJTreeGlobals.parserName + "TreeConstants";
     }
 
-    public static void generateTreeConstants()
+    public static void GenerateTreeConstants()
     {
-        string name = nodeConstants();
-        string file = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), name + ".h");
-        headersForJJTreeH.Add(file.getName());
+        string name = NodeConstants();
+        string file = Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), name + ".h");
+        HeadersForJJTreeH.Add(file);
 
         try
         {
             OutputFile outputFile = new OutputFile(file);
             TextWriter ostr = outputFile.getPrintWriter();
 
-            List<string> nodeIds = ASTNodeDescriptor.getNodeIds();
-            List<string> nodeNames = ASTNodeDescriptor.getNodeNames();
+            List<string> nodeIds = ASTNodeDescriptor.GetNodeIds();
+            List<string> nodeNames = ASTNodeDescriptor.GetNodeNames();
 
-            generatePrologue(ostr);
-            ostr.WriteLine("#ifndef " + file.getName().Replace('.', '_').ToUpper());
-            ostr.WriteLine("#define " + file.getName().Replace('.', '_').ToUpper());
+            GeneratePrologue(ostr);
+            ostr.WriteLine("#ifndef " + file.Replace('.', '_').ToUpper());
+            ostr.WriteLine("#define " + file.Replace('.', '_').ToUpper());
 
             ostr.WriteLine("\n#include \"JavaCC.h\"");
             bool hasNamespace = JJTreeOptions.stringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0;
@@ -471,12 +434,12 @@ public static class CPPNodeFiles
     }
 
 
-    static string visitorClass()
+    static string VisitorClass()
     {
         return JJTreeGlobals.parserName + "Visitor";
     }
 
-    private static string getVisitMethodName(string className)
+    private static string GetVisitMethodName(string className)
     {
         var sb = new StringBuilder("visit");
         if (JJTreeOptions.booleanValue("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME"))
@@ -491,19 +454,19 @@ public static class CPPNodeFiles
         return sb.ToString();
     }
 
-    private static string getVisitorArgumentType()
+    private static string GetVisitorArgumentType()
     {
         string ret = JJTreeOptions.stringValue("VISITOR_DATA_TYPE");
         return ret == null || ret == ("") || ret == ("Object") ? "void *" : ret;
     }
 
-    private static string getVisitorReturnType()
+    private static string GetVisitorReturnType()
     {
         string ret = JJTreeOptions.stringValue("VISITOR_RETURN_TYPE");
         return ret == null || ret == ("") || ret == ("Object") ? "void " : ret;
     }
 
-    static void generateVisitors()
+    public static void GenerateVisitors()
     {
         if (!JJTreeOptions.getVisitor())
         {
@@ -512,12 +475,12 @@ public static class CPPNodeFiles
 
         try
         {
-            string name = visitorClass();
-            string file = (visitorIncludeFile());
+            string name = VisitorClass();
+            string file = (VisitorIncludeFile());
             OutputFile outputFile = new OutputFile(file);
             TextWriter ostr = outputFile.getPrintWriter();
 
-            generatePrologue(ostr);
+            GeneratePrologue(ostr);
             ostr.WriteLine("#ifndef " + file.Replace('.', '_').ToUpper());
             ostr.WriteLine("#define " + file.Replace('.', '_').ToUpper());
             ostr.WriteLine("\n#include \"JavaCC.h\"");
@@ -529,8 +492,8 @@ public static class CPPNodeFiles
                 ostr.WriteLine("namespace " + JJTreeOptions.stringValue("NAMESPACE_OPEN"));
             }
 
-            generateVisitorInterface(ostr);
-            generateDefaultVisitor(ostr);
+            GenerateVisitorInterface(ostr);
+            GenerateDefaultVisitor(ostr);
 
             if (hasNamespace)
             {
@@ -546,16 +509,16 @@ public static class CPPNodeFiles
         }
     }
 
-    private static void generateVisitorInterface(TextWriter ostr)
+    private static void GenerateVisitorInterface(TextWriter ostr)
     {
-        string name = visitorClass();
-        List<string> nodeNames = ASTNodeDescriptor.getNodeNames();
+        string name = VisitorClass();
+        List<string> nodeNames = ASTNodeDescriptor.GetNodeNames();
 
         ostr.WriteLine("class " + name);
         ostr.WriteLine("{");
 
-        string argumentType = getVisitorArgumentType();
-        string returnType = getVisitorReturnType();
+        string argumentType = GetVisitorArgumentType();
+        string returnType = GetVisitorReturnType();
         if (JJTreeOptions.getVisitorDataType() != (""))
         {
             argumentType = JJTreeOptions.getVisitorDataType();
@@ -573,7 +536,7 @@ public static class CPPNodeFiles
                     continue;
                 }
                 string nodeType = JJTreeOptions.getNodePrefix() + n;
-                ostr.WriteLine("  virtual " + returnType + " " + getVisitMethodName(nodeType) + "(const " + nodeType +
+                ostr.WriteLine("  virtual " + returnType + " " + GetVisitMethodName(nodeType) + "(const " + nodeType +
                     " *node, " + argumentType + " data) = 0;");
             }
         }
@@ -582,20 +545,17 @@ public static class CPPNodeFiles
         ostr.WriteLine("};");
     }
 
-    static string defaultVisitorClass()
+    static string DefaultVisitorClass() => JJTreeGlobals.parserName + "DefaultVisitor";
+
+    private static void GenerateDefaultVisitor(TextWriter ostr)
     {
-        return JJTreeGlobals.parserName + "DefaultVisitor";
-    }
+        string className = DefaultVisitorClass();
+        List<string> nodeNames = ASTNodeDescriptor.GetNodeNames();
 
-    private static void generateDefaultVisitor(TextWriter ostr)
-    {
-        string className = defaultVisitorClass();
-        List<string> nodeNames = ASTNodeDescriptor.getNodeNames();
+        ostr.WriteLine("class " + className + " : public " + VisitorClass() + " {");
 
-        ostr.WriteLine("class " + className + " : public " + visitorClass() + " {");
-
-        string argumentType = getVisitorArgumentType();
-        string ret = getVisitorReturnType();
+        string argumentType = GetVisitorArgumentType();
+        string ret = GetVisitorReturnType();
 
         ostr.WriteLine("public:");
         ostr.WriteLine("  virtual " + ret + " defaultVisit(const SimpleNode *node, " + argumentType + " data) = 0;");
@@ -617,7 +577,7 @@ public static class CPPNodeFiles
                     continue;
                 }
                 string nodeType = JJTreeOptions.getNodePrefix() + n;
-                ostr.WriteLine("  virtual " + ret + " " + getVisitMethodName(nodeType) + "(const " + nodeType +
+                ostr.WriteLine("  virtual " + ret + " " + GetVisitMethodName(nodeType) + "(const " + nodeType +
                     " *node, " + argumentType + " data) {");
                 ostr.WriteLine("    " + (ret.Trim() == ("void") ? "" : "return ") + "defaultVisit(node, data);");
                 ostr.WriteLine("  }");
@@ -627,15 +587,15 @@ public static class CPPNodeFiles
         ostr.WriteLine("};");
     }
 
-    public static void generateFile(OutputFile outputFile, string template, Dictionary<string, object> options)
+    public static void GenerateFile(OutputFile outputFile, string template, Dictionary<string, object> options)
     {
-        generateFile(outputFile, template, options, true);
+        GenerateFile(outputFile, template, options, true);
     }
 
-    public static void generateFile(OutputFile outputFile, string template, Dictionary<string, object> options, bool close)
+    public static void GenerateFile(OutputFile outputFile, string template, Dictionary<string, object> options, bool close)
     {
-        TextWriter ostr = outputFile.getPrintWriter();
-        generatePrologue(ostr);
+        var ostr = outputFile.getPrintWriter();
+        GeneratePrologue(ostr);
         OutputFileGenerator generator;
         generator = new OutputFileGenerator(template, options);
         generator.generate(ostr);

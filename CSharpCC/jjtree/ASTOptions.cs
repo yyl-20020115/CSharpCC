@@ -15,8 +15,6 @@ public class ASTOptions : JJTreeNode
 
     /** Accept the visitor. **/
     public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+        => visitor.Visit(this, data);
 }
 /* JavaCC - OriginalChecksum=30aa49e720b353fc345932a3b397455a (do not edit this line) */

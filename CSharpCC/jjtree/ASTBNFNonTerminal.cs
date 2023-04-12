@@ -2,8 +2,7 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=true,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 namespace org.javacc.jjtree;
 
-public
-class ASTBNFNonTerminal : JJTreeNode
+public class ASTBNFNonTerminal : JJTreeNode
 {
     public ASTBNFNonTerminal(int id) : base(id)
     {
@@ -15,9 +14,7 @@ class ASTBNFNonTerminal : JJTreeNode
 
 
     /** Accept the visitor. **/
-    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
+        => visitor.Visit(this, data);
 }
 /* JavaCC - OriginalChecksum=680f159c6e10c833981af10c500e5d27 (do not edit this line) */

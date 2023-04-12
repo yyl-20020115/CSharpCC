@@ -44,7 +44,7 @@ public static class TokenUtils
             while (tt.specialToken != null) tt = tt.specialToken;
             while (tt != null)
             {
-                io.print(addUnicodeEscapes(tt.image));
+                io.Print(addUnicodeEscapes(tt.image));
                 tt = tt.next;
             }
         }
@@ -52,7 +52,7 @@ public static class TokenUtils
         if (_in != null && i == (_in)) {
             i = _out;
         }
-        io.print(addUnicodeEscapes(i));
+        io.Print(addUnicodeEscapes(i));
     }
 
     static void print(Token t, IO io)

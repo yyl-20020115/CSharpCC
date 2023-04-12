@@ -41,17 +41,11 @@ public class ASTBNFAction : JJTreeNode
         {
             if (n is ASTBNFNodeScope scope)
             {
-                if (scope.node_scope == ns)
-                {
-                    return n;
-                }
+                if (scope.NodeScope == ns) return n;
             }
             else if (n is ASTExpansionNodeScope scope1)
             {
-                if (scope1.node_scope == ns)
-                {
-                    return n;
-                }
+                if (scope1.NodeScope == ns) return n;
             }
         }
         return null;
@@ -59,10 +53,8 @@ public class ASTBNFAction : JJTreeNode
 
 
     /** Accept the visitor. **/
-    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
+        => visitor.Visit(this, data);
 
 }
 

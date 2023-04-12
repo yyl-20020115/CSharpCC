@@ -2,8 +2,7 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=true,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 namespace org.javacc.jjtree;
 
-public
-class ASTBNFTryBlock : JJTreeNode
+public class ASTBNFTryBlock : JJTreeNode
 {
     public ASTBNFTryBlock(int id) : base(id)
     {
@@ -15,9 +14,7 @@ class ASTBNFTryBlock : JJTreeNode
 
 
     /** Accept the visitor. **/
-    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
+        => visitor.Visit(this, data);
 }
 /* JavaCC - OriginalChecksum=54b51e7e9038806bbf804197f88beaf7 (do not edit this line) */

@@ -3,177 +3,49 @@ namespace org.javacc.jjtree;
 
 public class DefaultJJTreeVisitor : JJTreeParserVisitor
 {
-    public Object defaultVisit(SimpleNode node, Object data)
-    {
-        return node.childrenAccept(this, data);
-    }
-    public Object visit(SimpleNode node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTGrammar node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTCompilationUnit node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTProductions node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTOptions node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTOptionBinding node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTJavacode node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTJavacodeBody node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNF node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFDeclaration node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFNodeScope node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTRE node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTTokenDecls node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTRESpec node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFChoice node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFSequence node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFLookahead node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTExpansionNodeScope node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFAction node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFZeroOrOne node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFTryBlock node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFNonTerminal node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFAssignment node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFOneOrMore node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFZeroOrMore node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTBNFParenthesized node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTREStringLiteral node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTRENamed node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTREReference node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTREEOF node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTREChoice node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTRESequence node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTREOneOrMore node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTREZeroOrMore node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTREZeroOrOne node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTRRepetitionRange node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTREParenthesized node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTRECharList node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTCharDescriptor node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTNodeDescriptor node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTNodeDescriptorExpression node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
-    public Object visit(ASTPrimaryExpression node, Object data)
-    {
-        return defaultVisit(node, data);
-    }
+    public virtual object DefaultVisit(SimpleNode node, object data) => node.childrenAccept(this, data);
+    public virtual object Visit(SimpleNode node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTGrammar node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTCompilationUnit node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTProductions node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTOptions node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTOptionBinding node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTJavacode node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTJavacodeBody node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNF node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFDeclaration node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFNodeScope node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTRE node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTTokenDecls node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTRESpec node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFChoice node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFSequence node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFLookahead node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTExpansionNodeScope node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFAction node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFZeroOrOne node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFTryBlock node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFNonTerminal node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFAssignment node, object data) => DefaultVisit(node, data);
+    public virtual object visit(ASTBNFOneOrMore node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFZeroOrMore node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFParenthesized node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTREStringLiteral node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTRENamed node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTREReference node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTREEOF node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTREChoice node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTRESequence node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTREOneOrMore node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTREZeroOrMore node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTREZeroOrOne node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTRRepetitionRange node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTREParenthesized node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTRECharList node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTCharDescriptor node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTNodeDescriptor node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTNodeDescriptorExpression node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTPrimaryExpression node, object data) => DefaultVisit(node, data);
+
 }
 /* JavaCC - OriginalChecksum=3b7689ed0de9c57e70ae4a27c1480635 (do not edit this line) */

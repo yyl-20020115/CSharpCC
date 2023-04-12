@@ -34,14 +34,12 @@ public class ASTExpansionNodeScope : JJTreeNode
     {
     }
 
-    public NodeScope node_scope;
-    public JJTreeNode expansion_unit;
+    public NodeScope NodeScope;
+    public JJTreeNode ExpansionUnit;
 
     /** Accept the visitor. **/
-    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
+        => visitor.Visit(this, data);
 
 }
 

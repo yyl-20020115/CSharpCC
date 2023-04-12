@@ -14,9 +14,7 @@ public class ASTPrimaryExpression : JJTreeNode
 
 
     /** Accept the visitor. **/
-    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
+        => visitor.visit(this, data);
 }
 /* JavaCC - OriginalChecksum=5f620c677a2a9315ba142da2a7758023 (do not edit this line) */

@@ -12,9 +12,9 @@ namespace org.javacc.jjtree;
 public class JavaCharStream
 {
     /** Whether parser is static. */
-    public static bool staticFlag = false;
+    public static bool StaticFlag = false;
 
-    static int hexval(char c) => c switch
+    public static int Hexval(char c) => c switch
     {
         '0' => 0,
         '1' => 1,
@@ -58,8 +58,8 @@ public class JavaCharStream
     protected int inBuf = 0;
     protected int tabSize = 8;
 
-    protected void setTabSize(int i) { tabSize = i; }
-    protected int getTabSize(int i) { return tabSize; }
+    protected void SetTabSize(int i) { tabSize = i; }
+    protected int GetTabSize(int i) { return tabSize; }
 
     protected void ExpandBuff(bool wrapAround)
     {
@@ -101,7 +101,7 @@ public class JavaCharStream
         }
         catch (Exception t)
         {
-            throw new Exception(t.getMessage());
+            throw new Exception(t.Message);
         }
 
         available = (bufsize += 2048);
@@ -116,10 +116,10 @@ public class JavaCharStream
 
         try
         {
-            if ((i = inputStream.read(nextCharBuf, maxNextCharInd,
+            if ((i = inputStream.Read(nextCharBuf, maxNextCharInd,
                                                 4096 - maxNextCharInd)) == -1)
             {
-                inputStream.close();
+                inputStream.Close();
                 throw new IOException();
             }
             else
@@ -131,7 +131,7 @@ public class JavaCharStream
             if (bufpos != 0)
             {
                 --bufpos;
-                backup(0);
+                Backup(0);
             }
             else
             {
@@ -167,7 +167,7 @@ public class JavaCharStream
         tokenBegin = 0;
         bufpos = -1;
 
-        return readChar();
+        return ReadChar();
     }
 
     protected void AdjustBuffSize()
@@ -231,7 +231,7 @@ public class JavaCharStream
     }
 
     /** Read a character. */
-    public char readChar()
+    public char ReadChar()
     {
         if (inBuf > 0)
         {
@@ -273,7 +273,7 @@ public class JavaCharStream
                             break;
                         }
 
-                        backup(backSlashCnt);
+                        Backup(backSlashCnt);
                         return '\\';
                     }
                 }
@@ -281,7 +281,7 @@ public class JavaCharStream
                 {
                     // We are returning one backslash so we should only backup (count-1)
                     if (backSlashCnt > 1)
-                        backup(backSlashCnt - 1);
+                        Backup(backSlashCnt - 1);
 
                     return '\\';
                 }
@@ -296,10 +296,10 @@ public class JavaCharStream
                 while ((c = ReadByte()) == 'u')
                     ++column;
 
-                buffer[bufpos] = c = (char)(hexval(c) << 12 |
-                                            hexval(ReadByte()) << 8 |
-                                            hexval(ReadByte()) << 4 |
-                                            hexval(ReadByte()));
+                buffer[bufpos] = c = (char)(Hexval(c) << 12 |
+                                            Hexval(ReadByte()) << 8 |
+                                            Hexval(ReadByte()) << 4 |
+                                            Hexval(ReadByte()));
 
                 column += 4;
             }
@@ -313,7 +313,7 @@ public class JavaCharStream
                 return c;
             else
             {
-                backup(backSlashCnt - 1);
+                Backup(backSlashCnt - 1);
                 return '\\';
             }
         }
@@ -329,7 +329,7 @@ public class JavaCharStream
      * @deprecated
      * @see #getEndColumn
      */
-    public int getColumn()
+    public int GetColumn()
     {
         return bufcolumn[bufpos];
     }
@@ -339,37 +339,37 @@ public class JavaCharStream
      * @deprecated
      * @see #getEndLine
      */
-    public int getLine()
+    public int GetLine()
     {
         return bufline[bufpos];
     }
 
     /** Get end column. */
-    public int getEndColumn()
+    public int GetEndColumn()
     {
         return bufcolumn[bufpos];
     }
 
     /** Get end line. */
-    public int getEndLine()
+    public int GetEndLine()
     {
         return bufline[bufpos];
     }
 
     /** @return column of token start */
-    public int getBeginColumn()
+    public int GetBeginColumn()
     {
         return bufcolumn[tokenBegin];
     }
 
     /** @return line number of token start */
-    public int getBeginLine()
+    public int GetBeginLine()
     {
         return bufline[tokenBegin];
     }
 
     /** Retreat. */
-    public void backup(int amount)
+    public void Backup(int amount)
     {
 
         inBuf += amount;
@@ -378,8 +378,7 @@ public class JavaCharStream
     }
 
     /** Constructor. */
-    public JavaCharStream(TextReader dstream,
-                   int startline, int startcolumn, int buffersize)
+    public JavaCharStream(TextReader dstream,int startline, int startcolumn, int buffersize)
     {
         inputStream = dstream;
         line = startline;
@@ -393,22 +392,18 @@ public class JavaCharStream
     }
 
     /** Constructor. */
-    public JavaCharStream(TextReader dstream,
-                                          int startline, int startcolumn)
+    public JavaCharStream(TextReader dstream,int startline, int startcolumn)
         : this(dstream, startline, startcolumn, 4096)
     {
-        ;
     }
 
     /** Constructor. */
     public JavaCharStream(TextReader dstream)
         : this(dstream, 1, 1, 4096)
     {
-        ;
     }
     /** Reinitialise. */
-    public void ReInit(TextReader dstream,
-                   int startline, int startcolumn, int buffersize)
+    public void ReInit(TextReader dstream,int startline, int startcolumn, int buffersize)
     {
         inputStream = dstream;
         line = startline;
@@ -428,8 +423,7 @@ public class JavaCharStream
     }
 
     /** Reinitialise. */
-    public void ReInit(TextReader dstream,
-                                          int startline, int startcolumn)
+    public void ReInit(TextReader dstream,int startline, int startcolumn)
     {
         ReInit(dstream, startline, startcolumn, 4096);
     }
@@ -440,54 +434,44 @@ public class JavaCharStream
         ReInit(dstream, 1, 1, 4096);
     }
     /** Constructor. */
-    public JavaCharStream(Stream dstream, Encoding encoding, int startline,
-    int startcolumn, int buffersize)
+    public JavaCharStream(Stream dstream, Encoding encoding, int startline,int startcolumn, int buffersize)
         : this(encoding == null ? new StreamReader(dstream) : new StreamReader(dstream, encoding), startline, startcolumn, buffersize)
     {
         ;
     }
 
     /** Constructor. */
-    public JavaCharStream(Stream dstream, int startline,
-    int startcolumn, int buffersize)
+    public JavaCharStream(Stream dstream, int startline,int startcolumn, int buffersize)
         : this(new StreamReader(dstream), startline, startcolumn, 4096)
     {
-        ;
     }
 
     /** Constructor. */
-    public JavaCharStream(Stream dstream, Encoding encoding, int startline,
-                          int startcolumn)
+    public JavaCharStream(Stream dstream, Encoding encoding, int startline,int startcolumn)
         : this(dstream, encoding, startline, startcolumn, 4096)
     {
-        ;
     }
 
     /** Constructor. */
-    public JavaCharStream(Stream dstream, int startline,
-                          int startcolumn)
+    public JavaCharStream(Stream dstream, int startline,int startcolumn)
         : this(dstream, startline, startcolumn, 4096)
     {
-       ;
     }
 
     /** Constructor. */
     public JavaCharStream(Stream dstream, Encoding encoding)
         : this(dstream, encoding, 1, 1, 4096)
     {
-       ;
     }
 
     /** Constructor. */
     public JavaCharStream(Stream dstream)
         : this(dstream, 1, 1, 4096)
     {
-       ;
     }
 
     /** Reinitialise. */
-    public void ReInit(Stream dstream, Encoding encoding, int startline,
-    int startcolumn, int buffersize)
+    public void ReInit(Stream dstream, Encoding encoding, int startline,int startcolumn, int buffersize)
     {
         ReInit(encoding == null ? new StreamReader(dstream) : new StreamReader(dstream, encoding), startline, startcolumn, buffersize);
     }
@@ -499,14 +483,12 @@ public class JavaCharStream
         ReInit(new StreamReader(dstream), startline, startcolumn, buffersize);
     }
     /** Reinitialise. */
-    public void ReInit(Stream dstream, Encoding encoding, int startline,
-                       int startcolumn)
+    public void ReInit(Stream dstream, Encoding encoding, int startline,int startcolumn)
     {
         ReInit(dstream, encoding, startline, startcolumn, 4096);
     }
     /** Reinitialise. */
-    public void ReInit(Stream dstream, int startline,
-                       int startcolumn)
+    public void ReInit(Stream dstream, int startline,int startcolumn)
     {
         ReInit(dstream, startline, startcolumn, 4096);
     }
@@ -561,7 +543,7 @@ public class JavaCharStream
     /**
      * Method to adjust line and column numbers for the start of a token.
      */
-    public void adjustBeginLineColumn(int newLine, int newCol)
+    public void AdjustBeginLineColumn(int newLine, int newCol)
     {
         int start = tokenBegin;
         int len;
