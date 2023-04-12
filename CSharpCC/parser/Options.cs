@@ -515,8 +515,8 @@ public class Options
 
         // Look for the first ":" or "=", which will separate the option name
         // from its value (if any).
-        int index1 = s.indexOf('=');
-        int index2 = s.indexOf(':');
+        int index1 = s.IndexOf('=');
+        int index2 = s.IndexOf(':');
         int index;
 
         if (index1 < 0)

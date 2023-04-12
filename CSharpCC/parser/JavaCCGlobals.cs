@@ -252,11 +252,11 @@ public class JavaCCGlobals
 
     private static List<String> makeToolNameList(string str)
     {
-        List retVal = new ArrayList();
+        List<string> retVal = new ();
 
-        int limit1 = str.indexOf('\n');
+        int limit1 = str.IndexOf('\n');
         if (limit1 == -1) limit1 = 1000;
-        int limit2 = str.indexOf('\r');
+        int limit2 = str.IndexOf('\r');
         if (limit2 == -1) limit2 = 1000;
         int limit = (limit1 < limit2) ? limit1 : limit2;
 
@@ -267,29 +267,29 @@ public class JavaCCGlobals
         }
         else
         {
-            tmp = str.substring(0, limit);
+            tmp = str[..limit];
         }
 
-        if (tmp.indexOf(':') == -1)
+        if (tmp.IndexOf(':') == -1)
             return retVal;
 
-        tmp = tmp.substring(tmp.indexOf(':') + 1);
+        tmp = tmp[(tmp.IndexOf(':') + 1)..];
 
-        if (tmp.indexOf(':') == -1)
+        if (tmp.IndexOf(':') == -1)
             return retVal;
 
-        tmp = tmp.substring(0, tmp.indexOf(':'));
+        tmp = tmp[..tmp.IndexOf(':')];
 
         int i = 0, j = 0;
 
-        while (j < tmp.Length && (i = tmp.indexOf('&', j)) != -1)
+        while (j < tmp.Length && (i = tmp.IndexOf('&', j)) != -1)
         {
             retVal.Add(tmp.substring(j, i));
             j = i + 1;
         }
 
         if (j < tmp.Length)
-            retVal.Add(tmp.substring(j));
+            retVal.Add(tmp[j..]);
 
         return retVal;
     }

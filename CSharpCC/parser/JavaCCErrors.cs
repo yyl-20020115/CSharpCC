@@ -25,103 +25,127 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+using org.javacc.jjtree;
+
 namespace org.javacc.parser;
 
 /**
  * Output error messages and keep track of totals.
  */
-public static class JavaCCErrors {
+public static class JavaCCErrors
+{
+    private static int parse_error_count = 0, semantic_error_count = 0, warning_count = 0;
 
-  private static int parse_error_count = 0, semantic_error_count = 0, warning_count = 0;
-  private JavaCCErrors() {}
+    private static void printLocationInfo(object node)
+    {
+        if (node is NormalProduction)
+        {
 
-  private static void printLocationInfo(object node) {
-    if (node is NormalProduction) {
-            
-      NormalProduction n = (NormalProduction)node;
-      Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
-    } else if (node is TokenProduction) {
-      TokenProduction n = (TokenProduction)node;
-      Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
-    } else if (node is Expansion) {
-      Expansion n = (Expansion)node;
-      Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
-    } else if (node is CharacterRange) {
-      CharacterRange n = (CharacterRange)node;
-      Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
-    } else if (node is SingleCharacter) {
-      SingleCharacter n = (SingleCharacter)node;
-      Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
-    } else if (node is Token) {
-      Token t = (Token)node;
-      Console.Error.Write("Line " + t.beginLine + ", Column " + t.beginColumn + ": ");
+            NormalProduction n = (NormalProduction)node;
+            Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+        }
+        else if (node is TokenProduction)
+        {
+            TokenProduction n = (TokenProduction)node;
+            Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+        }
+        else if (node is Expansion)
+        {
+            Expansion n = (Expansion)node;
+            Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+        }
+        else if (node is CharacterRange)
+        {
+            CharacterRange n = (CharacterRange)node;
+            Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+        }
+        else if (node is SingleCharacter)
+        {
+            SingleCharacter n = (SingleCharacter)node;
+            Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+        }
+        else if (node is Token)
+        {
+            Token t = (Token)node;
+            Console.Error.Write("Line " + t.beginLine + ", Column " + t.beginColumn + ": ");
+        }
     }
-  }
 
-  public static void parse_error(object node, string mess) {
-    Console.Error.Write("Error: ");
-    printLocationInfo(node);
-    System.err.WriteLine(mess);
-    parse_error_count++;
-  }
+    public static void parse_error(object node, string mess)
+    {
+        Console.Error.Write("Error: ");
+        printLocationInfo(node);
+        Console.Error.WriteLine(mess);
+        parse_error_count++;
+    }
 
-  public static void parse_error(string mess) {
-    Console.Error.Write("Error: ");
-    System.err.WriteLine(mess);
-    parse_error_count++;
-  }
+    public static void parse_error(string mess)
+    {
+        Console.Error.Write("Error: ");
+        Console.Error.WriteLine(mess);
+        parse_error_count++;
+    }
 
-  public static int get_parse_error_count() {
-    return parse_error_count;
-  }
+    public static int get_parse_error_count()
+    {
+        return parse_error_count;
+    }
 
-  public static void semantic_error(object node, string mess) {
-    Console.Error.Write("Error: ");
-    printLocationInfo(node);
-    System.err.WriteLine(mess);
-    semantic_error_count++;
-  }
+    public static void semantic_error(object node, string mess)
+    {
+        Console.Error.Write("Error: ");
+        printLocationInfo(node);
+        Console.Error.WriteLine(mess);
+        semantic_error_count++;
+    }
 
-  public static void semantic_error(string mess) {
-    Console.Error.Write("Error: ");
-    Console.Error.WriteLine(mess);
-    semantic_error_count++;
-  }
+    public static void semantic_error(string mess)
+    {
+        Console.Error.Write("Error: ");
+        Console.Error.WriteLine(mess);
+        semantic_error_count++;
+    }
 
-  public static int get_semantic_error_count() {
-    return semantic_error_count;
-  }
+    public static int get_semantic_error_count()
+    {
+        return semantic_error_count;
+    }
 
-  public static void warning(object node, string mess) {
-    Console.Error.Write("Warning: ");
-    printLocationInfo(node);
-    Console.Error.WriteLine(mess);
-    warning_count++;
-  }
+    public static void warning(object node, string mess)
+    {
+        Console.Error.Write("Warning: ");
+        printLocationInfo(node);
+        Console.Error.WriteLine(mess);
+        warning_count++;
+    }
 
-  public static void warning(string mess) {
-    Console.Error.Write("Warning: ");
-    Console.Error.WriteLine(mess);
-    warning_count++;
-  }
+    public static void warning(string mess)
+    {
+        Console.Error.Write("Warning: ");
+        Console.Error.WriteLine(mess);
+        warning_count++;
+    }
 
-  public static int get_warning_count() {
-    return warning_count;
-  }
+    public static int get_warning_count()
+    {
+        return warning_count;
+    }
 
-  public static int get_error_count() {
-    return parse_error_count + semantic_error_count;
-  }
+    public static int get_error_count()
+    {
+        return parse_error_count + semantic_error_count;
+    }
 
-   public static void reInit()
-   {
-      parse_error_count = 0;
-      semantic_error_count = 0;
-      warning_count = 0;
-   }
+    public static void reInit()
+    {
+        parse_error_count = 0;
+        semantic_error_count = 0;
+        warning_count = 0;
+    }
 
-   public static void fatal(string message) {
-      System.err.WriteLine("Fatal Error: " + message);
-      throw new RuntimeException("Fatal Error: " + message);
-   }
+    public static void fatal(string message)
+    {
+        Console.Error.WriteLine("Fatal Error: " + message);
+        throw new RuntimeException("Fatal Error: " + message);
+    }
 }

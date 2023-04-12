@@ -229,7 +229,7 @@ public class OutputFile
                 if (line.startsWith("/* JavaCCOptions:"))
                 {
                     string currentOptions = Options.getOptionsString(options);
-                    if (line.indexOf(currentOptions) == -1)
+                    if (line.IndexOf(currentOptions) == -1)
                     {
                         JavaCCErrors
                         .warning(file.getName()

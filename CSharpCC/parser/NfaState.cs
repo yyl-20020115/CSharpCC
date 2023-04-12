@@ -46,9 +46,9 @@ public class NfaState
    private static bool mark[];
    private static bool stateDone[];
 
-   private static List<NfaState> allStates = new ArrayList<NfaState>();
-   private static List<NfaState> indexedAllStates = new ArrayList<NfaState>();
-   private static List<NfaState> nonAsciiTableForMethod = new ArrayList<NfaState>();
+   private static List<NfaState> allStates = new ();
+   private static List<NfaState> indexedAllStates = new ();
+   private static List<NfaState> nonAsciiTableForMethod = new ();
    private static Hashtable equivStatesTable = new Hashtable();
    private static Hashtable allNextStates = new Hashtable();
    private static Hashtable lohiByteTab = new Hashtable();
@@ -1123,7 +1123,7 @@ public class NfaState
       return bitVec==(allBits);
    }
 
-   static int AddStartStateSet(string stateSetString)
+   public static int AddStartStateSet(string stateSetString)
    {
       return AddCompositeStateSet(stateSetString, true);
    }
@@ -1717,7 +1717,7 @@ public class NfaState
          original.removeElement(tmp);
 
          long bitVec = tmp.asciiMoves[byteNum];
-         List<NfaState> subSet = new ArrayList<NfaState>();
+         List<NfaState> subSet = new ();
          subSet.Add(tmp);
 
          for (int j = 0; j < original.Count; j++)
@@ -3294,7 +3294,7 @@ public class NfaState
        int matchAnyCharKind) {
      // Cleanup the state set.
      HashSet<Integer> done = new HashSet<Integer>();
-     List<NfaState> cleanStates = new ArrayList<NfaState>();
+     List<NfaState> cleanStates = new ();
      NfaState startState = null;
      for (int i = 0; i < allStates.Count; i++) {
        NfaState tmp = (NfaState)allStates.get(i);
@@ -3319,8 +3319,8 @@ public class NfaState
 
    public static void BuildTokenizerData(TokenizerData tokenizerData) {
      NfaState[] cleanStates;
-     List<NfaState> cleanStateList = new ArrayList<NfaState>();
-     for (int l : statesForLexicalState.keySet()) {
+     List<NfaState> cleanStateList = new ();
+     foreach (int l in statesForLexicalState.keySet()) {
        int offset = nfaStateOffset.get(l);
        List<NfaState> states = statesForLexicalState.get(l);
        for (int i = 0; i < states.Count; i++) {
@@ -3334,8 +3334,8 @@ public class NfaState
      for (NfaState s : cleanStateList) {
        assert(cleanStates[s.stateName] == null);
        cleanStates[s.stateName] = s;
-       HashSet<Character> chars = new HashSet<Character>();
-       for (int c = 0; c <= Character.MAX_VALUE; c++) {
+       HashSet<char> chars = new HashSet<char>();
+       for (int c = 0; c <= char.MAX_VALUE; c++) {
          if (s.CanMoveUsingChar((char)c)) {
            chars.Add((char)c);
          }

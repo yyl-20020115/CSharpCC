@@ -97,7 +97,7 @@ public class JavaCCInterpreter
             int nfaStartState = td.initialStates.get(curLexState);
 
             char c = input.charAt(curPos);
-            if (Options.getIgnoreCase()) c = Character.toLowerCase(c);
+            if (Options.getIgnoreCase()) c = char.ToLower(c);
             int key = curLexState << 16 | (int)c;
             List<String> literals = td.literalSequence.get(key);
             if (literals != null)
@@ -111,7 +111,7 @@ public class JavaCCInterpreter
                     while (index < s.Length && curPos + index < input_size)
                     {
                         c = input.charAt(curPos + index);
-                        if (Options.getIgnoreCase()) c = Character.toLowerCase(c);
+                        if (Options.getIgnoreCase()) c = char.ToLower(c);
                         if (c != s.charAt(index)) break;
                         index++;
                     }
@@ -137,7 +137,7 @@ public class JavaCCInterpreter
                 do
                 {
                     c = input.charAt(curPos);
-                    if (Options.getIgnoreCase()) c = Character.toLowerCase(c);
+                    if (Options.getIgnoreCase()) c = char.ToLower(c);
                     foreach (int state in curStates)
                     {
                         TokenizerData.NfaState nfaState = td.nfa.get(state);

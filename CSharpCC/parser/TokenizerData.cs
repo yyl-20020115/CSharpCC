@@ -163,8 +163,7 @@ public class TokenizerData {
                  (toMore[vectorIndex] & bits) != 0L) {
         matchType = MatchType.MORE;
       } else {
-        assert(toToken.Length > vectorIndex &&
-               (toToken[vectorIndex] & bits) != 0L);
+        //assert(toToken.Length > vectorIndex && (toToken[vectorIndex] & bits) != 0L);
         matchType = MatchType.TOKEN;
       }
       MatchInfo matchInfo =

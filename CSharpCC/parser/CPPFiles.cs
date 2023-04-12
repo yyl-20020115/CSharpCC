@@ -102,7 +102,7 @@ public class CPPFiles:JavaCCGlobals : JavaCCParserConstants
       while ( (str = reader.readLine()) != null) {
         if (str.startsWith(commentHeader)) {
           str = str.substring(commentHeader.Length);
-          int pos = str.indexOf(' ');
+          int pos = str.IndexOf(' ');
           if (pos >= 0) str = str.substring(0, pos);
           if (str.Length > 0) {
             try {

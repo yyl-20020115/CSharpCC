@@ -19,7 +19,7 @@ public static class CPPJJTreeState
     {
         var options = JJTreeOptions.getOptions();
         options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
-        string filePrefix = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "JJT" + JJTreeGlobals.parserName + "State").getAbsolutePath();
+        string filePrefix = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "JJT" + JJTreeGlobals.parserName + "State");
 
         OutputFile outputFile = new OutputFile((filePrefix + ".h"), JJTStateVersion, new String[0]);
         CPPNodeFiles.generateFile(outputFile, "/templates/cpp/JJTTreeState.h.template", options);

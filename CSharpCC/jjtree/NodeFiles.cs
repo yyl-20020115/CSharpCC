@@ -252,7 +252,7 @@ public static class NodeFiles
         var sb = new StringBuilder("visit");
         if (JJTreeOptions.booleanValue("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME"))
         {
-            sb.Append(Character.toUpperCase(className.charAt(0)));
+            sb.Append(Character.ToUpper(className.charAt(0)));
             for (int i = 1; i < className.Length; i++)
             {
                 sb.Append(className.charAt(i));

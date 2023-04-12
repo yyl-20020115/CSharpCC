@@ -64,7 +64,7 @@ public class CharacterRange
     /**
      * @param line the line to set
      */
-    void setLine(int line)
+    public void setLine(int line)
     {
         this.line = line;
     }
@@ -72,7 +72,7 @@ public class CharacterRange
     /**
      * @return the line
      */
-    int getLine()
+    public int getLine()
     {
         return line;
     }
@@ -80,7 +80,7 @@ public class CharacterRange
     /**
      * @param column the column to set
      */
-    void setColumn(int column)
+    public void setColumn(int column)
     {
         this.column = column;
     }
@@ -88,7 +88,7 @@ public class CharacterRange
     /**
      * @return the column
      */
-    int getColumn()
+    public int getColumn()
     {
         return column;
     }

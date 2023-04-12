@@ -31,56 +31,61 @@ namespace org.javacc.parser;
  * Describes single character descriptors in a character list.
  */
 
-public class SingleCharacter {
+public class SingleCharacter
+{
 
-  /**
-   * The line and column number of the construct that corresponds
-   * most closely to this node.
-   */
-  private int column;
+    /**
+     * The line and column number of the construct that corresponds
+     * most closely to this node.
+     */
+    private int column;
 
-  private int line;
+    private int line;
 
-  /**
-   * The character of this descriptor.
-   */
-  public char ch;
+    /**
+     * The character of this descriptor.
+     */
+    public char ch;
 
-  SingleCharacter()
-  {
-  }
+    SingleCharacter()
+    {
+    }
 
-  SingleCharacter(char c)
-  {
-     ch = c;
-  }
+    SingleCharacter(char c)
+    {
+        ch = c;
+    }
 
-  /**
-   * @param line the line to set
-   */
-  void setLine(int line) {
-    this.line = line;
-  }
+    /**
+     * @param line the line to set
+     */
+    public void setLine(int line)
+    {
+        this.line = line;
+    }
 
-  /**
-   * @return the line
-   */
-  int getLine() {
-    return line;
-  }
+    /**
+     * @return the line
+     */
+    public int getLine()
+    {
+        return line;
+    }
 
-  /**
-   * @param column the column to set
-   */
-  void setColumn(int column) {
-    this.column = column;
-  }
+    /**
+     * @param column the column to set
+     */
+    public void setColumn(int column)
+    {
+        this.column = column;
+    }
 
-  /**
-   * @return the column
-   */
-  int getColumn() {
-    return column;
-  }
+    /**
+     * @return the column
+     */
+    public int getColumn()
+    {
+        return column;
+    }
 
 }

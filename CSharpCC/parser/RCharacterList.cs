@@ -180,12 +180,12 @@ static readonly char[] diffUpperCaseRanges = {
       {
         char ch = ((SingleCharacter)descriptors.get(i)).ch;
 
-        if (ch != Character.toLowerCase(ch))
+        if (ch != Character.ToLower(ch))
           descriptors.Add(new
-                         SingleCharacter(Character.toLowerCase(ch)));
-        if (ch != Character.toUpperCase(ch))
+                         SingleCharacter(Character.ToLower(ch)));
+        if (ch != Character.ToUpper(ch))
            descriptors.Add(new
-                         SingleCharacter(Character.toUpperCase(ch)));
+                         SingleCharacter(Character.ToUpper(ch)));
       }
       else
       {
@@ -206,27 +206,27 @@ static readonly char[] diffUpperCaseRanges = {
 
             if (r <= diffLowerCaseRanges[j + 1])
             {
-              descriptors.Add(new CharacterRange(Character.toLowerCase(diffLowerCaseRanges[j]),
-                   (char)(Character.toLowerCase(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
+              descriptors.Add(new CharacterRange(Character.ToLower(diffLowerCaseRanges[j]),
+                   (char)(Character.ToLower(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
               break;
             }
 
-            descriptors.Add(new CharacterRange(Character.toLowerCase(diffLowerCaseRanges[j]),
-                                                       Character.toLowerCase(diffLowerCaseRanges[j + 1])));
+            descriptors.Add(new CharacterRange(Character.ToLower(diffLowerCaseRanges[j]),
+                                                       Character.ToLower(diffLowerCaseRanges[j + 1])));
           }
           else
           {
             if (r <= diffLowerCaseRanges[j + 1])
             {
               descriptors.Add(new CharacterRange(
-                              (char)(Character.toLowerCase(diffLowerCaseRanges[j]) + l - diffLowerCaseRanges[j]),
-                              (char)(Character.toLowerCase(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
+                              (char)(Character.ToLower(diffLowerCaseRanges[j]) + l - diffLowerCaseRanges[j]),
+                              (char)(Character.ToLower(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
               break;
             }
 
             descriptors.Add(new CharacterRange(
-                           (char)(Character.toLowerCase(diffLowerCaseRanges[j]) + l - diffLowerCaseRanges[j]),
-                           Character.toLowerCase(diffLowerCaseRanges[j + 1])));
+                           (char)(Character.ToLower(diffLowerCaseRanges[j]) + l - diffLowerCaseRanges[j]),
+                           Character.ToLower(diffLowerCaseRanges[j + 1])));
           }
 
           j += 2;
@@ -234,13 +234,13 @@ static readonly char[] diffUpperCaseRanges = {
           {
             if (r <= diffLowerCaseRanges[j + 1])
             {
-              descriptors.Add(new CharacterRange(Character.toLowerCase(diffLowerCaseRanges[j]),
-                              (char)(Character.toLowerCase(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
+              descriptors.Add(new CharacterRange(Character.ToLower(diffLowerCaseRanges[j]),
+                              (char)(Character.ToLower(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
               break;
             }
 
-            descriptors.Add(new CharacterRange(Character.toLowerCase(diffLowerCaseRanges[j]),
-                                                       Character.toLowerCase(diffLowerCaseRanges[j + 1])));
+            descriptors.Add(new CharacterRange(Character.ToLower(diffLowerCaseRanges[j]),
+                                                       Character.ToLower(diffLowerCaseRanges[j + 1])));
             j += 2;
           }
           break;
@@ -258,27 +258,27 @@ static readonly char[] diffUpperCaseRanges = {
 
           if (r <= diffUpperCaseRanges[j + 1])
           {
-            descriptors.Add(new CharacterRange(Character.toUpperCase(diffUpperCaseRanges[j]),
-                 (char)(Character.toUpperCase(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
+            descriptors.Add(new CharacterRange(Character.ToUpper(diffUpperCaseRanges[j]),
+                 (char)(Character.ToUpper(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
             continue;
           }
 
-          descriptors.Add(new CharacterRange(Character.toUpperCase(diffUpperCaseRanges[j]),
-                                                     Character.toUpperCase(diffUpperCaseRanges[j + 1])));
+          descriptors.Add(new CharacterRange(Character.ToUpper(diffUpperCaseRanges[j]),
+                                                     Character.ToUpper(diffUpperCaseRanges[j + 1])));
         }
         else
         {
           if (r <= diffUpperCaseRanges[j + 1])
           {
             descriptors.Add(new CharacterRange(
-                            (char)(Character.toUpperCase(diffUpperCaseRanges[j]) + l - diffUpperCaseRanges[j]),
-                            (char)(Character.toUpperCase(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
+                            (char)(Character.ToUpper(diffUpperCaseRanges[j]) + l - diffUpperCaseRanges[j]),
+                            (char)(Character.ToUpper(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
             continue;
           }
 
           descriptors.Add(new CharacterRange(
-                          (char)(Character.toUpperCase(diffUpperCaseRanges[j]) + l - diffUpperCaseRanges[j]),
-                          Character.toUpperCase(diffUpperCaseRanges[j + 1])));
+                          (char)(Character.ToUpper(diffUpperCaseRanges[j]) + l - diffUpperCaseRanges[j]),
+                          Character.ToUpper(diffUpperCaseRanges[j + 1])));
         }
 
         j += 2;
@@ -286,13 +286,13 @@ static readonly char[] diffUpperCaseRanges = {
         {
           if (r <= diffUpperCaseRanges[j + 1])
           {
-            descriptors.Add(new CharacterRange(Character.toUpperCase(diffUpperCaseRanges[j]),
-                            (char)(Character.toUpperCase(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
+            descriptors.Add(new CharacterRange(Character.ToUpper(diffUpperCaseRanges[j]),
+                            (char)(Character.ToUpper(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
             break;
           }
 
-          descriptors.Add(new CharacterRange(Character.toUpperCase(diffUpperCaseRanges[j]),
-                                                     Character.toUpperCase(diffUpperCaseRanges[j + 1])));
+          descriptors.Add(new CharacterRange(Character.ToUpper(diffUpperCaseRanges[j]),
+                                                     Character.ToUpper(diffUpperCaseRanges[j + 1])));
           j += 2;
         }
       }
