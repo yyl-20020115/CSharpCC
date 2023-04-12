@@ -74,7 +74,7 @@ public class Expansion
     /**
      * The ordinal of this node with respect to its parent.
      */
-    int ordinal;
+    public int ordinal;
 
     /**
      * To avoid right-recursive loops when calculating follow sets, we use

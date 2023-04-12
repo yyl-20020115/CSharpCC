@@ -87,7 +87,7 @@ public class JJTJJTreeParserState
 
     public void openNodeScope(Node n)
     {
-        marks.add(mk);
+        marks.Add(mk);
         mk = sp;
         n.jjtOpen();
     }

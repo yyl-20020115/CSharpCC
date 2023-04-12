@@ -90,7 +90,7 @@ public abstract class RegularExpression:Expansion {
    * node has been traversed.  i.e., -1 indicates partially processed,
    * and 1 indicates fully processed.
    */
-  int walkStatus = 0;
+  public int walkStatus = 0;
 
   public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped) {
     var sb = base.dump(indent, alreadyDumped);

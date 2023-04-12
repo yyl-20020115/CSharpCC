@@ -29,8 +29,6 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System.Collections.Generic;
-
 namespace org.javacc.parser;
 
 
@@ -48,12 +46,12 @@ public class LexGen : CodeGenerator, JavaCCParserConstants
     public static string tokMgrClassName;
 
     // Dictionary of vectors
-    static Dictionary allTpsForState = new();
+    public static Dictionary allTpsForState = new();
     public static int lexStateIndex = 0;
     public static int[] kinds;
     public static int maxOrdinal = 1;
     public static string lexStateSuffix;
-    static String[] newLexState;
+    public static String[] newLexState;
     public static int[] lexStates;
     public static bool[] ignoreCase;
     public static Action[] actions;
@@ -62,7 +60,7 @@ public class LexGen : CodeGenerator, JavaCCParserConstants
     public static int totalNumStates;
     public static int maxLexStates;
     public static String[] lexStateName;
-    static NfaState[] singlesToSkip;
+    public static NfaState[] singlesToSkip;
     public static long[] toSkip;
     public static long[] toSpecial;
     public static long[] toMore;
@@ -81,12 +79,12 @@ public class LexGen : CodeGenerator, JavaCCParserConstants
     public static bool[] mixed;
     public static NfaState initialState;
     public static int curKind;
-    static bool hasSkipActions = false;
-    static bool hasMoreActions = false;
-    static bool hasTokenActions = false;
-    static bool hasSpecial = false;
-    static bool hasSkip = false;
-    static bool hasMore = false;
+    public static bool hasSkipActions = false;
+    public static bool hasMoreActions = false;
+    public static bool hasTokenActions = false;
+    public static bool hasSpecial = false;
+    public static bool hasSkip = false;
+    public static bool hasMore = false;
     public static RegularExpression curRE;
     public static bool keepLineCol;
     public static string errorHandlingClass;

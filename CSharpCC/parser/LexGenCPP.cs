@@ -196,7 +196,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
         if ((tps = (List<TokenProduction>)allTpsForState.get(tp.lexStates[i])) == null)
         {
           tmpLexStateName[maxLexStates++] = tp.lexStates[i];
-          allTpsForState.Add(tp.lexStates[i], tps = new ArrayList());
+          allTpsForState.Add(tp.lexStates[i], tps = new ());
         }
 
         tps.Add(tp);

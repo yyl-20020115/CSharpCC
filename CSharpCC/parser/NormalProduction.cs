@@ -25,7 +25,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-using org.javacc.jjtree;
 using System.Text;
 
 namespace org.javacc.parser;
@@ -94,7 +93,7 @@ public class NormalProduction
      * pointers exist.
      */
     private NormalProduction[] leftExpansions = new NormalProduction[10];
-    int leIndex = 0;
+    public int leIndex = 0;
 
     /**
      * The following variable is used to maintain state information for the
@@ -292,7 +291,7 @@ public class NormalProduction
     /**
      * @param leftExpansions the leftExpansions to set
      */
-    void setLeftExpansions(NormalProduction[] leftExpansions)
+    public void setLeftExpansions(NormalProduction[] leftExpansions)
     {
         this.leftExpansions = leftExpansions;
     }
@@ -300,7 +299,7 @@ public class NormalProduction
     /**
      * @return the leftExpansions
      */
-    NormalProduction[] getLeftExpansions()
+    public NormalProduction[] getLeftExpansions()
     {
         return leftExpansions;
     }
@@ -308,7 +307,7 @@ public class NormalProduction
     /**
      * @param walkStatus the walkStatus to set
      */
-    void setWalkStatus(int walkStatus)
+    public void setWalkStatus(int walkStatus)
     {
         this.walkStatus = walkStatus;
     }
@@ -316,7 +315,7 @@ public class NormalProduction
     /**
      * @return the walkStatus
      */
-    int getWalkStatus()
+    public int getWalkStatus()
     {
         return walkStatus;
     }

@@ -76,9 +76,9 @@ public class Choice : Expansion
         return choices;
     }
 
-    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
+    public override StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        StringBuilder sb = base.dump(indent, alreadyDumped);
+        var sb = base.dump(indent, alreadyDumped);
         if (alreadyDumped.Contains(this))
             return sb;
         alreadyDumped.Add(this);

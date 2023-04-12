@@ -380,7 +380,7 @@ public class ConditionParser : ConditionParserConstants
             {
                 jj_expentry = new int[1];
                 jj_expentry[0] = i;
-                jj_expentries.add(jj_expentry);
+                jj_expentries.Add(jj_expentry);
             }
         }
         int[][] exptokseq = new int[jj_expentries.Count][];

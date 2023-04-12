@@ -35,7 +35,7 @@ namespace org.javacc.parser;
 /**
  * Generate CharStream, TokenManager and Exceptions.
  */
-public class JavaFiles:JavaCCGlobals : JavaCCParserConstants
+public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
 {
   /**
    * ID of the latest version (of JavaCC) in which one of the CharStream classes

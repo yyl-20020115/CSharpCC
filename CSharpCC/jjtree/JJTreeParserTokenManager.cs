@@ -2409,7 +2409,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\142\157\157\154\145\141\156",
         switch (jjmatchedKind)
         {
             case 18:
-                image.append(input_stream.GetSuffix(jjimageLen));
+                image.Append(input_stream.GetSuffix(jjimageLen));
                 jjimageLen = 0;
                 input_stream.backup(1);
                 break;
@@ -2422,7 +2422,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\142\157\157\154\145\141\156",
         switch (jjmatchedKind)
         {
             case 126:
-                image.append(jjstrLiteralImages[126]);
+                image.Append(jjstrLiteralImages[126]);
                 lengthOfMatch = jjstrLiteralImages[126].Length;
                 matchedToken.kind = GT;
                 ((Token.GTToken)matchedToken).realKind = RUNSIGNEDSHIFT;
@@ -2430,7 +2430,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\142\157\157\154\145\141\156",
                 matchedToken.image = ">";
                 break;
             case 127:
-                image.append(jjstrLiteralImages[127]);
+                image.Append(jjstrLiteralImages[127]);
                 lengthOfMatch = jjstrLiteralImages[127].Length;
                 matchedToken.kind = GT;
                 ((Token.GTToken)matchedToken).realKind = RSIGNEDSHIFT;

@@ -176,7 +176,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
         {
             if (tokens != null)
             {
-                tokens.add(t);
+                tokens.Add(t);
             }
             if (t.kind == EOF) break;
             if (t.kind == LBRACE) b++;
@@ -193,7 +193,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
         {
             if (tokens != null)
             {
-                tokens.add(t);
+                tokens.Add(t);
             }
             if (t.kind == EOF) break;
             if (t.kind == LPAREN) b++;
@@ -371,7 +371,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
         List<String> strings = new ArrayList<String>(); String string;
         jj_consume_token(LPAREN);
         string = StringLiteral();
-        strings.add(string);
+        strings.Add(string);
     label_3:
         while (true)
         {
@@ -386,7 +386,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
             }
             jj_consume_token(COMMA);
             string = StringLiteral();
-            strings.add(string);
+            strings.Add(string);
         }
         jj_consume_token(RPAREN);
         { if (true) return strings; }
@@ -460,7 +460,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                 jj_consume_token(THROWS);
                 excName = new ArrayList();
                 Name(excName);
-                p.getThrowsList().add(excName);
+                p.getThrowsList().Add(excName);
             label_4:
                 while (true)
                 {
@@ -476,7 +476,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                     excName = new ArrayList();
                     jj_consume_token(COMMA);
                     Name(excName);
-                    p.getThrowsList().add(excName);
+                    p.getThrowsList().Add(excName);
                 }
                 break;
             default:
@@ -510,7 +510,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                 jj_consume_token(THROWS);
                 excName = new ArrayList();
                 Name(excName);
-                p.getThrowsList().add(excName);
+                p.getThrowsList().Add(excName);
             label_5:
                 while (true)
                 {
@@ -526,7 +526,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                     excName = new ArrayList();
                     jj_consume_token(COMMA);
                     Name(excName);
-                    p.getThrowsList().add(excName);
+                    p.getThrowsList().Add(excName);
                 }
                 break;
             default:
@@ -561,7 +561,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                 jj_consume_token(THROWS);
                 excName = new ArrayList();
                 Name(excName);
-                p.getThrowsList().add(excName);
+                p.getThrowsList().Add(excName);
             label_6:
                 while (true)
                 {
@@ -577,7 +577,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                     excName = new ArrayList();
                     jj_consume_token(COMMA);
                     Name(excName);
-                    p.getThrowsList().add(excName);
+                    p.getThrowsList().Add(excName);
                 }
                 break;
             default:
@@ -658,7 +658,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                             jj_consume_token(LANGLE);
                             states = new ArrayList();
                             t = jj_consume_token(IDENTIFIER);
-                            states.add(t.image);
+                            states.Add(t.image);
                         label_7:
                             while (true)
                             {
@@ -673,7 +673,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                                 }
                                 jj_consume_token(COMMA);
                                 t = jj_consume_token(IDENTIFIER);
-                                states.add(t.image);
+                                states.Add(t.image);
                             }
                             jj_consume_token(RANGLE);
                             p.lexStates = new String[states.Count];
@@ -832,7 +832,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
         }
         res.act = act;
         res.nsTok = t;
-        p.respecs.add(res);
+        p.respecs.Add(res);
     }
 
     public void expansion_choices(Container c1)
@@ -857,7 +857,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
             expansion(c2);
             if (morethanone)
             {
-                ch.getChoices().add(c2.member);
+                ch.getChoices().Add(c2.member);
                 ((Expansion)c2.member).parent = ch;
             }
             else
@@ -865,7 +865,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                 morethanone = true;
                 ch = new Choice((Expansion)c1.member);
                 ((Expansion)c1.member).parent = ch;
-                ch.getChoices().add(c2.member);
+                ch.getChoices().Add(c2.member);
                 ((Expansion)c2.member).parent = ch;
             }
         }
@@ -904,12 +904,12 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                 jj_la1[24] = jj_gen;
                 ;
         }
-        seq.units.add(la);
+        seq.units.Add(la);
     label_10:
         while (true)
         {
             expansion_unit(c2);
-            seq.units.add(c2.member);
+            seq.units.Add(c2.member);
             ((Expansion)c2.member).parent = seq;
             ((Expansion)c2.member).ordinal = seq.units.Count - 1;
             if (notTailOfExpansionUnit())
@@ -988,7 +988,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                 while (getToken(1).kind != RBRACE || --b > 0)
                 {
                     t = getNextToken();
-                    la.getActionTokens().add(t);
+                    la.getActionTokens().Add(t);
                     if (t.kind == LBRACE) b++;
                 }
             }
@@ -1091,9 +1091,9 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                 act = new Action();
                 act.setLine(t.beginLine);
                 act.setColumn(t.beginColumn);
-                seq.units.add(act);
+                seq.units.Add(act);
                 act.parent = seq; act.ordinal = 1;
-                ch.getChoices().add(seq);
+                ch.getChoices().Add(seq);
                 seq.parent = ch; seq.ordinal = 0;
                 if (la.getAmount() != 0)
                 {
@@ -1171,13 +1171,13 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                         ;
                     }
                     jj_consume_token(RPAREN);
-                    types.add(vec);
-                    ids.add(t);
+                    types.Add(vec);
+                    ids.Add(t);
                     vec = new ArrayList();
                     inAction = true;
                     Block(vec);
                     inAction = false;
-                    catchblks.add(vec);
+                    catchblks.Add(vec);
                     vec = new ArrayList();
                 }
                 switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
@@ -1208,7 +1208,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                         t = first;
                         while (true)
                         {
-                            lhsTokens.add(t);
+                            lhsTokens.Add(t);
                             if (t == last) break;
                             t = t.next;
                         }
@@ -1355,11 +1355,13 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                     complex_regular_expression_choices(c);
                     jj_consume_token(RANGLE);
                     RegularExpression re;
-                    if (c.member instanceof RJustName) {
+                    if (c.member is RJustName)
+                    {
                         RSequence seq = new RSequence();
-                        seq.units.add(c.member);
+                        seq.units.Add(c.member);
                         re = seq;
-                    } else
+                    }
+                    else
                     {
                         re = (RegularExpression)c.member;
                     }
@@ -1421,7 +1423,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
             complex_regular_expression(c2);
             if (morethanone)
             {
-                ch.getChoices().add(c2.member);
+                ch.getChoices().Add(c2.member);
             }
             else
             {
@@ -1429,8 +1431,8 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                 ch = new RChoice();
                 ch.setLine(((RegularExpression)c1.member).getLine());
                 ch.setColumn(((RegularExpression)c1.member).getColumn());
-                ch.getChoices().add(c1.member);
-                ch.getChoices().add(c2.member);
+                ch.getChoices().Add(c1.member);
+                ch.getChoices().Add(c2.member);
             }
         }
         if (morethanone)
@@ -1458,12 +1460,12 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                 seq = new RSequence();
                 seq.setLine(((RegularExpression)c1.member).getLine());
                 seq.setColumn(((RegularExpression)c1.member).getColumn());
-                seq.units.add(c1.member);
-                seq.units.add(c2.member);
+                seq.units.Add(c1.member);
+                seq.units.Add(c2.member);
             }
             else
             {
-                seq.units.add(c2.member);
+                seq.units.Add(c2.member);
             }
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
             {
@@ -1607,7 +1609,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
         {
             case STRING_LITERAL:
                 character_descriptor(c2);
-                chlist.descriptors.add(c2.member);
+                chlist.descriptors.Add(c2.member);
             label_14:
                 while (true)
                 {
@@ -1622,7 +1624,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
                     }
                     jj_consume_token(COMMA);
                     character_descriptor(c2);
-                    chlist.descriptors.add(c2.member);
+                    chlist.descriptors.Add(c2.member);
                 }
                 break;
             default:
@@ -2413,7 +2415,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
             Token t = first;
             while (true)
             {
-                tokens.add(t);
+                tokens.Add(t);
                 if (t == last) break;
                 t = t.next;
             }
@@ -2862,7 +2864,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
             Token t = first;
             while (true)
             {
-                tokens.add(t);
+                tokens.Add(t);
                 if (t == last) break;
                 t = t.next;
             }
@@ -3383,7 +3385,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
             Token t = first;
             while (true)
             {
-                tokens.add(t);
+                tokens.Add(t);
                 if (t == last) break;
                 t = t.next;
             }
@@ -3557,7 +3559,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
             String i = t.image;
             if (isAllowed(t))
             {
-                tokens.add(t);
+                tokens.Add(t);
                 if (t == last) break;
                 t = t.next;
             }
@@ -3592,7 +3594,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
         Token t = first;
         while (true)
         {
-            tokens.add(t);
+            tokens.Add(t);
             if (t == last) break;
             t = t.next;
         }
@@ -3640,7 +3642,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
         Token t = first;
         while (true)
         {
-            tokens.add(t);
+            tokens.Add(t);
             if (t == last) break;
             t = t.next;
         }
@@ -4613,7 +4615,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
             Token t = first;
             while (true)
             {
-                tokens.add(t);
+                tokens.Add(t);
                 if (t == last) break;
                 t = t.next;
             }
@@ -4997,7 +4999,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
             Token t = first;
             while (true)
             {
-                tokens.add(t);
+                tokens.Add(t);
                 if (t == last) break;
                 t = t.next;
             }
@@ -10360,7 +10362,7 @@ public class JavaCCParser : JavaCCParserInternals, JavaCCParserConstants
     private bool jj_lookingAhead = false;
     private bool jj_semLA;
     private int jj_gen;
-    final private int[] jj_la1 = new int[198];
+    private int[] jj_la1 = new int[198];
     static private int[] jj_la1_0;
     static private int[] jj_la1_1;
     static private int[] jj_la1_2;
@@ -10393,7 +10395,7 @@ private static void jj_la1_init_4()
 {
     jj_la1_4 = new int[] { 0x800000, 0x800000, 0x800000, 0x0, 0x0, 0x800000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x400, 0x800400, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x400000, 0x0, 0x0, 0x400000, 0x400000, 0x400000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc1f800, 0x0, 0xc1f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc1f800, 0x0, 0x800000, 0xc1f800, 0x0, 0x0, 0x0, 0x81f800, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc00000, 0x0, 0x20000, 0x20000, 0x0, 0x0, 0xc1f800, 0x81f800, 0x0, 0x0, 0x0, 0x800000, 0x0, 0x20000, 0x0, 0x0, 0x0, 0x0, 0x20000, 0x800000, 0x0, 0x800000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x800000, 0x0, 0x1c007f, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x200, 0x200, 0x200000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x81f800, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0xc1f800, 0x81f800, 0x0, 0x1c007f, 0x1c007f, 0x81f800, 0x0, 0xc1f800, 0x0, 0x0, 0xc1f800, 0x81f800, 0x81f800, 0xc1f800, 0x81f800, 0x0, 0x81f800, 0x81f800, 0x81f800, 0x0, 0x20000, 0x20000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x400000, 0x81f800, 0x0, 0xc1f800, 0x0, 0xc00000, 0x0, 0xc00000, 0xc00000, };
 }
-final private JJCalls[] jj_2_rtns = new JJCalls[49];
+private JJCalls[] jj_2_rtns = new JJCalls[49];
 private bool jj_rescan = false;
 private int jj_gc = 0;
 
@@ -10506,8 +10508,8 @@ private Token jj_consume_token(int kind)
     throw generateParseException();
 }
 
-static private final class LookaheadSuccess : java.lang.Error { }
-final private LookaheadSuccess jj_ls = new LookaheadSuccess();
+class LookaheadSuccess : Error { }
+private LookaheadSuccess jj_ls = new LookaheadSuccess();
 private bool jj_scan_token(int kind)
 {
     if (jj_scanpos == jj_lastpos)
@@ -10600,7 +10602,7 @@ private void jj_add_error_token(int kind, int pos)
                         continue jj_entries_loop;
                     }
                 }
-                jj_expentries.add(jj_expentry);
+                jj_expentries.Add(jj_expentry);
                 break jj_entries_loop;
             }
         }
@@ -10653,7 +10655,7 @@ public ParseException generateParseException()
         {
             jj_expentry = new int[1];
             jj_expentry[0] = i;
-            jj_expentries.add(jj_expentry);
+            jj_expentries.Add(jj_expentry);
         }
     }
     jj_endpos = 0;
@@ -10762,12 +10764,12 @@ private void jj_save(int index, int xla)
     p.gen = jj_gen + xla - jj_la; p.first = token; p.arg = xla;
 }
 
-static final class JJCalls
+public class JJCalls
 {
-    int gen;
-    Token first;
-    int arg;
-    JJCalls next;
+    public int gen;
+    public Token first;
+    public int arg;
+    public JJCalls next;
 }
 
 }

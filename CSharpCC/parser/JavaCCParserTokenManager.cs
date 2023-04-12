@@ -38,9 +38,9 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
    }
 
   /** Debug output. */
-  public  java.io.PrintStream debugStream = System.out;
+  public  TextWriter debugStream = Console.Out;
   /** Set debug output. */
-  public  void setDebugStream(java.io.PrintStream ds) { debugStream = ds; }
+  public  void setDebugStream(TextWriter ds) { debugStream = ds; }
 private int jjStopStringLiteralDfa_0(int pos, long active0, long active1, long active2)
 {
    switch (pos)

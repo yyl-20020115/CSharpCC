@@ -79,18 +79,18 @@ public class NfaState
       stateSetsToFix.Clear();
    }
 
-   long[] asciiMoves = new long[2];
-   char[] charMoves = null;
-   private char[] rangeMoves = null;
+   public long[] asciiMoves = new long[2];
+   public char[] charMoves = null;
+   public char[] rangeMoves = null;
    NfaState next = null;
    private NfaState stateForCase;
-   Vector<NfaState> epsilonMoves = new Vector<NfaState>();
+   List<NfaState> epsilonMoves = new List< NfaState >();
    private string epsilonMovesString;
    private NfaState[] epsilonMoveArray;
 
    private int id;
    int stateName = -1;
-   int kind = int.MaxValue;
+   public int kind = int.MaxValue;
    private int lookingFor;
    private int usefulEpsilonMoves = 0;
    int inNextOf;
@@ -100,14 +100,14 @@ public class NfaState
    bool dummy = false;
    private bool isComposite = false;
    private int[] compositeStates = null;
-   bool isFinal = false;
-   private Vector loByteVec;
+   public bool isFinal = false;
+   private List<byte> loByteVec;
    private int[] nonAsciiMoveIndices;
    private int round = 0;
    private int onlyChar = 0;
    private char matchSingleChar;
 
-   NfaState()
+   public NfaState()
    {
       id = idCnt++;
       allStates.Add(this);
@@ -150,7 +150,7 @@ public class NfaState
       return ret;
    }
 
-   void AddMove(NfaState newState)
+   public void AddMove(NfaState newState)
    {
       if (!epsilonMoves.Contains(newState))
          InsertInOrder(epsilonMoves, newState);
@@ -161,7 +161,7 @@ public class NfaState
       asciiMoves[c / 64] |= (1L << (c % 64));
    }
 
-   void AddChar(char c)
+   public void AddChar(char c)
    {
       onlyChar++;
       matchSingleChar = c;
@@ -1213,7 +1213,7 @@ public class NfaState
       return ((Integer)stateNameForComposite.get(stateSetString)).intValue();
    }
 
-   static int InitStateName()
+   public static int InitStateName()
    {
       string s = Main.lg.initialState.GetEpsilonMovesString();
 

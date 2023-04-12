@@ -32,21 +32,22 @@ namespace org.javacc.parser;
  * Describes character lists.
  */
 
-public class RCharacterList:RegularExpression {
+public class RCharacterList : RegularExpression
+{
 
-  /**
-   * This is true if a tilde (~) appears before the character list.
-   * Otherwise, this is false.
-   */
-  public bool negated_list = false;
+    /**
+     * This is true if a tilde (~) appears before the character list.
+     * Otherwise, this is false.
+     */
+    public bool negated_list = false;
 
-  /**
-   * This is the list of descriptors of the character list.  Each list
-   * entry will narrow to either SingleCharacter or to CharacterRange.
-   */
-  public List descriptors = new ArrayList();
+    /**
+     * This is the list of descriptors of the character list.  Each list
+     * entry will narrow to either SingleCharacter or to CharacterRange.
+     */
+    public List descriptors = new ArrayList();
 
-static readonly char[] diffLowerCaseRanges = {
+    static readonly char[] diffLowerCaseRanges = {
 65, 90, 192, 214, 216, 222, 256, 256, 258, 258, 260, 260, 262, 262, 264, 264,
 266, 266, 268, 268, 270, 270, 272, 272, 274, 274, 276, 276, 278, 278, 280, 280,
 282, 282, 284, 284, 286, 286, 288, 288, 290, 290, 292, 292, 294, 294, 296, 296,
@@ -107,7 +108,7 @@ static readonly char[] diffLowerCaseRanges = {
 8544, 8559, 9398, 9423, 65313, 65338, 65339, 0xfffe, 0xffff, 0xffff
 };
 
-static readonly char[] diffUpperCaseRanges = {
+    static readonly char[] diffUpperCaseRanges = {
 97, 122, 224, 246, 248, 254, 255, 255, 257, 257, 259, 259, 261, 261, 263, 263,
 265, 265, 267, 267, 269, 269, 271, 271, 273, 273, 275, 275, 277, 277, 279, 279,
 281, 281, 283, 283, 285, 285, 287, 287, 289, 289, 291, 291, 293, 293, 295, 295,
@@ -170,451 +171,451 @@ static readonly char[] diffUpperCaseRanges = {
 65345, 65370, 65371, 0xfffe, 0xffff, 0xffff
 };
 
-  void ToCaseNeutral()
-  {
-    int cnt = descriptors.Count;
-
-    for (int i = 0; i < cnt; i++)
+    void ToCaseNeutral()
     {
-      if (descriptors.get(i) is SingleCharacter)
-      {
-        char ch = ((SingleCharacter)descriptors.get(i)).ch;
+        int cnt = descriptors.Count;
 
-        if (ch != Character.ToLower(ch))
-          descriptors.Add(new
-                         SingleCharacter(Character.ToLower(ch)));
-        if (ch != Character.ToUpper(ch))
-           descriptors.Add(new
-                         SingleCharacter(Character.ToUpper(ch)));
-      }
-      else
-      {
-        char l = ((CharacterRange)descriptors.get(i)).getLeft();
-        char r = ((CharacterRange)descriptors.get(i)).getRight();
-        int j = 0;
-
-        /* Add ranges for which lower case is different. */
-        for (;;)
+        for (int i = 0; i < cnt; i++)
         {
-          while (l > diffLowerCaseRanges[j])
-            j += 2;
-
-          if (l < diffLowerCaseRanges[j])
-          {
-            if (r < diffLowerCaseRanges[j])
-              break;
-
-            if (r <= diffLowerCaseRanges[j + 1])
+            if (descriptors.get(i) is SingleCharacter)
             {
-              descriptors.Add(new CharacterRange(Character.ToLower(diffLowerCaseRanges[j]),
-                   (char)(Character.ToLower(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
-              break;
-            }
+                char ch = ((SingleCharacter)descriptors.get(i)).ch;
 
-            descriptors.Add(new CharacterRange(Character.ToLower(diffLowerCaseRanges[j]),
-                                                       Character.ToLower(diffLowerCaseRanges[j + 1])));
-          }
-          else
-          {
-            if (r <= diffLowerCaseRanges[j + 1])
+                if (ch != Character.ToLower(ch))
+                    descriptors.Add(new
+                                   SingleCharacter(Character.ToLower(ch)));
+                if (ch != Character.ToUpper(ch))
+                    descriptors.Add(new
+                                  SingleCharacter(Character.ToUpper(ch)));
+            }
+            else
             {
-              descriptors.Add(new CharacterRange(
-                              (char)(Character.ToLower(diffLowerCaseRanges[j]) + l - diffLowerCaseRanges[j]),
-                              (char)(Character.ToLower(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
-              break;
+                char l = ((CharacterRange)descriptors.get(i)).getLeft();
+                char r = ((CharacterRange)descriptors.get(i)).getRight();
+                int j = 0;
+
+                /* Add ranges for which lower case is different. */
+                for (; ; )
+                {
+                    while (l > diffLowerCaseRanges[j])
+                        j += 2;
+
+                    if (l < diffLowerCaseRanges[j])
+                    {
+                        if (r < diffLowerCaseRanges[j])
+                            break;
+
+                        if (r <= diffLowerCaseRanges[j + 1])
+                        {
+                            descriptors.Add(new CharacterRange(Character.ToLower(diffLowerCaseRanges[j]),
+                                 (char)(Character.ToLower(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
+                            break;
+                        }
+
+                        descriptors.Add(new CharacterRange(Character.ToLower(diffLowerCaseRanges[j]),
+                                                                   Character.ToLower(diffLowerCaseRanges[j + 1])));
+                    }
+                    else
+                    {
+                        if (r <= diffLowerCaseRanges[j + 1])
+                        {
+                            descriptors.Add(new CharacterRange(
+                                            (char)(Character.ToLower(diffLowerCaseRanges[j]) + l - diffLowerCaseRanges[j]),
+                                            (char)(Character.ToLower(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
+                            break;
+                        }
+
+                        descriptors.Add(new CharacterRange(
+                                       (char)(Character.ToLower(diffLowerCaseRanges[j]) + l - diffLowerCaseRanges[j]),
+                                       Character.ToLower(diffLowerCaseRanges[j + 1])));
+                    }
+
+                    j += 2;
+                    while (r > diffLowerCaseRanges[j])
+                    {
+                        if (r <= diffLowerCaseRanges[j + 1])
+                        {
+                            descriptors.Add(new CharacterRange(Character.ToLower(diffLowerCaseRanges[j]),
+                                            (char)(Character.ToLower(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
+                            break;
+                        }
+
+                        descriptors.Add(new CharacterRange(Character.ToLower(diffLowerCaseRanges[j]),
+                                                                   Character.ToLower(diffLowerCaseRanges[j + 1])));
+                        j += 2;
+                    }
+                    break;
+                }
+
+                /* Add ranges for which upper case is different. */
+                j = 0;
+                while (l > diffUpperCaseRanges[j])
+                    j += 2;
+
+                if (l < diffUpperCaseRanges[j])
+                {
+                    if (r < diffUpperCaseRanges[j])
+                        continue;
+
+                    if (r <= diffUpperCaseRanges[j + 1])
+                    {
+                        descriptors.Add(new CharacterRange(Character.ToUpper(diffUpperCaseRanges[j]),
+                             (char)(Character.ToUpper(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
+                        continue;
+                    }
+
+                    descriptors.Add(new CharacterRange(Character.ToUpper(diffUpperCaseRanges[j]),
+                                                               Character.ToUpper(diffUpperCaseRanges[j + 1])));
+                }
+                else
+                {
+                    if (r <= diffUpperCaseRanges[j + 1])
+                    {
+                        descriptors.Add(new CharacterRange(
+                                        (char)(Character.ToUpper(diffUpperCaseRanges[j]) + l - diffUpperCaseRanges[j]),
+                                        (char)(Character.ToUpper(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
+                        continue;
+                    }
+
+                    descriptors.Add(new CharacterRange(
+                                    (char)(Character.ToUpper(diffUpperCaseRanges[j]) + l - diffUpperCaseRanges[j]),
+                                    Character.ToUpper(diffUpperCaseRanges[j + 1])));
+                }
+
+                j += 2;
+                while (r > diffUpperCaseRanges[j])
+                {
+                    if (r <= diffUpperCaseRanges[j + 1])
+                    {
+                        descriptors.Add(new CharacterRange(Character.ToUpper(diffUpperCaseRanges[j]),
+                                        (char)(Character.ToUpper(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
+                        break;
+                    }
+
+                    descriptors.Add(new CharacterRange(Character.ToUpper(diffUpperCaseRanges[j]),
+                                                               Character.ToUpper(diffUpperCaseRanges[j + 1])));
+                    j += 2;
+                }
             }
-
-            descriptors.Add(new CharacterRange(
-                           (char)(Character.ToLower(diffLowerCaseRanges[j]) + l - diffLowerCaseRanges[j]),
-                           Character.ToLower(diffLowerCaseRanges[j + 1])));
-          }
-
-          j += 2;
-          while (r > diffLowerCaseRanges[j])
-          {
-            if (r <= diffLowerCaseRanges[j + 1])
-            {
-              descriptors.Add(new CharacterRange(Character.ToLower(diffLowerCaseRanges[j]),
-                              (char)(Character.ToLower(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
-              break;
-            }
-
-            descriptors.Add(new CharacterRange(Character.ToLower(diffLowerCaseRanges[j]),
-                                                       Character.ToLower(diffLowerCaseRanges[j + 1])));
-            j += 2;
-          }
-          break;
         }
-
-        /* Add ranges for which upper case is different. */
-        j = 0;
-        while (l > diffUpperCaseRanges[j])
-        j += 2;
-
-        if (l < diffUpperCaseRanges[j])
-        {
-          if (r < diffUpperCaseRanges[j])
-            continue;
-
-          if (r <= diffUpperCaseRanges[j + 1])
-          {
-            descriptors.Add(new CharacterRange(Character.ToUpper(diffUpperCaseRanges[j]),
-                 (char)(Character.ToUpper(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
-            continue;
-          }
-
-          descriptors.Add(new CharacterRange(Character.ToUpper(diffUpperCaseRanges[j]),
-                                                     Character.ToUpper(diffUpperCaseRanges[j + 1])));
-        }
-        else
-        {
-          if (r <= diffUpperCaseRanges[j + 1])
-          {
-            descriptors.Add(new CharacterRange(
-                            (char)(Character.ToUpper(diffUpperCaseRanges[j]) + l - diffUpperCaseRanges[j]),
-                            (char)(Character.ToUpper(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
-            continue;
-          }
-
-          descriptors.Add(new CharacterRange(
-                          (char)(Character.ToUpper(diffUpperCaseRanges[j]) + l - diffUpperCaseRanges[j]),
-                          Character.ToUpper(diffUpperCaseRanges[j + 1])));
-        }
-
-        j += 2;
-        while (r > diffUpperCaseRanges[j])
-        {
-          if (r <= diffUpperCaseRanges[j + 1])
-          {
-            descriptors.Add(new CharacterRange(Character.ToUpper(diffUpperCaseRanges[j]),
-                            (char)(Character.ToUpper(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
-            break;
-          }
-
-          descriptors.Add(new CharacterRange(Character.ToUpper(diffUpperCaseRanges[j]),
-                                                     Character.ToUpper(diffUpperCaseRanges[j + 1])));
-          j += 2;
-        }
-      }
     }
-  }
 
-  bool transformed = false;
-  public Nfa GenerateNfa(bool ignoreCase)
-  {
-     if (!transformed)
-     {
-        if (Options.getIgnoreCase() || ignoreCase)
+    bool transformed = false;
+    public Nfa GenerateNfa(bool ignoreCase)
+    {
+        if (!transformed)
         {
-/*
-           int i;
-           Console.WriteLine("Before:");
-           for (i = 0; i < descriptors.Count; i++)
-           {
-              if (descriptors.get(i) is SingleCharacter)
-              {
-                 char c = ((SingleCharacter)descriptors.get(i)).ch;
-                 System.out.print((int)c + " ");
-              }
-              else
-              {
-                 char l = ((CharacterRange)descriptors.get(i)).left;
-                 char r = ((CharacterRange)descriptors.get(i)).right;
+            if (Options.getIgnoreCase() || ignoreCase)
+            {
+                /*
+                           int i;
+                           Console.WriteLine("Before:");
+                           for (i = 0; i < descriptors.Count; i++)
+                           {
+                              if (descriptors.get(i) is SingleCharacter)
+                              {
+                                 char c = ((SingleCharacter)descriptors.get(i)).ch;
+                                 System.out.print((int)c + " ");
+                              }
+                              else
+                              {
+                                 char l = ((CharacterRange)descriptors.get(i)).left;
+                                 char r = ((CharacterRange)descriptors.get(i)).right;
 
-                 System.out.print((int)l + "-" + (int)r + " ");
-              }
-              if ((i + 1) % 6 == 0)
-                 Console.WriteLine("");
-           }
-           Console.WriteLine("");
-*/
+                                 System.out.print((int)l + "-" + (int)r + " ");
+                              }
+                              if ((i + 1) % 6 == 0)
+                                 Console.WriteLine("");
+                           }
+                           Console.WriteLine("");
+                */
 
-           ToCaseNeutral();
-           SortDescriptors();
+                ToCaseNeutral();
+                SortDescriptors();
 
-/*
-           Console.WriteLine("After:");
-           for (i = 0; i < descriptors.Count; i++)
-           {
-              if (descriptors.get(i) is SingleCharacter)
-              {
-                 char c = ((SingleCharacter)descriptors.get(i)).ch;
-                 System.out.print((int)c + " ");
-              }
-              else
-              {
-                 char l = ((CharacterRange)descriptors.get(i)).left;
-                 char r = ((CharacterRange)descriptors.get(i)).right;
+                /*
+                           Console.WriteLine("After:");
+                           for (i = 0; i < descriptors.Count; i++)
+                           {
+                              if (descriptors.get(i) is SingleCharacter)
+                              {
+                                 char c = ((SingleCharacter)descriptors.get(i)).ch;
+                                 System.out.print((int)c + " ");
+                              }
+                              else
+                              {
+                                 char l = ((CharacterRange)descriptors.get(i)).left;
+                                 char r = ((CharacterRange)descriptors.get(i)).right;
 
-                 System.out.print((int)l + "-" + (int)r + " ");
-              }
-              if ((i + 1) % 6 == 0)
-                 Console.WriteLine("");
-           }
-           Console.WriteLine("");
-*/
+                                 System.out.print((int)l + "-" + (int)r + " ");
+                              }
+                              if ((i + 1) % 6 == 0)
+                                 Console.WriteLine("");
+                           }
+                           Console.WriteLine("");
+                */
+            }
+
+            if (negated_list)
+                RemoveNegation();  // This also sorts the list
+            else
+                SortDescriptors();
         }
 
-        if (negated_list)
-           RemoveNegation();  // This also sorts the list
-        else
-           SortDescriptors();
-     }
-
-     if (descriptors.Count == 0 && !negated_list)
-     {
-        JavaCCErrors.semantic_error(this, "Empty character set is not allowed as it will not match any character.");
-        return new Nfa();
-     }
-
-     transformed = true;
-     Nfa retVal = new Nfa();
-     NfaState startState = retVal.start;
-     NfaState finalState = retVal.end;
-     int i;
-
-     for (i = 0; i < descriptors.Count; i++)
-     {
-        if (descriptors.get(i) is SingleCharacter)
-           startState.AddChar(((SingleCharacter)descriptors.get(i)).ch);
-        else // if (descriptors.get(i) is CharacterRange)
+        if (descriptors.Count == 0 && !negated_list)
         {
-           CharacterRange cr = (CharacterRange)descriptors.get(i);
-
-           if (cr.getLeft() == cr.getRight())
-              startState.AddChar(cr.getLeft());
-           else
-              startState.AddRange(cr.getLeft(), cr.getRight());
+            JavaCCErrors.semantic_error(this, "Empty character set is not allowed as it will not match any character.");
+            return new Nfa();
         }
-     }
 
-     startState.next = finalState;
+        transformed = true;
+        Nfa retVal = new Nfa();
+        NfaState startState = retVal.start;
+        NfaState finalState = retVal.end;
+        int i;
 
-     return retVal;
-  }
-
-  static bool Overlaps(CharacterRange r1, CharacterRange r2)
-  {
-     return (r1.getLeft() <= r2.getRight() && r1.getRight() > r2.getRight());
-  }
-
-  static bool SubRange(CharacterRange r1, CharacterRange r2)
-  {
-     return (r1.getLeft() >= r2.getLeft() && r1.getRight() <= r2.getRight());
-  }
-
-  static bool InRange(char c, CharacterRange range)
-  {
-     return (c >= range.getLeft() && c <= range.getRight());
-  }
-
-  void SortDescriptors()
-  {
-     int j;
-
-     List newDesc = new ArrayList(descriptors.Count);
-     int cnt = 0;
-
-     Outer:
-     for (int i = 0; i < descriptors.Count; i++)
-     {
-        SingleCharacter s;
-        CharacterRange range;
-
-        if (descriptors.get(i) is SingleCharacter)
+        for (i = 0; i < descriptors.Count; i++)
         {
-           s = (SingleCharacter)descriptors.get(i);
+            if (descriptors.get(i) is SingleCharacter)
+                startState.AddChar(((SingleCharacter)descriptors.get(i)).ch);
+            else // if (descriptors.get(i) is CharacterRange)
+            {
+                CharacterRange cr = (CharacterRange)descriptors.get(i);
 
-           for (j = 0; j < cnt; j++)
-           {
-              if (newDesc.get(j) is SingleCharacter)
-              {
-                 if (((SingleCharacter)newDesc.get(j)).ch > s.ch)
-                    break;
-                 else if (((SingleCharacter)newDesc.get(j)).ch == s.ch)
-                    continue Outer;
-              }
-              else
-              {
-                 char l = ((CharacterRange)newDesc.get(j)).getLeft();
+                if (cr.getLeft() == cr.getRight())
+                    startState.AddChar(cr.getLeft());
+                else
+                    startState.AddRange(cr.getLeft(), cr.getRight());
+            }
+        }
 
-                 if (InRange(s.ch, (CharacterRange)newDesc.get(j)))
-                    continue Outer;
+        startState.next = finalState;
+
+        return retVal;
+    }
+
+    static bool Overlaps(CharacterRange r1, CharacterRange r2)
+    {
+        return (r1.getLeft() <= r2.getRight() && r1.getRight() > r2.getRight());
+    }
+
+    static bool SubRange(CharacterRange r1, CharacterRange r2)
+    {
+        return (r1.getLeft() >= r2.getLeft() && r1.getRight() <= r2.getRight());
+    }
+
+    static bool InRange(char c, CharacterRange range)
+    {
+        return (c >= range.getLeft() && c <= range.getRight());
+    }
+
+    void SortDescriptors()
+    {
+        int j;
+
+        List newDesc = new ArrayList(descriptors.Count);
+        int cnt = 0;
+
+    Outer:
+        for (int i = 0; i < descriptors.Count; i++)
+        {
+            SingleCharacter s;
+            CharacterRange range;
+
+            if (descriptors.get(i) is SingleCharacter)
+            {
+                s = (SingleCharacter)descriptors.get(i);
+
+                for (j = 0; j < cnt; j++)
+                {
+                    if (newDesc.get(j) is SingleCharacter)
+                    {
+                        if (((SingleCharacter)newDesc.get(j)).ch > s.ch)
+                            break;
+                        else if (((SingleCharacter)newDesc.get(j)).ch == s.ch)
+                            continue Outer;
+                    }
+                    else
+                    {
+                        char l = ((CharacterRange)newDesc.get(j)).getLeft();
+
+                        if (InRange(s.ch, (CharacterRange)newDesc.get(j)))
+                            continue Outer;
                  else if (l > s.ch)
-                    break;
-              }
-           }
+                            break;
+                    }
+                }
 
-           newDesc.Add(j, s);
-           cnt++;
+                newDesc.Add(j, s);
+                cnt++;
+            }
+            else
+            {
+                range = (CharacterRange)descriptors.get(i);
+
+                for (j = 0; j < cnt; j++)
+                {
+                    if (newDesc.get(j) is SingleCharacter)
+                    {
+                        if (InRange(((SingleCharacter)newDesc.get(j)).ch, range))
+                        {
+                            newDesc.remove(j--);
+                            cnt--;
+                        }
+                        else if (((SingleCharacter)newDesc.get(j)).ch > range.getRight())
+                            break;
+                    }
+                    else
+                    {
+                        if (SubRange(range, (CharacterRange)newDesc.get(j)))
+                        {
+                            continue Outer;
+                        }
+                        else if (SubRange((CharacterRange)newDesc.get(j), range))
+                        {
+                            newDesc.set(j, range);
+                            continue Outer;
+                        }
+                        else if (Overlaps(range, (CharacterRange)newDesc.get(j)))
+                        {
+                            range.setLeft((char)(((CharacterRange)newDesc.get(j)).getRight() + 1));
+                        }
+                        else if (Overlaps((CharacterRange)newDesc.get(j), range))
+                        {
+                            CharacterRange tmp = range;
+                            ((CharacterRange)newDesc.get(j)).setLeft((char)(range.getRight() + 1));
+                            range = (CharacterRange)newDesc.get(j);
+                            newDesc.set(j, tmp);
+                        }
+                        else if (((CharacterRange)newDesc.get(j)).getLeft() > range.getRight())
+                            break;
+                    }
+                }
+
+                newDesc.Add(j, range);
+                cnt++;
+            }
+        }
+
+        descriptors = newDesc;
+    }
+
+    public void RemoveNegation()
+    {
+        int i;
+
+        SortDescriptors();
+
+        /*
+             Console.WriteLine("REM. NEG Before:");
+             for (i = 0; i < descriptors.size(); i++)
+             {
+                if (descriptors.get(i) is SingleCharacter)
+                {
+                   char c = ((SingleCharacter)descriptors.get(i)).ch;
+                   System.out.print((int)c + " ");
+                }
+                else
+                {
+                   char l = ((CharacterRange)descriptors.get(i)).left;
+                   char r = ((CharacterRange)descriptors.get(i)).right;
+
+                   System.out.print((int)l + "-" + (int)r + " ");
+                }
+             }
+             Console.WriteLine("");
+        */
+
+        List newDescriptors = new ArrayList();
+        int lastRemoved = -1; // One less than the first valid character.
+
+        for (i = 0; i < descriptors.Count; i++)
+        {
+            if (descriptors.get(i) is SingleCharacter)
+            {
+                char c = ((SingleCharacter)descriptors.get(i)).ch;
+
+                if (c >= 0 && c <= lastRemoved + 1)
+                {
+                    lastRemoved = c;
+                    continue;
+                }
+
+                //Console.WriteLine("lastRemoved : " + (int)lastRemoved + "; char : "  + (int)c);
+                newDescriptors.Add(new CharacterRange((char)(lastRemoved + 1),
+                                              (char)((lastRemoved = c) - 1)));
+            }
+            else
+            {
+                char l = ((CharacterRange)descriptors.get(i)).getLeft();
+                char r = ((CharacterRange)descriptors.get(i)).getRight();
+
+                if (l >= 0 && l <= lastRemoved + 1)
+                {
+                    lastRemoved = r;
+                    continue;
+                }
+
+                //Console.WriteLine("lastRemoved : " + (int)lastRemoved + "; left : "  + l + "; right : " + (int)r);
+                newDescriptors.Add(new CharacterRange((char)(lastRemoved + 1),
+                                                 (char)(l - 1)));
+                lastRemoved = r;
+            }
+        }
+
+        //Console.WriteLine("lastRem : " + (int)lastRemoved);
+        if (NfaState.unicodeWarningGiven || Options.getJavaUnicodeEscape())
+        {
+            if (lastRemoved < (char)0xffff)
+                newDescriptors.Add(new CharacterRange((char)(lastRemoved + 1),
+                                          (char)0xffff));
         }
         else
         {
-           range = (CharacterRange)descriptors.get(i);
-
-           for (j = 0; j < cnt; j++)
-           {
-              if (newDesc.get(j) is SingleCharacter)
-              {
-                 if (InRange(((SingleCharacter)newDesc.get(j)).ch, range))
-                 {
-                    newDesc.remove(j--);
-                    cnt--;
-                 }
-                 else if (((SingleCharacter)newDesc.get(j)).ch > range.getRight())
-                    break;
-              }
-              else
-              {
-                 if (SubRange(range, (CharacterRange)newDesc.get(j)))
-                 {
-                    continue Outer;
-                 }
-                 else if (SubRange((CharacterRange)newDesc.get(j), range))
-                 {
-                    newDesc.set(j, range);
-                    continue Outer;
-                 }
-                 else if (Overlaps(range,  (CharacterRange)newDesc.get(j)))
-                 {
-                    range.setLeft((char)(((CharacterRange)newDesc.get(j)).getRight() + 1));
-                 }
-                 else if (Overlaps((CharacterRange)newDesc.get(j), range))
-                 {
-                    CharacterRange tmp = range;
-                    ((CharacterRange)newDesc.get(j)).setLeft((char)(range.getRight() + 1));
-                    range = (CharacterRange)newDesc.get(j);
-                    newDesc.set(j, tmp);
-                 }
-                 else if (((CharacterRange)newDesc.get(j)).getLeft() > range.getRight())
-                    break;
-              }
-           }
-
-           newDesc.Add(j, range);
-           cnt++;
+            if (lastRemoved < (char)0xff)
+                newDescriptors.Add(new CharacterRange((char)(lastRemoved + 1),
+                                                                        (char)0xff));
         }
-     }
 
-     descriptors = newDesc;
-  }
+        descriptors = newDescriptors;
+        negated_list = false;
 
-  void RemoveNegation()
-  {
-     int i;
+        /*
+             Console.WriteLine("REM NEG After:");
+             for (i = 0; i < descriptors.size(); i++)
+             {
+                if (descriptors.get(i) is SingleCharacter)
+                {
+                   char c = ((SingleCharacter)descriptors.get(i)).ch;
+                   System.out.print((int)c + " ");
+                }
+                else
+                {
+                   char l = ((CharacterRange)descriptors.get(i)).left;
+                   char r = ((CharacterRange)descriptors.get(i)).right;
 
-     SortDescriptors();
+                   System.out.print((int)l + "-" + (int)r + " ");
+                }
+             }
+             Console.WriteLine("");
+        */
+    }
 
-/*
-     Console.WriteLine("REM. NEG Before:");
-     for (i = 0; i < descriptors.size(); i++)
-     {
-        if (descriptors.get(i) is SingleCharacter)
-        {
-           char c = ((SingleCharacter)descriptors.get(i)).ch;
-           System.out.print((int)c + " ");
-        }
-        else
-        {
-           char l = ((CharacterRange)descriptors.get(i)).left;
-           char r = ((CharacterRange)descriptors.get(i)).right;
+    RCharacterList()
+    {
+    }
 
-           System.out.print((int)l + "-" + (int)r + " ");
-        }
-     }
-     Console.WriteLine("");
-*/
+    RCharacterList(char c)
+    {
+        descriptors = new ArrayList();
+        descriptors.Add(new SingleCharacter(c));
+        negated_list = false;
+        ordinal = int.MaxValue;
+    }
 
-     List newDescriptors = new ArrayList();
-     int lastRemoved = -1; // One less than the first valid character.
-
-     for (i = 0; i < descriptors.Count; i++)
-     {
-        if (descriptors.get(i) is SingleCharacter)
-        {
-           char c = ((SingleCharacter)descriptors.get(i)).ch;
-
-           if (c >= 0 && c <= lastRemoved + 1)
-           {
-              lastRemoved = c;
-              continue;
-           }
-
-           //Console.WriteLine("lastRemoved : " + (int)lastRemoved + "; char : "  + (int)c);
-           newDescriptors.Add(new CharacterRange((char)(lastRemoved + 1),
-                                         (char)((lastRemoved = c) - 1)));
-        }
-        else
-        {
-           char l = ((CharacterRange)descriptors.get(i)).getLeft();
-           char r = ((CharacterRange)descriptors.get(i)).getRight();
-
-           if (l >= 0 && l <= lastRemoved + 1)
-           {
-              lastRemoved = r;
-              continue;
-           }
-
-           //Console.WriteLine("lastRemoved : " + (int)lastRemoved + "; left : "  + l + "; right : " + (int)r);
-           newDescriptors.Add(new CharacterRange((char)(lastRemoved + 1),
-                                            (char)(l - 1)));
-           lastRemoved = r;
-        }
-     }
-
-     //Console.WriteLine("lastRem : " + (int)lastRemoved);
-     if (NfaState.unicodeWarningGiven || Options.getJavaUnicodeEscape())
-     {
-        if (lastRemoved < (char)0xffff)
-           newDescriptors.Add(new CharacterRange((char)(lastRemoved + 1),
-                                     (char)0xffff));
-     }
-     else
-     {
-        if (lastRemoved < (char)0xff)
-           newDescriptors.Add(new CharacterRange((char)(lastRemoved + 1),
-                                                                   (char)0xff));
-     }
-
-     descriptors = newDescriptors;
-     negated_list = false;
-
-/*
-     Console.WriteLine("REM NEG After:");
-     for (i = 0; i < descriptors.size(); i++)
-     {
-        if (descriptors.get(i) is SingleCharacter)
-        {
-           char c = ((SingleCharacter)descriptors.get(i)).ch;
-           System.out.print((int)c + " ");
-        }
-        else
-        {
-           char l = ((CharacterRange)descriptors.get(i)).left;
-           char r = ((CharacterRange)descriptors.get(i)).right;
-
-           System.out.print((int)l + "-" + (int)r + " ");
-        }
-     }
-     Console.WriteLine("");
-*/
-  }
-
-  RCharacterList()
-  {
-  }
-
-  RCharacterList(char c)
-  {
-    descriptors = new ArrayList();
-    descriptors.Add(new SingleCharacter(c));
-    negated_list = false;
-    ordinal = int.MaxValue;
-  }
-
-  public bool CanMatchAnyChar()
-  {
-    // Return true only if it is ~[]
-    return negated_list && (descriptors == null || descriptors.Count == 0);
-  }
+    public bool CanMatchAnyChar()
+    {
+        // Return true only if it is ~[]
+        return negated_list && (descriptors == null || descriptors.Count == 0);
+    }
 }

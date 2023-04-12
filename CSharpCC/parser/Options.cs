@@ -1045,13 +1045,13 @@ public class Options
 
     public static bool isValidOutputLanguage(string language)
     {
-        return language == null ? false : supportedLanguages.Contains(language.toLowerCase(Locale.ENGLISH));
+        return language == null ? false : supportedLanguages.Contains(language.ToLower(Locale.ENGLISH));
     }
 
 
     public static bool isValidJavaTemplateType(string type)
     {
-        return type == null ? false : supportedJavaTemplateTypes.Contains(type.toLowerCase(Locale.ENGLISH));
+        return type == null ? false : supportedJavaTemplateTypes.Contains(type.ToLower(Locale.ENGLISH));
     }
 
     /**

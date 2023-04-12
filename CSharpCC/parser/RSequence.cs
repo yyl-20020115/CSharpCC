@@ -33,52 +33,53 @@ namespace org.javacc.parser;
  * other regular expressions.
  */
 
-public class RSequence:RegularExpression {
+public class RSequence : RegularExpression
+{
 
-  /**
-   * The list of units in this regular expression sequence.  Each
-   * list component will narrow to RegularExpression.
-   */
-  public List<Object> units = new ArrayList<Object>();
+    /**
+     * The list of units in this regular expression sequence.  Each
+     * list component will narrow to RegularExpression.
+     */
+    public List<Object> units = new ();
 
-  public Nfa GenerateNfa(bool ignoreCase)
-  {
-     if (units.Count == 1)
-        return ((RegularExpression)units.get(0)).GenerateNfa(ignoreCase);
+    public Nfa GenerateNfa(bool ignoreCase)
+    {
+        if (units.Count == 1)
+            return ((RegularExpression)units.get(0)).GenerateNfa(ignoreCase);
 
-     Nfa retVal = new Nfa();
-     NfaState startState = retVal.start;
-     NfaState finalState = retVal.end;
-     Nfa temp1;
-     Nfa temp2 = null;
+        Nfa retVal = new Nfa();
+        NfaState startState = retVal.start;
+        NfaState finalState = retVal.end;
+        Nfa temp1;
+        Nfa temp2 = null;
 
-     RegularExpression curRE;
+        RegularExpression curRE;
 
-     curRE = (RegularExpression)units.get(0);
-     temp1 = curRE.GenerateNfa(ignoreCase);
-     startState.AddMove(temp1.start);
+        curRE = (RegularExpression)units.get(0);
+        temp1 = curRE.GenerateNfa(ignoreCase);
+        startState.AddMove(temp1.start);
 
-     for (int i = 1; i < units.Count; i++)
-     {
-        curRE = (RegularExpression)units.get(i);
+        for (int i = 1; i < units.Count; i++)
+        {
+            curRE = (RegularExpression)units.get(i);
 
-        temp2 = curRE.GenerateNfa(ignoreCase);
-        temp1.end.AddMove(temp2.start);
-        temp1 = temp2;
-     }
+            temp2 = curRE.GenerateNfa(ignoreCase);
+            temp1.end.AddMove(temp2.start);
+            temp1 = temp2;
+        }
 
-     temp2.end.AddMove(finalState);
+        temp2.end.AddMove(finalState);
 
-     return retVal;
-  }
+        return retVal;
+    }
 
-  RSequence()
-  {
-  }
+    public RSequence()
+    {
+    }
 
-  RSequence(List<Object> seq)
-  {
-     ordinal = int.MaxValue;
-     units = seq;
-  }
+    public RSequence(List<Object> seq)
+    {
+        ordinal = int.MaxValue;
+        units = seq;
+    }
 }

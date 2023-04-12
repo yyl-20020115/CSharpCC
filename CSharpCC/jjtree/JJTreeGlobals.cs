@@ -30,7 +30,7 @@ namespace org.javacc.jjtree;
 
 public class JJTreeGlobals
 {
-    static void initialize()
+    public static void initialize()
     {
         toolList = new();
         parserName = null;
@@ -119,7 +119,7 @@ public class JJTreeGlobals
     /**
      * This is mapping from production names to ASTProduction objects.
      **/
-    static Dictionary productions = new Dictionary();
+    public static Dictionary productions = new Dictionary();
 
 }
 

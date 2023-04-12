@@ -71,7 +71,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             arr[1] = l.Count;
             int j = 0;
             if (i > 0) codeGenerator.genCodeLine(", ");
-            for (string s : l)
+            foreach (string s in l)
             {
                 if (j > 0) codeGenerator.genCodeLine(", ");
                 codeGenerator.genCode(s.Length);
@@ -183,7 +183,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             }
             codeGenerator.genCode("{");
             int k = 0;
-            for (int st : tmp.compositeStates)
+            for (int st in tmp.compositeStates)
             {
                 if (k++ > 0) codeGenerator.genCode(", ");
                 codeGenerator.genCode(st);
@@ -200,7 +200,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             // TODO(sreeni) : Fix this mess.
             if (tmp == null)
             {
-                codeGenerator.genCode(Integer.MAX_VALUE);
+                codeGenerator.genCode(int.MaxValue);
                 continue;
             }
             codeGenerator.genCode(tmp.kind);
@@ -232,7 +232,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         codeGenerator.genCodeLine(
             "private static final int[] jjInitStates  = {");
         int k = 0;
-        for (int i : tokenizerData.initialStates.keySet())
+        foreach (int i in tokenizerData.initialStates.keySet())
         {
             if (k++ > 0) codeGenerator.genCode(", ");
             codeGenerator.genCode(tokenizerData.initialStates.get(i));
@@ -272,7 +272,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             "public static final String[] jjstrLiteralImages = {");
 
         int k = 0;
-        for (int i : allMatches.keySet())
+        foreach (int i in allMatches.keySet())
         {
             TokenizerData.MatchInfo matchInfo = allMatches.get(i);
             switch (matchInfo.matchType)
@@ -328,7 +328,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
 
         // Action functions.
 
-        final string staticString = Options.getStatic() ? "static " : "";
+        string staticString = Options.getStatic() ? "static " : "";
         // Token actions.
         codeGenerator.genCodeLine(
             staticString + "void TokenLexicalActions(Token matchedToken) {");
