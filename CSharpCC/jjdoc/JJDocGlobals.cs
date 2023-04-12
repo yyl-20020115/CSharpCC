@@ -55,7 +55,7 @@ public class JJDocGlobals : JavaCCGlobals
      * @param generator
      *        The generator to set.
      */
-    public static void setGenerator(Generator generator)
+    public static void SetGenerator(Generator generator)
     {
         JJDocGlobals.generator = generator;
     }
@@ -66,7 +66,7 @@ public class JJDocGlobals : JavaCCGlobals
      *
      * @return the generator configured in options or set by setter.
      */
-    public static Generator getGenerator()
+    public static Generator GetGenerator()
     {
         if (generator == null)
         {
@@ -119,27 +119,27 @@ public class JJDocGlobals : JavaCCGlobals
      * Log informational messages.
      * @param message the message to log
      */
-    public static void debug(string message)
+    public static void Debug(string message)
     {
-        getGenerator().debug(message);
+        GetGenerator().Debug(message);
     }
 
     /**
      * Log informational messages.
      * @param message the message to log
      */
-    public static void info(string message)
+    public static void Info(string message)
     {
-        getGenerator().info(message);
+        GetGenerator().Info(message);
     }
 
     /**
      * Log error messages.
      * @param message the message to log
      */
-    public static void error(string message)
+    public static void Error(string message)
     {
-        getGenerator().error(message);
+        GetGenerator().Error(message);
     }
 
 

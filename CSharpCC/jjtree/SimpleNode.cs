@@ -22,18 +22,18 @@ public class SimpleNode : Node
         parser = p;
     }
 
-    public void jjtOpen()
+    public virtual void jjtOpen()
     {
     }
 
-    public void jjtClose()
+    public virtual void jjtClose()
     {
     }
 
-    public void jjtSetParent(Node n) { parent = n; }
-    public Node jjtGetParent() { return parent; }
+    public virtual void jjtSetParent(Node n) { parent = n; }
+    public virtual Node jjtGetParent() { return parent; }
 
-    public void jjtAddChild(Node n, int i)
+    public virtual void jjtAddChild(Node n, int i)
     {
         if (children == null)
         {
@@ -42,33 +42,33 @@ public class SimpleNode : Node
         else if (i >= children.Length)
         {
             Node[] c = new Node[i + 1];
-            System.arraycopy(children, 0, c, 0, children.Length);
+            Array.Copy(children, 0, c, 0, children.Length);
             children = c;
         }
         children[i] = n;
     }
 
-    public Node jjtGetChild(int i)
+    public virtual Node jjtGetChild(int i)
     {
         return children[i];
     }
 
-    public int jjtGetNumChildren()
+    public virtual int jjtGetNumChildren()
     {
         return (children == null) ? 0 : children.Length;
     }
 
-    public void jjtSetValue(Object value) { this.value = value; }
-    public Object jjtGetValue() { return value; }
+    public virtual void jjtSetValue(Object value) { this.value = value; }
+    public virtual Object jjtGetValue() { return value; }
 
     /** Accept the visitor. **/
-    public Object jjtAccept(JJTreeParserVisitor visitor, Object data)
+    public virtual object jjtAccept(JJTreeParserVisitor visitor, object data)
     {
         return visitor.visit(this, data);
     }
 
     /** Accept the visitor. **/
-    public Object childrenAccept(JJTreeParserVisitor visitor, Object data)
+    public virtual Object childrenAccept(JJTreeParserVisitor visitor, Object data)
     {
         if (children != null)
         {

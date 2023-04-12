@@ -35,7 +35,7 @@ public class ASTBNFAction : JJTreeNode
     {
     }
 
-    protected Node getScopingParent(NodeScope ns)
+    public Node GetScopingParent(NodeScope ns)
     {
         for (Node n = this.jjtGetParent(); n != null; n = n.jjtGetParent())
         {
@@ -59,7 +59,7 @@ public class ASTBNFAction : JJTreeNode
 
 
     /** Accept the visitor. **/
-    public Object jjtAccept(JJTreeParserVisitor visitor, Object data)
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
     {
         return visitor.visit(this, data);
     }

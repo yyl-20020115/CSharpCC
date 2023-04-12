@@ -38,7 +38,7 @@ public class NodeScope
     string nodeVar;
     int scopeNumber;
 
-    NodeScope(ASTProduction p, ASTNodeDescriptor n)
+    public NodeScope(ASTProduction p, ASTNodeDescriptor n)
     {
         production = p;
 
@@ -56,32 +56,32 @@ public class NodeScope
             node_descriptor = n;
         }
 
-        scopeNumber = production.getNodeScopeNumber(this);
+        scopeNumber = production.GetNodeScopeNumber(this);
         nodeVar = constructVariable("n");
         closedVar = constructVariable("c");
         exceptionVar = constructVariable("e");
     }
 
 
-    bool isVoid()
+    public bool isVoid()
     {
         return node_descriptor.isVoid();
     }
 
 
-    ASTNodeDescriptor getNodeDescriptor()
+    public ASTNodeDescriptor getNodeDescriptor()
     {
         return node_descriptor;
     }
 
 
-    string getNodeDescriptorText()
+    public string getNodeDescriptorText()
     {
         return node_descriptor.getDescriptor();
     }
 
 
-    string getNodeVariable()
+    public string getNodeVariable()
     {
         return nodeVar;
     }

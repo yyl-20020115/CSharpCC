@@ -35,7 +35,7 @@ public class JavaCodeGenerator:DefaultJJTreeVisitor {
     NodeScope ns = NodeScope.getEnclosingNodeScope(node);
     if (ns != null && !ns.isVoid()) {
       bool needClose = true;
-      Node sp = node.getScopingParent(ns);
+      Node sp = node.GetScopingParent(ns);
 
       JJTreeNode n = node;
       while (true) {

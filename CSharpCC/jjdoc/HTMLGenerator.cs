@@ -37,7 +37,7 @@ namespace org.javacc.jjdoc;
  */
 public class HTMLGenerator : TextGenerator
 {
-    private Dictionary<string, string> id_map = new();
+    private readonly Dictionary<string, string> IdMap = new();
     private int id = 1;
 
     public HTMLGenerator()
@@ -45,22 +45,22 @@ public class HTMLGenerator : TextGenerator
     {
     }
 
-    protected string get_id(string nt)
+    protected string GetId(string nt)
     {
-        if (!id_map.TryGetValue(nt,out var i))
+        if (!IdMap.TryGetValue(nt,out var i))
         {
             i = "prod" + id++;
-            id_map.Add(nt, i);
+            IdMap.Add(nt, i);
         }
         return i;
     }
 
-    private void println(string s)
+    private void Println(string s)
     {
-        print(s + "\n");
+        Print(s + "\n");
     }
 
-    public override void text(string s)
+    public override void Text(string s)
     {
         string ss = "";
         for (int i = 0; i < s.Length; ++i)
@@ -82,41 +82,41 @@ public class HTMLGenerator : TextGenerator
                 ss += s[i];
             }
         }
-        print(ss);
+        Print(ss);
     }
 
-    public override void print(string s)
+    public override void Print(string s)
     {
         ostr.Write(s);
     }
 
-    public override void documentStart()
+    public override void DocumentStart()
     {
-        ostr = create_output_stream();
-        println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2//EN\">");
-        println("<HTML>");
-        println("<HEAD>");
+        ostr = CreateOutputStream();
+        Println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2//EN\">");
+        Println("<HTML>");
+        Println("<HEAD>");
         if ("" != (JJDocOptions.getCSS()))
         {
-            println("<LINK REL=\"stylesheet\" type=\"text/css\" href=\"" + JJDocOptions.getCSS() + "\"/>");
+            Println("<LINK REL=\"stylesheet\" type=\"text/css\" href=\"" + JJDocOptions.getCSS() + "\"/>");
         }
         if (JJDocGlobals.input_file != null)
         {
-            println("<TITLE>BNF for " + JJDocGlobals.input_file + "</TITLE>");
+            Println("<TITLE>BNF for " + JJDocGlobals.input_file + "</TITLE>");
         }
         else
         {
-            println("<TITLE>A BNF grammar by JJDoc</TITLE>");
+            Println("<TITLE>A BNF grammar by JJDoc</TITLE>");
         }
-        println("</HEAD>");
-        println("<BODY>");
-        println("<H1 ALIGN=CENTER>BNF for " + JJDocGlobals.input_file + "</H1>");
+        Println("</HEAD>");
+        Println("<BODY>");
+        Println("<H1 ALIGN=CENTER>BNF for " + JJDocGlobals.input_file + "</H1>");
     }
 
-    public override void documentEnd()
+    public override void DocumentEnd()
     {
-        println("</BODY>");
-        println("</HTML>");
+        Println("</BODY>");
+        Println("</HTML>");
         ostr.Close();
     }
 
@@ -125,123 +125,123 @@ public class HTMLGenerator : TextGenerator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.TextGenerator#specialTokens(java.lang.String)
      */
-    public override void specialTokens(string s)
+    public override void SpecialTokens(string s)
     {
-        println(" <!-- Special token -->");
-        println(" <TR>");
-        println("  <TD>");
-        println("<PRE>");
-        print(s);
-        println("</PRE>");
-        println("  </TD>");
-        println(" </TR>");
+        Println(" <!-- Special token -->");
+        Println(" <TR>");
+        Println("  <TD>");
+        Println("<PRE>");
+        Print(s);
+        Println("</PRE>");
+        Println("  </TD>");
+        Println(" </TR>");
     }
 
-    public override void handleTokenProduction(TokenProduction tp)
+    public override void HandleTokenProduction(TokenProduction tp)
     {
-        println(" <!-- Token -->");
-        println(" <TR>");
-        println("  <TD>");
-        println("   <PRE>");
+        Println(" <!-- Token -->");
+        Println(" <TR>");
+        Println("  <TD>");
+        Println("   <PRE>");
         string _text = JJDoc.getStandardTokenProductionText(tp);
-        text(_text);
-        println("   </PRE>");
-        println("  </TD>");
-        println(" </TR>");
+        Text(_text);
+        Println("   </PRE>");
+        Println("  </TD>");
+        Println(" </TR>");
     }
 
 
-    public override void nonterminalsStart()
+    public override void NonterminalsStart()
     {
-        println("<H2 ALIGN=CENTER>NON-TERMINALS</H2>");
+        Println("<H2 ALIGN=CENTER>NON-TERMINALS</H2>");
         if (JJDocOptions.getOneTable())
         {
-            println("<TABLE>");
+            Println("<TABLE>");
         }
     }
-    public void nonterminalsEnd()
+    public override void NonterminalsEnd()
     {
         if (JJDocOptions.getOneTable())
         {
-            println("</TABLE>");
+            Println("</TABLE>");
         }
     }
 
-    public void tokensStart()
+    public override void TokensStart()
     {
-        println("<H2 ALIGN=CENTER>TOKENS</H2>");
-        println("<TABLE>");
+        Println("<H2 ALIGN=CENTER>TOKENS</H2>");
+        Println("<TABLE>");
     }
-    public void tokensEnd()
+    public override void TokensEnd()
     {
-        println("</TABLE>");
-    }
-
-    public void javacode(JavaCodeProduction jp)
-    {
-        productionStart(jp);
-        println("<I>java code</I></TD></TR>");
-        productionEnd(jp);
+        Println("</TABLE>");
     }
 
-    public void cppcode(CppCodeProduction cp)
+    public override void Javacode(JavaCodeProduction jp)
     {
-        productionStart(cp);
-        println("<I>cpp code</I></TD></TR>");
-        productionEnd(cp);
+        ProductionStart(jp);
+        Println("<I>java code</I></TD></TR>");
+        ProductionEnd(jp);
     }
 
-    public void productionStart(NormalProduction np)
+    public override void Cppcode(CppCodeProduction cp)
+    {
+        ProductionStart(cp);
+        Println("<I>cpp code</I></TD></TR>");
+        ProductionEnd(cp);
+    }
+
+    public override void ProductionStart(NormalProduction np)
     {
         if (!JJDocOptions.getOneTable())
         {
-            println("");
-            println("<TABLE ALIGN=CENTER>");
-            println("<CAPTION><STRONG>" + np.getLhs() + "</STRONG></CAPTION>");
+            Println("");
+            Println("<TABLE ALIGN=CENTER>");
+            Println("<CAPTION><STRONG>" + np.getLhs() + "</STRONG></CAPTION>");
         }
-        println("<TR>");
-        println("<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME=\"" + get_id(np.getLhs()) + "\">" + np.getLhs() + "</A></TD>");
-        println("<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>");
-        print("<TD ALIGN=LEFT VALIGN=BASELINE>");
+        Println("<TR>");
+        Println("<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME=\"" + GetId(np.getLhs()) + "\">" + np.getLhs() + "</A></TD>");
+        Println("<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>");
+        Print("<TD ALIGN=LEFT VALIGN=BASELINE>");
     }
-    public void productionEnd(NormalProduction np)
+    public override void ProductionEnd(NormalProduction np)
     {
         if (!JJDocOptions.getOneTable())
         {
-            println("</TABLE>");
-            println("<HR>");
+            Println("</TABLE>");
+            Println("<HR>");
         }
     }
 
-    public void expansionStart(Expansion e, bool first)
+    public override void ExpansionStart(Expansion e, bool first)
     {
         if (!first)
         {
-            println("<TR>");
-            println("<TD ALIGN=RIGHT VALIGN=BASELINE></TD>");
-            println("<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>");
-            print("<TD ALIGN=LEFT VALIGN=BASELINE>");
+            Println("<TR>");
+            Println("<TD ALIGN=RIGHT VALIGN=BASELINE></TD>");
+            Println("<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>");
+            Print("<TD ALIGN=LEFT VALIGN=BASELINE>");
         }
     }
-    public void expansionEnd(Expansion e, bool first)
+    public override void ExpansionEnd(Expansion e, bool first)
     {
-        println("</TD>");
-        println("</TR>");
+        Println("</TD>");
+        Println("</TR>");
     }
 
-    public void nonTerminalStart(NonTerminal nt)
+    public override void NonTerminalStart(NonTerminal nt)
     {
-        print("<A HREF=\"#" + get_id(nt.getName()) + "\">");
+        Print("<A HREF=\"#" + GetId(nt.getName()) + "\">");
     }
-    public void nonTerminalEnd(NonTerminal nt)
+    public override void NonTerminalEnd(NonTerminal nt)
     {
-        print("</A>");
+        Print("</A>");
     }
 
-    public void reStart(RegularExpression r)
+    public override void ReStart(RegularExpression r)
     {
     }
-    public void reEnd(RegularExpression r)
+    public override void ReEnd(RegularExpression r)
     {
     }
 }

@@ -38,18 +38,13 @@ public class ASTBNF : ASTProduction
         throws_list.Add("RuntimeException");
     }
 
-    Token declBeginLoc;
+    public Token declBeginLoc;
 
-    public override string ToString()
-    {
-        return base.ToString() + ": " + name;
-    }
+    public override string ToString() => $"{base.ToString()}: {name}";
 
     /** Accept the visitor. **/
-    public Object jjtAccept(JJTreeParserVisitor visitor, Object data)
-    {
-        return visitor.visit(this, data);
-    }
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
+        => visitor.visit(this, data);
 
 }
 

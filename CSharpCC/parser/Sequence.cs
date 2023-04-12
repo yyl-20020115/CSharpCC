@@ -26,6 +26,8 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using System.Text;
+
 namespace org.javacc.parser;
 
 
@@ -40,7 +42,7 @@ public class Sequence:Expansion {
    * The list of units in this expansion sequence.  Each
    * List component will narrow to Expansion.
    */
-  public List<Object> units = new ArrayList<Object>();
+  public List<Expansion> units = new ();
 
     public Sequence() {}
 
@@ -58,7 +60,7 @@ public class Sequence:Expansion {
       }
 
       alreadyDumped.Add(this);
-      final StringBuilder sb = base.dump(indent, alreadyDumped);
+      StringBuilder sb = base.dump(indent, alreadyDumped);
       for (Iterator<Object> it = units.iterator(); it.hasNext(); ) {
         Expansion next = (Expansion) it.next();
         sb.Append(eol).Append(next.dump(indent + 1, alreadyDumped));

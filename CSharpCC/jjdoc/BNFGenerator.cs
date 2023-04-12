@@ -31,22 +31,22 @@ namespace org.javacc.jjdoc;
 
 public class BNFGenerator : Generator
 {
-    private Dictionary<string, string> id_map = new();
+    private readonly Dictionary<string, string> IdMap = new();
     private int id = 1;
     protected TextWriter ostr;
     private bool printing = true;
 
-    protected string get_id(string nt)
+    protected string GetId(string nt)
     {
-        if (id_map.TryGetValue(nt, out var i))
+        if (IdMap.TryGetValue(nt, out var i))
         {
             i = "prod" + id++;
-            id_map.Add(nt, i);
+            IdMap.Add(nt, i);
         }
         return i;
     }
 
-    protected TextWriter create_output_stream()
+    protected TextWriter CreateOutputStream()
     {
 
         if (JJDocOptions.getOutputFile() == (""))
@@ -57,15 +57,15 @@ public class BNFGenerator : Generator
             }
             else
             {
-                string ext = ".bnf";
-                int i = JJDocGlobals.input_file.LastIndexOf('.');
+                var ext = ".bnf";
+                var i = JJDocGlobals.input_file.LastIndexOf('.');
                 if (i == -1)
                 {
                     JJDocGlobals.output_file = JJDocGlobals.input_file + ext;
                 }
                 else
                 {
-                    string suffix = JJDocGlobals.input_file[i..];
+                    var suffix = JJDocGlobals.input_file[i..];
                     if (suffix == (ext))
                     {
                         JJDocGlobals.output_file = JJDocGlobals.input_file + ext;
@@ -88,40 +88,39 @@ public class BNFGenerator : Generator
         }
         catch (IOException e)
         {
-            error("JJDoc: can't open output stream on file "
-                + JJDocGlobals.output_file + ".  Using standard output.");
+            Error($"JJDoc: can't open output stream on file {JJDocGlobals.output_file}.  Using standard output.");
             ostr = Console.Out;
         }
 
         return ostr;
     }
 
-    private void WriteLine(string s)
+    private void Println(string s)
     {
-        print(s + "\n");
+        Print(s + "\n");
     }
 
-    public void text(string s)
+    public void Text(string s)
     {
         if (printing && !(s.Length == 1 && (s[0] == '\n' || s[0] == '\r')))
         {
-            print(s);
+            Print(s);
         }
     }
-    public void print(string s)
+    public void Print(string s)
     {
         ostr.Write(s);
     }
 
-    public void documentStart()
+    public void DocumentStart()
     {
-        ostr = create_output_stream();
+        ostr = CreateOutputStream();
     }
-    public void documentEnd()
+    public void DocumentEnd()
     {
         ostr.Close();
     }
-    public void specialTokens(string s)
+    public void SpecialTokens(string s)
     {
     }
     //  public void tokenStart(TokenProduction tp) {
@@ -130,56 +129,56 @@ public class BNFGenerator : Generator
     //  public void tokenEnd(TokenProduction tp) {
     //    printing = true;
     //  }
-    public void nonterminalsStart() { }
-    public void nonterminalsEnd() { }
+    public void NonterminalsStart() { }
+    public void NonterminalsEnd() { }
     //@Override
-    public void tokensStart() { }
+    public void TokensStart() { }
     //@Override 
-    public void tokensEnd() { }
-    public void javacode(JavaCodeProduction jp) { }
-    public void cppcode(CppCodeProduction cp) { }
-    public void expansionEnd(Expansion e, bool first) { }
-    public void nonTerminalStart(NonTerminal nt) { }
-    public void nonTerminalEnd(NonTerminal nt) { }
-    public void productionStart(NormalProduction np)
+    public void TokensEnd() { }
+    public void Javacode(JavaCodeProduction jp) { }
+    public void Cppcode(CppCodeProduction cp) { }
+    public void ExpansionEnd(Expansion e, bool first) { }
+    public void NonTerminalStart(NonTerminal nt) { }
+    public void NonTerminalEnd(NonTerminal nt) { }
+    public void ProductionStart(NormalProduction np)
     {
-        WriteLine("");
-        print(np.getLhs() + " ::= ");
+        Println("");
+        Print(np.getLhs() + " ::= ");
     }
-    public void productionEnd(NormalProduction np)
+    public void ProductionEnd(NormalProduction np)
     {
-        WriteLine("");
+        Println("");
     }
-    public void expansionStart(Expansion e, bool first)
+    public void ExpansionStart(Expansion e, bool first)
     {
         if (!first)
         {
-            print(" | ");
+            Print(" | ");
         }
     }
-    public void reStart(RegularExpression r)
+    public void ReStart(RegularExpression r)
     {
         if (r is RJustName || r is RCharacterList)
         {
             printing = false;
         }
     }
-    public void reEnd(RegularExpression r)
+    public void ReEnd(RegularExpression r)
     {
         printing = true;
     }
 
-    public void debug(string message) { Console.Error.WriteLine(message); }
-    public void info(string message) { Console.Error.WriteLine(message); }
-    public void warn(string message) { Console.Error.WriteLine(message); }
-    public void error(string message) { Console.Error.WriteLine(message); }
+    public void Debug(string message) { Console.Error.WriteLine(message); }
+    public void Info(string message) { Console.Error.WriteLine(message); }
+    public void Warn(string message) { Console.Error.WriteLine(message); }
+    public void Error(string message) { Console.Error.WriteLine(message); }
 
     //@Override
-    public void handleTokenProduction(TokenProduction tp)
+    public void HandleTokenProduction(TokenProduction tp)
     {
         printing = false;
         string _text = JJDoc.getStandardTokenProductionText(tp);
-        text(_text);
+        Text(_text);
         printing = true;
     }
 

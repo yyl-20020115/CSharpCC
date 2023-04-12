@@ -32,7 +32,7 @@ public class CodeGenerator {
     // string literals in CPP become char arrays
     outputBuffer.Append("{");
     for (int i = 0; i < s.Length; i++) {
-      outputBuffer.Append("0x" + Integer.toHexString((int)s.charAt(i)) + ", ");
+      outputBuffer.Append("0x" + int.toHexString((int)s.charAt(i)) + ", ");
     }
     outputBuffer.Append("0}");
   }

@@ -150,10 +150,10 @@ public class Options
     {
         HashSet<OptionInfo> temp = new HashSet<OptionInfo>();
 
-        temp.Add(new OptionInfo(USEROPTION__LOOKAHEAD, OptionType.INTEGER, Integer.valueOf(1)));
+        temp.Add(new OptionInfo(USEROPTION__LOOKAHEAD, OptionType.INTEGER, (1)));
 
-        temp.Add(new OptionInfo(USEROPTION__CHOICE_AMBIGUITY_CHECK, OptionType.INTEGER, Integer.valueOf(2)));
-        temp.Add(new OptionInfo(USEROPTION__OTHER_AMBIGUITY_CHECK, OptionType.INTEGER, Integer.valueOf(1)));
+        temp.Add(new OptionInfo(USEROPTION__CHOICE_AMBIGUITY_CHECK, OptionType.INTEGER, (2)));
+        temp.Add(new OptionInfo(USEROPTION__OTHER_AMBIGUITY_CHECK, OptionType.INTEGER, (1)));
         temp.Add(new OptionInfo(USEROPTION__STATIC, OptionType.BOOLEAN, true));
         temp.Add(new OptionInfo(USEROPTION__PARSER_CODE_GENERATOR, OptionType.STRING, ""));
         temp.Add(new OptionInfo(USEROPTION__TOKEN_MANAGER_CODE_GENERATOR, OptionType.STRING, ""));
@@ -210,7 +210,7 @@ public class Options
         temp.Add(new OptionInfo(USEROPTION__CPP_IGNORE_ACTIONS, OptionType.BOOLEAN, false));
         temp.Add(new OptionInfo(USEROPTION__CPP_STOP_ON_FIRST_ERROR, OptionType.BOOLEAN, false));
 
-        temp.Add(new OptionInfo(USEROPTION__DEPTH_LIMIT, OptionType.INTEGER, Integer.valueOf(0)));
+        temp.Add(new OptionInfo(USEROPTION__DEPTH_LIMIT, OptionType.INTEGER, (0)));
         temp.Add(new OptionInfo(USEROPTION__CPP_STACK_LIMIT, OptionType.STRING, ""));
 
         userOptions = (temp);
@@ -571,7 +571,7 @@ public class Options
                                 + arg + "\" will be ignored.");
                         return;
                     }
-                    Val = Integer.valueOf(i);
+                    Val = (i);
                 }
                 catch (NumberFormatException e)
                 {

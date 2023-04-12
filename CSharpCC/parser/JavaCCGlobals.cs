@@ -138,7 +138,7 @@ public class JavaCCGlobals
      * implicit TokenProductions that are created for uses of regular expressions
      * within BNF productions.
      */
-    static public List<TokenProduction> rexprlist = new ArrayList<TokenProduction>();
+    static public List<TokenProduction> rexprlist = new ();
 
     /**
      * The total number of distinct tokens.  This is therefore one more than the

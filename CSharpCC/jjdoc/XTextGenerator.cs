@@ -38,7 +38,7 @@ namespace org.javacc.jjdoc;
  */
 public class XTextGenerator : TextGenerator
 {
-    private Dictionary<string, string> id_map = new();
+    private Dictionary<string, string> IdMap = new();
     private int id = 1;
 
     static readonly string sep = Environment.NewLine; //'\n'
@@ -46,7 +46,7 @@ public class XTextGenerator : TextGenerator
     public XTextGenerator() : base()
     {
     }
-    public override void handleTokenProduction(TokenProduction tp)
+    public override void HandleTokenProduction(TokenProduction tp)
     {
 
         var sb = new StringBuilder();
@@ -70,22 +70,22 @@ public class XTextGenerator : TextGenerator
         //text(sb.ToString());
     }
 
-    protected string get_id(string nt)
+    protected string GetId(string nt)
     {
-        if (id_map.TryGetValue(nt,out var i))
+        if (IdMap.TryGetValue(nt,out var i))
         {
             i = "prod" + id++;
-            id_map.Add(nt, i);
+            IdMap.Add(nt, i);
         }
         return i;
     }
 
-    private void println(string s)
+    private void Println(string s)
     {
-        print(s + "\n");
+        Print(s + "\n");
     }
 
-    public override void text(string s)
+    public override void Text(string s)
     {
         //    string ss = "";
         //    for (int i = 0; i < s.Length; ++i) {
@@ -99,21 +99,21 @@ public class XTextGenerator : TextGenerator
         //  ss += s.charAt(i);
         //      }
         //    }
-        print(s);
+        Print(s);
     }
 
-    public override void print(string s)
+    public override void Print(string s)
     {
         ostr.Write(s);
     }
 
 
-    public override void documentStart()
+    public override void DocumentStart()
     {
-        ostr = create_output_stream();
-        println("grammar " + JJDocGlobals.input_file + " with org.eclipse.xtext.common.Terminals");
-        println("import \"http://www.eclipse.org/emf/2002/Ecore\" as ecore");
-        println("");
+        ostr = CreateOutputStream();
+        Println("grammar " + JJDocGlobals.input_file + " with org.eclipse.xtext.common.Terminals");
+        Println("import \"http://www.eclipse.org/emf/2002/Ecore\" as ecore");
+        Println("");
         //
         //
         //    WriteLine("<HTML>");
@@ -131,7 +131,7 @@ public class XTextGenerator : TextGenerator
         //    WriteLine("<H1 ALIGN=CENTER>BNF for " + JJDocGlobals.input_file + "</H1>");
     }
 
-    public override void documentEnd()
+    public override void DocumentEnd()
     {
         //    WriteLine("</BODY>");
         //    WriteLine("</HTML>");
@@ -143,58 +143,58 @@ public class XTextGenerator : TextGenerator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.TextGenerator#specialTokens(java.lang.String)
      */
-    public override void specialTokens(string s)
+    public override void SpecialTokens(string s)
     {
         //    WriteLine(" <!-- Special token -->");
         //    WriteLine(" <TR>");
         //    WriteLine("  <TD>");
         //    WriteLine("<PRE>");
-        print(s);
+        Print(s);
         //    WriteLine("</PRE>");
         //    WriteLine("  </TD>");
         //    WriteLine(" </TR>");
     }
 
 
-    public override void nonterminalsStart()
+    public override void NonterminalsStart()
     {
         //    WriteLine("<H2 ALIGN=CENTER>NON-TERMINALS</H2>");
         //    if (JJDocOptions.getOneTable()) {
         //      WriteLine("<TABLE>");
         //    }
     }
-    public override void nonterminalsEnd()
+    public override void NonterminalsEnd()
     {
         //    if (JJDocOptions.getOneTable()) {
         //      WriteLine("</TABLE>");
         //    }
     }
 
-    public override void tokensStart()
+    public override void TokensStart()
     {
         //    WriteLine("<H2 ALIGN=CENTER>TOKENS</H2>");
         //    WriteLine("<TABLE>");
     }
-    public override void tokensEnd()
+    public override void TokensEnd()
     {
         //    WriteLine("</TABLE>");
     }
 
-    public override void javacode(JavaCodeProduction jp)
+    public override void Javacode(JavaCodeProduction jp)
     {
         //    productionStart(jp);
         //    WriteLine("<I>java code</I></TD></TR>");
         //    productionEnd(jp);
     }
 
-    public override void cppcode(CppCodeProduction cp)
+    public override void Cppcode(CppCodeProduction cp)
     {
         //    productionStart(cp);
         //    WriteLine("<I>c++ code</I></TD></TR>");
         //    productionEnd(cp);
     }
 
-    public override void productionStart(NormalProduction np)
+    public override void ProductionStart(NormalProduction np)
     {
         //    if (!JJDocOptions.getOneTable()) {
         //      WriteLine("");
@@ -206,7 +206,7 @@ public class XTextGenerator : TextGenerator
         //    WriteLine("<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>");
         //    print("<TD ALIGN=LEFT VALIGN=BASELINE>");
     }
-    public override void productionEnd(NormalProduction np)
+    public override void ProductionEnd(NormalProduction np)
     {
         //    if (!JJDocOptions.getOneTable()) {
         //      WriteLine("</TABLE>");
@@ -214,7 +214,7 @@ public class XTextGenerator : TextGenerator
         //    }
     }
 
-    public override void expansionStart(Expansion e, bool first)
+    public override void ExpansionStart(Expansion e, bool first)
     {
         //
         //
@@ -226,24 +226,24 @@ public class XTextGenerator : TextGenerator
         //      print("<TD ALIGN=LEFT VALIGN=BASELINE>");
         //    }
     }
-    public override void expansionEnd(Expansion e, bool first)
+    public override void ExpansionEnd(Expansion e, bool first)
     {
-        println(";");
+        Println(";");
     }
 
-    public override void nonTerminalStart(NonTerminal nt)
+    public override void NonTerminalStart(NonTerminal nt)
     {
-        print("terminal ");
+        Print("terminal ");
     }
-    public override void nonTerminalEnd(NonTerminal nt)
+    public override void NonTerminalEnd(NonTerminal nt)
     {
-        print(";");
+        Print(";");
     }
 
-    public override void reStart(RegularExpression r)
+    public override void ReStart(RegularExpression r)
     {
     }
-    public override void reEnd(RegularExpression r)
+    public override void ReEnd(RegularExpression r)
     {
     }
 }

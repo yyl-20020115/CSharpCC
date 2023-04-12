@@ -37,11 +37,11 @@ namespace org.javacc.jjtree;
 
 public class ASTGrammar : JJTreeNode
 {
-    ASTGrammar(int id):base(id)
+    public ASTGrammar(int id):base(id)
     {
     }
 
-    void generate(IO io)
+    public void Generate(IO io)
     {
         Console.WriteLine("opt:" + JJTreeOptions.getOutputLanguage());
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
@@ -62,7 +62,7 @@ public class ASTGrammar : JJTreeNode
     }
 
     /** Accept the visitor. **/
-    public object jjtAccept(JJTreeParserVisitor visitor, object data)
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
     {
         return visitor.visit(this, data);
     }

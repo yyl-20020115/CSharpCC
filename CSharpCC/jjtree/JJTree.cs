@@ -186,7 +186,7 @@ public class JJTree
                     p("Error setting output: " + ioe.Message);
                     return 1;
                 }
-                root.generate(io);
+                root.Generate(io);
                 io.getOut().Close();
 
                 string outputLanguage = JJTreeOptions.getOutputLanguage();

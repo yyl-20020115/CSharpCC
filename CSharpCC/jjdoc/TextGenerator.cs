@@ -48,16 +48,16 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#text(java.lang.String)
      */
-    public virtual void text(string s)
+    public virtual void Text(string s)
     {
-        print(s);
+        Print(s);
     }
 
     /**
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#print(java.lang.String)
      */
-    public virtual void print(string s)
+    public virtual void Print(string s)
     {
         ostr.Write(s);
     }
@@ -66,16 +66,16 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#documentStart()
      */
-    public virtual void documentStart()
+    public virtual void DocumentStart()
     {
-        ostr = create_output_stream();
+        ostr = CreateOutputStream();
         ostr.Write("\nDOCUMENT START\n");
     }
     /**
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#documentEnd()
      */
-    public virtual void documentEnd()
+    public virtual void DocumentEnd()
     {
         ostr.Write("\nDOCUMENT END\n");
         ostr.Close();
@@ -85,7 +85,7 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#specialTokens(java.lang.String)
      */
-    public virtual void specialTokens(string s)
+    public virtual void SpecialTokens(string s)
     {
         ostr.Write(s);
     }
@@ -95,15 +95,15 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#nonterminalsStart()
      */
-    public virtual void nonterminalsStart()
+    public virtual void NonterminalsStart()
     {
-        text("NON-TERMINALS\n");
+        Text("NON-TERMINALS\n");
     }
     /**
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#nonterminalsEnd()
      */
-    public virtual void nonterminalsEnd()
+    public virtual void NonterminalsEnd()
     {
     }
 
@@ -111,16 +111,16 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#tokensStart()
      */
-    public virtual void tokensStart()
+    public virtual void TokensStart()
     {
-        text("TOKENS\n");
+        Text("TOKENS\n");
     }
 
     //@Override
-    public virtual void handleTokenProduction(TokenProduction tp)
+    public virtual void HandleTokenProduction(TokenProduction tp)
     {
         string t = JJDoc.getStandardTokenProductionText(tp);
-        text(t);
+        Text(t);
     }
 
 
@@ -128,7 +128,7 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#tokensEnd()
      */
-    public virtual void tokensEnd()
+    public virtual void TokensEnd()
     {
     }
 
@@ -136,29 +136,29 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#javacode(org.javacc.parser.JavaCodeProduction)
      */
-    public virtual void javacode(JavaCodeProduction jp)
+    public virtual void Javacode(JavaCodeProduction jp)
     {
-        productionStart(jp);
-        text("java code");
-        productionEnd(jp);
+        ProductionStart(jp);
+        Text("java code");
+        ProductionEnd(jp);
     }
 
     /**
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#cppcode(org.javacc.parser.CppCodeProduction)
      */
-    public virtual void cppcode(CppCodeProduction cp)
+    public virtual void Cppcode(CppCodeProduction cp)
     {
-        productionStart(cp);
-        text("c++ code");
-        productionEnd(cp);
+        ProductionStart(cp);
+        Text("c++ code");
+        ProductionEnd(cp);
     }
 
     /**
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#productionStart(org.javacc.parser.NormalProduction)
      */
-    public virtual void productionStart(NormalProduction np)
+    public virtual void ProductionStart(NormalProduction np)
     {
         ostr.Write("\t" + np.getLhs() + "\t:=\t");
     }
@@ -166,7 +166,7 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#productionEnd(org.javacc.parser.NormalProduction)
      */
-    public virtual void productionEnd(NormalProduction np)
+    public virtual void ProductionEnd(NormalProduction np)
     {
         ostr.Write("\n");
     }
@@ -175,7 +175,7 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#expansionStart(org.javacc.parser.Expansion, boolean)
      */
-    public virtual void expansionStart(Expansion e, bool first)
+    public virtual void ExpansionStart(Expansion e, bool first)
     {
         if (!first)
         {
@@ -186,7 +186,7 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#expansionEnd(org.javacc.parser.Expansion, boolean)
      */
-    public virtual void expansionEnd(Expansion e, bool first)
+    public virtual void ExpansionEnd(Expansion e, bool first)
     {
     }
 
@@ -194,14 +194,14 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#nonTerminalStart(org.javacc.parser.NonTerminal)
      */
-    public virtual void nonTerminalStart(NonTerminal nt)
+    public virtual void NonTerminalStart(NonTerminal nt)
     {
     }
     /**
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#nonTerminalEnd(org.javacc.parser.NonTerminal)
      */
-    public virtual void nonTerminalEnd(NonTerminal nt)
+    public virtual void NonTerminalEnd(NonTerminal nt)
     {
     }
 
@@ -209,14 +209,14 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#reStart(org.javacc.parser.RegularExpression)
      */
-    public virtual void reStart(RegularExpression r)
+    public virtual void ReStart(RegularExpression r)
     {
     }
     /**
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#reEnd(org.javacc.parser.RegularExpression)
      */
-    public virtual void reEnd(RegularExpression r)
+    public virtual void ReEnd(RegularExpression r)
     {
     }
 
@@ -225,7 +225,7 @@ public class TextGenerator : Generator
      * based on the name of the parser, but if that fails use the standard output
      * stream.
      */
-    protected TextWriter create_output_stream()
+    protected TextWriter CreateOutputStream()
     {
 
         if (JJDocOptions.getOutputFile() == (""))
@@ -278,7 +278,7 @@ public class TextGenerator : Generator
         }
         catch (IOException e)
         {
-            error("JJDoc: can't open output stream on file "
+            Error("JJDoc: can't open output stream on file "
                 + JJDocGlobals.output_file + ".  Using standard output.");
             ostr = Console.Out;
         }
@@ -290,7 +290,7 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#debug(java.lang.String)
      */
-    public void debug(string message)
+    public void Debug(string message)
     {
         Console.Error.WriteLine(message);
     }
@@ -299,7 +299,7 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#info(java.lang.String)
      */
-    public void info(string message)
+    public void Info(string message)
     {
         Console.Error.WriteLine(message);
     }
@@ -308,7 +308,7 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#warn(java.lang.String)
      */
-    public void warn(string message)
+    public void Warn(string message)
     {
         Console.Error.WriteLine(message);
     }
@@ -317,15 +317,8 @@ public class TextGenerator : Generator
      * {@inheritDoc}
      * @see org.javacc.jjdoc.Generator#error(java.lang.String)
      */
-    public void error(string message)
+    public void Error(string message)
     {
         Console.Error.WriteLine(message);
     }
-
-
-
-
-
-
-
 }

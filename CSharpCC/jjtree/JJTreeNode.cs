@@ -109,7 +109,7 @@ public class JJTreeNode : SimpleNode
        replaced with the actual node variable. */
     private bool whitingOut = false;
 
-    protected void print(Token t, IO io)
+    public void print(Token t, IO io)
     {
         Token tt = t.specialToken;
         if (tt != null)

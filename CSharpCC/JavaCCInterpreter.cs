@@ -89,19 +89,19 @@ public class JavaCCInterpreter
         int input_size = input.Length;
         int curPos = 0;
         int curLexState = td.defaultLexState;
-        HashSet<Integer> curStates = new HashSet<Integer>();
-        HashSet<Integer> newStates = new HashSet<Integer>();
+        HashSet<int> curStates = new HashSet<int>();
+        HashSet<int> newStates = new HashSet<int>();
         while (curPos < input_size)
         {
             int beg = curPos;
             int matchedPos = beg;
-            int matchedKind = Integer.MAX_VALUE;
+            int matchedKind = int.MAX_VALUE;
             int nfaStartState = td.initialStates.get(curLexState);
 
             char c = input.charAt(curPos);
             if (Options.getIgnoreCase()) c = Character.toLowerCase(c);
             int key = curLexState << 16 | (int)c;
-            final List<String> literals = td.literalSequence.get(key);
+            List<String> literals = td.literalSequence.get(key);
             if (literals != null)
             {
                 // We need to go in order so that the longest match works.
@@ -133,7 +133,7 @@ public class JavaCCInterpreter
             if (nfaStartState != -1)
             {
                 // We need to add the composite states first.
-                int kind = Integer.MAX_VALUE;
+                int kind = int.MAX_VALUE;
                 curStates.Add(nfaStartState);
                 curStates.addAll(td.nfa.get(nfaStartState).compositeStates);
                 do
@@ -152,15 +152,15 @@ public class JavaCCInterpreter
                             newStates.addAll(nfaState.nextStates);
                         }
                     }
-                    HashSet<Integer> tmp = newStates;
+                    HashSet<int> tmp = newStates;
                     newStates = curStates;
                     curStates = tmp;
                     newStates.Clear();
-                    if (kind != Integer.MAX_VALUE)
+                    if (kind != int.MAX_VALUE)
                     {
                         matchedKind = kind;
                         matchedPos = curPos;
-                        kind = Integer.MAX_VALUE;
+                        kind = int.MAX_VALUE;
                     }
                 } while (!curStates.isEmpty() && ++curPos < input_size);
             }
@@ -168,7 +168,7 @@ public class JavaCCInterpreter
             {
                 matchedKind = td.wildcardKind.get(curLexState);
             }
-            if (matchedKind != Integer.MAX_VALUE)
+            if (matchedKind != int.MAX_VALUE)
             {
                 TokenizerData.MatchInfo matchInfo = td.allMatches.get(matchedKind);
                 if (matchInfo.action != null)

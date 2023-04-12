@@ -50,7 +50,7 @@ public class JJDocOptions : Options
     /**
      * Initialize the options.
      */
-    public static void init()
+    public new static void init()
     {
         Options.init();
 

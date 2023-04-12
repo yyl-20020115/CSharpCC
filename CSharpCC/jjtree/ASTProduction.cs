@@ -40,7 +40,7 @@ public class ASTProduction : JJTreeNode
     private int nextNodeScopeNumber = 0;
 
 
-    public int getNodeScopeNumber(NodeScope s)
+    public int GetNodeScopeNumber(NodeScope s)
     {
         if (!scopes.TryGetValue(s,out var i))
         {
@@ -51,7 +51,7 @@ public class ASTProduction : JJTreeNode
     }
 
     /** Accept the visitor. **/
-    public Object jjtAccept(JJTreeParserVisitor visitor, Object data)
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
     {
         return visitor.visit(this, data);
     }

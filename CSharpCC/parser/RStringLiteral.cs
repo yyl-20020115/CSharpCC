@@ -40,8 +40,8 @@ static class KindInfo
    long[] finalKinds;
    int    validKindCnt = 0;
    int    finalKindCnt = 0;
-   HashSet<Integer> finalKindSet = new HashSet<Integer>();
-   HashSet<Integer> validKindSet = new HashSet<Integer>();
+   HashSet<int> finalKindSet = new HashSet<int>();
+   HashSet<int> validKindSet = new HashSet<int>();
 
    KindInfo(int maxKind)
    {
@@ -172,7 +172,7 @@ public class RStringLiteral:RegularExpression {
 	      string toPrint = "static JJChar jjstrLiteralChars_" +
 	                           literalCount++ + "[] = {";
 	      for (int j = 0; j < image.Length; j++) {
-	        string hexVal = Integer.toHexString((int)image.charAt(j));
+	        string hexVal = int.toHexString((int)image.charAt(j));
 	        toPrint += "0x" + hexVal + ", ";
 	      }
 
@@ -1659,14 +1659,14 @@ public class RStringLiteral:RegularExpression {
   }
 */
 
-  static readonly Dictionary<Integer, List<String>> literalsByLength =
-      new Dictionary<Integer, List<String>>();
-  static readonly Dictionary<Integer, List<Integer>> literalKinds =
-      new Dictionary<Integer, List<Integer>>();
-  static readonly Dictionary<Integer, Integer> kindToLexicalState =
-      new Dictionary<Integer, Integer>();
-  static readonly Dictionary<Integer, NfaState> nfaStateMap =
-      new Dictionary<Integer, NfaState>();
+  static readonly Dictionary<int, List<String>> literalsByLength =
+      new Dictionary<int, List<String>>();
+  static readonly Dictionary<int, List<int>> literalKinds =
+      new Dictionary<int, List<int>>();
+  static readonly Dictionary<int, int> kindToLexicalState =
+      new Dictionary<int, int>();
+  static readonly Dictionary<int, NfaState> nfaStateMap =
+      new Dictionary<int, NfaState>();
   public static void UpdateStringLiteralData(
       int generatedNfaStates, int lexStateIndex) {
     for (int kind = 0; kind < allImages.Length; kind++) {
@@ -1677,7 +1677,7 @@ public class RStringLiteral:RegularExpression {
       string s = allImages[kind];
       int actualKind;
       if (intermediateKinds != null &&
-          intermediateKinds[kind][s.Length - 1] != Integer.MAX_VALUE &&
+          intermediateKinds[kind][s.Length - 1] != int.MAX_VALUE &&
           intermediateKinds[kind][s.Length - 1] < kind) {
         JavaCCErrors.warning("Token: " + s + " will not be matched as " +
                              "specified. It will be matched as token " +
@@ -1695,13 +1695,13 @@ public class RStringLiteral:RegularExpression {
       char c = s.charAt(0);
       int key = (int)Main.lg.lexStateIndex << 16 | (int)c;
       List<String> l = literalsByLength.get(key);
-      List<Integer> kinds = literalKinds.get(key);
+      List<int> kinds = literalKinds.get(key);
       int j = 0;
       if (l == null) {
         literalsByLength.Add(key, l = new ());
         assert(kinds == null);
-        kinds = new ArrayList<Integer>();
-        literalKinds.Add(key, kinds = new ArrayList<Integer>());
+        kinds = new ArrayList<int>();
+        literalKinds.Add(key, kinds = new ArrayList<int>());
       }
       while (j < l.Count && l.get(j).Length > s.Length) j++;
       l.Add(j, s);
@@ -1716,7 +1716,7 @@ public class RStringLiteral:RegularExpression {
   }
 
   public static void BuildTokenizerData(TokenizerData tokenizerData) {
-    Dictionary<Integer, Integer> nfaStateIndices = new Dictionary<Integer, Integer>();
+    Dictionary<int, int> nfaStateIndices = new Dictionary<int, int>();
     for (int kind : nfaStateMap.keySet()) {
       if (nfaStateMap.get(kind) != null) {
         nfaStateIndices.Add(kind, nfaStateMap.get(kind).stateName);
