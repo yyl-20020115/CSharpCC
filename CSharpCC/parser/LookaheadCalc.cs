@@ -35,9 +35,9 @@ public class LookaheadCalc:JavaCCGlobals {
     int size;
     bool diff;
     for (int i = 0; i < v1.Count; i++) {
-      m1 = (MatchInfo)v1.get(i);
+      m1 = (MatchInfo)v1[i];
       for (int j = 0; j < v2.Count; j++) {
-        m2 = (MatchInfo)v2.get(j);
+        m2 = (MatchInfo)v2[j];
         size = m1.firstFreeLoc; m3 = m1;
         if (size > m2.firstFreeLoc) {
           size = m2.firstFreeLoc; m3 = m2;
@@ -59,7 +59,7 @@ public class LookaheadCalc:JavaCCGlobals {
 
   static bool javaCodeCheck(List v) {
     for (int i = 0; i < v.Count; i++) {
-      if (((MatchInfo)v.get(i)).firstFreeLoc == 0) {
+      if (((MatchInfo)v[i]).firstFreeLoc == 0) {
         return true;
       }
     }
@@ -111,7 +111,7 @@ public class LookaheadCalc:JavaCCGlobals {
         m.firstFreeLoc = 0;
         v = new ArrayList<MatchInfo>();
         v.Add(m);
-        LookaheadWalk.genFirstSet(v, (Expansion)ch.getChoices().get(i));
+        LookaheadWalk.genFirstSet(v, (Expansion)ch.getChoices()[i]);
         dbl[i] = LookaheadWalk.sizeLimitedMatches;
       }
       LookaheadWalk.considerSemanticLA = false;
@@ -121,12 +121,12 @@ public class LookaheadCalc:JavaCCGlobals {
         m.firstFreeLoc = 0;
         v = new ArrayList<MatchInfo>();
         v.Add(m);
-        LookaheadWalk.genFirstSet(v, (Expansion)ch.getChoices().get(i));
+        LookaheadWalk.genFirstSet(v, (Expansion)ch.getChoices()[i]);
         dbr[i] = LookaheadWalk.sizeLimitedMatches;
       }
       if (la == 1) {
         for (int i = first; i < ch.getChoices().Count-1; i++) {
-          Expansion exp = (Expansion)ch.getChoices().get(i);
+          Expansion exp = (Expansion)ch.getChoices()[i];
           if (Semanticize.emptyExpansionExists(exp)) {
             JavaCCErrors.warning(exp, "This choice can expand to the empty token sequence " +
                     "and will therefore always be taken in favor of the choices appearing later.");
@@ -155,13 +155,13 @@ public class LookaheadCalc:JavaCCGlobals {
       }
     }
     for (int i = first; i < ch.getChoices().Count-1; i++) {
-      if (explicitLA((Expansion)ch.getChoices().get(i)) && !Options.getForceLaCheck()) {
+      if (explicitLA((Expansion)ch.getChoices()[i]) && !Options.getForceLaCheck()) {
         continue;
       }
       if (minLA[i] > Options.getChoiceAmbiguityCheck()) {
         JavaCCErrors.warning("Choice conflict involving two expansions at");
-        Console.Error.Write("         line " + ((Expansion)ch.getChoices().get(i)).getLine());
-        Console.Error.Write(", column " + ((Expansion)ch.getChoices().get(i)).getColumn());
+        Console.Error.Write("         line " + ((Expansion)ch.getChoices()[i]).getLine());
+        Console.Error.Write(", column " + ((Expansion)ch.getChoices()[i]).getColumn());
         Console.Error.Write(" and line " + ((Expansion)ch.getChoices().get(other[i])).getLine());
         Console.Error.Write(", column " + ((Expansion)ch.getChoices().get(other[i])).getColumn());
         Console.Error.WriteLine(" respectively.");
@@ -169,8 +169,8 @@ public class LookaheadCalc:JavaCCGlobals {
         Console.Error.WriteLine("         Consider using a lookahead of " + minLA[i] + " or more for earlier expansion.");
       } else if (minLA[i] > 1) {
         JavaCCErrors.warning("Choice conflict involving two expansions at");
-        Console.Error.Write("         line " + ((Expansion)ch.getChoices().get(i)).getLine());
-        Console.Error.Write(", column " + ((Expansion)ch.getChoices().get(i)).getColumn());
+        Console.Error.Write("         line " + ((Expansion)ch.getChoices()[i]).getLine());
+        Console.Error.Write(", column " + ((Expansion)ch.getChoices()[i]).getColumn());
         Console.Error.Write(" and line " + ((Expansion)ch.getChoices().get(other[i])).getLine());
         Console.Error.Write(", column " + ((Expansion)ch.getChoices().get(other[i])).getColumn());
         Console.Error.WriteLine(" respectively.");
@@ -185,7 +185,7 @@ public class LookaheadCalc:JavaCCGlobals {
       return false;
     }
     Sequence seq = (Sequence)exp;
-    Object obj = seq.units.get(0);
+    Object obj = seq.units[0];
     if (!(obj is Lookahead)) {
       return false;
     }
@@ -198,7 +198,7 @@ public class LookaheadCalc:JavaCCGlobals {
       return 0;
     }
     for (int i = 0; i < ch.getChoices().Count; i++) {
-      if (!explicitLA((Expansion)ch.getChoices().get(i))) {
+      if (!explicitLA((Expansion)ch.getChoices()[i])) {
         return i;
       }
     }

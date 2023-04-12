@@ -274,7 +274,7 @@ public class NormalProduction
     /**
      * @param emptyPossible the emptyPossible to set
      */
-    bool setEmptyPossible(bool emptyPossible)
+    public bool setEmptyPossible(bool emptyPossible)
     {
         this.emptyPossible = emptyPossible;
         return emptyPossible;

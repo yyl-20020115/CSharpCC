@@ -2283,7 +2283,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\142\157\157\154\145\141\156",
                 return matchedToken;
             }
             image = jjimage;
-            image.setLength(0);
+            image.Capacity=0;
             jjimageLen = 0;
 
             for (; ; )

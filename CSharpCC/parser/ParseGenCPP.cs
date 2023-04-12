@@ -82,7 +82,7 @@ public class ParseGenCPP : ParseGen
         switchToMainFile();
         if (cu_to_insertion_point_2.Count != 0)
         {
-            printTokenSetup((cu_to_insertion_point_2.get(0)));
+            printTokenSetup((cu_to_insertion_point_2[0]));
             for (Iterator it = cu_to_insertion_point_2.iterator(); it.hasNext();)
             {
                 t = (Token)it.next();
@@ -504,7 +504,7 @@ public class ParseGenCPP : ParseGen
                 //genCodeLine("      for (int i = 0; i < jj_endpos; i++) {");
                 //genCodeLine("        jj_expentry[i] = jj_lasttokens[i];");
                 //genCodeLine("      }");
-                //genCodeLine("      jj_entries_loop: for (java.util.Iterator it = jj_expentries.iterator(); it.hasNext();) {");
+                //genCodeLine("      jj_entries_loop: for (Iterator it = jj_expentries.iterator(); it.hasNext();) {");
                 //genCodeLine("        int[] oldentry = (int[])(it->next());");
                 //genCodeLine("        if (oldentry.length == jj_expentry.length) {");
                 //genCodeLine("          for (int i = 0; i < jj_expentry.length; i++) {");
@@ -570,9 +570,9 @@ public class ParseGenCPP : ParseGen
             //genCodeLine("    int exptokseq[][1] = new int[1];");
             //genCodeLine("    for (int i = 0; i < jj_expentries.size(); i++) {");
             //if (!Options.getGenerateGenerics())
-               //genCodeLine("      exptokseq[i] = (int[])jj_expentries.get(i);");
+               //genCodeLine("      exptokseq[i] = (int[])jj_expentries[i];");
             //else
-               //genCodeLine("      exptokseq[i] = jj_expentries.get(i);");
+               //genCodeLine("      exptokseq[i] = jj_expentries[i];");
             //genCodeLine("    }");
             genCodeLine("    return new _ParseException();");//token, nullptr, tokenImage);");
             genCodeLine("  }"); */
@@ -735,7 +735,7 @@ public class ParseGenCPP : ParseGen
 
         if (cu_from_insertion_point_2.Count != 0)
         {
-            printTokenSetup((cu_from_insertion_point_2.get(0))); this.ccol = 1;
+            printTokenSetup((cu_from_insertion_point_2[0])); this.ccol = 1;
             for (Iterator it = cu_from_insertion_point_2.iterator(); it.hasNext();)
             {
                 t = (Token)it.next();

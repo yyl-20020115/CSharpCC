@@ -81,7 +81,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
                     codeGenerator.genCode((int)s.charAt(k));
                     i++;
                 }
-                int kind = kinds.get(j);
+                int kind = kinds[j];
                 codeGenerator.genCode(", " + kind);
                 codeGenerator.genCode(
                     ", " + tokenizerData.kindToNfaStartState.get(kind));
@@ -93,8 +93,8 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         codeGenerator.genCodeLine("};");
 
         codeGenerator.genCodeLine(
-            "private static final java.util.Dictionary<int, int[]> startAndSize =\n" +
-            "    new java.util.HashMap<Integer, int[]>();");
+            "private static final Dictionary<int, int[]> startAndSize =\n" +
+            "    new HashMap<Integer, int[]>();");
 
         // Static block to actually initialize the map from the int array above.
         codeGenerator.genCodeLine("static {");
@@ -116,7 +116,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         Dictionary<int, TokenizerData.NfaState> nfa = tokenizerData.nfa;
         for (int i = 0; i < nfa.Count; i++)
         {
-            TokenizerData.NfaState tmp = nfa.get(i);
+            TokenizerData.NfaState tmp = nfa[i];
             if (i > 0) codeGenerator.genCodeLine(",");
             if (tmp == null)
             {
@@ -174,7 +174,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             "private static final int[][] jjcompositeState = {");
         for (int i = 0; i < nfa.Count; i++)
         {
-            TokenizerData.NfaState tmp = nfa.get(i);
+            TokenizerData.NfaState tmp = nfa[i];
             if (i > 0) codeGenerator.genCodeLine(", ");
             if (tmp == null)
             {
@@ -195,7 +195,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         codeGenerator.genCodeLine("private static final int[] jjmatchKinds = {");
         for (int i = 0; i < nfa.Count; i++)
         {
-            TokenizerData.NfaState tmp = nfa.get(i);
+            TokenizerData.NfaState tmp = nfa[i];
             if (i > 0) codeGenerator.genCodeLine(", ");
             // TODO(sreeni) : Fix this mess.
             if (tmp == null)
@@ -211,7 +211,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             "private static final int[][]  jjnextStateSet = {");
         for (int i = 0; i < nfa.Count; i++)
         {
-            TokenizerData.NfaState tmp = nfa.get(i);
+            TokenizerData.NfaState tmp = nfa[i];
             if (i > 0) codeGenerator.genCodeLine(", ");
             if (tmp == null)
             {
@@ -235,7 +235,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         foreach (int i in tokenizerData.initialStates.keySet())
         {
             if (k++ > 0) codeGenerator.genCode(", ");
-            codeGenerator.genCode(tokenizerData.initialStates.get(i));
+            codeGenerator.genCode(tokenizerData.initialStates[i]);
         }
         codeGenerator.genCodeLine("};");
 
@@ -245,7 +245,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         for (int i = 0; i < tokenizerData.wildcardKind.Count; i++)
         {
             if (k++ > 0) codeGenerator.genCode(", ");
-            codeGenerator.genCode(tokenizerData.wildcardKind.get(i));
+            codeGenerator.genCode(tokenizerData.wildcardKind[i]);
         }
         codeGenerator.genCodeLine("};");
     }
@@ -274,7 +274,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         int k = 0;
         foreach (int i in allMatches.keySet())
         {
-            TokenizerData.MatchInfo matchInfo = allMatches.get(i);
+            TokenizerData.MatchInfo matchInfo = allMatches[i];
             switch (matchInfo.matchType)
             {
                 case SKIP: toSkip.set(i); break;
@@ -373,7 +373,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         codeGenerator.genCodeLine("  switch(" + kindString + ") {");
         foreach (int i in allMatches.keySet())
         {
-            TokenizerData.MatchInfo matchInfo = allMatches.get(i);
+            TokenizerData.MatchInfo matchInfo = allMatches[i];
             if (matchInfo.action == null ||
                 matchInfo.matchType != matchType)
             {

@@ -37,7 +37,7 @@ public abstract class CodeProduction:NormalProduction {
   /**
    * The tokens that implement this JAVACODE/CPPCODE production.
    */
-  private List<Token> code_tokens = new ArrayList<Token>();
+  private List<Token> code_tokens = new ();
 
   /**
    * @return the code_tokens

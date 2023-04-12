@@ -111,13 +111,13 @@ public class ParseException : Exception
             }
             for (int j = 0; j < expectedTokenSequences[i].Length; j++)
             {
-                expected.append(tokenImage[expectedTokenSequences[i][j]]).append(' ');
+                expected.Append(tokenImage[expectedTokenSequences[i][j]]).Append(' ');
             }
             if (expectedTokenSequences[i][expectedTokenSequences[i].Length - 1] != 0)
             {
-                expected.append("...");
+                expected.Append("...");
             }
-            expected.append(eol).append("    ");
+            expected.Append(eol).Append("    ");
         }
         String retval = "Encountered \"";
         Token tok = currentToken.next;
@@ -145,7 +145,7 @@ public class ParseException : Exception
         {
             retval += "Was expecting one of:" + eol + "    ";
         }
-        retval += expected.toString();
+        retval += expected.ToString();
         return retval;
     }
 
@@ -165,48 +165,48 @@ public class ParseException : Exception
         char ch;
         for (int i = 0; i < str.Length; i++)
         {
-            switch (str.charAt(i))
+            switch (str[i])
             {
                 case 0:
                     continue;
                 case '\b':
-                    retval.append("\\b");
+                    retval.Append("\\b");
                     continue;
                 case '\t':
-                    retval.append("\\t");
+                    retval.Append("\\t");
                     continue;
                 case '\n':
-                    retval.append("\\n");
+                    retval.Append("\\n");
                     continue;
                 case '\f':
-                    retval.append("\\f");
+                    retval.Append("\\f");
                     continue;
                 case '\r':
-                    retval.append("\\r");
+                    retval.Append("\\r");
                     continue;
                 case '\"':
-                    retval.append("\\\"");
+                    retval.Append("\\\"");
                     continue;
                 case '\'':
-                    retval.append("\\\'");
+                    retval.Append("\\\'");
                     continue;
                 case '\\':
-                    retval.append("\\\\");
+                    retval.Append("\\\\");
                     continue;
                 default:
-                    if ((ch = str.charAt(i)) < 0x20 || ch > 0x7e)
+                    if ((ch = str[i]) < 0x20 || ch > 0x7e)
                     {
                         String s = "0000" + int.toString(ch, 16);
-                        retval.append("\\u" + s.substring(s.Length - 4, s.Length));
+                        retval.Append("\\u" + s.substring(s.Length - 4, s.Length));
                     }
                     else
                     {
-                        retval.append(ch);
+                        retval.Append(ch);
                     }
                     continue;
             }
         }
-        return retval.toString();
+        return retval.ToString();
     }
 
 }

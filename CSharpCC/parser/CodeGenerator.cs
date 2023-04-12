@@ -1,6 +1,7 @@
 // Copyright 2011 Google Inc. All Rights Reserved.
 // Author: sreeni@google.com (Sreeni Viswanadha)
 
+using org.javacc.utils;
 using System.Text;
 
 namespace org.javacc.parser;
@@ -38,7 +39,7 @@ public class CodeGenerator : JavaCCParserConstants
         outputBuffer.Append("{");
         for (int i = 0; i < s.Length; i++)
         {
-            outputBuffer.Append("0x" + int.toHexString((int)s.charAt(i)) + ", ");
+            outputBuffer.Append("0x" + int.toHexString((int)s[i]) + ", ");
         }
         outputBuffer.Append("0}");
     }
@@ -61,34 +62,34 @@ public class CodeGenerator : JavaCCParserConstants
         if (!isJavaLanguage())
         {
             string incfilePath = fileName.Replace(".cc", ".h");
-            string incfileName = new File(incfilePath).getName();
-            includeBuffer.insert(0, "#define " + incfileName.Replace('.', '_').ToUpper() + "\n");
-            includeBuffer.insert(0, "#ifndef " + incfileName.Replace('.', '_').ToUpper() + "\n");
+            string incfileName = new File(incfilePath);
+            includeBuffer.Insert(0, "#define " + incfileName.Replace('.', '_').ToUpper() + "\n");
+            includeBuffer.Insert(0, "#ifndef " + incfileName.Replace('.', '_').ToUpper() + "\n");
 
             // dump the statics into the main file with the code.
-            mainBuffer.insert(0, staticsBuffer);
+            mainBuffer.Insert(0, staticsBuffer);
 
             // Finally enclose the whole thing in the namespace, if specified.
             if (Options.stringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0)
             {
-                mainBuffer.insert(0, "namespace " + Options.stringValue("NAMESPACE_OPEN") + "\n");
+                mainBuffer.Insert(0, "namespace " + Options.stringValue("NAMESPACE_OPEN") + "\n");
                 mainBuffer.Append(Options.stringValue("NAMESPACE_CLOSE") + "\n");
                 includeBuffer.Append(Options.stringValue("NAMESPACE_CLOSE") + "\n");
             }
 
             if (jjtreeGenerated)
             {
-                mainBuffer.insert(0, "#include \"SimpleNode.h\"\n");
+                mainBuffer.Insert(0, "#include \"SimpleNode.h\"\n");
             }
             if (Options.getTokenManagerUsesParser())
-                mainBuffer.insert(0, "#include \"" + cu_name + ".h\"\n");
-            mainBuffer.insert(0, "#include \"TokenMgrError.h\"\n");
-            mainBuffer.insert(0, "#include \"" + incfileName + "\"\n");
+                mainBuffer.Insert(0, "#include \"" + cu_name + ".h\"\n");
+            mainBuffer.Insert(0, "#include \"TokenMgrError.h\"\n");
+            mainBuffer.Insert(0, "#include \"" + incfileName + "\"\n");
             includeBuffer.Append("#endif\n");
             saveOutput(incfilePath, includeBuffer);
         }
 
-        mainBuffer.insert(0, "/* " + new File(fileName).getName() + " */\n");
+        mainBuffer.Insert(0, "/* " + new File(fileName) + " */\n");
         saveOutput(fileName, mainBuffer);
     }
 

@@ -29,6 +29,10 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using org.javacc.jjtree;
+using org.javacc.utils;
+using System.Text;
+
 namespace org.javacc.parser;
 
 
@@ -115,7 +119,7 @@ public class LexGen : CodeGenerator
                     bHasImport = true;
                 for (; i < cu_to_insertion_point_1.Count; i++)
                 {
-                    kind = ((Token)cu_to_insertion_point_1.get(i)).kind;
+                    kind = ((Token)cu_to_insertion_point_1[i]).kind;
                     if (kind == SEMICOLON ||
                         kind == ABSTRACT ||
                         kind == FINAL ||
@@ -127,10 +131,10 @@ public class LexGen : CodeGenerator
                         ccol = ((Token)(cu_to_insertion_point_1.get(l))).beginColumn;
                         for (j = l; j < i; j++)
                         {
-                            printToken((Token)(cu_to_insertion_point_1.get(j)));
+                            printToken((Token)(cu_to_insertion_point_1[j]));
                         }
                         if (kind == SEMICOLON)
-                            printToken((Token)(cu_to_insertion_point_1.get(j)));
+                            printToken((Token)(cu_to_insertion_point_1[j]));
                         genCodeLine("");
                         break;
                     }
@@ -161,16 +165,16 @@ public class LexGen : CodeGenerator
 
         if (token_mgr_decls != null && token_mgr_decls.Count > 0)
         {
-            Token t = (Token)token_mgr_decls.get(0);
+            Token t = (Token)token_mgr_decls[0];
             bool commonTokenActionSeen = false;
             bool commonTokenActionNeeded = Options.getCommonTokenAction();
 
-            printTokenSetup((Token)token_mgr_decls.get(0));
+            printTokenSetup((Token)token_mgr_decls[0]);
             ccol = 1;
 
             for (j = 0; j < token_mgr_decls.Count; j++)
             {
-                t = (Token)token_mgr_decls.get(j);
+                t = (Token)token_mgr_decls[j];
                 if (t.kind == IDENTIFIER &&
                     commonTokenActionNeeded &&
                     !commonTokenActionSeen)
@@ -281,7 +285,7 @@ public class LexGen : CodeGenerator
                 if ((tps = (List)allTpsForState.get(tp.lexStates[i])) == null)
                 {
                     tmpLexStateName[maxLexStates++] = tp.lexStates[i];
-                    allTpsForState.Add(tp.lexStates[i], tps = new ArrayList());
+                    allTpsForState.Add(tp.lexStates[i], tps = new ());
                 }
 
                 tps.Add(tp);
@@ -292,7 +296,7 @@ public class LexGen : CodeGenerator
 
             RegularExpression re;
             for (i = 0; i < respecs.Count; i++)
-                if (maxOrdinal <= (re = ((RegExprSpec)respecs.get(i)).rexp).ordinal)
+                if (maxOrdinal <= (re = ((RegExprSpec)respecs[i]).rexp).ordinal)
                     maxOrdinal = re.ordinal + 1;
         }
 
@@ -305,7 +309,7 @@ public class LexGen : CodeGenerator
         actions = new Action[maxOrdinal];
         actions[0] = actForEof;
         hasTokenActions = actForEof != null;
-        initStates = new Hashtable();
+        initStates = new Dictionary();
         canMatchAnyChar = new int[maxLexStates];
         canLoop = new bool[maxLexStates];
         stateHasActions = new bool[maxLexStates];
@@ -355,7 +359,7 @@ public class LexGen : CodeGenerator
         string codeGeneratorClass = Options.getTokenManagerCodeGenerator();
         keepLineCol = Options.getKeepLineColumn();
         errorHandlingClass = Options.getTokenMgrErrorClass();
-        List choices = new ArrayList();
+        List choices = new ();
         Enumeration e;
         TokenProduction tp;
         int i, j;
@@ -392,7 +396,7 @@ public class LexGen : CodeGenerator
 
             for (i = 0; i < allTps.Count; i++)
             {
-                tp = (TokenProduction)allTps.get(i);
+                tp = (TokenProduction)allTps[i];
                 int kind = tp.kind;
                 bool ignore = tp.ignoreCase;
                 List<RegExprSpec> rexps = tp.respecs;
@@ -402,7 +406,7 @@ public class LexGen : CodeGenerator
 
                 for (j = 0; j < rexps.Count; j++)
                 {
-                    RegExprSpec respec = (RegExprSpec)rexps.get(j);
+                    RegExprSpec respec = (RegExprSpec)rexps[j];
                     curRE = respec.rexp;
 
                     rexprs[curKind = curRE.ordinal] = curRE;
@@ -553,7 +557,7 @@ public class LexGen : CodeGenerator
         }
 
         for (i = 0; i < choices.Count; i++)
-            ((RChoice)choices.get(i)).CheckUnmatchability();
+            ((RChoice)choices[i]).CheckUnmatchability();
 
         CheckEmptyStringMatch();
 
@@ -566,14 +570,14 @@ public class LexGen : CodeGenerator
             StringBuilder tokenMgrDecls = new StringBuilder();
             if (token_mgr_decls != null && token_mgr_decls.Count > 0)
             {
-                Token t = (Token)token_mgr_decls.get(0);
+                Token t = (Token)token_mgr_decls[0];
                 for (j = 0; j < token_mgr_decls.Count; j++)
                 {
-                    tokenMgrDecls.Append(((Token)token_mgr_decls.get(j)).image + " ");
+                    tokenMgrDecls.Append(((Token)token_mgr_decls[j]).image + " ");
                 }
             }
             tokenizerData.setDecls(tokenMgrDecls.ToString());
-            Dictionary<Integer, String> actionStrings = new Dictionary<Integer, String>();
+            Dictionary<int, String> actionStrings = new Dictionary<int, String>();
             for (i = 0; i < maxOrdinal; i++)
             {
                 if (newLexState[i] == null)
@@ -1071,7 +1075,7 @@ public class LexGen : CodeGenerator
                 genCodeLine(prefix + "catch (java.io.IOException e1) { continue EOFLoop; }");
             }
 
-            if (initMatch[i] != int.MAX_VALUE && initMatch[i] != 0)
+            if (initMatch[i] != int.MaxValue && initMatch[i] != 0)
             {
                 if (Options.getDebugTokenManager())
                     genCodeLine("      debugStream.println(\"   Matched the empty string as \" + tokenImage[" +
@@ -1083,7 +1087,7 @@ public class LexGen : CodeGenerator
             }
             else
             {
-                genCodeLine(prefix + "jjmatchedKind = 0x" + int.toHexString(int.MAX_VALUE) + ";");
+                genCodeLine(prefix + "jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
                 genCodeLine(prefix + "jjmatchedPos = 0;");
             }
 
@@ -1097,7 +1101,7 @@ public class LexGen : CodeGenerator
             genCodeLine(prefix + "curPos = jjMoveStringLiteralDfa0_" + i + "();");
             if (canMatchAnyChar[i] != -1)
             {
-                if (initMatch[i] != int.MAX_VALUE && initMatch[i] != 0)
+                if (initMatch[i] != int.MaxValue && initMatch[i] != 0)
                     genCodeLine(prefix + "if (jjmatchedPos < 0 || (jjmatchedPos == 0 && jjmatchedKind > " +
                         canMatchAnyChar[i] + "))");
                 else
@@ -1110,7 +1114,7 @@ public class LexGen : CodeGenerator
                         canMatchAnyChar[i] + "] + \" token.\");");
                 genCodeLine(prefix + "   jjmatchedKind = " + canMatchAnyChar[i] + ";");
 
-                if (initMatch[i] != int.MAX_VALUE && initMatch[i] != 0)
+                if (initMatch[i] != int.MaxValue && initMatch[i] != 0)
                     genCodeLine(prefix + "   jjmatchedPos = 0;");
 
                 genCodeLine(prefix + "}");
@@ -1123,7 +1127,7 @@ public class LexGen : CodeGenerator
         if (maxLexStates > 1)
             genCodeLine(endSwitch);
         else if (maxLexStates == 0)
-            genCodeLine("       jjmatchedKind = 0x" + int.toHexString(int.MAX_VALUE) + ";");
+            genCodeLine("       jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
 
         if (maxLexStates > 1)
             prefix = "  ";
@@ -1132,7 +1136,7 @@ public class LexGen : CodeGenerator
 
         if (maxLexStates > 0)
         {
-            genCodeLine(prefix + "   if (jjmatchedKind != 0x" + int.toHexString(int.MAX_VALUE) + ")");
+            genCodeLine(prefix + "   if (jjmatchedKind != 0x" + int.toHexString(int.MaxValue) + ")");
             genCodeLine(prefix + "   {");
             genCodeLine(prefix + "      if (jjmatchedPos + 1 < curPos)");
 
@@ -1258,7 +1262,7 @@ public class LexGen : CodeGenerator
                         genCodeLine(prefix + "      curLexState = jjnewLexState[jjmatchedKind];");
                     }
                     genCodeLine(prefix + "      curPos = 0;");
-                    genCodeLine(prefix + "      jjmatchedKind = 0x" + int.toHexString(int.MAX_VALUE) + ";");
+                    genCodeLine(prefix + "      jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
 
                     genCodeLine(prefix + "      try {");
                     genCodeLine(prefix + "         curChar = input_stream.readChar();");
@@ -1363,11 +1367,11 @@ public class LexGen : CodeGenerator
                     genCodeLine("(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));");
                 }
 
-                printTokenSetup((Token)act.getActionTokens().get(0));
+                printTokenSetup((Token)act.getActionTokens()[0]);
                 ccol = 1;
 
                 for (int j = 0; j < act.getActionTokens().Count; j++)
-                    printToken((Token)act.getActionTokens().get(j));
+                    printToken((Token)act.getActionTokens()[j]);
                 genCodeLine("");
 
                 break;
@@ -1438,11 +1442,11 @@ public class LexGen : CodeGenerator
                     genCodeLine("(input_stream.GetSuffix(jjimageLen));");
 
                 genCodeLine("         jjimageLen = 0;");
-                printTokenSetup((Token)act.getActionTokens().get(0));
+                printTokenSetup((Token)act.getActionTokens()[0]);
                 ccol = 1;
 
                 for (int j = 0; j < act.getActionTokens().Count; j++)
-                    printToken((Token)act.getActionTokens().get(j));
+                    printToken((Token)act.getActionTokens()[j]);
                 genCodeLine("");
 
                 break;
@@ -1523,11 +1527,11 @@ public class LexGen : CodeGenerator
                     }
                 }
 
-                printTokenSetup((Token)act.getActionTokens().get(0));
+                printTokenSetup((Token)act.getActionTokens()[0]);
                 ccol = 1;
 
                 for (int j = 0; j < act.getActionTokens().Count; j++)
-                    printToken((Token)act.getActionTokens().get(j));
+                    printToken((Token)act.getActionTokens()[j]);
                 genCodeLine("");
 
                 break;
@@ -1545,7 +1549,7 @@ public class LexGen : CodeGenerator
     public static void reInit()
     {
         actions = null;
-        allTpsForState = new Hashtable();
+        allTpsForState = new Dictionary();
         canLoop = null;
         canMatchAnyChar = null;
         canReachOnMore = null;
@@ -1564,7 +1568,7 @@ public class LexGen : CodeGenerator
         hasTokenActions = false;
         ignoreCase = null;
         initMatch = null;
-        initStates = new Hashtable();
+        initStates = new Dictionary();
         initialState = null;
         keepLineCol = false;
         kinds = null;

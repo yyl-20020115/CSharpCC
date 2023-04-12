@@ -40,8 +40,8 @@ public class Semanticize:JavaCCGlobals {
 
   static void removePreparedItems() {
     for (int i = 0; i < removeList.Count; i++) {
-      List list = (List)(removeList.get(i));
-      list.remove(itemList.get(i));
+      List list = (List)(removeList[i]);
+      list.remove(itemList[i]);
     }
     removeList.Clear();
     itemList.Clear();
@@ -184,9 +184,9 @@ public class Semanticize:JavaCCGlobals {
           tp.lexStates[i++] = (String)(enum1.nextElement());
         }
       }
-      Hashtable[] table= new Hashtable[tp.lexStates.Length];
+      Dictionary[] table= new Dictionary[tp.lexStates.Length];
       for (int i = 0; i < tp.lexStates.Length; i++) {
-        table[i] = (Hashtable)simple_tokens_table.get(tp.lexStates[i]);
+        table[i] = (Dictionary)simple_tokens_table.get(tp.lexStates[i]);
       }
       for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();) {
         RegExprSpec res = (RegExprSpec)(it1.next());
@@ -195,14 +195,14 @@ public class Semanticize:JavaCCGlobals {
           // This loop performs the checks and actions with respect to each lexical state.
           for (int i = 0; i < table.Length; i++) {
             // Get table of all case variants of "sl.image" into table2.
-            Hashtable table2 = (Hashtable)(table[i].get(sl.image.ToUpper()));
+            Dictionary table2 = (Dictionary)(table[i].get(sl.image.ToUpper()));
             if (table2 == null) {
               // There are no case variants of "sl.image" earlier than the current one.
               // So go ahead and insert this item.
               if (sl.ordinal == 0) {
                 sl.ordinal = tokenCount++;
               }
-              table2 = new Hashtable();
+              table2 = new Dictionary();
               table2.Add(sl.image, sl);
               table[i].Add(sl.image.ToUpper(), table2);
             } else if (hasIgnoreCase(table2, sl.image)) { // hasIgnoreCase sets "other" if it is found.
@@ -366,7 +366,7 @@ public class Semanticize:JavaCCGlobals {
         List<RegExprSpec> respecs = tp.respecs;
         for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();) {
           RegExprSpec res = (RegExprSpec)(it1.next());
-          Integer ii = (res.rexp.ordinal);
+          int ii = (res.rexp.ordinal);
           if (names_of_tokens.get(ii) == null) {
             JavaCCErrors.warning(res.rexp, "Unlabeled regular expression cannot be referred to by " +
                     "user generated token manager.");
@@ -463,7 +463,7 @@ public class Semanticize:JavaCCGlobals {
 
   // Checks to see if the "str" is superseded by another equal (except case) string
   // in table.
-  public static bool hasIgnoreCase(Hashtable<String, RegularExpression> table, string str) {
+  public static bool hasIgnoreCase(Dictionary<String, RegularExpression> table, string str) {
     RegularExpression rexp;
     rexp = (RegularExpression)(table.get(str));
     if (rexp != null && !rexp.tpContext.ignoreCase) {
@@ -693,7 +693,7 @@ public class Semanticize:JavaCCGlobals {
           return;
         }
         Sequence seq = (Sequence)e;
-        Lookahead la = (Lookahead)(seq.units.get(0));
+        Lookahead la = (Lookahead)(seq.units[0]);
         if (!la.isExplicit()) {
           return;
         }
@@ -826,7 +826,7 @@ public class Semanticize:JavaCCGlobals {
         return true;
       }
       Sequence seq = (Sequence)exp;
-      Object obj = seq.units.get(0);
+      Object obj = seq.units[0];
       if (!(obj is Lookahead)) {
         return true;
       }
@@ -838,8 +838,8 @@ public class Semanticize:JavaCCGlobals {
 
    public static void reInit()
    {
-      removeList = new ArrayList();
-      itemList = new ArrayList();
+      removeList = new ();
+      itemList = new ();
       other = null;
       loopString = null;
    }

@@ -70,13 +70,13 @@ public class OtherFilesGenCPP: JavaCCGlobals {
     ostr.WriteLine("/* " + getIdString(tn, cu_name + "Constants.java") + " */");
 
     if (cu_to_insertion_point_1.Count != 0 &&
-        ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
+        ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
        ) {
       for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-        if (((Token)cu_to_insertion_point_1.get(i)).kind == SEMICOLON) {
-          printTokenSetup((Token)(cu_to_insertion_point_1.get(0)));
+        if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
+          printTokenSetup((Token)(cu_to_insertion_point_1[0]));
           for (int j = 0; j <= i; j++) {
-            t = (Token)(cu_to_insertion_point_1.get(j));
+            t = (Token)(cu_to_insertion_point_1[j]);
             printToken(t, ostr);
           }
           printTrailingComments(t, ostr);
@@ -105,7 +105,7 @@ public class OtherFilesGenCPP: JavaCCGlobals {
     string constPrefix = "const";
     ostr.WriteLine("  /** End of File. */");
     ostr.WriteLine(constPrefix + "  int _EOF = 0;");
-    for (java.util.Iterator<RegularExpression> it = ordered_named_tokens.iterator(); it.hasNext();) {
+    for (Iterator<RegularExpression> it = ordered_named_tokens.iterator(); it.hasNext();) {
       re = it.next();
       ostr.WriteLine("  /** RegularExpression Id. */");
       ostr.WriteLine(constPrefix + "  int " + re.label + " = " + re.ordinal + ";");
@@ -125,10 +125,10 @@ public class OtherFilesGenCPP: JavaCCGlobals {
     printCharArray(ostr, "<EOF>");
     ostr.WriteLine(";");
 
-    for (java.util.Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();) {
+    for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();) {
       TokenProduction tp = it.next();
       List<RegExprSpec> respecs = tp.respecs;
-      for (java.util.Iterator<RegExprSpec> it2 = respecs.iterator(); it2.hasNext();) {
+      for (Iterator<RegExprSpec> it2 = respecs.iterator(); it2.hasNext();) {
         RegExprSpec res = it2.next();
         re = res.rexp;
         ostr.WriteLine("  static const JJChar tokenImage_arr_" + ++cnt + "[] = ");

@@ -268,10 +268,10 @@ public class RStringLiteral : RegularExpression
             for (int j = 0; j < image.Length; j++)
             {
                 if (codeGenerator.isJavaLanguage() && image.charAt(j) <= 0xff)
-                    toPrint += ("\\" + Integer.toOctalString((int)image.charAt(j)));
+                    toPrint += ("\\" + int.toOctalString((int)image.charAt(j)));
                 else
                 {
-                    string hexVal = Integer.toHexString((int)image.charAt(j));
+                    string hexVal = int.toHexString((int)image.charAt(j));
                     if (hexVal.Length == 3)
                         hexVal = "0" + hexVal;
                     toPrint += ("\\u" + hexVal);
@@ -307,7 +307,7 @@ public class RStringLiteral : RegularExpression
     /**
      * Used for top level string literals.
      */
-    public void GenerateDfa(CodeGenerator codeGenerator, int kind)
+    public override void GenerateDfa(CodeGenerator codeGenerator, int kind)
     {
         string s;
         Dictionary temp;
@@ -324,9 +324,9 @@ public class RStringLiteral : RegularExpression
         for (int i = 0; i < len; i++)
         {
             if (Options.getIgnoreCase())
-                s = ("" + (c = image.charAt(i))).ToLower(Locale.ENGLISH);
+                s = ("" + (c = image[i])).ToLower(Locale.ENGLISH);
             else
-                s = "" + (c = image.charAt(i));
+                s = "" + (c = image[i]);
 
             if (!NfaState.unicodeWarningGiven && c > 0xff &&
                 !Options.getJavaUnicodeEscape() &&
@@ -341,7 +341,7 @@ public class RStringLiteral : RegularExpression
             if (i >= charPosKind.Count) // Kludge, but OK
                 charPosKind.Add(temp = new Dictionary());
             else
-                temp = (Dictionary)charPosKind.get(i);
+                temp = (Dictionary)charPosKind[i];
 
             if ((info = (KindInfo)temp.get(s)) == null)
                 temp.Add(s, info = new KindInfo(Main.lg.maxOrdinal));
@@ -354,12 +354,12 @@ public class RStringLiteral : RegularExpression
             if (!Options.getIgnoreCase() && Main.lg.ignoreCase[ordinal] &&
                 c != char.ToLower(c))
             {
-                s = ("" + image.charAt(i)).ToLower(Locale.ENGLISH);
+                s = ("" + image[i]).ToLower(Locale.ENGLISH);
 
                 if (i >= charPosKind.Count) // Kludge, but OK
                     charPosKind.Add(temp = new Dictionary());
                 else
-                    temp = (Dictionary)charPosKind.get(i);
+                    temp = (Dictionary)charPosKind[i];
 
                 if ((info = (KindInfo)temp.get(s)) == null)
                     temp.Add(s, info = new KindInfo(Main.lg.maxOrdinal));
@@ -373,12 +373,12 @@ public class RStringLiteral : RegularExpression
             if (!Options.getIgnoreCase() && Main.lg.ignoreCase[ordinal] &&
                 c != char.ToUpper(c))
             {
-                s = ("" + image.charAt(i)).ToUpper();
+                s = ("" + image[i]).ToUpper();
 
                 if (i >= charPosKind.Count) // Kludge, but OK
                     charPosKind.Add(temp = new Dictionary());
                 else
-                    temp = (Dictionary)charPosKind.get(i);
+                    temp = (Dictionary)charPosKind[i];
 
                 if ((info = (KindInfo)temp.get(s)) == null)
                     temp.Add(s, info = new KindInfo(Main.lg.maxOrdinal));
@@ -416,12 +416,12 @@ public class RStringLiteral : RegularExpression
         {
             finalState = new NfaState();
             startState.charMoves = new char[1];
-            startState.AddChar(image.charAt(i));
+            startState.AddChar(image[i]);
 
             if (Options.getIgnoreCase() || ignoreCase)
             {
-                startState.AddChar(char.ToLower(image.charAt(i)));
-                startState.AddChar(char.ToUpper(image.charAt(i)));
+                startState.AddChar(char.ToLower(image[i]));
+                startState.AddChar(char.ToUpper(image[i]));
             }
 
             startState.next = finalState;
@@ -508,7 +508,7 @@ public class RStringLiteral : RegularExpression
 
         for (int i = 0; i < s2.Length; i++)
         {
-            char c1 = s1.charAt(i), c2 = s2.charAt(i);
+            char c1 = s1[i], c2 = s2[i];
 
             if (c1 != c2 && char.ToLower(c2) != c1 &&
                 char.ToUpper(c2) != c1)
@@ -751,7 +751,7 @@ public class RStringLiteral : RegularExpression
         {
             bool atLeastOne = false;
             bool startNfaNeeded = false;
-            tab = (Dictionary)charPosKind.get(i);
+            tab = (Dictionary)charPosKind[i];
             String[] keys = ReArrange(tab);
 
             StringBuilder _params = new StringBuilder();
@@ -866,13 +866,13 @@ public class RStringLiteral : RegularExpression
                 {
                     if (codeGenerator.isJavaLanguage())
                     {
-                        codeGenerator.genCodeLine("   if (jjmatchedKind != 0 && jjmatchedKind != 0x" + Integer.toHexString(int.MaxValue) + ")");
+                        codeGenerator.genCodeLine("   if (jjmatchedKind != 0 && jjmatchedKind != 0x" + int.toHexString(int.MaxValue) + ")");
                         codeGenerator.genCodeLine("      debugStream.println(\"   Currently matched the first \" + " + "(jjmatchedPos + 1) + \" characters as a \" + tokenImage[jjmatchedKind] + \" token.\");");
                         codeGenerator.genCodeLine("   debugStream.println(\"   Possible string literal matches : { \"");
                     }
                     else
                     {
-                        codeGenerator.genCodeLine("   if (jjmatchedKind != 0 && jjmatchedKind != 0x" + Integer.toHexString(int.MaxValue) + ")");
+                        codeGenerator.genCodeLine("   if (jjmatchedKind != 0 && jjmatchedKind != 0x" + int.toHexString(int.MaxValue) + ")");
                         codeGenerator.genCodeLine("      fprintf(debugStream, \"   Currently matched the first %d characters as a \\\"%s\\\" token.\\n\", (jjmatchedPos + 1), addUnicodeEscapes(tokenImage[jjmatchedKind]).c_str());");
                         codeGenerator.genCodeLine("   fprintf(debugStream, \"   Possible string literal matches : { \");");
                     }
@@ -960,12 +960,12 @@ public class RStringLiteral : RegularExpression
                     {
                         if (codeGenerator.isJavaLanguage())
                         {
-                            codeGenerator.genCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" + Integer.toHexString(int.MaxValue) + ")");
+                            codeGenerator.genCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" + int.toHexString(int.MaxValue) + ")");
                             codeGenerator.genCodeLine("         debugStream.println(\"   Currently matched the first \" + " + "(jjmatchedPos + 1) + \" characters as a \" + tokenImage[jjmatchedKind] + \" token.\");");
                         }
                         else
                         {
-                            codeGenerator.genCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" + Integer.toHexString(int.MaxValue) + ")");
+                            codeGenerator.genCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" + int.toHexString(int.MaxValue) + ")");
                             codeGenerator.genCodeLine("      fprintf(debugStream, \"   Currently matched the first %d characters as a \\\"%s\\\" token.\\n\", (jjmatchedPos + 1),  addUnicodeEscapes(tokenImage[jjmatchedKind]).c_str());");
                         }
                     }
@@ -1336,7 +1336,7 @@ public class RStringLiteral : RegularExpression
             DumpStartWithStates(codeGenerator);
     }
 
-    static readonly int GetStrKind(string str)
+    static int GetStrKind(string str)
     {
         for (int i = 0; i < maxStrKind; i++)
         {
@@ -1360,7 +1360,7 @@ public class RStringLiteral : RegularExpression
         int i, j, kind, jjmatchedPos = 0;
         int maxKindsReqd = maxStrKind / 64 + 1;
         long[] actives;
-        List newStates = new ArrayList();
+        List newStates = new ();
         List oldStates = null, jjtmpStates;
 
         statesForPos = new Dictionary[maxLen];
@@ -1574,7 +1574,7 @@ public class RStringLiteral : RegularExpression
                     string kindStr = stateSetString.substring(0,
                                              ind = stateSetString.IndexOf(", "));
                     string afterKind = stateSetString.substring(ind + 2);
-                    int jjmatchedPos = Integer.parseInt(
+                    int jjmatchedPos = int.parseInt(
                                  afterKind.substring(0, afterKind.IndexOf(", ")));
 
                     if (!kindStr == (String.valueOf(int.MaxValue)))
@@ -1645,7 +1645,7 @@ public class RStringLiteral : RegularExpression
         codeGenerator.genCodeLine("   }");
         codeGenerator.genCodeLine("}");
 
-        _params.setLength(0);
+        _params.Capacity=0;
         _params.Append("(int pos, ");
         for (i = 0; i < maxKindsReqd - 1; i++)
             _params.Append("" + Options.getLongType() + " active" + i + ", ");
@@ -1707,11 +1707,11 @@ public class RStringLiteral : RegularExpression
 
     /*
       static void GenerateData(TokenizerData tokenizerData) {
-         Hashtable tab;
+         Dictionary tab;
          string key;
          KindInfo info;
          for (int i = 0; i < maxLen; i++) {
-            tab = (Hashtable)charPosKind.get(i);
+            tab = (Dictionary)charPosKind[i];
             String[] keys = ReArrange(tab);
             if (Options.getIgnoreCase()) {
               for (string s : keys) {
@@ -1746,7 +1746,7 @@ public class RStringLiteral : RegularExpression
                BitSet bits = BitSet.valueOf(actives);
 
                for (int j = 0; j < bits.Length; j++) {
-                 if (bits.get(j)) tokenizerData.addFinalDfaKind(j);
+                 if (bits[j]) tokenizerData.addFinalDfaKind(j);
                }
                // Pos
                codeGenerator.genCode(
@@ -1789,7 +1789,7 @@ public class RStringLiteral : RegularExpression
             string s = allImages[kind];
             int actualKind;
             if (intermediateKinds != null &&
-                intermediateKinds[kind][s.Length - 1] != int.MAX_VALUE &&
+                intermediateKinds[kind][s.Length - 1] != int.MaxValue &&
                 intermediateKinds[kind][s.Length - 1] < kind)
             {
                 JavaCCErrors.warning("Token: " + s + " will not be matched as " +
@@ -1818,9 +1818,9 @@ public class RStringLiteral : RegularExpression
                 literalsByLength.Add(key, l = new());
                 assert(kinds == null);
                 kinds = new ArrayList<int>();
-                literalKinds.Add(key, kinds = new ArrayList<int>());
+                literalKinds.Add(key, kinds = new List<int>());
             }
-            while (j < l.Count && l.get(j).Length > s.Length) j++;
+            while (j < l.Count && l[j].Length > s.Length) j++;
             l.Add(j, s);
             kinds.Add(j, actualKind);
             int stateIndex = GetStateSetForKind(s.Length - 1, kind);

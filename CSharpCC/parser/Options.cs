@@ -239,7 +239,7 @@ public class Options
 
         foreach (OptionInfo t in userOptions)
         {
-            optionValues.Add(t.getName(), t.getDefault());
+            optionValues.Add(t, t.getDefault());
         }
 
         {
@@ -348,7 +348,7 @@ public class Options
      */
     public static bool isOption(string opt)
     {
-        return opt != null && opt.Length > 1 && opt.charAt(0) == '-';
+        return opt != null && opt.Length > 1 && opt[0] == '-';
     }
 
     /**
@@ -402,7 +402,7 @@ public class Options
             object o = null;
             if (value is List)
             {
-                o = ((List)value).get(0);
+                o = ((List)value)[0];
             }
             else
             {
@@ -501,7 +501,7 @@ public class Options
     {
         string s;
 
-        if (arg.charAt(0) == '-')
+        if (arg[0] == '-')
         {
             s = arg.substring(1);
         }
@@ -536,7 +536,7 @@ public class Options
                 Val = true;
             }
             else if (name.Length() > 2 && name.charAt(0) == 'N'
-                    && name.charAt(1) == 'O')
+                    && name[1] == 'O')
             {
                 Val = false;
                 name = name.substring(2);
@@ -578,8 +578,8 @@ public class Options
                     if (s.Length > index + 2)
                     {
                         // i.e., there is space for two '"'s in value
-                        if (s.charAt(index + 1) == '"'
-                                && s.charAt(s.Length - 1) == '"')
+                        if (s[index + 1] == '"'
+                                && s[^1] == '"')
                         {
                             // remove the two '"'s.
                             Val = s.substring(index + 2, s.Length - 1);

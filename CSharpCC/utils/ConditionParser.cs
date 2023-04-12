@@ -388,7 +388,7 @@ public class ConditionParser : ConditionParserConstants
         int[][] exptokseq = new int[jj_expentries.Count][];
         for (int i = 0; i < jj_expentries.Count; i++)
         {
-            exptokseq[i] = jj_expentries.get(i);
+            exptokseq[i] = jj_expentries[i];
         }
         return new ParseException(token, exptokseq, tokenImage);
     }

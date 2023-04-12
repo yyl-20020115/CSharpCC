@@ -118,17 +118,17 @@ public class OtherFilesGen : JavaCCGlobals, JavaCCParserConstants
         ostr.WriteLine("/* " + getIdString(tn, cu_name + CONSTANTS_FILENAME_SUFFIX) + " */");
 
         if (cu_to_insertion_point_1.Count != 0 &&
-            ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
+            ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
            )
         {
             for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
             {
-                if (((Token)cu_to_insertion_point_1.get(i)).kind == SEMICOLON)
+                if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
                 {
-                    printTokenSetup((Token)(cu_to_insertion_point_1.get(0)));
+                    printTokenSetup((Token)(cu_to_insertion_point_1[0]));
                     for (int j = 0; j <= i; j++)
                     {
-                        t = (Token)(cu_to_insertion_point_1.get(j));
+                        t = (Token)(cu_to_insertion_point_1[j]);
                         printToken(t, ostr);
                     }
                     printTrailingComments(t, ostr);
@@ -154,7 +154,7 @@ public class OtherFilesGen : JavaCCGlobals, JavaCCParserConstants
         RegularExpression re;
         ostr.WriteLine("  /** End of File. */");
         ostr.WriteLine("  int EOF = 0;");
-        for (java.util.Iterator<RegularExpression> it = ordered_named_tokens.iterator(); it.hasNext();)
+        for (Iterator<RegularExpression> it = ordered_named_tokens.iterator(); it.hasNext();)
         {
             re = it.next();
             ostr.WriteLine("  /** RegularExpression Id. */");
@@ -174,11 +174,11 @@ public class OtherFilesGen : JavaCCGlobals, JavaCCParserConstants
         ostr.WriteLine("  String[] tokenImage = {");
         ostr.WriteLine("    \"<EOF>\",");
 
-        for (java.util.Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
+        for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
         {
             TokenProduction tp = (TokenProduction)(it.next());
             List<RegExprSpec> respecs = tp.respecs;
-            for (java.util.Iterator<RegExprSpec> it2 = respecs.iterator(); it2.hasNext();)
+            for (Iterator<RegExprSpec> it2 = respecs.iterator(); it2.hasNext();)
             {
                 RegExprSpec res = (RegExprSpec)(it2.next());
                 re = res.rexp;

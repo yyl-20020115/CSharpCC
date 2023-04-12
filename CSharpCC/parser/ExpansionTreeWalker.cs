@@ -57,7 +57,7 @@ public static class ExpansionTreeWalker {
         preOrderWalk(((ZeroOrOne)node).expansion, opObj);
       } else if (node is Lookahead) {
         Expansion nested_e = ((Lookahead)node).getLaExpansion();
-        if (!(nested_e is Sequence && (Expansion)(((Sequence)nested_e).units.get(0)) == node)) {
+        if (!(nested_e is Sequence && (Expansion)(((Sequence)nested_e).units[0]) == node)) {
           preOrderWalk(nested_e, opObj);
         }
       } else if (node is TryBlock) {
@@ -105,7 +105,7 @@ public static class ExpansionTreeWalker {
         postOrderWalk(((ZeroOrOne)node).expansion, opObj);
       } else if (node is Lookahead) {
         Expansion nested_e = ((Lookahead)node).getLaExpansion();
-        if (!(nested_e is Sequence && (Expansion)(((Sequence)nested_e).units.get(0)) == node)) {
+        if (!(nested_e is Sequence && (Expansion)(((Sequence)nested_e).units[0]) == node)) {
           postOrderWalk(nested_e, opObj);
         }
       } else if (node is TryBlock) {

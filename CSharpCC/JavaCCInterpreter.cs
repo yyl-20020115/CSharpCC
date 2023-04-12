@@ -21,7 +21,7 @@ public class JavaCCInterpreter
         string grammar = "";
         try
         {
-            File fp = new File(args[^2]);
+            string fp = (args[^2]);
             byte[] buf = new byte[(int)fp.Length];
             new DataInputStream(
                 new BufferedInputStream(
@@ -96,7 +96,7 @@ public class JavaCCInterpreter
             int matchedKind = int.MaxValue;
             int nfaStartState = td.initialStates.get(curLexState);
 
-            char c = input.charAt(curPos);
+            char c = input[curPos];
             if (Options.getIgnoreCase()) c = char.ToLower(c);
             int key = curLexState << 16 | (int)c;
             List<String> literals = td.literalSequence.get(key);
@@ -110,9 +110,9 @@ public class JavaCCInterpreter
                     // See which literal matches.
                     while (index < s.Length && curPos + index < input_size)
                     {
-                        c = input.charAt(curPos + index);
+                        c = input[curPos + index];
                         if (Options.getIgnoreCase()) c = char.ToLower(c);
-                        if (c != s.charAt(index)) break;
+                        if (c != s[index]) break;
                         index++;
                     }
                     if (index == s.Length)
@@ -131,12 +131,12 @@ public class JavaCCInterpreter
             if (nfaStartState != -1)
             {
                 // We need to add the composite states first.
-                int kind = int.MAX_VALUE;
+                int kind = int.MaxValue;
                 curStates.Add(nfaStartState);
                 curStates.addAll(td.nfa.get(nfaStartState).compositeStates);
                 do
                 {
-                    c = input.charAt(curPos);
+                    c = input[curPos];
                     if (Options.getIgnoreCase()) c = char.ToLower(c);
                     foreach (int state in curStates)
                     {
@@ -154,11 +154,11 @@ public class JavaCCInterpreter
                     newStates = curStates;
                     curStates = tmp;
                     newStates.Clear();
-                    if (kind != int.MAX_VALUE)
+                    if (kind != int.MaxValue)
                     {
                         matchedKind = kind;
                         matchedPos = curPos;
-                        kind = int.MAX_VALUE;
+                        kind = int.MaxValue;
                     }
                 } while (!curStates.isEmpty() && ++curPos < input_size);
             }
@@ -166,7 +166,7 @@ public class JavaCCInterpreter
             {
                 matchedKind = td.wildcardKind.get(curLexState);
             }
-            if (matchedKind != int.MAX_VALUE)
+            if (matchedKind != int.MaxValue)
             {
                 TokenizerData.MatchInfo matchInfo = td.allMatches.get(matchedKind);
                 if (matchInfo.action != null)
@@ -188,7 +188,7 @@ public class JavaCCInterpreter
             else
             {
                 Console.Error.WriteLine("Encountered token error at char: " +
-                                   input.charAt(curPos));
+                                   input[curPos]);
                 Environment.Exit(1);
             }
         }

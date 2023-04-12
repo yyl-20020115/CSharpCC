@@ -39,7 +39,7 @@ public static class LookaheadWalk
     {
         for (int i = 0; i < vToAppend.Count; i++)
         {
-            vToAppendTo.Add(vToAppend.get(i));
+            vToAppendTo.Add(vToAppend[i]);
         }
     }
 
@@ -50,7 +50,7 @@ public static class LookaheadWalk
             List<MatchInfo> retval = new ArrayList<MatchInfo>();
             for (int i = 0; i < partialMatches.Count; i++)
             {
-                MatchInfo m = (MatchInfo)partialMatches.get(i);
+                MatchInfo m = (MatchInfo)partialMatches[i];
                 MatchInfo mnew = new MatchInfo();
                 for (int j = 0; j < m.firstFreeLoc; j++)
                 {
@@ -87,7 +87,7 @@ public static class LookaheadWalk
             Choice ch = (Choice)exp;
             for (int i = 0; i < ch.getChoices().Count; i++)
             {
-                List<MatchInfo> v = genFirstSet(partialMatches, (Expansion)ch.getChoices().get(i));
+                List<MatchInfo> v = genFirstSet(partialMatches, (Expansion)ch.getChoices()[i]);
                 listAppend(retval, v);
             }
             return retval;
@@ -98,7 +98,7 @@ public static class LookaheadWalk
             Sequence seq = (Sequence)exp;
             for (int i = 0; i < seq.units.Count; i++)
             {
-                v = genFirstSet(v, (Expansion)seq.units.get(i));
+                v = genFirstSet(v, (Expansion)seq.units[i]);
                 if (v.Count == 0) break;
             }
             return v;
@@ -163,13 +163,13 @@ public static class LookaheadWalk
         {
             for (int j = 0; j < mask.Count; j++)
             {
-                if (toSplit.get(i) == mask.get(j))
+                if (toSplit[i] == mask[j])
                 {
-                    partInMask.Add(toSplit.get(i));
+                    partInMask.Add(toSplit[i]);
                     continue OuterLoop;
                 }
             }
-            rest.Add(toSplit.get(i));
+            rest.Add(toSplit[i]);
         }
     }
 
@@ -196,7 +196,7 @@ public static class LookaheadWalk
             //    Console.WriteLine("1; gen: " + generation + "; exp: " + exp);
             for (int i = 0; i < parents.Count; i++)
             {
-                List<MatchInfo> v = genFollowSet(partialMatches, (Expansion)parents.get(i), generation);
+                List<MatchInfo> v = genFollowSet(partialMatches, (Expansion)parents[i], generation);
                 listAppend(retval, v);
             }
             return retval;
@@ -209,7 +209,7 @@ public static class LookaheadWalk
             List<MatchInfo> v = partialMatches;
             for (int i = exp.ordinal + 1; i < seq.units.Count; i++)
             {
-                v = genFirstSet(v, (Expansion)seq.units.get(i));
+                v = genFirstSet(v, (Expansion)seq.units[i]);
                 if (v.Count == 0) return v;
             }
             List<MatchInfo> v1 = new ArrayList<MatchInfo>();

@@ -30,7 +30,8 @@
  * Having this intermediary allows the OS scripts to be package name
  * independent.
  */
-public static class javacc
+namespace org.javacc;
+public static class Javacc
 {
     public static void main(string[] args)
     {

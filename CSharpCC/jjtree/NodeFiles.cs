@@ -47,7 +47,7 @@ public static class NodeFiles
 
     static HashSet<Node> nodesGenerated = new ();
 
-    static void ensure(IO io, string nodeType)
+    public static void ensure(IO io, string nodeType)
     {
         string file = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), nodeType + ".java");
 
@@ -156,7 +156,7 @@ public static class NodeFiles
 
             for (int i = 0; i < nodeIds.Count; ++i)
             {
-                string n = (String)nodeIds.get(i);
+                string n = (String)nodeIds[i];
                 ostr.WriteLine("  public int " + n + " = " + i + ";");
             }
 
@@ -166,7 +166,7 @@ public static class NodeFiles
             ostr.WriteLine("  public String[] jjtNodeName = {");
             for (int i = 0; i < nodeNames.Count; ++i)
             {
-                string n = (String)nodeNames.get(i);
+                string n = (String)nodeNames[i];
                 ostr.WriteLine("    \"" + n + "\",");
             }
             ostr.WriteLine("  };");
@@ -182,12 +182,12 @@ public static class NodeFiles
     }
 
 
-    static string visitorClass()
+    public static string visitorClass()
     {
         return JJTreeGlobals.parserName + "Visitor";
     }
 
-    static void generateVisitor_java()
+    public static void generateVisitor_java()
     {
         if (!JJTreeOptions.getVisitor())
         {
@@ -222,7 +222,7 @@ public static class NodeFiles
             {
                 for (int i = 0; i < nodeNames.Count; ++i)
                 {
-                    string n = (String)nodeNames.get(i);
+                    string n = (String)nodeNames[i];
                     if (n == ("void"))
                     {
                         continue;
@@ -243,7 +243,7 @@ public static class NodeFiles
         }
     }
 
-    static string defaultVisitorClass()
+    public static string defaultVisitorClass()
     {
         return JJTreeGlobals.parserName + "DefaultVisitor";
     }
@@ -263,7 +263,7 @@ public static class NodeFiles
         return sb.ToString();
     }
 
-    static void generateDefaultVisitor_java()
+    public static void generateDefaultVisitor_java()
     {
         if (!JJTreeOptions.getVisitor())
         {
@@ -333,7 +333,7 @@ public static class NodeFiles
             {
                 for (int i = 0; i < nodeNames.Count; ++i)
                 {
-                    string n = (String)nodeNames.get(i);
+                    string n = (String)nodeNames[i];
                     if (n == ("void"))
                     {
                         continue;

@@ -45,7 +45,7 @@ public class RSequence : RegularExpression
     public Nfa GenerateNfa(bool ignoreCase)
     {
         if (units.Count == 1)
-            return ((RegularExpression)units.get(0)).GenerateNfa(ignoreCase);
+            return ((RegularExpression)units[0]).GenerateNfa(ignoreCase);
 
         Nfa retVal = new Nfa();
         NfaState startState = retVal.start;
@@ -55,13 +55,13 @@ public class RSequence : RegularExpression
 
         RegularExpression curRE;
 
-        curRE = (RegularExpression)units.get(0);
+        curRE = (RegularExpression)units[0];
         temp1 = curRE.GenerateNfa(ignoreCase);
         startState.AddMove(temp1.start);
 
         for (int i = 1; i < units.Count; i++)
         {
-            curRE = (RegularExpression)units.get(i);
+            curRE = (RegularExpression)units[i];
 
             temp2 = curRE.GenerateNfa(ignoreCase);
             temp1.end.AddMove(temp2.start);

@@ -45,7 +45,7 @@ public class RZeroOrOne : RegularExpression
         var startState = retVal.start;
         var finalState = retVal.end;
 
-        Nfa temp = regexpr.GenerateNfa(ignoreCase);
+        var temp = regexpr.GenerateNfa(ignoreCase);
 
         startState.AddMove(temp.start);
         startState.AddMove(finalState);

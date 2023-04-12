@@ -59,7 +59,7 @@ public class RChoice:RegularExpression {
      CompressCharLists();
 
      if (getChoices().Count == 1)
-        return ((RegularExpression)getChoices().get(0)).GenerateNfa(ignoreCase);
+        return ((RegularExpression)getChoices()[0]).GenerateNfa(ignoreCase);
 
      Nfa retVal = new Nfa();
      NfaState startState = retVal.start;
@@ -68,7 +68,7 @@ public class RChoice:RegularExpression {
      for (int i = 0; i < getChoices().Count; i++)
      {
         Nfa temp;
-        RegularExpression curRE = (RegularExpression)getChoices().get(i);
+        RegularExpression curRE = (RegularExpression)getChoices()[i];
 
         temp = curRE.GenerateNfa(ignoreCase);
 
@@ -87,7 +87,7 @@ public class RChoice:RegularExpression {
 
      for (int i = 0; i < getChoices().Count; i++)
      {
-        curRE = (RegularExpression)getChoices().get(i);
+        curRE = (RegularExpression)getChoices()[i];
 
         while (curRE is RJustName)
            curRE = ((RJustName)curRE).regexpr;
@@ -110,7 +110,7 @@ public class RChoice:RegularExpression {
               getChoices().remove(i--);
 
            for (int j = tmp.Count; j-- > 0;)
-              curCharList.descriptors.Add(tmp.get(j));
+              curCharList.descriptors.Add(tmp[j]);
          }
 
      }
@@ -122,7 +122,7 @@ public class RChoice:RegularExpression {
 
      for (int i = 0; i < getChoices().Count; i++)
      {
-        curRE = (RegularExpression)getChoices().get(i);
+        curRE = (RegularExpression)getChoices()[i];
 
         while (curRE is RJustName)
            curRE = ((RJustName)curRE).regexpr;
@@ -131,7 +131,7 @@ public class RChoice:RegularExpression {
         {
            getChoices().remove(i--);
            for (int j = ((RChoice)curRE).getChoices().Count; j-- > 0;)
-              getChoices().Add(((RChoice)curRE).getChoices().get(j));
+              getChoices().Add(((RChoice)curRE).getChoices()[j]);
         }
      }
   }
@@ -143,7 +143,7 @@ public class RChoice:RegularExpression {
 
      for (int i = 0; i < getChoices().Count; i++)
      {
-        if (!(curRE = (RegularExpression)getChoices().get(i)).private_rexp &&
+        if (!(curRE = (RegularExpression)getChoices()[i]).private_rexp &&
             //curRE is RJustName &&
             curRE.ordinal > 0 && curRE.ordinal < ordinal &&
             Main.lg.lexStates[curRE.ordinal] == Main.lg.lexStates[ordinal])

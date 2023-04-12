@@ -11119,7 +11119,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
             return (jj_ntk = jj_nt.kind);
     }
 
-    private List<int[]> jj_expentries = new ArrayList<int[]>();
+    private List<int[]> jj_expentries = new ();
     private int[] jj_expentry;
     private int jj_kind = -1;
     private int[] jj_lasttokens = new int[100];
@@ -11213,7 +11213,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
         int[][] exptokseq = new int[jj_expentries.Count][];
         for (int i = 0; i < jj_expentries.Count; i++)
         {
-            exptokseq[i] = jj_expentries.get(i);
+            exptokseq[i] = jj_expentries[i];
         }
         return new ParseException(token, exptokseq, tokenImage);
     }

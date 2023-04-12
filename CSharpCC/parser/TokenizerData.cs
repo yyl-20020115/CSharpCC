@@ -169,7 +169,7 @@ public class TokenizerData {
       MatchInfo matchInfo =
           new MatchInfo(Options.getIgnoreCase()
                             ? null : RStringLiteral.allImages[i], i, matchType,
-                        newLexStateIndices[i], actions.get(i));
+                        newLexStateIndices[i], actions[i]);
       allMatches.Add(i, matchInfo);
     }
   }

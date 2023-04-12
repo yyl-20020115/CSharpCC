@@ -57,7 +57,7 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 			//bool extendsExists = false;
 
 			if (cu_to_insertion_point_1.Count != 0) {
-				object firstToken = cu_to_insertion_point_1.get(0);
+				object firstToken = cu_to_insertion_point_1[0];
 				printTokenSetup((Token) firstToken);
 				this.ccol = 1;
 				for (Iterator<Token> it = cu_to_insertion_point_1.iterator(); it.hasNext();) {
@@ -79,7 +79,7 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 			}
 			genCode(cu_name + "Constants ");
 			if (cu_to_insertion_point_2.Count != 0) {
-				printTokenSetup((cu_to_insertion_point_2.get(0)));
+				printTokenSetup((cu_to_insertion_point_2[0]));
 				for (Iterator<Token> it = cu_to_insertion_point_2.iterator(); it.hasNext();) {
 					printToken(it.next());
 				}
@@ -945,7 +945,7 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 			}
 
 			if (cu_from_insertion_point_2.Count != 0) {
-				printTokenSetup((cu_from_insertion_point_2.get(0)));
+				printTokenSetup((cu_from_insertion_point_2[0]));
 				this.ccol = 1;
 				for (Iterator<?> it = cu_from_insertion_point_2.iterator(); it.hasNext();) {
 					t = (Token) it.next();

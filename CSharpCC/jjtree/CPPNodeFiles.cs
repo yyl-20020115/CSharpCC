@@ -432,7 +432,7 @@ public static class CPPNodeFiles
             ostr.WriteLine("enum {");
             for (int i = 0; i < nodeIds.Count; ++i)
             {
-                string n = (String)nodeIds.get(i);
+                string n = (String)nodeIds[i];
                 ostr.WriteLine("  " + n + " = " + i + ",");
             }
 
@@ -442,7 +442,7 @@ public static class CPPNodeFiles
             for (int i = 0; i < nodeNames.Count; ++i)
             {
                 ostr.WriteLine("  static JJChar jjtNodeName_arr_" + i + "[] = ");
-                string n = (String)nodeNames.get(i);
+                string n = (String)nodeNames[i];
                 //ostr.WriteLine("    (JJChar*)\"" + n + "\",");
                 OtherFilesGenCPP.printCharArray(ostr, n);
                 ostr.WriteLine(";");
@@ -567,7 +567,7 @@ public static class CPPNodeFiles
         {
             for (int i = 0; i < nodeNames.Count; ++i)
             {
-                string n = (String)nodeNames.get(i);
+                string n = (String)nodeNames[i];
                 if (n == ("void"))
                 {
                     continue;

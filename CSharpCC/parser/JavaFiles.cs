@@ -37,7 +37,7 @@ namespace org.javacc.parser;
 /**
  * Generate CharStream, TokenManager and Exceptions.
  */
-public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
+public class JavaFiles:JavaCCGlobals 
 {
   /**
    * ID of the latest version (of JavaCC) in which one of the CharStream classes
@@ -155,7 +155,7 @@ public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
     StringBuilder b;
     int i = 0, len = str.Length;
 
-    while (i < len && str.charAt(i++) != '\\') ;
+    while (i < len && str[i++] != '\\') ;
 
     if (i == len)  // No backslash found.
       return str;
@@ -163,7 +163,7 @@ public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
     char c;
     b = new StringBuilder();
     for (i = 0; i < len; i++)
-      if ((c = str.charAt(i)) == '\\')
+      if ((c = str[i]) == '\\')
         b.Append("\\\\");
       else
         b.Append(c);
@@ -257,14 +257,14 @@ public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
       TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
+          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
       ) {
         for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1.get(i)).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1.get(0))).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1.get(0))).beginColumn;
+          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
+            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1.get(j)), ostr);
+              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -304,14 +304,14 @@ public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
       TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
+          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
       ) {
         for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1.get(i)).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1.get(0))).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1.get(0))).beginColumn;
+          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
+            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1.get(j)), ostr);
+              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -351,14 +351,14 @@ public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
       TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
+          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
       ) {
         for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1.get(i)).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1.get(0))).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1.get(0))).beginColumn;
+          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
+            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1.get(j)), ostr);
+              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -403,14 +403,14 @@ public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
 	  TextWriter ostr = outputFile.getPrintWriter();
 
 	  if (cu_to_insertion_point_1.Count != 0 &&
-	      ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
+	      ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
 	  ) {
 	    for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-	      if (((Token)cu_to_insertion_point_1.get(i)).kind == SEMICOLON) {
-	        cline = ((Token)(cu_to_insertion_point_1.get(0))).beginLine;
-	        ccol = ((Token)(cu_to_insertion_point_1.get(0))).beginColumn;
+	      if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
+	        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+	        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
 	        for (int j = 0; j <= i; j++) {
-	          printToken((Token)(cu_to_insertion_point_1.get(j)), ostr);
+	          printToken((Token)(cu_to_insertion_point_1[j]), ostr);
 	        }
 	        ostr.WriteLine("");
 	        ostr.WriteLine("");
@@ -445,14 +445,14 @@ public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
       TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
+          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
       ) {
         for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1.get(i)).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1.get(0))).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1.get(0))).beginColumn;
+          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
+            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1.get(j)), ostr);
+              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -494,14 +494,14 @@ public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
       TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
+          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
       ) {
         for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1.get(i)).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1.get(0))).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1.get(0))).beginColumn;
+          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
+            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1.get(j)), ostr);
+              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -541,14 +541,14 @@ public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
       TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
+          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
       ) {
         for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1.get(i)).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1.get(0))).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1.get(0))).beginColumn;
+          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
+            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1.get(j)), ostr);
+              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -585,14 +585,14 @@ public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
       TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
+          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
       ) {
         for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1.get(i)).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1.get(0))).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1.get(0))).beginColumn;
+          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
+            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1.get(j)), ostr);
+              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");

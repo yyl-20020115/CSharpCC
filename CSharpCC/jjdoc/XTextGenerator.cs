@@ -89,14 +89,14 @@ public class XTextGenerator : TextGenerator
     {
         //    string ss = "";
         //    for (int i = 0; i < s.Length; ++i) {
-        //      if (s.charAt(i) == '<') {
+        //      if (s[i] == '<') {
         //  ss += "&lt;";
-        //      } else if (s.charAt(i) == '>') {
+        //      } else if (s[i] == '>') {
         //  ss += "&gt;";
-        //      } else if (s.charAt(i) == '&') {
+        //      } else if (s[i] == '&') {
         //  ss += "&amp;";
         //      } else {
-        //  ss += s.charAt(i);
+        //  ss += s[i];
         //      }
         //    }
         Print(s);

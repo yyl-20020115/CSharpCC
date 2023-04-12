@@ -681,7 +681,7 @@ public class JavaCCParser : JavaCCParserInternals
                             p.lexStates = new String[states.Count];
                             for (int i = 0; i < states.Count; i++)
                             {
-                                p.lexStates[i] = (String)states.get(i);
+                                p.lexStates[i] = (String)states[i];
                             }
                             break;
                         default:
@@ -709,7 +709,7 @@ public class JavaCCParser : JavaCCParserInternals
                 p.ignoreCase = true;
                 if (Options.getUserTokenManager())
                 {
-                    JavaCCErrors.warning(t, "Ignoring \u005c"IGNORE_CASE\u005c" specification since option USER_TOKEN_MANAGER has been set to true.");
+                    JavaCCErrors.warning(t, "Ignoring \u005c\"IGNORE_CASE\u005c\" specification since option USER_TOKEN_MANAGER has been set to true.");
                 }
                 break;
             default:
@@ -10573,7 +10573,7 @@ public class JavaCCParser : JavaCCParserInternals
             return (jj_ntk = jj_nt.kind);
     }
 
-    private List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
+    private List<int[]> jj_expentries = new ();
     private int[] jj_expentry;
     private int jj_kind = -1;
     private int[] jj_lasttokens = new int[100];
@@ -10593,7 +10593,7 @@ public class JavaCCParser : JavaCCParserInternals
             {
                 jj_expentry[i] = jj_lasttokens[i];
             }
-        jj_entries_loop: for (java.util.Iterator it = jj_expentries.iterator(); it.hasNext();)
+        jj_entries_loop: for (Iterator it = jj_expentries.iterator(); it.hasNext();)
             {
                 int[] oldentry = (int[])(it.next());
                 if (oldentry.Length == jj_expentry.Length)
@@ -10667,7 +10667,7 @@ public class JavaCCParser : JavaCCParserInternals
         int[][] exptokseq = new int[jj_expentries.Count][];
         for (int i = 0; i < jj_expentries.Count; i++)
         {
-            exptokseq[i] = jj_expentries.get(i);
+            exptokseq[i] = jj_expentries[i];
         }
         return new ParseException(token, exptokseq, tokenImage);
     }

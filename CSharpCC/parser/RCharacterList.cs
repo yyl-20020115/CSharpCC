@@ -177,9 +177,9 @@ public class RCharacterList : RegularExpression
 
         for (int i = 0; i < cnt; i++)
         {
-            if (descriptors.get(i) is SingleCharacter)
+            if (descriptors[i] is SingleCharacter)
             {
-                char ch = ((SingleCharacter)descriptors.get(i)).ch;
+                char ch = ((SingleCharacter)descriptors[i]).ch;
 
                 if (ch != char.ToLower(ch))
                     descriptors.Add(new
@@ -190,8 +190,8 @@ public class RCharacterList : RegularExpression
             }
             else
             {
-                char l = ((CharacterRange)descriptors.get(i)).getLeft();
-                char r = ((CharacterRange)descriptors.get(i)).getRight();
+                char l = ((CharacterRange)descriptors[i]).getLeft();
+                char r = ((CharacterRange)descriptors[i]).getRight();
                 int j = 0;
 
                 /* Add ranges for which lower case is different. */
@@ -312,15 +312,15 @@ public class RCharacterList : RegularExpression
                            Console.WriteLine("Before:");
                            for (i = 0; i < descriptors.Count; i++)
                            {
-                              if (descriptors.get(i) is SingleCharacter)
+                              if (descriptors[i] is SingleCharacter)
                               {
-                                 char c = ((SingleCharacter)descriptors.get(i)).ch;
+                                 char c = ((SingleCharacter)descriptors[i]).ch;
                                  System.out.print((int)c + " ");
                               }
                               else
                               {
-                                 char l = ((CharacterRange)descriptors.get(i)).left;
-                                 char r = ((CharacterRange)descriptors.get(i)).right;
+                                 char l = ((CharacterRange)descriptors[i]).left;
+                                 char r = ((CharacterRange)descriptors[i]).right;
 
                                  System.out.print((int)l + "-" + (int)r + " ");
                               }
@@ -337,15 +337,15 @@ public class RCharacterList : RegularExpression
                            Console.WriteLine("After:");
                            for (i = 0; i < descriptors.Count; i++)
                            {
-                              if (descriptors.get(i) is SingleCharacter)
+                              if (descriptors[i] is SingleCharacter)
                               {
-                                 char c = ((SingleCharacter)descriptors.get(i)).ch;
+                                 char c = ((SingleCharacter)descriptors[i]).ch;
                                  System.out.print((int)c + " ");
                               }
                               else
                               {
-                                 char l = ((CharacterRange)descriptors.get(i)).left;
-                                 char r = ((CharacterRange)descriptors.get(i)).right;
+                                 char l = ((CharacterRange)descriptors[i]).left;
+                                 char r = ((CharacterRange)descriptors[i]).right;
 
                                  System.out.print((int)l + "-" + (int)r + " ");
                               }
@@ -376,11 +376,11 @@ public class RCharacterList : RegularExpression
 
         for (i = 0; i < descriptors.Count; i++)
         {
-            if (descriptors.get(i) is SingleCharacter)
-                startState.AddChar(((SingleCharacter)descriptors.get(i)).ch);
-            else // if (descriptors.get(i) is CharacterRange)
+            if (descriptors[i] is SingleCharacter)
+                startState.AddChar(((SingleCharacter)descriptors[i]).ch);
+            else // if (descriptors[i] is CharacterRange)
             {
-                CharacterRange cr = (CharacterRange)descriptors.get(i);
+                CharacterRange cr = (CharacterRange)descriptors[i];
 
                 if (cr.getLeft() == cr.getRight())
                     startState.AddChar(cr.getLeft());
@@ -422,24 +422,24 @@ public class RCharacterList : RegularExpression
             SingleCharacter s;
             CharacterRange range;
 
-            if (descriptors.get(i) is SingleCharacter)
+            if (descriptors[i] is SingleCharacter)
             {
-                s = (SingleCharacter)descriptors.get(i);
+                s = (SingleCharacter)descriptors[i];
 
                 for (j = 0; j < cnt; j++)
                 {
-                    if (newDesc.get(j) is SingleCharacter)
+                    if (newDesc[j] is SingleCharacter)
                     {
-                        if (((SingleCharacter)newDesc.get(j)).ch > s.ch)
+                        if (((SingleCharacter)newDesc[j]).ch > s.ch)
                             break;
-                        else if (((SingleCharacter)newDesc.get(j)).ch == s.ch)
+                        else if (((SingleCharacter)newDesc[j]).ch == s.ch)
                             goto OuterExit;
                     }
                     else
                     {
-                        char l = ((CharacterRange)newDesc.get(j)).getLeft();
+                        char l = ((CharacterRange)newDesc[j]).getLeft();
 
-                        if (InRange(s.ch, (CharacterRange)newDesc.get(j)))
+                        if (InRange(s.ch, (CharacterRange)newDesc[j]))
                             goto OuterExit;
                         else if (l > s.ch)
                             break;
@@ -451,43 +451,43 @@ public class RCharacterList : RegularExpression
             }
             else
             {
-                range = (CharacterRange)descriptors.get(i);
+                range = (CharacterRange)descriptors[i];
 
                 for (j = 0; j < cnt; j++)
                 {
-                    if (newDesc.get(j) is SingleCharacter)
+                    if (newDesc[j] is SingleCharacter)
                     {
-                        if (InRange(((SingleCharacter)newDesc.get(j)).ch, range))
+                        if (InRange(((SingleCharacter)newDesc[j]).ch, range))
                         {
                             newDesc.remove(j--);
                             cnt--;
                         }
-                        else if (((SingleCharacter)newDesc.get(j)).ch > range.getRight())
+                        else if (((SingleCharacter)newDesc[j]).ch > range.getRight())
                             break;
                     }
                     else
                     {
-                        if (SubRange(range, (CharacterRange)newDesc.get(j)))
+                        if (SubRange(range, (CharacterRange)newDesc[j]))
                         {
                             continue Outer;
                         }
-                        else if (SubRange((CharacterRange)newDesc.get(j), range))
+                        else if (SubRange((CharacterRange)newDesc[j], range))
                         {
                             newDesc.set(j, range);
                             continue Outer;
                         }
-                        else if (Overlaps(range, (CharacterRange)newDesc.get(j)))
+                        else if (Overlaps(range, (CharacterRange)newDesc[j]))
                         {
-                            range.setLeft((char)(((CharacterRange)newDesc.get(j)).getRight() + 1));
+                            range.setLeft((char)(((CharacterRange)newDesc[j]).getRight() + 1));
                         }
-                        else if (Overlaps((CharacterRange)newDesc.get(j), range))
+                        else if (Overlaps((CharacterRange)newDesc[j], range))
                         {
                             CharacterRange tmp = range;
-                            ((CharacterRange)newDesc.get(j)).setLeft((char)(range.getRight() + 1));
-                            range = (CharacterRange)newDesc.get(j);
+                            ((CharacterRange)newDesc[j]).setLeft((char)(range.getRight() + 1));
+                            range = (CharacterRange)newDesc[j];
                             newDesc.set(j, tmp);
                         }
-                        else if (((CharacterRange)newDesc.get(j)).getLeft() > range.getRight())
+                        else if (((CharacterRange)newDesc[j]).getLeft() > range.getRight())
                             break;
                     }
                 }
@@ -510,15 +510,15 @@ public class RCharacterList : RegularExpression
              Console.WriteLine("REM. NEG Before:");
              for (i = 0; i < descriptors.size(); i++)
              {
-                if (descriptors.get(i) is SingleCharacter)
+                if (descriptors[i] is SingleCharacter)
                 {
-                   char c = ((SingleCharacter)descriptors.get(i)).ch;
+                   char c = ((SingleCharacter)descriptors[i]).ch;
                    System.out.print((int)c + " ");
                 }
                 else
                 {
-                   char l = ((CharacterRange)descriptors.get(i)).left;
-                   char r = ((CharacterRange)descriptors.get(i)).right;
+                   char l = ((CharacterRange)descriptors[i]).left;
+                   char r = ((CharacterRange)descriptors[i]).right;
 
                    System.out.print((int)l + "-" + (int)r + " ");
                 }
@@ -531,9 +531,9 @@ public class RCharacterList : RegularExpression
 
         for (i = 0; i < descriptors.Count; i++)
         {
-            if (descriptors.get(i) is SingleCharacter)
+            if (descriptors[i] is SingleCharacter)
             {
-                char c = ((SingleCharacter)descriptors.get(i)).ch;
+                char c = ((SingleCharacter)descriptors[i]).ch;
 
                 if (c >= 0 && c <= lastRemoved + 1)
                 {
@@ -547,8 +547,8 @@ public class RCharacterList : RegularExpression
             }
             else
             {
-                char l = ((CharacterRange)descriptors.get(i)).getLeft();
-                char r = ((CharacterRange)descriptors.get(i)).getRight();
+                char l = ((CharacterRange)descriptors[i]).getLeft();
+                char r = ((CharacterRange)descriptors[i]).getRight();
 
                 if (l >= 0 && l <= lastRemoved + 1)
                 {
@@ -584,15 +584,15 @@ public class RCharacterList : RegularExpression
              Console.WriteLine("REM NEG After:");
              for (i = 0; i < descriptors.size(); i++)
              {
-                if (descriptors.get(i) is SingleCharacter)
+                if (descriptors[i] is SingleCharacter)
                 {
-                   char c = ((SingleCharacter)descriptors.get(i)).ch;
+                   char c = ((SingleCharacter)descriptors[i]).ch;
                    System.out.print((int)c + " ");
                 }
                 else
                 {
-                   char l = ((CharacterRange)descriptors.get(i)).left;
-                   char r = ((CharacterRange)descriptors.get(i)).right;
+                   char l = ((CharacterRange)descriptors[i]).left;
+                   char r = ((CharacterRange)descriptors[i]).right;
 
                    System.out.print((int)l + "-" + (int)r + " ");
                 }

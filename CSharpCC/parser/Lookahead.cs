@@ -73,7 +73,7 @@ public class Lookahead : Expansion
 
     public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        var sb = base.dump(indent, alreadyDumped).Append(isExplicit ? " explicit" : " implicit");
+        var sb = base.dump(indent, alreadyDumped).Append(_isExplicit ? " explicit" : " implicit");
         if (alreadyDumped.Contains(this))
             return sb;
         alreadyDumped.Add(this);

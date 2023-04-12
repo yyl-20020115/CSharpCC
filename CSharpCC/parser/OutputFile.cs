@@ -147,7 +147,7 @@ public class OutputFile
             {
                 // The file has not been altered since JavaCC created it.
                 // Rebuild it.
-                Console.WriteLine("File \"" + file.getName()
+                Console.WriteLine("File \"" + file
                     + "\" is being rebuilt.");
                 needToWrite = true;
             }
@@ -155,7 +155,7 @@ public class OutputFile
         else
         {
             // File does not exist
-            Console.WriteLine("File \"" + file.getName() + "\" does not exist.  Will create one.");
+            Console.WriteLine("File \"" + file + "\" does not exist.  Will create one.");
             needToWrite = true;
         }
     }
@@ -176,7 +176,7 @@ public class OutputFile
      */
     private void checkVersion(string file, string versionId)
     {
-        string firstLine = "/* " + JavaCCGlobals.getIdString(toolName, file.getName()) + " Version ";
+        string firstLine = "/* " + JavaCCGlobals.getIdString(toolName, file) + " Version ";
 
         try
         {
@@ -190,10 +190,10 @@ public class OutputFile
                     string version = line.replaceFirst(".*Version ", "").replaceAll(" \\*/", "");
                     if (!version == (versionId))
                     {
-                        JavaCCErrors.warning(file.getName()
+                        JavaCCErrors.warning(file
                             + ": File is obsolete.  Please rename or delete this file so"
                             + " that a new one can be generated for you.");
-                        JavaCCErrors.warning(file.getName()
+                        JavaCCErrors.warning(file
                             + " file   version: " + version
                             + " javacc version: " + versionId);
                     }
@@ -205,7 +205,7 @@ public class OutputFile
         catch (FileNotFoundException e1)
         {
             // This should never happen
-            JavaCCErrors.semantic_error("Could not open file " + file.getName() + " for writing.");
+            JavaCCErrors.semantic_error("Could not open file " + file + " for writing.");
             throw new Error();
         }
         catch (IOException e2)
@@ -235,7 +235,7 @@ public class OutputFile
                     if (line.IndexOf(currentOptions) == -1)
                     {
                         JavaCCErrors
-                        .warning(file.getName()
+                        .warning(file
                             + ": Generated using incompatible options. Please rename or delete this file so"
                             + " that a new one can be generated for you.");
                     }
@@ -246,7 +246,7 @@ public class OutputFile
         catch (FileNotFoundException e1)
         {
             // This should never happen
-            JavaCCErrors.semantic_error("Could not open file " + file.getName()
+            JavaCCErrors.semantic_error("Could not open file " + file
                 + " for writing.");
             throw new Error();
         }
@@ -285,7 +285,7 @@ public class OutputFile
             // Write the headers....
             string version = compatibleVersion == null ? Version.versionNumber : compatibleVersion;
             pw.WriteLine("/* "
-                + JavaCCGlobals.getIdString(toolName, file.getName())
+                + JavaCCGlobals.getIdString(toolName, file)
                 + " Version " + version + " */");
             if (options != null)
             {
