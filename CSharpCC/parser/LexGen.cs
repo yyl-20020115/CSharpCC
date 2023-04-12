@@ -354,7 +354,7 @@ public void start()
         JavaCCErrors.get_error_count() > 0)
         return;
 
-    final string codeGeneratorClass = Options.getTokenManagerCodeGenerator();
+    string codeGeneratorClass = Options.getTokenManagerCodeGenerator();
     keepLineCol = Options.getKeepLineColumn();
     errorHandlingClass = Options.getTokenMgrErrorClass();
     List choices = new ArrayList();
@@ -850,8 +850,8 @@ static char MaxChar(long l)
 
 void DumpFillToken()
 {
-    final double tokenVersion = JavaFiles.getVersion("Token.java");
-    final bool hasBinaryNewToken = tokenVersion > 4.09;
+    double tokenVersion = JavaFiles.getVersion("Token.java");
+    bool hasBinaryNewToken = tokenVersion > 4.09;
 
     genCodeLine(staticString + "protected Token jjFillToken()");
     genCodeLine("{");

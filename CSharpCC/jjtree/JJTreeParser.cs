@@ -10946,14 +10946,14 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     private int jj_gc = 0;
 
     /** Constructor with InputStream. */
-    public JJTreeParser(java.io.InputStream stream)
+    public JJTreeParser(Stream stream)
     {
         this(stream, null);
     }
     /** Constructor with InputStream and supplied encoding */
-    public JJTreeParser(java.io.InputStream stream, String encoding)
+    public JJTreeParser(Stream stream, String encoding)
     {
-        try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+        try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (Exception e) { throw new RuntimeException(e); }
         token_source = new JJTreeParserTokenManager(jj_input_stream);
         token = new Token();
         jj_ntk = -1;
@@ -10963,14 +10963,14 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     }
 
     /** Reinitialise. */
-    public void ReInit(java.io.InputStream stream)
+    public void ReInit(Stream stream)
     {
         ReInit(stream, null);
     }
     /** Reinitialise. */
-    public void ReInit(java.io.InputStream stream, String encoding)
+    public void ReInit(Stream stream, String encoding)
     {
-        try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+        try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (Exception e) { throw new RuntimeException(e); }
         token_source.ReInit(jj_input_stream);
         token = new Token();
         jj_ntk = -1;
@@ -11057,8 +11057,8 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         throw generateParseException();
     }
 
-    static private final class LookaheadSuccess : java.lang.Error { }
-    final private LookaheadSuccess jj_ls = new LookaheadSuccess();
+    class LookaheadSuccess : Error { }
+    private LookaheadSuccess jj_ls = new LookaheadSuccess();
     private bool jj_scan_token(int kind)
     {
         if (jj_scanpos == jj_lastpos)

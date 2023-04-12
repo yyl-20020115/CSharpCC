@@ -12,7 +12,7 @@ public class OutputFileGeneratorTest : CSharpCCTestCase
 
     JavaResourceTemplateLocationImpl impl = new JavaResourceTemplateLocationImpl();
     OutputFileGenerator generator = new OutputFileGenerator(
-        impl.getParseExceptionTemplateResourceUrl(), new Dictionary<object,object>());
+        impl.getParseExceptionTemplateResourceUrl(), new Dictionary<string,object>());
     
     TextWriter stringWriter = new StringWriter();
     generator.generate(stringWriter);
@@ -27,7 +27,7 @@ public class OutputFileGeneratorTest : CSharpCCTestCase
 
     JavaResourceTemplateLocationImpl impl = new JavaResourceTemplateLocationImpl();
     OutputFileGenerator generator = new OutputFileGenerator(
-        impl.getParseExceptionTemplateResourceUrl(), new Dictionary<object, object>());
+        impl.getParseExceptionTemplateResourceUrl(), new Dictionary<string, object>());
 
     TextWriter writer = new StringWriter();
     generator.generate(writer);

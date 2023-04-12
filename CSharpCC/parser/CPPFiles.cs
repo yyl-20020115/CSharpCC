@@ -2,6 +2,8 @@
 // Author: sreeni@google.com (Sreeni Viswanadha)
 
 
+using org.javacc.jjtree;
+using org.javacc.utils;
 using System.Text;
 
 namespace org.javacc.parser;
@@ -76,7 +78,7 @@ public class CPPFiles:JavaCCGlobals : JavaCCParserConstants
    */
   static double getVersion(string fileName)
   {
-    final string commentHeader = "/* " + getIdString(toolName, fileName) + " Version ";
+    string commentHeader = "/* " + getIdString(toolName, fileName) + " Version ";
     File file = new File(Options.getOutputDirectory(), replaceBackslash(fileName));
 
     if (!file.exists()) {
@@ -130,15 +132,15 @@ public class CPPFiles:JavaCCGlobals : JavaCCParserConstants
   }
 
   private static void genFile(string name, string version, String[] parameters) {
-    final File file = new File(Options.getOutputDirectory(), name);
+    File file = new File(Options.getOutputDirectory(), name);
     try {
-      final OutputFile outputFile = new OutputFile(file, version, parameters);
+      OutputFile outputFile = new OutputFile(file, version, parameters);
 
       if (!outputFile.needToWrite) {
         return;
       }
 
-      final TextWriter ostr = outputFile.getPrintWriter();
+      TextWriter ostr = outputFile.getPrintWriter();
       OutputFileGenerator generator = new OutputFileGenerator(
           "/templates/cpp/" + name + ".template", Options.getOptions());
       generator.generate(ostr);

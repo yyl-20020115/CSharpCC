@@ -23,7 +23,7 @@ public class ParseException : Exception {
    * Increment only if the <i>serialized</i> form of the
    * class changes.
    */
-  private static final long serialVersionUID = 1L;
+  private static long serialVersionUID = 1L;
 
   /**
    * This constructor is used by the method "generateParseException"

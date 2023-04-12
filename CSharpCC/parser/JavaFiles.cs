@@ -180,7 +180,7 @@ public class JavaFiles:JavaCCGlobals : JavaCCParserConstants
    */
   static double getVersion(string fileName)
   {
-    final string commentHeader = "/* " + getIdString(toolName, fileName) + " Version ";
+    string commentHeader = "/* " + getIdString(toolName, fileName) + " Version ";
     File file = new File(Options.getOutputDirectory(), replaceBackslash(fileName));
 
     if (!file.exists()) {
@@ -244,15 +244,15 @@ public class JavaFiles:JavaCCGlobals : JavaCCParserConstants
 
   public static void gen_JavaCharStream(JavaResourceTemplateLocations locations) {
     try {
-      final File file = new File(Options.getOutputDirectory(), "JavaCharStream.java");
-      final OutputFile outputFile = new OutputFile(file, charStreamVersion, new String[] {Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
+      File file = new File(Options.getOutputDirectory(), "JavaCharStream.java");
+      OutputFile outputFile = new OutputFile(file, charStreamVersion, new String[] {Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
 
       if (!outputFile.needToWrite)
       {
         return;
       }
 
-      final TextWriter ostr = outputFile.getPrintWriter();
+      TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
           ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
@@ -291,15 +291,15 @@ public class JavaFiles:JavaCCGlobals : JavaCCParserConstants
 
   public static void gen_SimpleCharStream(JavaResourceTemplateLocations locations) {
     try {
-      final File file = new File(Options.getOutputDirectory(), "SimpleCharStream.java");
-      final OutputFile outputFile = new OutputFile(file, charStreamVersion, new String[] {Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
+      File file = new File(Options.getOutputDirectory(), "SimpleCharStream.java");
+      OutputFile outputFile = new OutputFile(file, charStreamVersion, new String[] {Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
 
       if (!outputFile.needToWrite)
       {
         return;
       }
 
-      final TextWriter ostr = outputFile.getPrintWriter();
+      TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
           ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
@@ -338,15 +338,15 @@ public class JavaFiles:JavaCCGlobals : JavaCCParserConstants
 
   public static void gen_CharStream(JavaResourceTemplateLocations locations) {
     try {
-      final File file = new File(Options.getOutputDirectory(), "CharStream.java");
-      final OutputFile outputFile = new OutputFile(file, charStreamVersion, new String[] {Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
+      File file = new File(Options.getOutputDirectory(), "CharStream.java");
+      OutputFile outputFile = new OutputFile(file, charStreamVersion, new String[] {Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
 
       if (!outputFile.needToWrite)
       {
         return;
       }
 
-      final TextWriter ostr = outputFile.getPrintWriter();
+      TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
           ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
@@ -390,15 +390,15 @@ public class JavaFiles:JavaCCGlobals : JavaCCParserConstants
 
   private static void genMiscFile(string fileName, string templatePath) {
 	try {
-	  final File file = new File(Options.getOutputDirectory(), fileName);
-	  final OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new String[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN});
+	  File file = new File(Options.getOutputDirectory(), fileName);
+	  OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new String[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN});
 
 	  if (!outputFile.needToWrite)
 	  {
 	    return;
 	  }
 
-	  final TextWriter ostr = outputFile.getPrintWriter();
+	  TextWriter ostr = outputFile.getPrintWriter();
 
 	  if (cu_to_insertion_point_1.Count != 0 &&
 	      ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
@@ -432,15 +432,15 @@ public class JavaFiles:JavaCCGlobals : JavaCCParserConstants
 
   public static void gen_ParseException(JavaResourceTemplateLocations locations) {
     try {
-      final File file = new File(Options.getOutputDirectory(), "ParseException.java");
-      final OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new String[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN});
+      File file = new File(Options.getOutputDirectory(), "ParseException.java");
+      OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new String[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN});
 
       if (!outputFile.needToWrite)
       {
         return;
       }
 
-      final TextWriter ostr = outputFile.getPrintWriter();
+      TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
           ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
@@ -481,15 +481,15 @@ public class JavaFiles:JavaCCGlobals : JavaCCParserConstants
 	string filename = isLegacyExceptionHandling ? "TokenMgrError.java" : "TokenMgrException.java";
     try {
 
-	final File file = new File(Options.getOutputDirectory(), filename);
-      final OutputFile outputFile = new OutputFile(file, tokenMgrErrorVersion, new String[0]);
+	File file = new File(Options.getOutputDirectory(), filename);
+      OutputFile outputFile = new OutputFile(file, tokenMgrErrorVersion, new String[0]);
 
       if (!outputFile.needToWrite)
       {
         return;
       }
 
-      final TextWriter ostr = outputFile.getPrintWriter();
+      TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
           ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
@@ -528,15 +528,15 @@ public class JavaFiles:JavaCCGlobals : JavaCCParserConstants
 
   public static void gen_Token(JavaResourceTemplateLocations locations) {
     try {
-      final File file = new File(Options.getOutputDirectory(), "Token.java");
-      final OutputFile outputFile = new OutputFile(file, tokenVersion, new String[] {Options.USEROPTION__TOKEN_EXTENDS, Options.USEROPTION__KEEP_LINE_COLUMN, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
+      File file = new File(Options.getOutputDirectory(), "Token.java");
+      OutputFile outputFile = new OutputFile(file, tokenVersion, new String[] {Options.USEROPTION__TOKEN_EXTENDS, Options.USEROPTION__KEEP_LINE_COLUMN, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
 
       if (!outputFile.needToWrite)
       {
         return;
       }
 
-      final TextWriter ostr = outputFile.getPrintWriter();
+      TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
           ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE
@@ -572,15 +572,15 @@ public class JavaFiles:JavaCCGlobals : JavaCCParserConstants
 
   public static void gen_TokenManager(JavaResourceTemplateLocations locations) {
     try {
-      final File file = new File(Options.getOutputDirectory(), "TokenManager.java");
-      final OutputFile outputFile = new OutputFile(file, tokenManagerVersion, new String[] {Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
+      File file = new File(Options.getOutputDirectory(), "TokenManager.java");
+      OutputFile outputFile = new OutputFile(file, tokenManagerVersion, new String[] {Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
 
       if (!outputFile.needToWrite)
       {
         return;
       }
 
-      final TextWriter ostr = outputFile.getPrintWriter();
+      TextWriter ostr = outputFile.getPrintWriter();
 
       if (cu_to_insertion_point_1.Count != 0 &&
           ((Token)cu_to_insertion_point_1.get(0)).kind == PACKAGE

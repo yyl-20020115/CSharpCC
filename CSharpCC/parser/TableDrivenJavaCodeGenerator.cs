@@ -366,12 +366,12 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
     }
 
     private void dumpLexicalActions(
-        Dictionary<Integer, TokenizerData.MatchInfo> allMatches,
+        Dictionary<int, TokenizerData.MatchInfo> allMatches,
         TokenizerData.MatchType matchType, string kindString,
         CodeGenerator codeGenerator)
     {
         codeGenerator.genCodeLine("  switch(" + kindString + ") {");
-        for (int i : allMatches.keySet())
+        foreach (int i in allMatches.keySet())
         {
             TokenizerData.MatchInfo matchInfo = allMatches.get(i);
             if (matchInfo.action == null ||

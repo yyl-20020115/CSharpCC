@@ -439,14 +439,14 @@ public class JavaCharStream
     public JavaCharStream(Stream dstream, String encoding, int startline,
     int startcolumn, int buffersize)
     {
-    this(encoding == null ? new java.io.InputStreamReader(dstream) : new java.io.InputStreamReader(dstream, encoding), startline, startcolumn, buffersize);
+    this(encoding == null ? new StreamReader(dstream) : new StreamReader(dstream, encoding), startline, startcolumn, buffersize);
   }
 
 /** Constructor. */
 public JavaCharStream(Stream dstream, int startline,
 int startcolumn, int buffersize)
 {
-    this(new java.io.InputStreamReader(dstream), startline, startcolumn, 4096);
+    this(new StreamReader(dstream), startline, startcolumn, 4096);
 }
 
 /** Constructor. */
@@ -479,14 +479,14 @@ public JavaCharStream(Stream dstream)
 public void ReInit(Stream dstream, String encoding, int startline,
 int startcolumn, int buffersize)
 {
-    ReInit(encoding == null ? new java.io.InputStreamReader(dstream) : new java.io.InputStreamReader(dstream, encoding), startline, startcolumn, buffersize);
+    ReInit(encoding == null ? new StreamReader(dstream) : new StreamReader(dstream, encoding), startline, startcolumn, buffersize);
   }
 
 /** Reinitialise. */
   public void ReInit(Stream dstream, int startline,
   int startcolumn, int buffersize)
 {
-    ReInit(new java.io.InputStreamReader(dstream), startline, startcolumn, buffersize);
+    ReInit(new StreamReader(dstream), startline, startcolumn, buffersize);
 }
 /** Reinitialise. */
 public void ReInit(Stream dstream, String encoding, int startline,

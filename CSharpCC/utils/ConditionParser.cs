@@ -227,14 +227,14 @@ public class ConditionParser : ConditionParserConstants
     }
 
     /** Constructor with InputStream. */
-    public ConditionParser(java.io.InputStream stream)
+    public ConditionParser(Stream stream)
     {
         this(stream, null);
     }
     /** Constructor with InputStream and supplied encoding */
-    public ConditionParser(java.io.InputStream stream, String encoding)
+    public ConditionParser(Stream stream, String encoding)
     {
-        try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+        try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (Exception e) { throw new RuntimeException(e); }
         token_source = new ConditionParserTokenManager(jj_input_stream);
         token = new Token();
         jj_ntk = -1;
@@ -243,14 +243,14 @@ public class ConditionParser : ConditionParserConstants
     }
 
     /** Reinitialise. */
-    public void ReInit(java.io.InputStream stream)
+    public void ReInit(Stream stream)
     {
         ReInit(stream, null);
     }
     /** Reinitialise. */
-    public void ReInit(java.io.InputStream stream, String encoding)
+    public void ReInit(Stream stream, String encoding)
     {
-        try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+        try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (Exception e) { throw new RuntimeException(e); }
         token_source.ReInit(jj_input_stream);
         token = new Token();
         jj_ntk = -1;

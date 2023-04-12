@@ -43,7 +43,7 @@ public class Choice : Expansion
      * The list of choices of this expansion unit.  Each
      * List component will narrow to ExpansionUnit.
      */
-    private List<Object> choices = new();
+    private List<Expansion> choices = new();
 
     public Choice() { }
 
@@ -63,7 +63,7 @@ public class Choice : Expansion
     /**
      * @param choices the choices to set
      */
-    public void setChoices(List<Object> choices)
+    public void setChoices(List<Expansion> choices)
     {
         this.choices = choices;
     }
@@ -71,7 +71,7 @@ public class Choice : Expansion
     /**
      * @return the choices
      */
-    public List<Object> getChoices()
+    public List<Expansion> getChoices()
     {
         return choices;
     }
@@ -82,9 +82,8 @@ public class Choice : Expansion
         if (alreadyDumped.Contains(this))
             return sb;
         alreadyDumped.Add(this);
-        for (Iterator<Expansion> it = getChoices().iterator(); it.hasNext();)
+        foreach(Expansion next in getChoices())
         {
-            Expansion next = (Expansion)it.next();
             sb.Append(eol).Append(next.dump(indent + 1, alreadyDumped));
         }
         return sb;

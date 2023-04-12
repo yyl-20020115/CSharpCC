@@ -196,9 +196,9 @@ public class ParseEngine {
   /**
    * Constants used in the following method "buildLookaheadChecker".
    */
-  final int NOOPENSTM = 0;
-  final int OPENIF = 1;
-  final int OPENSWITCH = 2;
+  int NOOPENSTM = 0;
+  int OPENIF = 1;
+  int OPENSWITCH = 2;
 
   private void dumpLookaheads(Lookahead[] conds, String[] actions) {
     for (int i = 0; i < conds.Length; i++) {

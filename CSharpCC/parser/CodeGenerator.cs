@@ -42,7 +42,7 @@ public class CodeGenerator {
   }
 
   public void genCode(params object[] code) {
-    for (object s: code) {
+    foreach (object s in code) {
       outputBuffer.Append(s);
     }
   }
@@ -386,7 +386,7 @@ public class CodeGenerator {
     {
       object o = additionalOptions[i];
 
-      if (o is Dictionary<?,?>)
+      if (o is Dictionary<string,object>)
       {
         options.putAll((Dictionary<String,object>) o);
       }

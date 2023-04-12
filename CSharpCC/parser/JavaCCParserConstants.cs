@@ -14,283 +14,283 @@ namespace org.javacc.parser;
 public interface JavaCCParserConstants {
 
   /** End of File. */
-  int EOF = 0;
+  public const int EOF = 0;
   /** RegularExpression Id. */
-  int _LOOKAHEAD = 1;
+  public const int  _LOOKAHEAD = 1;
   /** RegularExpression Id. */
-  int _IGNORE_CASE = 2;
+  public const int  _IGNORE_CASE = 2;
   /** RegularExpression Id. */
-  int _PARSER_BEGIN = 3;
+  public const int  _PARSER_BEGIN = 3;
   /** RegularExpression Id. */
-  int _PARSER_END = 4;
+  public const int  _PARSER_END = 4;
   /** RegularExpression Id. */
-  int _JAVACODE = 5;
+  public const int  _JAVACODE = 5;
   /** RegularExpression Id. */
-  int _CPPCODE = 6;
+  public const int  _CPPCODE = 6;
   /** RegularExpression Id. */
-  int _TOKEN = 7;
+  public const int  _TOKEN = 7;
   /** RegularExpression Id. */
-  int _SPECIAL_TOKEN = 8;
+  public const int  _SPECIAL_TOKEN = 8;
   /** RegularExpression Id. */
-  int _MORE = 9;
+  public const int  _MORE = 9;
   /** RegularExpression Id. */
-  int _SKIP = 10;
+  public const int  _SKIP = 10;
   /** RegularExpression Id. */
-  int _TOKEN_MGR_DECLS = 11;
+  public const int  _TOKEN_MGR_DECLS = 11;
   /** RegularExpression Id. */
-  int _EOF = 12;
+  public const int  _EOF = 12;
   /** RegularExpression Id. */
-  int SINGLE_LINE_COMMENT = 24;
+  public const int  SINGLE_LINE_COMMENT = 24;
   /** RegularExpression Id. */
-  int FORMAL_COMMENT = 25;
+  public const int  FORMAL_COMMENT = 25;
   /** RegularExpression Id. */
-  int MULTI_LINE_COMMENT = 26;
+  public const int  MULTI_LINE_COMMENT = 26;
   /** RegularExpression Id. */
-  int ABSTRACT = 28;
+  public const int  ABSTRACT = 28;
   /** RegularExpression Id. */
-  int ASSERT = 29;
+  public const int  ASSERT = 29;
   /** RegularExpression Id. */
-  int BOOLEAN = 30;
+  public const int  BOOLEAN = 30;
   /** RegularExpression Id. */
-  int BREAK = 31;
+  public const int  BREAK = 31;
   /** RegularExpression Id. */
-  int BYTE = 32;
+  public const int  BYTE = 32;
   /** RegularExpression Id. */
-  int CASE = 33;
+  public const int  CASE = 33;
   /** RegularExpression Id. */
-  int CATCH = 34;
+  public const int  CATCH = 34;
   /** RegularExpression Id. */
-  int CHAR = 35;
+  public const int  CHAR = 35;
   /** RegularExpression Id. */
-  int CLASS = 36;
+  public const int  CLASS = 36;
   /** RegularExpression Id. */
-  int CONST = 37;
+  public const int  CONST = 37;
   /** RegularExpression Id. */
-  int CONTINUE = 38;
+  public const int  CONTINUE = 38;
   /** RegularExpression Id. */
-  int _DEFAULT = 39;
+  public const int  _DEFAULT = 39;
   /** RegularExpression Id. */
-  int DO = 40;
+  public const int  DO = 40;
   /** RegularExpression Id. */
-  int DOUBLE = 41;
+  public const int  DOUBLE = 41;
   /** RegularExpression Id. */
-  int ELSE = 42;
+  public const int  ELSE = 42;
   /** RegularExpression Id. */
-  int ENUM = 43;
+  public const int  ENUM = 43;
   /** RegularExpression Id. */
-  int EXTENDS = 44;
+  public const int  EXTENDS = 44;
   /** RegularExpression Id. */
-  int FALSE = 45;
+  public const int  FALSE = 45;
   /** RegularExpression Id. */
-  int FINAL = 46;
+  public const int  FINAL = 46;
   /** RegularExpression Id. */
-  int FINALLY = 47;
+  public const int  FINALLY = 47;
   /** RegularExpression Id. */
-  int FLOAT = 48;
+  public const int  FLOAT = 48;
   /** RegularExpression Id. */
-  int FOR = 49;
+  public const int  FOR = 49;
   /** RegularExpression Id. */
-  int GOTO = 50;
+  public const int  GOTO = 50;
   /** RegularExpression Id. */
-  int IF = 51;
+  public const int  IF = 51;
   /** RegularExpression Id. */
-  int IMPLEMENTS = 52;
+  public const int  IMPLEMENTS = 52;
   /** RegularExpression Id. */
-  int IMPORT = 53;
+  public const int  IMPORT = 53;
   /** RegularExpression Id. */
-  int INSTANCEOF = 54;
+  public const int  INSTANCEOF = 54;
   /** RegularExpression Id. */
-  int INT = 55;
+  public const int  INT = 55;
   /** RegularExpression Id. */
-  int INTERFACE = 56;
+  public const int  INTERFACE = 56;
   /** RegularExpression Id. */
-  int LONG = 57;
+  public const int  LONG = 57;
   /** RegularExpression Id. */
-  int NATIVE = 58;
+  public const int  NATIVE = 58;
   /** RegularExpression Id. */
-  int NEW = 59;
+  public const int  NEW = 59;
   /** RegularExpression Id. */
-  int NULL = 60;
+  public const int  NULL = 60;
   /** RegularExpression Id. */
-  int PACKAGE = 61;
+  public const int  PACKAGE = 61;
   /** RegularExpression Id. */
-  int PRIVATE = 62;
+  public const int  PRIVATE = 62;
   /** RegularExpression Id. */
-  int PROTECTED = 63;
+  public const int  PROTECTED = 63;
   /** RegularExpression Id. */
-  int PUBLIC = 64;
+  public const int  PUBLIC = 64;
   /** RegularExpression Id. */
-  int RETURN = 65;
+  public const int  RETURN = 65;
   /** RegularExpression Id. */
-  int SHORT = 66;
+  public const int  SHORT = 66;
   /** RegularExpression Id. */
-  int STATIC = 67;
+  public const int  STATIC = 67;
   /** RegularExpression Id. */
-  int STRICTFP = 68;
+  public const int  STRICTFP = 68;
   /** RegularExpression Id. */
-  int SUPER = 69;
+  public const int  SUPER = 69;
   /** RegularExpression Id. */
-  int SWITCH = 70;
+  public const int  SWITCH = 70;
   /** RegularExpression Id. */
-  int SYNCHRONIZED = 71;
+  public const int  SYNCHRONIZED = 71;
   /** RegularExpression Id. */
-  int THIS = 72;
+  public const int  THIS = 72;
   /** RegularExpression Id. */
-  int THROW = 73;
+  public const int  THROW = 73;
   /** RegularExpression Id. */
-  int THROWS = 74;
+  public const int  THROWS = 74;
   /** RegularExpression Id. */
-  int TRANSIENT = 75;
+  public const int  TRANSIENT = 75;
   /** RegularExpression Id. */
-  int TRUE = 76;
+  public const int  TRUE = 76;
   /** RegularExpression Id. */
-  int TRY = 77;
+  public const int  TRY = 77;
   /** RegularExpression Id. */
-  int VOID = 78;
+  public const int  VOID = 78;
   /** RegularExpression Id. */
-  int VOLATILE = 79;
+  public const int  VOLATILE = 79;
   /** RegularExpression Id. */
-  int WHILE = 80;
+  public const int  WHILE = 80;
   /** RegularExpression Id. */
-  int TEMPLATE = 81;
+  public const int  TEMPLATE = 81;
   /** RegularExpression Id. */
-  int TYPENAME = 82;
+  public const int  TYPENAME = 82;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 83;
+  public const int  INTEGER_LITERAL = 83;
   /** RegularExpression Id. */
-  int DECIMAL_LITERAL = 84;
+  public const int  DECIMAL_LITERAL = 84;
   /** RegularExpression Id. */
-  int HEX_LITERAL = 85;
+  public const int  HEX_LITERAL = 85;
   /** RegularExpression Id. */
-  int OCTAL_LITERAL = 86;
+  public const int  OCTAL_LITERAL = 86;
   /** RegularExpression Id. */
-  int BINARY_LITERAL = 87;
+  public const int  BINARY_LITERAL = 87;
   /** RegularExpression Id. */
-  int FLOATING_POINT_LITERAL = 88;
+  public const int  FLOATING_POINT_LITERAL = 88;
   /** RegularExpression Id. */
-  int DECIMAL_FLOATING_POINT_LITERAL = 89;
+  public const int  DECIMAL_FLOATING_POINT_LITERAL = 89;
   /** RegularExpression Id. */
-  int DECIMAL_EXPONENT = 90;
+  public const int  DECIMAL_EXPONENT = 90;
   /** RegularExpression Id. */
-  int HEXADECIMAL_FLOATING_POINT_LITERAL = 91;
+  public const int  HEXADECIMAL_FLOATING_POINT_LITERAL = 91;
   /** RegularExpression Id. */
-  int HEXADECIMAL_EXPONENT = 92;
+  public const int  HEXADECIMAL_EXPONENT = 92;
   /** RegularExpression Id. */
-  int CHARACTER_LITERAL = 93;
+  public const int  CHARACTER_LITERAL = 93;
   /** RegularExpression Id. */
-  int STRING_LITERAL = 94;
+  public const int  STRING_LITERAL = 94;
   /** RegularExpression Id. */
-  int LPAREN = 95;
+  public const int  LPAREN = 95;
   /** RegularExpression Id. */
-  int RPAREN = 96;
+  public const int  RPAREN = 96;
   /** RegularExpression Id. */
-  int LBRACE = 97;
+  public const int  LBRACE = 97;
   /** RegularExpression Id. */
-  int RBRACE = 98;
+  public const int  RBRACE = 98;
   /** RegularExpression Id. */
-  int LBRACKET = 99;
+  public const int  LBRACKET = 99;
   /** RegularExpression Id. */
-  int RBRACKET = 100;
+  public const int  RBRACKET = 100;
   /** RegularExpression Id. */
-  int SEMICOLON = 101;
+  public const int  SEMICOLON = 101;
   /** RegularExpression Id. */
-  int COMMA = 102;
+  public const int  COMMA = 102;
   /** RegularExpression Id. */
-  int DOT = 103;
+  public const int  DOT = 103;
   /** RegularExpression Id. */
-  int ASSIGN = 104;
+  public const int  ASSIGN = 104;
   /** RegularExpression Id. */
-  int LT = 105;
+  public const int  LT = 105;
   /** RegularExpression Id. */
-  int BANG = 106;
+  public const int  BANG = 106;
   /** RegularExpression Id. */
-  int TILDE = 107;
+  public const int  TILDE = 107;
   /** RegularExpression Id. */
-  int HOOK = 108;
+  public const int  HOOK = 108;
   /** RegularExpression Id. */
-  int COLON = 109;
+  public const int  COLON = 109;
   /** RegularExpression Id. */
-  int DOUBLECOLON = 110;
+  public const int  DOUBLECOLON = 110;
   /** RegularExpression Id. */
-  int EQ = 111;
+  public const int  EQ = 111;
   /** RegularExpression Id. */
-  int LE = 112;
+  public const int  LE = 112;
   /** RegularExpression Id. */
-  int GE = 113;
+  public const int  GE = 113;
   /** RegularExpression Id. */
-  int NE = 114;
+  public const int  NE = 114;
   /** RegularExpression Id. */
-  int SC_OR = 115;
+  public const int  SC_OR = 115;
   /** RegularExpression Id. */
-  int SC_AND = 116;
+  public const int  SC_AND = 116;
   /** RegularExpression Id. */
-  int INCR = 117;
+  public const int  INCR = 117;
   /** RegularExpression Id. */
-  int DECR = 118;
+  public const int  DECR = 118;
   /** RegularExpression Id. */
-  int PLUS = 119;
+  public const int  PLUS = 119;
   /** RegularExpression Id. */
-  int MINUS = 120;
+  public const int  MINUS = 120;
   /** RegularExpression Id. */
-  int STAR = 121;
+  public const int  STAR = 121;
   /** RegularExpression Id. */
-  int SLASH = 122;
+  public const int  SLASH = 122;
   /** RegularExpression Id. */
-  int BIT_AND = 123;
+  public const int  BIT_AND = 123;
   /** RegularExpression Id. */
-  int BIT_OR = 124;
+  public const int  BIT_OR = 124;
   /** RegularExpression Id. */
-  int XOR = 125;
+  public const int  XOR = 125;
   /** RegularExpression Id. */
-  int REM = 126;
+  public const int  REM = 126;
   /** RegularExpression Id. */
-  int PLUSASSIGN = 127;
+  public const int  PLUSASSIGN = 127;
   /** RegularExpression Id. */
-  int MINUSASSIGN = 128;
+  public const int  MINUSASSIGN = 128;
   /** RegularExpression Id. */
-  int STARASSIGN = 129;
+  public const int  STARASSIGN = 129;
   /** RegularExpression Id. */
-  int SLASHASSIGN = 130;
+  public const int  SLASHASSIGN = 130;
   /** RegularExpression Id. */
-  int ANDASSIGN = 131;
+  public const int  ANDASSIGN = 131;
   /** RegularExpression Id. */
-  int ORASSIGN = 132;
+  public const int  ORASSIGN = 132;
   /** RegularExpression Id. */
-  int XORASSIGN = 133;
+  public const int  XORASSIGN = 133;
   /** RegularExpression Id. */
-  int REMASSIGN = 134;
+  public const int  REMASSIGN = 134;
   /** RegularExpression Id. */
-  int RUNSIGNEDSHIFT = 135;
+  public const int  RUNSIGNEDSHIFT = 135;
   /** RegularExpression Id. */
-  int RSIGNEDSHIFT = 136;
+  public const int  RSIGNEDSHIFT = 136;
   /** RegularExpression Id. */
-  int GT = 137;
+  public const int  GT = 137;
   /** RegularExpression Id. */
-  int LANGLE = 105;
+  public const int  LANGLE = 105;
   /** RegularExpression Id. */
-  int RANGLE = 137;
+  public const int  RANGLE = 137;
   /** RegularExpression Id. */
-  int IDENTIFIER = 151;
+  public const int  IDENTIFIER = 151;
   /** RegularExpression Id. */
-  int LETTER = 152;
+  public const int  LETTER = 152;
   /** RegularExpression Id. */
-  int PART_LETTER = 153;
+  public const int  PART_LETTER = 153;
   /** RegularExpression Id. */
-  int ACT_TOK = 154;
+  public const int  ACT_TOK = 154;
 
   /** Lexical state. */
-  int DEFAULT = 0;
+  public const int  DEFAULT = 0;
   /** Lexical state. */
-  int AFTER_EGEN = 1;
+  public const int  AFTER_EGEN = 1;
   /** Lexical state. */
-  int IN_SINGLE_LINE_COMMENT = 2;
+  public const int  IN_SINGLE_LINE_COMMENT = 2;
   /** Lexical state. */
-  int IN_FORMAL_COMMENT = 3;
+  public const int  IN_FORMAL_COMMENT = 3;
   /** Lexical state. */
-  int IN_MULTI_LINE_COMMENT = 4;
+  public const int  IN_MULTI_LINE_COMMENT = 4;
 
   /** Literal token values. */
-  String[] tokenImage = {
+  public static readonly string[] tokenImage = {
     "<EOF>",
     "\"LOOKAHEAD\"",
     "\"IGNORE_CASE\"",

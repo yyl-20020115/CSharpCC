@@ -87,7 +87,7 @@ public class RStringLiteral:RegularExpression {
   private static int maxStrKind = 0;
   private static int maxLen = 0;
   private static int charCnt = 0;
-  private static List charPosKind = new ArrayList(); // Elements are hashtables
+  private static List charPosKind = new (); // Elements are hashtables
                                                      // with single char keys;
   private static int[] maxLenForActive = new int[100]; // 6400 tokens
   public static String[] allImages;

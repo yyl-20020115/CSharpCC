@@ -138,7 +138,7 @@ public class JavaCCInterpreter
                 {
                     c = input.charAt(curPos);
                     if (Options.getIgnoreCase()) c = Character.toLowerCase(c);
-                    for (int state : curStates)
+                    foreach (int state in curStates)
                     {
                         TokenizerData.NfaState nfaState = td.nfa.get(state);
                         if (nfaState.characters.Contains(c))

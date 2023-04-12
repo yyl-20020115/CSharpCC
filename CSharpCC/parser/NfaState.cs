@@ -156,7 +156,7 @@ public class NfaState
          InsertInOrder(epsilonMoves, newState);
    }
 
-   private final void AddASCIIMove(char c)
+   private void AddASCIIMove(char c)
    {
       asciiMoves[c / 64] |= (1L << (c % 64));
    }
@@ -730,7 +730,7 @@ public class NfaState
       return false;
    }
 
-   final bool CanMoveUsingChar(char c)
+   bool CanMoveUsingChar(char c)
    {
       int i;
 
@@ -1617,7 +1617,7 @@ public class NfaState
       }
    }
 
-   private final void FixNextStates(int[] newSet)
+   private void FixNextStates(int[] newSet)
    {
       next.usefulEpsilonMoves = newSet.Length;
       //next.epsilonMovesString = GetStateSetString(newSet);
@@ -2263,7 +2263,7 @@ public class NfaState
          codeGenerator.genCodeLine("                  break;");
    }
 
-   private final void DumpNonAsciiMoveForCompositeState(CodeGenerator codeGenerator)
+   private void DumpNonAsciiMoveForCompositeState(CodeGenerator codeGenerator)
    {
       bool nextIntersects = selfLoop();
       for (int j = 0; j < allStates.Count; j++)
@@ -2342,7 +2342,7 @@ public class NfaState
          codeGenerator.genCodeLine("                  }");
    }
 
-   private final void DumpNonAsciiMove(CodeGenerator codeGenerator, bool dumped[])
+   private void DumpNonAsciiMove(CodeGenerator codeGenerator, bool dumped[])
    {
       bool nextIntersects = selfLoop() && isComposite;
 
@@ -3293,7 +3293,7 @@ public class NfaState
        int maxState, int startStateName, int lexicalStateIndex,
        int matchAnyCharKind) {
      // Cleanup the state set.
-     final HashSet<Integer> done = new HashSet<Integer>();
+     HashSet<Integer> done = new HashSet<Integer>();
      List<NfaState> cleanStates = new ArrayList<NfaState>();
      NfaState startState = null;
      for (int i = 0; i < allStates.Count; i++) {

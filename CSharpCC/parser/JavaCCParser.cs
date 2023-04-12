@@ -10398,14 +10398,14 @@ private bool jj_rescan = false;
 private int jj_gc = 0;
 
 /** Constructor with InputStream. */
-public JavaCCParser(java.io.InputStream stream)
+public JavaCCParser(Stream stream)
 {
     this(stream, null);
 }
 /** Constructor with InputStream and supplied encoding */
-public JavaCCParser(java.io.InputStream stream, String encoding)
+public JavaCCParser(Stream stream, String encoding)
 {
-    try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (java.io.UnsupportedEncodingException e) { throw new Exception(e); }
+    try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (Exception e) { throw new Exception(e); }
     token_source = new JavaCCParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -10415,14 +10415,14 @@ public JavaCCParser(java.io.InputStream stream, String encoding)
 }
 
 /** Reinitialise. */
-public void ReInit(java.io.InputStream stream)
+public void ReInit(Stream stream)
 {
     ReInit(stream, null);
 }
 /** Reinitialise. */
-public void ReInit(java.io.InputStream stream, String encoding)
+public void ReInit(Stream stream, String encoding)
 {
-    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (java.io.UnsupportedEncodingException e) { throw new Exception(e); }
+    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (Exception e) { throw new Exception(e); }
     token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;

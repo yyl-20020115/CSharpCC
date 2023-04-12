@@ -44,7 +44,7 @@ public class JavaCCParserTokenManager implements JavaCCParserConstants
   public  java.io.PrintStream debugStream = System.out;
   /** Set debug output. */
   public  void setDebugStream(java.io.PrintStream ds) { debugStream = ds; }
-private final int jjStopStringLiteralDfa_0(int pos, long active0, long active1, long active2)
+private int jjStopStringLiteralDfa_0(int pos, long active0, long active1, long active2)
 {
    switch (pos)
    {
@@ -214,7 +214,7 @@ private final int jjStopStringLiteralDfa_0(int pos, long active0, long active1, 
          return -1;
    }
 }
-private final int jjStartNfa_0(int pos, long active0, long active1, long active2)
+private int jjStartNfa_0(int pos, long active0, long active1, long active2)
 {
    return jjMoveNfa_0(jjStopStringLiteralDfa_0(pos, active0, active1, active2), pos + 1);
 }
@@ -1259,187 +1259,187 @@ private int jjStartNfaWithStates_0(int pos, int kind, int state)
    catch(IOException e) { return pos + 1; }
    return jjMoveNfa_0(state, pos + 1);
 }
-static final long[] jjbitVec0 = {
+static long[] jjbitVec0 = {
    0xfffffffffffffffeL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL
 };
-static final long[] jjbitVec2 = {
+static long[] jjbitVec2 = {
    0x0L, 0x0L, 0xffffffffffffffffL, 0xffffffffffffffffL
 };
-static final long[] jjbitVec3 = {
+static long[] jjbitVec3 = {
    0xfff0000000200002L, 0xffffffffffffdfffL, 0xfffff00f7fffffffL, 0x12000000007fffffL
 };
-static final long[] jjbitVec4 = {
+static long[] jjbitVec4 = {
    0x0L, 0x0L, 0x420043c00000000L, 0xff7fffffff7fffffL
 };
-static final long[] jjbitVec5 = {
+static long[] jjbitVec5 = {
    0xffffcffffffffL, 0xffffffffffff0000L, 0xf9ff3fffffffffffL, 0x401f00030003L
 };
-static final long[] jjbitVec6 = {
+static long[] jjbitVec6 = {
    0x0L, 0x400000000000000L, 0xfffffffbffffd740L, 0xffffffcff7fffL
 };
-static final long[] jjbitVec7 = {
+static long[] jjbitVec7 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0xfffffffffffff003L, 0x33fffffffff199fL
 };
-static final long[] jjbitVec8 = {
+static long[] jjbitVec8 = {
    0xfffe000000000000L, 0xfffffffe027fffffL, 0xffL, 0x707ffffff0000L
 };
-static final long[] jjbitVec9 = {
+static long[] jjbitVec9 = {
    0x7fffffe00000000L, 0xfffe0000000007ffL, 0xffffffffffffffffL, 0x1c000060002fffffL
 };
-static final long[] jjbitVec10 = {
+static long[] jjbitVec10 = {
    0x1ffffffd0000L, 0x0L, 0x3fffffffffL, 0x0L
 };
-static final long[] jjbitVec11 = {
+static long[] jjbitVec11 = {
    0x23ffffffffffffe0L, 0x3ff010000L, 0x3c5fdfffff99fe0L, 0xf0003b0000000L
 };
-static final long[] jjbitVec12 = {
+static long[] jjbitVec12 = {
    0x36dfdfffff987e0L, 0x1c00005e000000L, 0x23edfdfffffbafe0L, 0x100010000L
 };
-static final long[] jjbitVec13 = {
+static long[] jjbitVec13 = {
    0x23cdfdfffff99fe0L, 0x3b0000000L, 0x3bfc718d63dc7e0L, 0x0L
 };
-static final long[] jjbitVec14 = {
+static long[] jjbitVec14 = {
    0x3effdfffffddfe0L, 0x300000000L, 0x3effdfffffddfe0L, 0x340000000L
 };
-static final long[] jjbitVec15 = {
+static long[] jjbitVec15 = {
    0x3fffdfffffddfe0L, 0x300000000L, 0x2ffbfffffc7fffe0L, 0x7fL
 };
-static final long[] jjbitVec16 = {
+static long[] jjbitVec16 = {
    0x800dfffffffffffeL, 0x7fL, 0x200decaefef02596L, 0x3000005fL
 };
-static final long[] jjbitVec17 = {
+static long[] jjbitVec17 = {
    0x1L, 0x7fffffffeffL, 0xf00L, 0x0L
 };
-static final long[] jjbitVec18 = {
+static long[] jjbitVec18 = {
    0x6fbffffffffL, 0x3f0000L, 0xffffffff00000000L, 0x7fffffffff003fL
 };
-static final long[] jjbitVec19 = {
+static long[] jjbitVec19 = {
    0xffffffffffffffffL, 0xffffffff83ffffffL, 0xffffff07ffffffffL, 0x3ffffffffffffffL
 };
-static final long[] jjbitVec20 = {
+static long[] jjbitVec20 = {
    0xffffffffffffff7fL, 0xffffffff3d7f3d7fL, 0x7f3d7fffffff3d7fL, 0xffff7fffff7f7f3dL
 };
-static final long[] jjbitVec21 = {
+static long[] jjbitVec21 = {
    0xffffffff7f3d7fffL, 0x7ffff7fL, 0xffffffff00000000L, 0x1fffffffffffffL
 };
-static final long[] jjbitVec22 = {
+static long[] jjbitVec22 = {
    0xffffffffffffffffL, 0x7f9fffffffffffL, 0xffffffff07fffffeL, 0x7ffffffffffL
 };
-static final long[] jjbitVec23 = {
+static long[] jjbitVec23 = {
    0x0L, 0x0L, 0xfffffffffffffL, 0x8000000L
 };
-static final long[] jjbitVec24 = {
+static long[] jjbitVec24 = {
    0xffffffff00000000L, 0xffffffffffffffL, 0x1ffffffffffL, 0x0L
 };
-static final long[] jjbitVec25 = {
+static long[] jjbitVec25 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffff0fffffffL, 0x3ffffffffffffffL
 };
-static final long[] jjbitVec26 = {
+static long[] jjbitVec26 = {
    0xffffffff3f3fffffL, 0x3fffffffaaff3f3fL, 0x5fdfffffffffffffL, 0x1fdc1fff0fcf1fdcL
 };
-static final long[] jjbitVec27 = {
+static long[] jjbitVec27 = {
    0x8000000000000000L, 0x8000000000000001L, 0xffff00000000L, 0x0L
 };
-static final long[] jjbitVec28 = {
+static long[] jjbitVec28 = {
    0x3fbbd503e2ffc84L, 0xffffffff00000000L, 0xfL, 0x0L
 };
-static final long[] jjbitVec29 = {
+static long[] jjbitVec29 = {
    0x73e03fe000000e0L, 0xfffffffffffffffeL, 0xfffffffe601fffffL, 0x7fffffffffffffffL
 };
-static final long[] jjbitVec30 = {
+static long[] jjbitVec30 = {
    0xfffe1fffffffffe0L, 0xffffffffffffffffL, 0xffffff00007fffL, 0x0L
 };
-static final long[] jjbitVec31 = {
+static long[] jjbitVec31 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0x3fffffffffffffL, 0x0L
 };
-static final long[] jjbitVec32 = {
+static long[] jjbitVec32 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0x3fffffffffL, 0x0L
 };
-static final long[] jjbitVec33 = {
+static long[] jjbitVec33 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0x1fffL, 0x0L
 };
-static final long[] jjbitVec34 = {
+static long[] jjbitVec34 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0xfffffffffL, 0x0L
 };
-static final long[] jjbitVec35 = {
+static long[] jjbitVec35 = {
    0x3fffffffffffL, 0x0L, 0x0L, 0x0L
 };
-static final long[] jjbitVec36 = {
+static long[] jjbitVec36 = {
    0x5f7ffdffa0f8007fL, 0xffffffffffffffdbL, 0x3ffffffffffffL, 0xfffffffffff80000L
 };
-static final long[] jjbitVec37 = {
+static long[] jjbitVec37 = {
    0x3fffffffffffffffL, 0xffffffffffff0000L, 0xfffffffffffcffffL, 0xfff0000000000ffL
 };
-static final long[] jjbitVec38 = {
+static long[] jjbitVec38 = {
    0x18000000000000L, 0xffd702000000e000L, 0xffffffffffffffffL, 0x1fffffffffffffffL
 };
-static final long[] jjbitVec39 = {
+static long[] jjbitVec39 = {
    0x87fffffe00000010L, 0xffffffe007fffffeL, 0x7fffffffffffffffL, 0x631cfcfcfcL
 };
-static final long[] jjbitVec40 = {
+static long[] jjbitVec40 = {
    0x0L, 0x0L, 0x420043cffffffffL, 0xff7fffffff7fffffL
 };
-static final long[] jjbitVec41 = {
+static long[] jjbitVec41 = {
    0xffffffffffffffffL, 0x400000700007fffL, 0xfffffffbffffd740L, 0xffffffcff7fffL
 };
-static final long[] jjbitVec42 = {
+static long[] jjbitVec42 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0xfffffffffffff07bL, 0x33fffffffff199fL
 };
-static final long[] jjbitVec43 = {
+static long[] jjbitVec43 = {
    0xfffe000000000000L, 0xfffffffe027fffffL, 0xbbfffffbfffe00ffL, 0x707ffffff0016L
 };
-static final long[] jjbitVec44 = {
+static long[] jjbitVec44 = {
    0x7fffffe00000000L, 0xffff03ff003fffffL, 0xffffffffffffffffL, 0x1fff3dff9fefffffL
 };
-static final long[] jjbitVec45 = {
+static long[] jjbitVec45 = {
    0xffff1fffffff8000L, 0x7ffL, 0x1ffffffffffffL, 0x0L
 };
-static final long[] jjbitVec46 = {
+static long[] jjbitVec46 = {
    0xf3ffffffffffffeeL, 0xffcfff1f3fffL, 0xd3c5fdfffff99feeL, 0xfffcfb080399fL
 };
-static final long[] jjbitVec47 = {
+static long[] jjbitVec47 = {
    0xd36dfdfffff987e4L, 0x1fffc05e003987L, 0xf3edfdfffffbafeeL, 0xffc100013bbfL
 };
-static final long[] jjbitVec48 = {
+static long[] jjbitVec48 = {
    0xf3cdfdfffff99feeL, 0xffc3b0c0398fL, 0xc3bfc718d63dc7ecL, 0xff8000803dc7L
 };
-static final long[] jjbitVec49 = {
+static long[] jjbitVec49 = {
    0xc3effdfffffddfeeL, 0xffc300603ddfL, 0xc3effdfffffddfecL, 0xffc340603ddfL
 };
-static final long[] jjbitVec50 = {
+static long[] jjbitVec50 = {
    0xc3fffdfffffddfecL, 0xffc300803dcfL, 0x2ffbfffffc7fffecL, 0xc0000ff5f847fL
 };
-static final long[] jjbitVec51 = {
+static long[] jjbitVec51 = {
    0x87fffffffffffffeL, 0x3ff7fffL, 0x3bffecaefef02596L, 0x33ff3f5fL
 };
-static final long[] jjbitVec52 = {
+static long[] jjbitVec52 = {
    0xc2a003ff03000001L, 0xfffe07fffffffeffL, 0x1ffffffffeff0fdfL, 0x40L
 };
-static final long[] jjbitVec53 = {
+static long[] jjbitVec53 = {
    0x3c7f6fbffffffffL, 0x3ff03ffL, 0xffffffff00000000L, 0x7fffffffff003fL
 };
-static final long[] jjbitVec54 = {
+static long[] jjbitVec54 = {
    0xffffffff7f3d7fffL, 0x3fe0007ffff7fL, 0xffffffff00000000L, 0x1fffffffffffffL
 };
-static final long[] jjbitVec55 = {
+static long[] jjbitVec55 = {
    0x0L, 0x0L, 0xffffffffffffffffL, 0x3ff080fffffL
 };
-static final long[] jjbitVec56 = {
+static long[] jjbitVec56 = {
    0xffffffff03ff7800L, 0xffffffffffffffL, 0x3ffffffffffL, 0x0L
 };
-static final long[] jjbitVec57 = {
+static long[] jjbitVec57 = {
    0x80007c000000f000L, 0x8000fc0000000001L, 0xffff00000000L, 0x21fff0000L
 };
-static final long[] jjbitVec58 = {
+static long[] jjbitVec58 = {
    0x73efffe000000e0L, 0xfffffffffffffffeL, 0xfffffffe661fffffL, 0x7fffffffffffffffL
 };
-static final long[] jjbitVec59 = {
+static long[] jjbitVec59 = {
    0x5f7ffdffe0f8007fL, 0xffffffffffffffdbL, 0x3ffffffffffffL, 0xfffffffffff80000L
 };
-static final long[] jjbitVec60 = {
+static long[] jjbitVec60 = {
    0x18000f00000000L, 0xffd702000000e000L, 0xffffffffffffffffL, 0x9fffffffffffffffL
 };
-static final long[] jjbitVec61 = {
+static long[] jjbitVec61 = {
    0x87fffffe03ff0010L, 0xffffffe007fffffeL, 0x7fffffffffffffffL, 0xe0000631cfcfcfcL
 };
 private int jjMoveNfa_0(int startState, int curPos)
@@ -2136,7 +2136,7 @@ private int jjMoveStringLiteralDfa1_3(long active0)
    }
    return 2;
 }
-static final int[] jjnextStates = {
+static int[] jjnextStates = {
    37, 38, 39, 15, 43, 44, 45, 49, 50, 51, 26, 27, 29, 17, 19, 5, 
    6, 7, 59, 62, 63, 7, 64, 67, 77, 10, 9, 11, 15, 14, 13, 15, 
    26, 27, 31, 29, 37, 38, 39, 15, 42, 41, 15, 43, 44, 45, 48, 47, 
@@ -2145,7 +2145,7 @@ static final int[] jjnextStates = {
    79, 78, 80, 81, 84, 83, 15, 5, 6, 10, 9, 20, 21, 23, 28, 30, 
    32, 37, 38, 43, 44, 49, 50, 53, 52, 62, 63, 
 };
-private static final bool jjCanMove_0(int hiByte, int i1, int i2, long l1, long l2)
+private static bool jjCanMove_0(int hiByte, int i1, int i2, long l1, long l2)
 {
    switch(hiByte)
    {
@@ -2157,7 +2157,7 @@ private static final bool jjCanMove_0(int hiByte, int i1, int i2, long l1, long 
          return false;
    }
 }
-private static final bool jjCanMove_1(int hiByte, int i1, int i2, long l1, long l2)
+private static bool jjCanMove_1(int hiByte, int i1, int i2, long l1, long l2)
 {
    switch(hiByte)
    {
@@ -2241,7 +2241,7 @@ private static final bool jjCanMove_1(int hiByte, int i1, int i2, long l1, long 
          return false;
    }
 }
-private static final bool jjCanMove_2(int hiByte, int i1, int i2, long l1, long l2)
+private static bool jjCanMove_2(int hiByte, int i1, int i2, long l1, long l2)
 {
    switch(hiByte)
    {
@@ -2327,7 +2327,7 @@ private static final bool jjCanMove_2(int hiByte, int i1, int i2, long l1, long 
 }
 
 /** Token literal values. */
-public static final String[] jjstrLiteralImages = {
+public static String[] jjstrLiteralImages = {
 "", "\114\117\117\113\101\110\105\101\104", 
 "\111\107\116\117\122\105\137\103\101\123\105", "\120\101\122\123\105\122\137\102\105\107\111\116", 
 "\120\101\122\123\105\122\137\105\116\104", "\112\101\126\101\103\117\104\105", "\103\120\120\103\117\104\105", 
@@ -2362,7 +2362,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
 "\74\74\75", "\76\76\75", "\76\76\76\75", "\74\74", "\100", null, null, null, null, };
 
 /** Lexer state names. */
-public static final String[] lexStateNames = {
+public static String[] lexStateNames = {
    "DEFAULT",
    "AFTER_EGEN",
    "IN_SINGLE_LINE_COMMENT",
@@ -2371,7 +2371,7 @@ public static final String[] lexStateNames = {
 };
 
 /** Lex State array. */
-public static final int[] jjnewLexState = {
+public static int[] jjnewLexState = {
    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 0, 2, 3, 4, 4, 0, 
    0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -2380,22 +2380,22 @@ public static final int[] jjnewLexState = {
    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
    -1, -1, -1, -1, -1, 
 };
-static final long[] jjtoToken = {
+static long[] jjtoToken = {
    0xfffffffff0001fffL, 0xffffffffe10fffffL, 0x4ffffffL, 
 };
-static final long[] jjtoSkip = {
+static long[] jjtoSkip = {
    0x70fe000L, 0x0L, 0x0L, 
 };
-static final long[] jjtoSpecial = {
+static long[] jjtoSpecial = {
    0x7000000L, 0x0L, 0x0L, 
 };
-static final long[] jjtoMore = {
+static long[] jjtoMore = {
    0x8f00000L, 0x0L, 0x0L, 
 };
 protected JavaCharStream input_stream;
-private final int[] jjrounds = new int[85];
-private final int[] jjstateSet = new int[170];
-private final StringBuilder jjimage = new StringBuilder();
+private int[] jjrounds = new int[85];
+private int[] jjstateSet = new int[170];
+private StringBuilder jjimage = new StringBuilder();
 private StringBuilder image = jjimage;
 private int jjimageLen;
 private int lengthOfMatch;
@@ -2447,12 +2447,12 @@ public void SwitchTo(int lexState)
 
 protected Token jjFillToken()
 {
-   final Token t;
-   final String curTokenImage;
-   final int beginLine;
-   final int endLine;
-   final int beginColumn;
-   final int endColumn;
+   Token t;
+   String curTokenImage;
+   int beginLine;
+   int endLine;
+   int beginColumn;
+   int endColumn;
    String im = jjstrLiteralImages[jjmatchedKind];
    curTokenImage = (im == null) ? input_stream.GetImage() : im;
    beginLine = input_stream.getBeginLine();

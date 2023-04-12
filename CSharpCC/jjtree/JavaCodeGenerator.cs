@@ -19,7 +19,7 @@ public class JavaCodeGenerator : DefaultJJTreeVisitor
         IO io = (IO)data;
         io.println("/*@bgen(jjtree) " +
             JavaCCGlobals.getIdString(JJTreeGlobals.toolList,
-            io.getOutputFileName()).getName()) +
+            io.getOutputFileName()) +
              " */");
         io.print("/*@egen*/");
 
@@ -320,7 +320,7 @@ public class JavaCodeGenerator : DefaultJJTreeVisitor
     void insertOpenNodeCode(NodeScope ns, IO io, string indent)
     {
         string type = ns.node_descriptor.getNodeType();
-        final string nodeClass;
+        string nodeClass;
         if (JJTreeOptions.getNodeClass().Length > 0 && !JJTreeOptions.getMulti())
         {
             nodeClass = JJTreeOptions.getNodeClass();

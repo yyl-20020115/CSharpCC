@@ -47,20 +47,20 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 		}
 
 		if (Options.getBuildParser()) {
-			final List<String> tn = new (toolNames);
+			List<String> tn = new (toolNames);
 			tn.Add(toolName);
 
 			// This is the first line generated -- the the comment line at the top of the generated parser
 			genCodeLine("/* " + getIdString(tn, cu_name + ".java") + " */");
 
 			bool implementsExists = false;
-			//final bool extendsExists = false;
+			//bool extendsExists = false;
 
 			if (cu_to_insertion_point_1.Count != 0) {
 				object firstToken = cu_to_insertion_point_1.get(0);
 				printTokenSetup((Token) firstToken);
 				this.ccol = 1;
-				for (final Iterator<Token> it = cu_to_insertion_point_1.iterator(); it.hasNext();) {
+				for (Iterator<Token> it = cu_to_insertion_point_1.iterator(); it.hasNext();) {
 					t = it.next();
 					if (t.kind == IMPLEMENTS) {
 						implementsExists = true;
@@ -80,7 +80,7 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 			genCode(cu_name + "Constants ");
 			if (cu_to_insertion_point_2.Count != 0) {
 				printTokenSetup((cu_to_insertion_point_2.get(0)));
-				for (final Iterator<Token> it = cu_to_insertion_point_2.iterator(); it.hasNext();) {
+				for (Iterator<Token> it = cu_to_insertion_point_2.iterator(); it.hasNext();) {
 					printToken(it.next());
 				}
 			}
@@ -131,9 +131,9 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 			}
 			if (Options.getErrorReporting()) {
 				genCodeLine("  " + staticOpt() + "private int jj_gen;");
-				genCodeLine("  " + staticOpt() + "final private int[] jj_la1 = new int["
+				genCodeLine("  " + staticOpt() + "private int[] jj_la1 = new int["
 						+ maskindex + "];");
-				final int tokenMaskSize = (tokenCount - 1) / 32 + 1;
+				int tokenMaskSize = (tokenCount - 1) / 32 + 1;
 				for (int i = 0; i < tokenMaskSize; i++) {
 					genCodeLine("  static private int[] jj_la1_" + i + ";");
 				}
@@ -145,8 +145,8 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 				for (int i = 0; i < tokenMaskSize; i++) {
 					genCodeLine("	private static void jj_la1_init_" + i + "() {");
 					genCode("	   jj_la1_" + i + " = new int[] {");
-					for (final Iterator<?> it = maskVals.iterator(); it.hasNext();) {
-						final int[] tokenMask = (int[]) (it.next());
+					for (Iterator<?> it = maskVals.iterator(); it.hasNext();) {
+						int[] tokenMask = (int[]) (it.next());
 						genCode("0x" + Integer.toHexString(tokenMask[i]) + ",");
 					}
 					genCodeLine("};");
@@ -947,7 +947,7 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 			if (cu_from_insertion_point_2.Count != 0) {
 				printTokenSetup((cu_from_insertion_point_2.get(0)));
 				this.ccol = 1;
-				for (final Iterator<?> it = cu_from_insertion_point_2.iterator(); it.hasNext();) {
+				for (Iterator<?> it = cu_from_insertion_point_2.iterator(); it.hasNext();) {
 					t = (Token) it.next();
 					printToken(t);
 				}

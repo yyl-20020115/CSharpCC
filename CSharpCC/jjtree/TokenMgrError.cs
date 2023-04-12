@@ -148,8 +148,8 @@ public class TokenMgrError : Error
 
     /** Full Constructor. */
     public TokenMgrError(bool EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar, int reason)
+        : this(LexicalError(EOFSeen, lexState, errorLine, errorColumn, errorAfter, curChar), reason)
     {
-        this(LexicalError(EOFSeen, lexState, errorLine, errorColumn, errorAfter, curChar), reason);
     }
 }
 /* JavaCC - OriginalChecksum=9b80d7cf48d0c83d98da89ea5626cf25 (do not edit this line) */
