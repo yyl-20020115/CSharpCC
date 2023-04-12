@@ -3,32 +3,24 @@ namespace org.javacc.jjtree;
 
 public class JJTJJTreeParserState
 {
-    private List<Node> nodes;
-    private List<int> marks;
+    private readonly List<Node> nodes = new();
+    private readonly List<int> marks = new();
 
-    private int sp;        // number of nodes on stack
-    private int mk;        // current mark
-    private bool node_created;
-
+    private int sp = 0;        // number of nodes on stack
+    private int mk = 0;        // current mark
+    private bool nodeCreated = false;
     public JJTJJTreeParserState()
     {
-        nodes = new ();
-        marks = new ();
-        sp = 0;
-        mk = 0;
     }
 
     /* Determines whether the current node was actually closed and
        pushed.  This should only be called in the final user action of a
        node scope.  */
-    public bool nodeCreated()
-    {
-        return node_created;
-    }
+    public bool NodeCreated => nodeCreated;
 
     /* Call this to reinitialize the node stack.  It is called
        automatically by the parser's ReInit() method. */
-    public void reset()
+    public void Reset()
     {
         nodes.Clear();
         marks.Clear();
@@ -38,13 +30,10 @@ public class JJTJJTreeParserState
 
     /* Returns the root node of the AST.  It only makes sense to call
        this after a successful parse. */
-    public Node rootNode()
-    {
-        return nodes[0];
-    }
+    public Node RootNode() => nodes[0];
 
     /* Pushes a node on to the stack. */
-    public void pushNode(Node n)
+    public void PushNode(Node n)
     {
         nodes.Add(n);
         ++sp;
@@ -52,40 +41,37 @@ public class JJTJJTreeParserState
 
     /* Returns the node on the top of the stack, and remove it from the
        stack.  */
-    public Node popNode()
+    public Node PopNode()
     {
         if (--sp < mk)
         {
-            mk = marks.Remove(marks.Count - 1);
+            mk = marks[^1];
+            marks.Remove(marks.Count - 1);
         }
-        return nodes.Remove(nodes.Count - 1);
+        var n = nodes[mk ^ 1];
+        nodes.RemoveAt(nodes.Count - 1);
+        return n;
     }
 
     /* Returns the node currently on the top of the stack. */
-    public Node peekNode()
-    {
-        return nodes[^1];
-    }
+    public Node PeekNode() => nodes[^1];
 
     /* Returns the number of children on the stack in the current node
        scope. */
-    public int nodeArity()
-    {
-        return sp - mk;
-    }
+    public int NodeArity() => sp - mk;
 
 
-    public void clearNodeScope(Node n)
+    public void ClearNodeScope(Node n)
     {
         while (sp > mk)
         {
-            popNode();
+            PopNode();
         }
         mk = marks.remove(marks.Count - 1);
     }
 
 
-    public void openNodeScope(Node n)
+    public void OpenNodeScope(Node n)
     {
         marks.Add(mk);
         mk = sp;
@@ -97,18 +83,18 @@ public class JJTJJTreeParserState
        children.  That number of nodes are popped from the stack and
        made the children of the definite node.  Then the definite node
        is pushed on to the stack. */
-    public void closeNodeScope(Node n, int num)
+    public void CloseNodeScope(Node n, int num)
     {
         mk = marks.remove(marks.Count - 1);
         while (num-- > 0)
         {
-            Node c = popNode();
+            Node c = PopNode();
             c.jjtSetParent(n);
             n.jjtAddChild(c, num);
         }
         n.jjtClose();
-        pushNode(n);
-        node_created = true;
+        PushNode(n);
+        nodeCreated = true;
     }
 
 
@@ -117,26 +103,26 @@ public class JJTJJTreeParserState
        made children of the conditional node, which is then pushed
        on to the stack.  If the condition is false the node is not
        constructed and they are left on the stack. */
-    public void closeNodeScope(Node n, bool condition)
+    public void CloseNodeScope(Node n, bool condition)
     {
         if (condition)
         {
-            int a = nodeArity();
+            int a = NodeArity();
             mk = marks.remove(marks.Count - 1);
             while (a-- > 0)
             {
-                Node c = popNode();
+                Node c = PopNode();
                 c.jjtSetParent(n);
                 n.jjtAddChild(c, a);
             }
             n.jjtClose();
-            pushNode(n);
-            node_created = true;
+            PushNode(n);
+            nodeCreated = true;
         }
         else
         {
             mk = marks.remove(marks.Count - 1);
-            node_created = false;
+            nodeCreated = false;
         }
     }
 }

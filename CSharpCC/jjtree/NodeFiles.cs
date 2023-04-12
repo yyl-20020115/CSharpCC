@@ -49,7 +49,7 @@ public static class NodeFiles
 
     public static void ensure(IO io, string nodeType)
     {
-        string file = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), nodeType + ".java");
+        string file = System.IO.Path.Combine(JJTreeOptions.GetJJTreeOutputDirectory(), nodeType + ".java");
 
         if (nodeType == ("Node"))
         {
@@ -65,7 +65,7 @@ public static class NodeFiles
 
         /* Only build the node file if we're dealing with Node.java, or
            the NODE_BUILD_FILES option is set. */
-        if (!(nodeType == ("Node") || JJTreeOptions.getBuildNodeFiles()))
+        if (!(nodeType == ("Node") || JJTreeOptions.GetBuildNodeFiles()))
         {
             return;
         }
@@ -118,13 +118,13 @@ public static class NodeFiles
         // will default to the parser's package name.
         // If the package names are different we will need to import classes
         // from the parser's package.
-        if (JJTreeGlobals.nodePackageName != (""))
+        if (JJTreeGlobals.NodePackageName != (""))
         {
-            ostr.WriteLine("package " + JJTreeGlobals.nodePackageName + ";");
+            ostr.WriteLine("package " + JJTreeGlobals.NodePackageName + ";");
             ostr.WriteLine();
-            if (JJTreeGlobals.nodePackageName != (JJTreeGlobals.packageName))
+            if (JJTreeGlobals.NodePackageName != (JJTreeGlobals.PackageName))
             {
-                ostr.WriteLine("import " + JJTreeGlobals.packageName + ".*;");
+                ostr.WriteLine("import " + JJTreeGlobals.PackageName + ".*;");
                 ostr.WriteLine();
             }
 
@@ -134,13 +134,13 @@ public static class NodeFiles
 
     public static string nodeConstants()
     {
-        return JJTreeGlobals.parserName + "TreeConstants";
+        return JJTreeGlobals.ParserName + "TreeConstants";
     }
 
     public static void generateTreeConstants_java()
     {
         string name = nodeConstants();
-        string file = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), name + ".java");
+        string file = System.IO.Path.Combine(JJTreeOptions.GetJJTreeOutputDirectory(), name + ".java");
 
         try
         {
@@ -184,18 +184,18 @@ public static class NodeFiles
 
     public static string visitorClass()
     {
-        return JJTreeGlobals.parserName + "Visitor";
+        return JJTreeGlobals.ParserName + "Visitor";
     }
 
     public static void generateVisitor_java()
     {
-        if (!JJTreeOptions.getVisitor())
+        if (!JJTreeOptions.GetVisitor())
         {
             return;
         }
 
         string name = visitorClass();
-        string file = new File(JJTreeOptions.getJJTreeOutputDirectory(), name + ".java");
+        string file = new File(JJTreeOptions.GetJJTreeOutputDirectory(), name + ".java");
 
         try
         {
@@ -211,14 +211,14 @@ public static class NodeFiles
             string ve = mergeVisitorException();
 
             string argumentType = "Object";
-            if (!JJTreeOptions.getVisitorDataType() == (""))
+            if (!JJTreeOptions.GetVisitorDataType() == (""))
             {
-                argumentType = JJTreeOptions.getVisitorDataType();
+                argumentType = JJTreeOptions.GetVisitorDataType();
             }
 
-            ostr.WriteLine("  public " + JJTreeOptions.getVisitorReturnType() + " visit(SimpleNode node, " + argumentType + " data)" +
+            ostr.WriteLine("  public " + JJTreeOptions.GetVisitorReturnType() + " visit(SimpleNode node, " + argumentType + " data)" +
                 ve + ";");
-            if (JJTreeOptions.getMulti())
+            if (JJTreeOptions.GetMulti())
             {
                 for (int i = 0; i < nodeNames.Count; ++i)
                 {
@@ -227,8 +227,8 @@ public static class NodeFiles
                     {
                         continue;
                     }
-                    string nodeType = JJTreeOptions.getNodePrefix() + n;
-                    ostr.WriteLine("  public " + JJTreeOptions.getVisitorReturnType() + " " + getVisitMethodName(nodeType) +
+                    string nodeType = JJTreeOptions.GetNodePrefix() + n;
+                    ostr.WriteLine("  public " + JJTreeOptions.GetVisitorReturnType() + " " + getVisitMethodName(nodeType) +
                     "(" + nodeType +
                         " node, " + argumentType + " data)" + ve + ";");
                 }
@@ -245,7 +245,7 @@ public static class NodeFiles
 
     public static string defaultVisitorClass()
     {
-        return JJTreeGlobals.parserName + "DefaultVisitor";
+        return JJTreeGlobals.ParserName + "DefaultVisitor";
     }
 
     private static string getVisitMethodName(string className)
@@ -265,20 +265,20 @@ public static class NodeFiles
 
     public static void generateDefaultVisitor_java()
     {
-        if (!JJTreeOptions.getVisitor())
+        if (!JJTreeOptions.GetVisitor())
         {
             return;
         }
 
         string className = defaultVisitorClass();
-        File file = new File(JJTreeOptions.getJJTreeOutputDirectory(), className + ".java");
+        File file = new File(JJTreeOptions.GetJJTreeOutputDirectory(), className + ".java");
 
         try
         {
             OutputFile outputFile = new OutputFile(file);
             TextWriter ostr = outputFile.getPrintWriter();
 
-            List nodeNames = ASTNodeDescriptor.GetNodeNames();
+            var nodeNames = ASTNodeDescriptor.GetNodeNames();
 
             generatePrologue(ostr);
             ostr.WriteLine("public class " + className + " implements " + visitorClass() + "{");
@@ -286,12 +286,12 @@ public static class NodeFiles
             string ve = mergeVisitorException();
 
             string argumentType = "Object";
-            if (!JJTreeOptions.getVisitorDataType() == (""))
+            if (!JJTreeOptions.GetVisitorDataType() == (""))
             {
-                argumentType = JJTreeOptions.getVisitorDataType().Trim();
+                argumentType = JJTreeOptions.GetVisitorDataType().Trim();
             }
 
-            string returnType = JJTreeOptions.getVisitorReturnType().Trim();
+            string returnType = JJTreeOptions.GetVisitorReturnType().Trim();
             bool isVoidReturnType = "void" == (returnType);
 
             ostr.WriteLine("  public " + returnType + " defaultVisit(SimpleNode node, " + argumentType + " data)" +
@@ -329,7 +329,7 @@ public static class NodeFiles
             ostr.WriteLine("    " + (isVoidReturnType ? "" : "return ") + "defaultVisit(node, data);");
             ostr.WriteLine("  }");
 
-            if (JJTreeOptions.getMulti())
+            if (JJTreeOptions.GetMulti())
             {
                 for (int i = 0; i < nodeNames.Count; ++i)
                 {
@@ -338,7 +338,7 @@ public static class NodeFiles
                     {
                         continue;
                     }
-                    string nodeType = JJTreeOptions.getNodePrefix() + n;
+                    string nodeType = JJTreeOptions.GetNodePrefix() + n;
                     ostr.WriteLine("  public " + returnType + " " + getVisitMethodName(nodeType) +
                     "(" + nodeType +
                         " node, " + argumentType + " data)" + ve + "{");
@@ -359,7 +359,7 @@ public static class NodeFiles
 
     private static string mergeVisitorException()
     {
-        string ve = JJTreeOptions.getVisitorException();
+        string ve = JJTreeOptions.GetVisitorException();
         if (!"" == (ve))
         {
             ve = " throws " + ve;
@@ -375,7 +375,7 @@ public static class NodeFiles
         generatePrologue(ostr);
 
         Dictionary options = new Dictionary(Options.getOptions());
-        options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
+        options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
 
         OutputFileGenerator generator = new OutputFileGenerator(
             "/templates/Node.template", options);
@@ -393,8 +393,8 @@ public static class NodeFiles
         generatePrologue(ostr);
 
         Dictionary options = new Dictionary(Options.getOptions());
-        options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
-        options.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(JJTreeOptions.getVisitorReturnType() == ("void")));
+        options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
+        options.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(JJTreeOptions.GetVisitorReturnType() == ("void")));
 
         OutputFileGenerator generator = new OutputFileGenerator(
             "/templates/SimpleNode.template", options);
@@ -412,9 +412,9 @@ public static class NodeFiles
         generatePrologue(ostr);
 
         Dictionary options = new Dictionary(Options.getOptions());
-        options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
+        options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
         options.Add("NODE_TYPE", nodeType);
-        options.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(JJTreeOptions.getVisitorReturnType() == ("void")));
+        options.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(JJTreeOptions.GetVisitorReturnType() == ("void")));
 
         OutputFileGenerator generator = new OutputFileGenerator(
             "/templates/MultiNode.template", options);

@@ -7,6 +7,7 @@ public interface JJTreeParserVisitor
     public object Visit(ASTGrammar node, object data);
     public object Visit(ASTCompilationUnit node, object data);
     public object Visit(ASTProductions node, object data);
+    public object Visit(ASTLHS node, object data);
     public object Visit(ASTOptions node, object data);
     public object Visit(ASTOptionBinding node, object data);
     public object Visit(ASTJavacode node, object data);
@@ -26,7 +27,7 @@ public interface JJTreeParserVisitor
     public object Visit(ASTBNFTryBlock node, object data);
     public object Visit(ASTBNFNonTerminal node, object data);
     public object Visit(ASTBNFAssignment node, object data);
-    public object visit(ASTBNFOneOrMore node, object data);
+    public object Visit(ASTBNFOneOrMore node, object data);
     public object Visit(ASTBNFZeroOrMore node, object data);
     public object Visit(ASTBNFParenthesized node, object data);
     public object Visit(ASTREStringLiteral node, object data);
@@ -45,5 +46,6 @@ public interface JJTreeParserVisitor
     public object Visit(ASTNodeDescriptor node, object data);
     public object Visit(ASTNodeDescriptorExpression node, object data);
     public object Visit(ASTPrimaryExpression node, object data);
+    public object Visit(JJTreeNode node, object data);
 }   
 /* JavaCC - OriginalChecksum=236a0da55ea23f741ece2c8012f6d143 (do not edit this line) */

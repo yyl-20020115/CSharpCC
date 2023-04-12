@@ -34,7 +34,7 @@ public class ASTNodeDescriptorExpression : JJTreeNode
     {
     }
 
-    public override string TranslateImage(Token t) => whiteOut(t);
+    public override string TranslateImage(Token t) => WhiteOut(t);
 
     /** Accept the visitor. **/
     public override object jjtAccept(JJTreeParserVisitor visitor, object data) 

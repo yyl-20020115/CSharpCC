@@ -37,7 +37,7 @@ namespace org.javacc.jjtree;
  */
 public static class JJTreeState
 {
-    public static void insertParserMembers(IO io)
+    public static void InsertParserMembers(IO io)
     {
         string s;
 
@@ -51,28 +51,28 @@ public static class JJTreeState
         }
 
         io.Println();
-        io.Println("  protected " + s + nameState() +
-             " jjtree = new " + nameState() + "();");
+        io.Println("  protected " + s + NameState() +
+             " jjtree = new " + NameState() + "();");
         io.Println();
     }
 
 
-    private static string nameState()
+    private static string NameState()
     {
-        return "JJT" + JJTreeGlobals.parserName + "State";
+        return "JJT" + JJTreeGlobals.ParserName + "State";
     }
 
 
-    public static void generateTreeState_java()
+    public static void GenerateTreeStateJava()
     {
-        string file = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), nameState() + ".java");
+        string file = System.IO.Path.Combine(JJTreeOptions.GetJJTreeOutputDirectory(), NameState() + ".java");
 
         try
         {
             OutputFile outputFile = new OutputFile(file);
             TextWriter ostr = outputFile.getPrintWriter();
             NodeFiles.generatePrologue(ostr);
-            insertState(ostr);
+            InsertState(ostr);
             outputFile.Close();
         }
         catch (IOException e)
@@ -82,9 +82,9 @@ public static class JJTreeState
     }
 
 
-    private static void insertState(TextWriter ostr)
+    private static void InsertState(TextWriter ostr)
     {
-        ostr.WriteLine("public class " + nameState() + " {");
+        ostr.WriteLine("public class " + NameState() + " {");
 
         if (!JJTreeOptions.getGenerateGenerics())
             ostr.WriteLine("  private java.util.List nodes;");
@@ -101,7 +101,7 @@ public static class JJTreeState
         ostr.WriteLine("  private int mk;        // current mark");
         ostr.WriteLine("  private boolean node_created;");
         ostr.WriteLine("");
-        ostr.WriteLine("  public " + nameState() + "() {");
+        ostr.WriteLine("  public " + NameState() + "() {");
 
         if (!JJTreeOptions.getGenerateGenerics())
             ostr.WriteLine("    nodes = new java.util.ArrayList();");

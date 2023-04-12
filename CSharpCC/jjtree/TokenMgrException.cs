@@ -8,13 +8,6 @@ namespace org.javacc.jjtree;
 public class TokenMgrException : Exception
 {
 
-    /**
-     * The version identifier for this Serializable class.
-     * Increment only if the <i>serialized</i> form of the
-     * class changes.
-     */
-    private const long serialVersionUID = 1L;
-
     /*
      * Ordinals for various reasons why an Error of this type can be thrown.
      */
@@ -22,22 +15,22 @@ public class TokenMgrException : Exception
     /**
      * Lexical error occurred.
      */
-    public static readonly int LEXICAL_ERROR = 0;
+    public const int LEXICAL_ERROR = 0;
 
     /**
      * An attempt was made to create a second instance of a static token manager.
      */
-    public static readonly int STATIC_LEXER_ERROR = 1;
+    public const int STATIC_LEXER_ERROR = 1;
 
     /**
      * Tried to change to an invalid lexical state.
      */
-    public static readonly int INVALID_LEXICAL_STATE = 2;
+    public const int INVALID_LEXICAL_STATE = 2;
 
     /**
      * Detected (and bailed out of) an infinite loop in the token manager.
      */
-    public static readonly int LOOP_DETECTED = 3;
+    public const int LOOP_DETECTED = 3;
 
     /**
      * Indicates the reason why the exception is thrown. It will have
@@ -49,7 +42,7 @@ public class TokenMgrException : Exception
      * Replaces unprintable characters by their escaped (or unicode escaped)
      * equivalents in the given string
      */
-    protected static string addEscapes(string str)
+    protected static string AddEscapes(string str)
     {
         var retval = new StringBuilder();
         char ch;
@@ -86,7 +79,7 @@ public class TokenMgrException : Exception
                 default:
                     if ((ch = str[i]) < 0x20 || ch > 0x7e)
                     {
-                        string s = "0000" + Convert.ToString(ch, 16);
+                        var s = "0000" + Convert.ToString(ch, 16);
                         retval.Append("\\u" + s[^4..]);
                     }
                     else
@@ -112,13 +105,7 @@ public class TokenMgrException : Exception
      * Note: You can customize the lexical error message by modifying this method.
      */
     protected static string LexicalError(bool EOFSeen, int lexState, int errorLine, int errorColumn, string errorAfter, char curChar)
-    {
-        return ("Lexical error at line " +
-              errorLine + ", column " +
-              errorColumn + ".  Encountered: " +
-              (EOFSeen ? "<EOF> " : ("\"" + addEscapes(curChar.ToString()) + "\"") + " (" + (int)curChar + "), ") +
-              "after : \"" + addEscapes(errorAfter) + "\"");
-    }
+        => ($"Lexical error at line {errorLine}, column {errorColumn}.  Encountered: {(EOFSeen ? "<EOF> " : ("\"" + AddEscapes(curChar.ToString()) + "\"") + " (" + (int)curChar + "), ")}after : \"{AddEscapes(errorAfter)}\"");
 
     /**
      * You can also modify the body of this method to customize your error messages.
@@ -140,10 +127,7 @@ public class TokenMgrException : Exception
     }
 
     /** Constructor with message and reason. */
-    public TokenMgrException(string message, int reason) : base(message)
-    {
-        errorCode = reason;
-    }
+    public TokenMgrException(string message, int reason) : base(message) => errorCode = reason;
 
     /** Full Constructor. */
     public TokenMgrException(bool EOFSeen, int lexState, int errorLine, int errorColumn, string errorAfter, char curChar, int reason)

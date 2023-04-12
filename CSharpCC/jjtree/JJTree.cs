@@ -39,68 +39,68 @@ public class JJTree
 
     private IO io;
 
-    private void p(string s)
+    private void Print(string s)
     {
         io.GetMsg().WriteLine(s);
     }
 
-    private void help_message()
+    private void HelpMessage()
     {
-        p("Usage:");
-        p("    jjtree option-settings inputfile");
-        p("");
-        p("\"option-settings\" is a sequence of settings separated by spaces.");
-        p("Each option setting must be of one of the following forms:");
-        p("");
-        p("    -optionname=value (e.g., -STATIC=false)");
-        p("    -optionname:value (e.g., -STATIC:false)");
-        p("    -optionname       (equivalent to -optionname=true.  e.g., -STATIC)");
-        p("    -NOoptionname     (equivalent to -optionname=false. e.g., -NOSTATIC)");
-        p("");
-        p("Option settings are not case-sensitive, so one can say \"-nOsTaTiC\" instead");
-        p("of \"-NOSTATIC\".  Option values must be appropriate for the corresponding");
-        p("option, and must be either an integer or a string value.");
-        p("");
+        Print("Usage:");
+        Print("    jjtree option-settings inputfile");
+        Print("");
+        Print("\"option-settings\" is a sequence of settings separated by spaces.");
+        Print("Each option setting must be of one of the following forms:");
+        Print("");
+        Print("    -optionname=value (e.g., -STATIC=false)");
+        Print("    -optionname:value (e.g., -STATIC:false)");
+        Print("    -optionname       (equivalent to -optionname=true.  e.g., -STATIC)");
+        Print("    -NOoptionname     (equivalent to -optionname=false. e.g., -NOSTATIC)");
+        Print("");
+        Print("Option settings are not case-sensitive, so one can say \"-nOsTaTiC\" instead");
+        Print("of \"-NOSTATIC\".  Option values must be appropriate for the corresponding");
+        Print("option, and must be either an integer or a string value.");
+        Print("");
 
-        p("The boolean valued options are:");
-        p("");
-        p("    STATIC                   (default true)");
-        p("    MULTI                    (default false)");
-        p("    NODE_DEFAULT_VOID        (default false)");
-        p("    NODE_SCOPE_HOOK          (default false)");
-        p("    NODE_USES_PARSER         (default false)");
-        p("    BUILD_NODE_FILES         (default true)");
-        p("    TRACK_TOKENS             (default false)");
-        p("    VISITOR                  (default false)");
-        p("");
-        p("The string valued options are:");
-        p("");
-        p("    JDK_VERSION              (default \"1.5\")");
-        p("    NODE_CLASS               (default \"\")");
-        p("    NODE_PREFIX              (default \"AST\")");
-        p("    NODE_PACKAGE             (default \"\")");
-        p("    NODE_EXTENDS             (default \"\")");
-        p("    NODE_FACTORY             (default \"\")");
-        p("    OUTPUT_FILE              (default remove input file suffix, add .jj)");
-        p("    OUTPUT_DIRECTORY         (default \"\")");
-        p("    JJTREE_OUTPUT_DIRECTORY  (default value of OUTPUT_DIRECTORY option)");
-        p("    VISITOR_DATA_TYPE        (default \"\")");
-        p("    VISITOR_RETURN_TYPE      (default \"Object\")");
-        p("    VISITOR_EXCEPTION        (default \"\")");
-        p("");
-        p("JJTree also accepts JavaCC options, which it inserts into the generated file.");
-        p("");
+        Print("The boolean valued options are:");
+        Print("");
+        Print("    STATIC                   (default true)");
+        Print("    MULTI                    (default false)");
+        Print("    NODE_DEFAULT_VOID        (default false)");
+        Print("    NODE_SCOPE_HOOK          (default false)");
+        Print("    NODE_USES_PARSER         (default false)");
+        Print("    BUILD_NODE_FILES         (default true)");
+        Print("    TRACK_TOKENS             (default false)");
+        Print("    VISITOR                  (default false)");
+        Print("");
+        Print("The string valued options are:");
+        Print("");
+        Print("    JDK_VERSION              (default \"1.5\")");
+        Print("    NODE_CLASS               (default \"\")");
+        Print("    NODE_PREFIX              (default \"AST\")");
+        Print("    NODE_PACKAGE             (default \"\")");
+        Print("    NODE_EXTENDS             (default \"\")");
+        Print("    NODE_FACTORY             (default \"\")");
+        Print("    OUTPUT_FILE              (default remove input file suffix, add .jj)");
+        Print("    OUTPUT_DIRECTORY         (default \"\")");
+        Print("    JJTREE_OUTPUT_DIRECTORY  (default value of OUTPUT_DIRECTORY option)");
+        Print("    VISITOR_DATA_TYPE        (default \"\")");
+        Print("    VISITOR_RETURN_TYPE      (default \"Object\")");
+        Print("    VISITOR_EXCEPTION        (default \"\")");
+        Print("");
+        Print("JJTree also accepts JavaCC options, which it inserts into the generated file.");
+        Print("");
 
-        p("EXAMPLES:");
-        p("    jjtree -STATIC=false mygrammar.jjt");
-        p("");
-        p("ABOUT JJTree:");
-        p("    JJTree is a preprocessor for JavaCC that inserts actions into a");
-        p("    JavaCC grammar to build parse trees for the input.");
-        p("");
-        p("    For more information, see the online JJTree documentation at ");
-        p("    https://javacc.dev.java.net/doc/JJTree.html ");
-        p("");
+        Print("EXAMPLES:");
+        Print("    jjtree -STATIC=false mygrammar.jjt");
+        Print("");
+        Print("ABOUT JJTree:");
+        Print("    JJTree is a preprocessor for JavaCC that inserts actions into a");
+        Print("    JavaCC grammar to build parse trees for the input.");
+        Print("");
+        Print("    For more information, see the online JJTree documentation at ");
+        Print("    https://javacc.dev.java.net/doc/JJTree.html ");
+        Print("");
     }
 
     /**
@@ -122,36 +122,36 @@ public class JJTree
         try
         {
 
-            initializeOptions();
+            InitializeOptions();
             if (args.Length == 0)
             {
-                p("");
-                help_message();
+                Print("");
+                HelpMessage();
                 return 1;
             }
             else
             {
-                p("(type \"jjtree\" with no arguments for help)");
+                Print("(type \"jjtree\" with no arguments for help)");
             }
 
             string fn = args[args.Length - 1];
 
             if (JJTreeOptions.isOption(fn))
             {
-                p("Last argument \"" + fn + "\" is not a filename");
+                Print("Last argument \"" + fn + "\" is not a filename");
                 return 1;
             }
             for (int arg = 0; arg < args.Length - 1; arg++)
             {
                 if (!JJTreeOptions.isOption(args[arg]))
                 {
-                    p("Argument \"" + args[arg] + "\" must be an option setting.");
+                    Print("Argument \"" + args[arg] + "\" must be an option setting.");
                     return 1;
                 }
                 JJTreeOptions.setCmdLineOption(args[arg]);
             }
 
-            JJTreeOptions.validate();
+            JJTreeOptions.Validate();
 
             try
             {
@@ -159,23 +159,23 @@ public class JJTree
             }
             catch (JJTreeIOException ioe)
             {
-                p("Error setting input: " + ioe.Message);
+                Print("Error setting input: " + ioe.Message);
                 return 1;
             }
-            p("Reading from file " + io.GetInputFileName() + " . . .");
+            Print("Reading from file " + io.GetInputFileName() + " . . .");
 
-            JJTreeGlobals.toolList = JavaCCGlobals.getToolNames(fn);
-            JJTreeGlobals.toolList.Add("JJTree");
+            JJTreeGlobals.ToolList = JavaCCGlobals.getToolNames(fn);
+            JJTreeGlobals.ToolList.Add("JJTree");
 
             try
             {
                 var parser = new JJTreeParser(io.GetIn());
                 parser.javacc_input();
 
-                ASTGrammar root = (ASTGrammar)parser.jjtree.rootNode();
-                if (Boolean.getBoolean("jjtree-dump"))
+                ASTGrammar root = (ASTGrammar)parser.jjtree.RootNode();
+                if (bool.TryParse(Environment.GetEnvironmentVariable("jjtree-dump"),out var b) && b)
                 {
-                    root.dump(" ");
+                    root.Dump(" ");
                 }
                 try
                 {
@@ -183,7 +183,7 @@ public class JJTree
                 }
                 catch (JJTreeIOException ioe)
                 {
-                    p("Error setting output: " + ioe.Message);
+                    Print("Error setting output: " + ioe.Message);
                     return 1;
                 }
                 root.Generate(io);
@@ -198,7 +198,7 @@ public class JJTree
                     NodeFiles.generateTreeConstants_java();
                     NodeFiles.generateVisitor_java();
                     NodeFiles.generateDefaultVisitor_java();
-                    JJTreeState.generateTreeState_java();
+                    JJTreeState.GenerateTreeStateJava();
                 }
                 else if (JJTreeOptions.isOutputLanguageCpp())
                 {
@@ -210,22 +210,22 @@ public class JJTree
                 }
                 else
                 {
-                    p("Unsupported JJTree output language : " + outputLanguage);
+                    Print("Unsupported JJTree output language : " + outputLanguage);
                     return 1;
                 }
 
-                p("Annotated grammar generated successfully in " +
+                Print("Annotated grammar generated successfully in " +
                       io.GetOutputFileName());
 
             }
             catch (ParseException pe)
             {
-                p("Error parsing input: " + pe.ToString());
+                Print("Error parsing input: " + pe.ToString());
                 return 1;
             }
             catch (Exception e)
             {
-                p("Error parsing input: " + e.ToString());
+                Print("Error parsing input: " + e.ToString());
                 //e.printStackTrace(io.GetMsg());
                 return 1;
             }
@@ -243,10 +243,10 @@ public class JJTree
     /**
      * Initialize for JJTree
      */
-    private void initializeOptions()
+    private void InitializeOptions()
     {
-        JJTreeOptions.init();
-        JJTreeGlobals.initialize();
+        JJTreeOptions.Init();
+        JJTreeGlobals.Initialize();
     }
 
 

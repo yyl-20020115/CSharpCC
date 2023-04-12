@@ -8,6 +8,7 @@ public class DefaultJJTreeVisitor : JJTreeParserVisitor
     public virtual object Visit(ASTGrammar node, object data) => DefaultVisit(node, data);
     public virtual object Visit(ASTCompilationUnit node, object data) => DefaultVisit(node, data);
     public virtual object Visit(ASTProductions node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTLHS node, object data) => DefaultVisit(node, data);
     public virtual object Visit(ASTOptions node, object data) => DefaultVisit(node, data);
     public virtual object Visit(ASTOptionBinding node, object data) => DefaultVisit(node, data);
     public virtual object Visit(ASTJavacode node, object data) => DefaultVisit(node, data);
@@ -27,7 +28,7 @@ public class DefaultJJTreeVisitor : JJTreeParserVisitor
     public virtual object Visit(ASTBNFTryBlock node, object data) => DefaultVisit(node, data);
     public virtual object Visit(ASTBNFNonTerminal node, object data) => DefaultVisit(node, data);
     public virtual object Visit(ASTBNFAssignment node, object data) => DefaultVisit(node, data);
-    public virtual object visit(ASTBNFOneOrMore node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(ASTBNFOneOrMore node, object data) => DefaultVisit(node, data);
     public virtual object Visit(ASTBNFZeroOrMore node, object data) => DefaultVisit(node, data);
     public virtual object Visit(ASTBNFParenthesized node, object data) => DefaultVisit(node, data);
     public virtual object Visit(ASTREStringLiteral node, object data) => DefaultVisit(node, data);
@@ -46,6 +47,7 @@ public class DefaultJJTreeVisitor : JJTreeParserVisitor
     public virtual object Visit(ASTNodeDescriptor node, object data) => DefaultVisit(node, data);
     public virtual object Visit(ASTNodeDescriptorExpression node, object data) => DefaultVisit(node, data);
     public virtual object Visit(ASTPrimaryExpression node, object data) => DefaultVisit(node, data);
+    public virtual object Visit(JJTreeNode node, object data) => DefaultVisit(node, data);
 
 }
 /* JavaCC - OriginalChecksum=3b7689ed0de9c57e70ae4a27c1480635 (do not edit this line) */

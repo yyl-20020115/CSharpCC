@@ -34,9 +34,7 @@ public class JJTreeIOException : IOException
 {
 
     public JJTreeIOException(string detail)
-          : base(detail)
-    {
-    }
+          : base(detail) { }
 }
 
 /*end*/

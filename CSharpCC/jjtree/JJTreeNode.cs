@@ -42,23 +42,20 @@ public class JJTreeNode : SimpleNode
     {
     }
 
-    public static Node jjtCreate(int id)
-    {
-        return new JJTreeNode(id);
-    }
+    public static Node jjtCreate(int id) => new JJTreeNode(id);
 
     public override void jjtAddChild(Node n, int i)
     {
         base.jjtAddChild(n, i);
-        ((JJTreeNode)n).setOrdinal(i);
+        ((JJTreeNode)n).SetOrdinal(i);
     }
 
-    public int getOrdinal()
+    public int GetOrdinal()
     {
         return myOrdinal;
     }
 
-    public void setOrdinal(int o)
+    public void SetOrdinal(int o)
     {
         myOrdinal = o;
     }
@@ -75,17 +72,17 @@ public class JJTreeNode : SimpleNode
 
     private Token first, last;
 
-    public Token getFirstToken() { return first; }
-    public void setFirstToken(Token t) { first = t; }
-    public Token getLastToken() { return last; }
-    public void setLastToken(Token t) { last = t; }
+    public Token GetFirstToken() { return first; }
+    public void SetFirstToken(Token t) { first = t; }
+    public Token GetLastToken() { return last; }
+    public void SetLastToken(Token t) { last = t; }
 
     public virtual string TranslateImage(Token t)
     {
         return t.image;
     }
 
-    public string whiteOut(Token t)
+    public string WhiteOut(Token t)
     {
         var sb = new StringBuilder(t.image.Length);
 
@@ -109,7 +106,7 @@ public class JJTreeNode : SimpleNode
        replaced with the actual node variable. */
     private bool whitingOut = false;
 
-    public void print(Token t, IO io)
+    public void Print(Token t, IO io)
     {
         Token tt = t.specialToken;
         if (tt != null)
@@ -117,7 +114,7 @@ public class JJTreeNode : SimpleNode
             while (tt.specialToken != null) tt = tt.specialToken;
             while (tt != null)
             {
-                io.Print(TokenUtils.addUnicodeEscapes(TranslateImage(tt)));
+                io.Print(TokenUtils.AddUnicodeEscapes(TranslateImage(tt)));
                 tt = tt.next;
             }
         }
@@ -131,18 +128,18 @@ public class JJTreeNode : SimpleNode
            2) we replace all calls to `jjtree.currentNode()' with
            references to the node variable. */
 
-        NodeScope s = NodeScope.getEnclosingNodeScope(this);
+        NodeScope s = NodeScope.GetEnclosingNodeScope(this);
         if (s == null)
         {
             /* Not within a node scope so we don't need to modify the
                source. */
-            io.Print(TokenUtils.addUnicodeEscapes(TranslateImage(t)));
+            io.Print(TokenUtils.AddUnicodeEscapes(TranslateImage(t)));
             return;
         }
 
         if (t.image == ("jjtThis"))
         {
-            io.Print(s.getNodeVariable());
+            io.Print(s.NodeVariable);
             return;
         }
         else if (t.image == ("jjtree"))
@@ -168,7 +165,7 @@ public class JJTreeNode : SimpleNode
         {
             if (t.image == ("jjtree"))
             {
-                io.Print(s.getNodeVariable());
+                io.Print(s.NodeVariable);
                 io.Print(" ");
             }
             else if (t.image == (")"))
@@ -186,6 +183,6 @@ public class JJTreeNode : SimpleNode
             return;
         }
 
-        io.Print(TokenUtils.addUnicodeEscapes(TranslateImage(t)));
+        io.Print(TokenUtils.AddUnicodeEscapes(TranslateImage(t)));
     }
 }

@@ -30,17 +30,17 @@ namespace org.javacc.jjtree;
 
 public class JJTreeGlobals
 {
-    public static void initialize()
+    public static void Initialize()
     {
-        toolList = new();
-        parserName = null;
-        packageName = "";
-        parserImplements = null;
-        parserClassBodyStart = null;
-        parserImports = null;
-        productions = new Dictionary();
+        ToolList = new();
+        ParserName = null;
+        PackageName = "";
+        ParserImplements = null;
+        ParserClassBodyStart = null;
+        ParserImports = null;
+        Productions = new ();
 
-        jjtreeOptions = new HashSet();
+        jjtreeOptions = new ();
         jjtreeOptions.Add("JJTREE_OUTPUT_DIRECTORY");
         jjtreeOptions.Add("MULTI");
         jjtreeOptions.Add("NODE_PREFIX");
@@ -66,7 +66,7 @@ public class JJTreeGlobals
 
     static JJTreeGlobals()
     {
-        initialize();
+        Initialize();
     }
 
     /**
@@ -75,51 +75,51 @@ public class JJTreeGlobals
      */
     private static HashSet<string> jjtreeOptions;
 
-    public static bool isOptionJJTreeOnly(string optionName)
+    public static bool IsOptionJJTreeOnly(string optionName)
     {
         return jjtreeOptions.Contains(optionName.ToUpper());
     }
 
-    public static List<string> toolList = new ();
+    public static List<string> ToolList = new();
 
     /**
      * Use this like className.
      **/
-    public static string parserName;
+    public static string ParserName;
 
     /**
      * The package that the parser lives in.  If the grammar doesn't
      * specify a package it is the empty string.
      **/
-    public static string packageName = "";
+    public static string PackageName = "";
 
     /**
      * The package the node files live in. If the NODE_PACKAGE option
      * is not set, then this defaults to packageName.
      **/
-    public static string nodePackageName = "";
+    public static string NodePackageName = "";
 
     /** The <code>implements</code> token of the parser class.  If the
      * parser doesn't have one then it is the first "{" of the parser
      * class body.
      **/
-    public static Token parserImplements;
+    public static Token ParserImplements;
 
     /** The first token of the parser class body (the <code>{</code>).
      * The JJTree state is inserted after this token.
      **/
-    public static Token parserClassBodyStart;
+    public static Token ParserClassBodyStart;
 
     /** The first token of the <code>import</code> list, or the
      * position where such a list should be inserted. The import
      * for the Node Package is inserted after this token.
      **/
-    public static Token parserImports;
+    public static Token ParserImports;
 
     /**
      * This is mapping from production names to ASTProduction objects.
      **/
-    public static Dictionary productions = new Dictionary();
+    public static Dictionary<string,ASTProduction> Productions = new ();
 
 }
 

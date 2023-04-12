@@ -45,7 +45,7 @@ public class NodeScope
         if (n == null)
         {
             string nm = production.name;
-            if (JJTreeOptions.getNodeDefaultVoid())
+            if (JJTreeOptions.GetNodeDefaultVoid())
             {
                 nm = "void";
             }
@@ -57,67 +57,52 @@ public class NodeScope
         }
 
         scopeNumber = production.GetNodeScopeNumber(this);
-        nodeVar = constructVariable("n");
-        closedVar = constructVariable("c");
-        exceptionVar = constructVariable("e");
+        nodeVar = ConstructVariable("n");
+        closedVar = ConstructVariable("c");
+        exceptionVar = ConstructVariable("e");
     }
 
 
-    public bool isVoid()
-    {
-        return node_descriptor.IsVoid;
-    }
+    public bool IsVoid => node_descriptor.IsVoid;
 
 
-    public ASTNodeDescriptor getNodeDescriptor()
-    {
-        return node_descriptor;
-    }
+    public ASTNodeDescriptor NodeDescriptor => node_descriptor;
 
 
-    public string getNodeDescriptorText()
-    {
-        return node_descriptor.GetDescriptor();
-    }
+    public string NodeDescriptorText => node_descriptor.GetDescriptor();
 
 
-    public string getNodeVariable()
-    {
-        return nodeVar;
-    }
+    public string NodeVariable => nodeVar;
 
 
-    private string constructVariable(string id)
+    private string ConstructVariable(string id)
     {
         string s = "000" + scopeNumber;
         return "jjt" + id + s[^3..];
     }
 
 
-    public bool usesCloseNodeVar()
-    {
-        return true;
-    }
+    public bool UsesCloseNodeVar => true;
 
-    public static NodeScope getEnclosingNodeScope(Node node)
+    public static NodeScope GetEnclosingNodeScope(Node node)
     {
-        if (node is ASTBNFDeclaration)
+        if (node is ASTBNFDeclaration declaration)
         {
-            return ((ASTBNFDeclaration)node).NodeScope;
+            return declaration.NodeScope;
         }
-        for (Node n = node.jjtGetParent(); n != null; n = n.jjtGetParent())
+        for (var n = node.jjtGetParent(); n != null; n = n.jjtGetParent())
         {
-            if (n is ASTBNFDeclaration)
+            if (n is ASTBNFDeclaration declaration2)
             {
-                return ((ASTBNFDeclaration)n).NodeScope;
+                return declaration2.NodeScope;
             }
-            else if (n is ASTBNFNodeScope)
+            else if (n is ASTBNFNodeScope scope)
             {
-                return ((ASTBNFNodeScope)n).NodeScope;
+                return scope.NodeScope;
             }
-            else if (n is ASTExpansionNodeScope)
+            else if (n is ASTExpansionNodeScope scope1)
             {
-                return ((ASTExpansionNodeScope)n).NodeScope;
+                return scope1.NodeScope;
             }
         }
         return null;

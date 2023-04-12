@@ -86,7 +86,7 @@ public class ASTNodeDescriptor : JJTreeNode
 
     public string GetDescriptor() => expression == null ? name : $"#{name}({(isGT ? ">" : "")}{ExpressionText()})";
 
-    public string GetNodeType() => JJTreeOptions.getMulti() ? JJTreeOptions.getNodePrefix() + name : "SimpleNode";
+    public string GetNodeType() => JJTreeOptions.GetMulti() ? JJTreeOptions.GetNodePrefix() + name : "SimpleNode";
 
 
     public string GetNodeName() => name;
@@ -97,18 +97,18 @@ public class ASTNodeDescriptor : JJTreeNode
 
     public string ExpressionText()
     {
-        if (expression.getFirstToken().image == (")") &&
-          expression.getLastToken().image == ("("))
+        if (expression.GetFirstToken().image == (")") &&
+          expression.GetLastToken().image == ("("))
         {
             return "true";
         }
 
         string s = "";
-        Token t = expression.getFirstToken();
+        Token t = expression.GetFirstToken();
         while (true)
         {
             s += " " + t.image;
-            if (t == expression.getLastToken())
+            if (t == expression.GetLastToken())
             {
                 break;
             }
@@ -137,7 +137,7 @@ public class ASTNodeDescriptor : JJTreeNode
     }
 
 
-    public override string TranslateImage(Token t) => whiteOut(t);
+    public override string TranslateImage(Token t) => WhiteOut(t);
 
     /** Accept the visitor. **/
     public override object jjtAccept(JJTreeParserVisitor visitor, object data) 

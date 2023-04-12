@@ -4,23 +4,16 @@ namespace org.javacc.jjtree;
 
 public class SimpleNode : Node
 {
-
     protected Node parent;
     protected Node[] children;
     protected int id;
     protected Object value;
     protected JJTreeParser parser;
 
-    public SimpleNode(int i)
-    {
-        id = i;
-    }
+    public SimpleNode(int i) => id = i;
 
     public SimpleNode(JJTreeParser p, int i)
-        :this(i)
-    {
-        parser = p;
-    }
+        : this(i) => parser = p;
 
     public virtual void jjtOpen()
     {
@@ -30,8 +23,8 @@ public class SimpleNode : Node
     {
     }
 
-    public virtual void jjtSetParent(Node n) { parent = n; }
-    public virtual Node jjtGetParent() { return parent; }
+    public virtual void jjtSetParent(Node n) => parent = n;
+    public virtual Node jjtGetParent() => parent;
 
     public virtual void jjtAddChild(Node n, int i)
     {
@@ -48,27 +41,18 @@ public class SimpleNode : Node
         children[i] = n;
     }
 
-    public virtual Node jjtGetChild(int i)
-    {
-        return children[i];
-    }
+    public virtual Node jjtGetChild(int i) => children[i];
 
-    public virtual int jjtGetNumChildren()
-    {
-        return (children == null) ? 0 : children.Length;
-    }
+    public virtual int jjtGetNumChildren() => (children == null) ? 0 : children.Length;
 
-    public virtual void jjtSetValue(Object value) { this.value = value; }
-    public virtual Object jjtGetValue() { return value; }
+    public virtual void jjtSetValue(object value) => this.value = value;
+    public virtual object jjtGetValue() => value;
 
     /** Accept the visitor. **/
-    public virtual object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.Visit(this, data);
-    }
+    public virtual object jjtAccept(JJTreeParserVisitor visitor, object data) => visitor.Visit(this, data);
 
     /** Accept the visitor. **/
-    public virtual Object childrenAccept(JJTreeParserVisitor visitor, Object data)
+    public virtual object childrenAccept(JJTreeParserVisitor visitor, object data)
     {
         if (children != null)
         {
@@ -86,24 +70,21 @@ public class SimpleNode : Node
        toString(String), otherwise overriding toString() is probably all
        you need to do. */
 
-    public override string ToString() { return JJTreeParserTreeConstants.jjtNodeName[id]; }
-    public virtual string ToString(String prefix) { return prefix + ToString(); }
+    public override string ToString() => JJTreeParserTreeConstants.jjtNodeName[id];
+    public virtual string ToString(string prefix) => prefix + ToString();
 
     /* Override this method if you want to customize how the node dumps
        out its children. */
 
-    public void dump(String prefix)
+    public void Dump(string prefix)
     {
         Console.WriteLine(ToString(prefix));
         if (children != null)
         {
             for (int i = 0; i < children.Length; ++i)
             {
-                SimpleNode n = (SimpleNode)children[i];
-                if (n != null)
-                {
-                    n.dump(prefix + " ");
-                }
+                var n = children[i] as SimpleNode;
+                n?.Dump(prefix + " ");
             }
         }
     }

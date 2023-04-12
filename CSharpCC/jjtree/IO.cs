@@ -106,7 +106,7 @@ public class IO
 
     private string Create_output_file_name(string i)
     {
-        string o = JJTreeOptions.getOutputFile();
+        string o = JJTreeOptions.GetOutputFile();
 
         if (o == (""))
         {
@@ -183,8 +183,8 @@ public class IO
     {
         try
         {
-            JavaCCGlobals.createOutputDir(JJTreeOptions.getJJTreeOutputDirectory());
-            string ofile = Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), Create_output_file_name(ifn));
+            JavaCCGlobals.createOutputDir(JJTreeOptions.GetJJTreeOutputDirectory());
+            string ofile = Path.Combine(JJTreeOptions.GetJJTreeOutputDirectory(), Create_output_file_name(ifn));
             ofn = ofile.ToString();
             _out = new StreamWriter(ofile);
         }

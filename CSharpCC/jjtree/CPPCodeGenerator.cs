@@ -19,7 +19,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     {
         IO io = (IO)data;
         io.Println("/*@bgen(jjtree) " +
-            JavaCCGlobals.getIdString(JJTreeGlobals.toolList,
+            JavaCCGlobals.getIdString(JJTreeGlobals.ToolList,
             io.GetOutputFileName()) +
              (JJTreeOptions.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : " */"));
         io.Print((JJTreeOptions.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "/*") + "@egen*/");
@@ -37,8 +37,8 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
            unit in a sequence we know that an early close is not
            required. */
 
-        NodeScope ns = NodeScope.getEnclosingNodeScope(node);
-        if (ns != null && !ns.isVoid())
+        NodeScope ns = NodeScope.GetEnclosingNodeScope(node);
+        if (ns != null && !ns.IsVoid)
         {
             bool needClose = true;
             Node sp = node.GetScopingParent(ns);
@@ -49,7 +49,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
                 Node p = n.jjtGetParent();
                 if (p is ASTBNFSequence || p is ASTBNFTryBlock)
                 {
-                    if (n.getOrdinal() != p.jjtGetNumChildren() - 1)
+                    if (n.GetOrdinal() != p.jjtGetNumChildren() - 1)
                     {
                         /* We're not the final unit in the sequence. */
                         needClose = false;
@@ -85,12 +85,12 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     public override Object Visit(ASTBNFDeclaration node, Object data)
     {
         IO io = (IO)data;
-        if (!node.NodeScope.isVoid())
+        if (!node.NodeScope.IsVoid)
         {
             string indent = "";
-            if (TokenUtils.hasTokens(node))
+            if (TokenUtils.HasTokens(node))
             {
-                for (int i = 1; i < node.getFirstToken().beginColumn; ++i)
+                for (int i = 1; i < node.GetFirstToken().beginColumn; ++i)
                 {
                     indent += " ";
                 }
@@ -100,7 +100,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
                 indent = "  ";
             }
 
-            OpenJJTreeComment(io, node.NodeScope.getNodeDescriptorText());
+            OpenJJTreeComment(io, node.NodeScope.NodeDescriptorText);
             io.Println();
             InsertOpenNodeCode(node.NodeScope, io, indent);
             CloseJJTreeComment(io);
@@ -112,14 +112,14 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     public override Object Visit(ASTBNFNodeScope node, Object data)
     {
         IO io = (IO)data;
-        if (node.NodeScope.isVoid())
+        if (node.NodeScope.IsVoid)
         {
             return visit((JJTreeNode)node, io);
         }
 
         string indent = GetIndentation(node.expansion_unit);
 
-        OpenJJTreeComment(io, node.NodeScope.getNodeDescriptor().GetDescriptor());
+        OpenJJTreeComment(io, node.NodeScope.NodeDescriptor.GetDescriptor());
         io.Println();
         TryExpansionUnit(node.NodeScope, io, indent, node.expansion_unit);
         return null;
@@ -128,17 +128,17 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     public override Object Visit(ASTCompilationUnit node, Object data)
     {
         IO io = (IO)data;
-        Token t = node.getFirstToken();
+        Token t = node.GetFirstToken();
         while (true)
         {
-            node.print(t, io);
-            if (t == node.getLastToken()) break;
+            node.Print(t, io);
+            if (t == node.GetLastToken()) break;
             if (t.kind == JJTreeParserConstants._PARSER_BEGIN)
             {
                 // eat PARSER_BEGIN "(" <ID> ")"
-                node.print(t.next, io);
-                node.print(t.next.next, io);
-                node.print(t = t.next.next.next, io);
+                node.Print(t.next, io);
+                node.Print(t.next.next, io);
+                node.Print(t = t.next.next.next, io);
             }
 
             t = t.next;
@@ -150,7 +150,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     {
         IO io = (IO)data;
         string indent = GetIndentation(node.ExpansionUnit);
-        OpenJJTreeComment(io, node.NodeScope.getNodeDescriptor().GetDescriptor());
+        OpenJJTreeComment(io, node.NodeScope.NodeDescriptor.GetDescriptor());
         io.Println();
         InsertOpenNodeAction(node.NodeScope, io, indent);
         TryExpansionUnit(node.NodeScope, io, indent, node.ExpansionUnit);
@@ -164,12 +164,12 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     public override Object Visit(ASTJavacodeBody node, Object data)
     {
         IO io = (IO)data;
-        if (node.NodeScope.isVoid())
+        if (node.NodeScope.IsVoid)
         {
             return visit((JJTreeNode)node, io);
         }
 
-        Token first = node.getFirstToken();
+        Token first = node.GetFirstToken();
 
         string indent = "";
         for (int i = 4; i < first.beginColumn; ++i)
@@ -177,25 +177,25 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
             indent += " ";
         }
 
-        OpenJJTreeComment(io, node.NodeScope.getNodeDescriptorText());
+        OpenJJTreeComment(io, node.NodeScope.NodeDescriptorText);
         io.Println();
         InsertOpenNodeCode(node.NodeScope, io, indent);
-        TryTokenSequence(node.NodeScope, io, indent, first, node.getLastToken());
+        TryTokenSequence(node.NodeScope, io, indent, first, node.GetLastToken());
         return null;
     }
 
     public override Object Visit(ASTLHS node, Object data)
     {
         IO io = (IO)data;
-        NodeScope ns = NodeScope.getEnclosingNodeScope(node);
+        NodeScope ns = NodeScope.GetEnclosingNodeScope(node);
 
         /* Print out all the tokens, converting all references to
            `jjtThis' into the current node variable. */
-        Token first = node.getFirstToken();
-        Token last = node.getLastToken();
+        Token first = node.GetFirstToken();
+        Token last = node.GetLastToken();
         for (Token t = first; t != last.next; t = t.next)
         {
-            TokenUtils.print(t, io, "jjtThis", ns.getNodeVariable());
+            TokenUtils.Print(t, io, "jjtThis", ns.NodeVariable);
         }
 
         return null;
@@ -211,12 +211,12 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         IO io = (IO)data;
         /* Some productions do not consume any tokens.  In that case their
            first and last tokens are a bit strange. */
-        if (node.getLastToken().next == node.getFirstToken())
+        if (node.GetLastToken().next == node.GetFirstToken())
         {
             return null;
         }
 
-        Token t1 = node.getFirstToken();
+        Token t1 = node.GetFirstToken();
         Token t = new Token();
         t.next = t1;
         JJTreeNode n;
@@ -226,16 +226,16 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
             while (true)
             {
                 t = t.next;
-                if (t == n.getFirstToken()) break;
-                node.print(t, io);
+                if (t == n.GetFirstToken()) break;
+                node.Print(t, io);
             }
             n.jjtAccept(this, io);
-            t = n.getLastToken();
+            t = n.GetLastToken();
         }
-        while (t != node.getLastToken())
+        while (t != node.GetLastToken())
         {
             t = t.next;
-            node.print(t, io);
+            node.Print(t, io);
         }
 
         return null;
@@ -270,7 +270,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     string GetIndentation(JJTreeNode n, int offset)
     {
         string s = "";
-        for (int i = offset + 1; i < n.getFirstToken().beginColumn; ++i)
+        for (int i = offset + 1; i < n.GetFirstToken().beginColumn; ++i)
         {
             s += " ";
         }
@@ -286,9 +286,9 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     {
         string type = ns.node_descriptor.GetNodeType();
         string nodeClass;
-        if (JJTreeOptions.getNodeClass().Length > 0 && !JJTreeOptions.getMulti())
+        if (JJTreeOptions.GetNodeClass().Length > 0 && !JJTreeOptions.GetMulti())
         {
-            nodeClass = JJTreeOptions.getNodeClass();
+            nodeClass = JJTreeOptions.GetNodeClass();
         }
         else
         {
@@ -299,15 +299,15 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
 
         io.Print(indent + nodeClass + " *" + ns.nodeVar + " = ");
         string p = JJTreeOptions.getStatic() ? "null" : "this";
-        string parserArg = JJTreeOptions.getNodeUsesParser() ? (p + ", ") : "";
+        string parserArg = JJTreeOptions.GetNodeUsesParser() ? (p + ", ") : "";
 
-        if (JJTreeOptions.getNodeFactory() == ("*"))
+        if (JJTreeOptions.GetNodeFactory() == ("*"))
         {
             // Old-style multiple-implementations.
             io.Println("(" + nodeClass + "*)" + nodeClass + "::jjtCreate(" + parserArg +
                 ns.node_descriptor.GetNodeId() + ");");
         }
-        else if (JJTreeOptions.getNodeFactory().Length > 0)
+        else if (JJTreeOptions.GetNodeFactory().Length > 0)
         {
             io.Println("(" + nodeClass + "*)nodeFactory->jjtCreate(" + parserArg +
              ns.node_descriptor.GetNodeId() + ");");
@@ -317,17 +317,17 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
             io.Println("new " + nodeClass + "(" + parserArg + ns.node_descriptor.GetNodeId() + ");");
         }
 
-        if (ns.usesCloseNodeVar())
+        if (ns.UsesCloseNodeVar)
         {
             io.Println(indent + "bool " + ns.closedVar + " = true;");
         }
         io.Println(indent + ns.node_descriptor.OpenNode(ns.nodeVar));
-        if (JJTreeOptions.getNodeScopeHook())
+        if (JJTreeOptions.GetNodeScopeHook())
         {
             io.Println(indent + "jjtreeOpenNodeScope(" + ns.nodeVar + ");");
         }
 
-        if (JJTreeOptions.getTrackTokens())
+        if (JJTreeOptions.GetTrackTokens())
         {
             io.Println(indent + ns.nodeVar + "->jjtSetFirstToken(getToken(1));");
         }
@@ -337,18 +337,18 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     {
         string closeNode = ns.node_descriptor.CloseNode(ns.nodeVar);
         io.Println(indent + closeNode);
-        if (ns.usesCloseNodeVar() && !isFinal)
+        if (ns.UsesCloseNodeVar && !isFinal)
         {
             io.Println(indent + ns.closedVar + " = false;");
         }
-        if (JJTreeOptions.getNodeScopeHook())
+        if (JJTreeOptions.GetNodeScopeHook())
         {
             io.Println(indent + "if (jjtree.nodeCreated()) {");
             io.Println(indent + " jjtreeCloseNodeScope(" + ns.nodeVar + ");");
             io.Println(indent + "}");
         }
 
-        if (JJTreeOptions.getTrackTokens())
+        if (JJTreeOptions.GetTrackTokens())
         {
             io.Println(indent + ns.nodeVar + "->jjtSetLastToken(getToken(0));");
         }
@@ -377,7 +377,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         //if (thrown_names.hasMoreElements()) {
         io.Println(indent + "} catch (...) {"); // " +  ns.exceptionVar + ") {");
 
-        if (ns.usesCloseNodeVar())
+        if (ns.UsesCloseNodeVar)
         {
             io.Println(indent + "  if (" + ns.closedVar + ") {");
             io.Println(indent + "    jjtree.clearNodeScope(" + ns.nodeVar + ");");
@@ -399,7 +399,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
            `jjtThis' into the current node variable. */
         for (Token t = first; t != last.next; t = t.next)
         {
-            TokenUtils.print(t, io, "jjtThis", ns.nodeVar);
+            TokenUtils.Print(t, io, "jjtThis", ns.nodeVar);
         }
 
         OpenJJTreeComment(io, null);
@@ -409,7 +409,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         InsertCatchBlocks(ns, io, thrown_names, indent);
 
         io.Println(indent + "} {");
-        if (ns.usesCloseNodeVar())
+        if (ns.UsesCloseNodeVar)
         {
             io.Println(indent + "  if (" + ns.closedVar + ") {");
             InsertCloseNodeCode(ns, io, indent + "    ", true);
@@ -427,8 +427,8 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         {
             /* Should really make the nonterminal explicitly maintain its
                name. */
-            string nt = expansion_unit.getFirstToken().image;
-            ASTProduction prod = (ASTProduction)JJTreeGlobals.productions.get(nt);
+            string nt = expansion_unit.GetFirstToken().image;
+            ASTProduction prod = (ASTProduction)JJTreeGlobals.Productions.get(nt);
             if (prod != null)
             {
                 Enumeration e = prod.throws_list.elements();
@@ -463,7 +463,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         InsertCatchBlocks(ns, io, thrown_names, indent);
 
         io.Println(indent + "} {");
-        if (ns.usesCloseNodeVar())
+        if (ns.UsesCloseNodeVar)
         {
             io.Println(indent + "  if (" + ns.closedVar + ") {");
             InsertCloseNodeCode(ns, io, indent + "    ", true);

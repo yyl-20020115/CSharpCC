@@ -36,7 +36,7 @@ namespace org.javacc.jjtree;
  */
 public static class TokenUtils
 {
-    public static void print(Token t, IO io, string _in, string _out)
+    public static void Print(Token t, IO io, string _in, string _out)
     {
         Token tt = t.specialToken;
         if (tt != null)
@@ -44,7 +44,7 @@ public static class TokenUtils
             while (tt.specialToken != null) tt = tt.specialToken;
             while (tt != null)
             {
-                io.Print(addUnicodeEscapes(tt.image));
+                io.Print(AddUnicodeEscapes(tt.image));
                 tt = tt.next;
             }
         }
@@ -52,15 +52,15 @@ public static class TokenUtils
         if (_in != null && i == (_in)) {
             i = _out;
         }
-        io.Print(addUnicodeEscapes(i));
+        io.Print(AddUnicodeEscapes(i));
     }
 
-    static void print(Token t, IO io)
+    static void Print(Token t, IO io)
     {
-        print(t, io, null, null);
+        Print(t, io, null, null);
     }
 
-    public static string addUnicodeEscapes(string str)
+    public static string AddUnicodeEscapes(string str)
     {
         var buff = new StringBuilder(str.Length);
         char ch;
@@ -81,19 +81,9 @@ public static class TokenUtils
     }
 
 
-    public static bool hasTokens(JJTreeNode n)
-    {
-        if (n.getLastToken().next == n.getFirstToken())
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
+    public static bool HasTokens(JJTreeNode n) => n.GetLastToken().next != n.GetFirstToken();
 
-    static string remove_escapes_and_quotes(Token t, string str)
+    public static string RemoveEscapesAndQuotes(Token t, string str)
     {
         string retval = "";
         int index = 1;
@@ -167,21 +157,21 @@ public static class TokenUtils
             if (ch == 'u')
             {
                 index++; ch = str[index];
-                if (hexchar(ch))
+                if (Hexchar(ch))
                 {
-                    ordinal = hexval(ch);
+                    ordinal = Hexval(ch);
                     index++; ch = str[index];
-                    if (hexchar(ch))
+                    if (Hexchar(ch))
                     {
-                        ordinal = ordinal * 16 + hexval(ch);
+                        ordinal = ordinal * 16 + Hexval(ch);
                         index++; ch = str[index];
-                        if (hexchar(ch))
+                        if (Hexchar(ch))
                         {
-                            ordinal = ordinal * 16 + hexval(ch);
+                            ordinal = ordinal * 16 + Hexval(ch);
                             index++; ch = str[index];
-                            if (hexchar(ch))
+                            if (Hexchar(ch))
                             {
-                                ordinal = ordinal * 16 + hexval(ch);
+                                ordinal = ordinal * 16 + Hexval(ch);
                                 index++;
                                 continue;
                             }
@@ -198,7 +188,7 @@ public static class TokenUtils
         return retval;
     }
 
-    private static bool hexchar(char ch)
+    private static bool Hexchar(char ch)
     {
         if (ch >= '0' && ch <= '9') return true;
         if (ch >= 'A' && ch <= 'F') return true;
@@ -206,7 +196,7 @@ public static class TokenUtils
         return false;
     }
 
-    private static int hexval(char ch)
+    private static int Hexval(char ch)
     {
         if (ch >= '0' && ch <= '9') return ((int)ch) - ((int)'0');
         if (ch >= 'A' && ch <= 'F') return ((int)ch) - ((int)'A') + 10;

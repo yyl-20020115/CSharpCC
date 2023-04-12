@@ -44,7 +44,7 @@ public class ASTOptionBinding : JJTreeNode
         // If an option is specific to JJTree it should not be written _out
         // to the output file for JavaCC.
 
-        if (JJTreeGlobals.isOptionJJTreeOnly(name))
+        if (JJTreeGlobals.IsOptionJJTreeOnly(name))
         {
             suppressed = true;
         }
@@ -63,7 +63,7 @@ public class ASTOptionBinding : JJTreeNode
     {
         if (suppressed)
         {
-            return whiteOut(t);
+            return WhiteOut(t);
         }
         else
         {
@@ -72,10 +72,8 @@ public class ASTOptionBinding : JJTreeNode
     }
 
     /** Accept the visitor. **/
-    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
-    {
-        return visitor.visit(this, data);
-    }
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
+        s=> visitor.visit(this, data);
 }
 
 
