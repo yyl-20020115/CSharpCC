@@ -347,7 +347,7 @@ public class ParseEngine {
                 int j1 = i/32;
                 int j2 = i%32;
                 tokenMask[j1] |= 1 << j2;
-                string s = (String)(names_of_tokens.get(Integer.valueOf(i)));
+                string s = (String)(names_of_tokens.get((i)));
                 if (s == null) {
                   retval += i;
                 } else {
@@ -767,7 +767,7 @@ public class ParseEngine {
       string tail = e_nrw.rhsToken == null ? ");" :
                 (isJavaDialect ? ")." : ")->") + e_nrw.rhsToken.image + ";";
       if (e_nrw.label==("")) {
-        object label = names_of_tokens.get(Integer.valueOf(e_nrw.ordinal));
+        object label = names_of_tokens.get((e_nrw.ordinal));
         if (label != null) {
           retval += "jj_consume_token(" + (String)label + tail;
         } else {
@@ -1198,7 +1198,7 @@ public class ParseEngine {
     if (e is RegularExpression) {
       RegularExpression e_nrw = (RegularExpression)e;
       if (e_nrw.label==("")) {
-        object label = names_of_tokens.get(Integer.valueOf(e_nrw.ordinal));
+        object label = names_of_tokens.get((e_nrw.ordinal));
         if (label != null) {
           codeGenerator.genCodeLine("    if (jj_scan_token(" + (String)label + ")) " + genReturn(true));
         } else {
@@ -1339,7 +1339,7 @@ public class ParseEngine {
   }
 
   int minimumSize(Expansion e) {
-    return minimumSize(e, Integer.MAX_VALUE);
+    return minimumSize(e, int.MaxValue);
   }
 
   /*
@@ -1349,7 +1349,7 @@ public class ParseEngine {
     int retval = 0;  // should never be used.  Will be bad if it is.
     if (e.inMinimumSize) {
       // recursive search for minimum size unnecessary.
-      return Integer.MAX_VALUE;
+      return int.MaxValue;
     }
     e.inMinimumSize = true;
     if (e is RegularExpression) {
@@ -1358,7 +1358,7 @@ public class ParseEngine {
       NonTerminal e_nrw = (NonTerminal)e;
       NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.getName()));
       if (ntprod is CodeProduction) {
-        retval = Integer.MAX_VALUE;
+        retval = int.MaxValue;
         // Make caller think this is unending (for we do not go beyond JAVACODE during
         // phase3 execution).
       } else {
@@ -1383,8 +1383,8 @@ public class ParseEngine {
       for (int i = 1; i < e_nrw.units.Count; i++) {
         Expansion eseq = (Expansion)(e_nrw.units.get(i));
         int mineseq = minimumSize(eseq);
-        if (min == Integer.MAX_VALUE || mineseq == Integer.MAX_VALUE) {
-          min = Integer.MAX_VALUE; // Adding infinity to something results in infinity.
+        if (min == int.MaxValue || mineseq == int.MaxValue) {
+          min = int.MaxValue; // Adding infinity to something results in infinity.
         } else {
           min += mineseq;
           if (min > oldMin)

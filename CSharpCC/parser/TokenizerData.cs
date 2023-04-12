@@ -29,11 +29,11 @@ public class TokenizerData {
   public Dictionary<int, int> kindToNfaStartState;
 
   // Class representing NFA state.
-  public static class NfaState {
+  public  class NfaState {
     // Index of the state.
     public int index;
     // Set of allowed characters.
-    public HashSet<Character> characters;
+    public HashSet<char> characters;
     // Next state indices.
     public HashSet<int> nextStates;
     // Initial state needs to transition to multiple states so the NFA will try
@@ -43,7 +43,7 @@ public class TokenizerData {
     // match kind if any. int.MAX_VALUE if this is not a final state.
     public int kind;
 
-    NfaState(int index, HashSet<Character> characters,
+    public NfaState(int index, HashSet<char> characters,
              HashSet<int> nextStates, HashSet<int> compositeStates, int kind) {
       this.index = index;
       this.characters = characters;
@@ -56,7 +56,7 @@ public class TokenizerData {
   // The main nfa.
   public readonly Dictionary<int, NfaState> nfa = new Dictionary<int, NfaState>();
 
-  public static enum MatchType {
+  public enum MatchType {
     SKIP,
     SPECIAL_TOKEN,
     MORE,
@@ -64,7 +64,7 @@ public class TokenizerData {
   }
 
   // Match info.
-  public static class MatchInfo {
+  public class MatchInfo {
     // string literal image in case this string literal token, null otherwise.
     public string image;
     // Kind index.
@@ -122,7 +122,7 @@ public class TokenizerData {
     this.kindToNfaStartState = kindToNfaStartState;
   }
 
-  public void addNfaState(int index, HashSet<Character> characters,
+  public void addNfaState(int index, HashSet<char> characters,
                           HashSet<int> nextStates,
                           HashSet<int> compositeStates, int kind) {
     NfaState nfaState =

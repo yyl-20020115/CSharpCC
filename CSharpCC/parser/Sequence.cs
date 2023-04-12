@@ -36,35 +36,38 @@ namespace org.javacc.parser;
  * units.  (c1 c2 ...)
  */
 
-public class Sequence:Expansion {
+public class Sequence : Expansion
+{
 
-  /**
-   * The list of units in this expansion sequence.  Each
-   * List component will narrow to Expansion.
-   */
-  public List<Expansion> units = new ();
+    /**
+     * The list of units in this expansion sequence.  Each
+     * List component will narrow to Expansion.
+     */
+    public List<Expansion> units = new();
 
-    public Sequence() {}
+    public Sequence() { }
 
-    public Sequence(Token token, Lookahead lookahead) {
+    public Sequence(Token token, Lookahead lookahead)
+    {
         this.setLine(token.beginLine);
         this.setColumn(token.beginColumn);
         this.units.Add(lookahead);
     }
 
 
-    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped) {
-      if (alreadyDumped.Contains(this))
-      {
-        return base.dump(0, alreadyDumped).insert(0, '[').Append(']').insert(0, dumpPrefix(indent));
-      }
+    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
+    {
+        if (alreadyDumped.Contains(this))
+        {
+            return base.dump(0, alreadyDumped).Insert(0, '[').Append(']').Insert(0, dumpPrefix(indent));
+        }
 
-      alreadyDumped.Add(this);
-      StringBuilder sb = base.dump(indent, alreadyDumped);
-      for (Iterator<Object> it = units.iterator(); it.hasNext(); ) {
-        Expansion next = (Expansion) it.next();
-        sb.Append(eol).Append(next.dump(indent + 1, alreadyDumped));
-      }
-      return sb;
+        alreadyDumped.Add(this);
+        var sb = base.dump(indent, alreadyDumped);
+        foreach (Expansion next in units)
+        {
+            sb.Append(eol).Append(next.dump(indent + 1, alreadyDumped));
+        }
+        return sb;
     }
 }

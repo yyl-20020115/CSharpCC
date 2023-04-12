@@ -1,19 +1,22 @@
 namespace org.javacc.parser;
 
 
-public class ParserData {
-  public enum LookaheadType {
-    TOKEN,
-    PRODUCTION,
-    SEQUENCE,
-    CHOICE,
-    ZERORORMORE
-  }
+public class ParserData
+{
+    public enum LookaheadType
+    {
+        TOKEN,
+        PRODUCTION,
+        SEQUENCE,
+        CHOICE,
+        ZERORORMORE
+    }
 
-  public static class LookaheadInfo {
-    public LookaheadType lokaheadType;
-    public List<Integer> data;
-  }
+    public class LookaheadInfo
+    {
+        public LookaheadType lokaheadType = new();
+        public List<int> data = new();
+    }
 
-  Dictionary<Integer, List<LookaheadInfo>> lookaheads;
+    readonly Dictionary<int, List<LookaheadInfo>> lookaheads =new();
 }

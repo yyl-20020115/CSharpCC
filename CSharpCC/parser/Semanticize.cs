@@ -30,8 +30,8 @@ namespace org.javacc.parser;
 
 public class Semanticize:JavaCCGlobals {
 
-  static List removeList = new ArrayList();
-  static List itemList = new ArrayList();
+  static List removeList = new ();
+  static List itemList = new ();
 
   static void prepareToRemove(List vec, Object item) {
     removeList.Add(vec);
@@ -277,10 +277,10 @@ public class Semanticize:JavaCCGlobals {
           res.rexp.ordinal = tokenCount++;
         }
         if (!(res.rexp is RJustName) && !res.rexp.label==("")) {
-          names_of_tokens.Add(Integer.valueOf(res.rexp.ordinal), res.rexp.label);
+          names_of_tokens.Add((res.rexp.ordinal), res.rexp.label);
         }
         if (!(res.rexp is RJustName)) {
-          rexps_of_tokens.Add(Integer.valueOf(res.rexp.ordinal), res.rexp);
+          rexps_of_tokens.Add((res.rexp.ordinal), res.rexp);
         }
       }
     }
@@ -341,7 +341,7 @@ public class Semanticize:JavaCCGlobals {
               jn.ordinal = tokenCount++;
               named_tokens_table.Add(jn.label, jn);
               ordered_named_tokens.Add(jn);
-              names_of_tokens.Add(Integer.valueOf(jn.ordinal), jn.label);
+              names_of_tokens.Add((jn.ordinal), jn.label);
             } else {
               jn.ordinal = rexp.ordinal;
               prepareToRemove(respecs, res);
@@ -366,7 +366,7 @@ public class Semanticize:JavaCCGlobals {
         List<RegExprSpec> respecs = tp.respecs;
         for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();) {
           RegExprSpec res = (RegExprSpec)(it1.next());
-          Integer ii = Integer.valueOf(res.rexp.ordinal);
+          Integer ii = (res.rexp.ordinal);
           if (names_of_tokens.get(ii) == null) {
             JavaCCErrors.warning(res.rexp, "Unlabeled regular expression cannot be referred to by " +
                     "user generated token manager.");

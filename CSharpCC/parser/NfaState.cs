@@ -90,13 +90,13 @@ public class NfaState
 
    private int id;
    int stateName = -1;
-   int kind = Integer.MAX_VALUE;
+   int kind = int.MaxValue;
    private int lookingFor;
    private int usefulEpsilonMoves = 0;
    int inNextOf;
    private int lexState;
    private int nonAsciiMethod = -1;
-   private int kindToPrint = Integer.MAX_VALUE;
+   private int kindToPrint = int.MaxValue;
    bool dummy = false;
    private bool isComposite = false;
    private int[] compositeStates = null;
@@ -479,7 +479,7 @@ public class NfaState
       if (next != null)
       {
          next.GenerateCode();
-         if (next.kind != Integer.MAX_VALUE)
+         if (next.kind != int.MaxValue)
             kindToPrint = next.kind;
       }
 
@@ -794,13 +794,13 @@ public class NfaState
          return kindToPrint;
       }
 
-      return Integer.MAX_VALUE;
+      return int.MaxValue;
    }
 
    public static int MoveFromSet(char c, List states, List newStates)
    {
       int tmp;
-      int retVal = Integer.MAX_VALUE;
+      int retVal = int.MaxValue;
 
       for (int i = states.Count; i-- > 0;)
          if (retVal >
@@ -824,7 +824,7 @@ public class NfaState
 
          if (tmp1.CanMoveUsingChar(c))
          {
-            if (tmp1.kindToPrint != Integer.MAX_VALUE)
+            if (tmp1.kindToPrint != int.MaxValue)
             {
                newStates[start] = null;
                return 1;
@@ -843,7 +843,7 @@ public class NfaState
       }
 
       newStates[start] = null;
-      return Integer.MAX_VALUE;
+      return int.MaxValue;
    }
 
    static List allBitVectors = new ArrayList();
@@ -972,7 +972,7 @@ public class NfaState
                     codeGenerator.genCodeLine("static const " + Options.getLongType() + " jjbitVec" +  lohiByteCnt + "[] = " + tmp);
                   }
                }
-               lohiByteTab.Add(tmp, ind = Integer.valueOf(lohiByteCnt++));
+               lohiByteTab.Add(tmp, ind = (lohiByteCnt++));
             }
 
             tmpIndices[cnt++] = ind.intValue();
@@ -993,7 +993,7 @@ public class NfaState
                     codeGenerator.genCodeLine("static const " + Options.getLongType() + " jjbitVec" + lohiByteCnt + "[] = " + tmp);
                     codeGenerator.switchToMainFile();
                   }
-               lohiByteTab.Add(tmp, ind = Integer.valueOf(lohiByteCnt++));
+               lohiByteTab.Add(tmp, ind = (lohiByteCnt++));
             }
 
             tmpIndices[cnt++] = ind.intValue();
@@ -1041,13 +1041,13 @@ public class NfaState
                     codeGenerator.switchToStaticsFile();
                     codeGenerator.genCodeLine("static const " + Options.getLongType() + " jjbitVec" +  lohiByteCnt + "[] = " + tmp);
                   }
-               lohiByteTab.Add(tmp, ind = Integer.valueOf(lohiByteCnt++));
+               lohiByteTab.Add(tmp, ind = (lohiByteCnt++));
             }
 
             if (loByteVec == null)
                loByteVec = new Vector();
 
-            loByteVec.Add(Integer.valueOf(i));
+            loByteVec.Add((i));
             loByteVec.Add(ind);
          }
       }
@@ -1146,7 +1146,7 @@ public class NfaState
 
       if (nameSet.Length == 1)
       {
-         stateNameToReturn = Integer.valueOf(nameSet[0]);
+         stateNameToReturn = (nameSet[0]);
          stateNameForComposite.Add(stateSetString, stateNameToReturn);
          return nameSet[0];
       }
@@ -1201,7 +1201,7 @@ public class NfaState
       else
          tmp = nameSet[toRet];
 
-      stateNameToReturn = Integer.valueOf(tmp);
+      stateNameToReturn = (tmp);
       stateNameForComposite.Add(stateSetString, stateNameToReturn);
       compositeStateTable.Add(stateSetString, nameSet);
 
@@ -1907,7 +1907,7 @@ public class NfaState
          prefix = "   ";
       }
 
-      if (kindToPrint != Integer.MAX_VALUE)
+      if (kindToPrint != int.MaxValue)
       {
          if (asciiMoves[byteNum] != 0xffffffffffffffffL)
          {
@@ -1956,7 +1956,7 @@ public class NfaState
          }
       }
 
-      if (asciiMoves[byteNum] != 0xffffffffffffffffL && kindToPrint != Integer.MAX_VALUE)
+      if (asciiMoves[byteNum] != 0xffffffffffffffffL && kindToPrint != int.MaxValue)
          codeGenerator.genCodeLine("                  }");
    }
 
@@ -2001,7 +2001,7 @@ public class NfaState
       if (asciiMoves[byteNum] != 0xffffffffffffffffL)
       {
          if ((next == null || next.usefulEpsilonMoves == 0) &&
-             kindToPrint != Integer.MAX_VALUE)
+             kindToPrint != int.MaxValue)
          {
             string kindCheck = "";
 
@@ -2028,7 +2028,7 @@ public class NfaState
       }
 
       string prefix = "";
-      if (kindToPrint != Integer.MAX_VALUE)
+      if (kindToPrint != int.MaxValue)
       {
 
          if (oneBit != -1)
@@ -2295,7 +2295,7 @@ public class NfaState
                                                 "(hiByte, i1, i2, l1, l2))");
       }
 
-      if (kindToPrint != Integer.MAX_VALUE)
+      if (kindToPrint != int.MaxValue)
       {
          codeGenerator.genCodeLine("                  {");
          codeGenerator.genCodeLine("                     if (kind > " + kindToPrint + ")");
@@ -2338,7 +2338,7 @@ public class NfaState
          }
       }
 
-      if (kindToPrint != Integer.MAX_VALUE)
+      if (kindToPrint != int.MaxValue)
          codeGenerator.genCodeLine("                  }");
    }
 
@@ -2393,7 +2393,7 @@ public class NfaState
       }
 
       string prefix = "   ";
-      if (kindToPrint != Integer.MAX_VALUE)
+      if (kindToPrint != int.MaxValue)
       {
          if (!Options.getJavaUnicodeEscape() && !unicodeWarningGiven)
          {
@@ -2931,10 +2931,10 @@ public class NfaState
         }
       }
 
-      codeGenerator.genCodeLine("   int kind = 0x" + Integer.toHexString(Integer.MAX_VALUE) + ";");
+      codeGenerator.genCodeLine("   int kind = 0x" + Integer.toHexString(int.MaxValue) + ";");
       codeGenerator.genCodeLine("   for (;;)");
       codeGenerator.genCodeLine("   {");
-      codeGenerator.genCodeLine("      if (++jjround == 0x" + Integer.toHexString(Integer.MAX_VALUE) + ")");
+      codeGenerator.genCodeLine("      if (++jjround == 0x" + Integer.toHexString(int.MaxValue) + ")");
       codeGenerator.genCodeLine("         ReInitRounds();");
       codeGenerator.genCodeLine("      if (curChar < 64)");
       codeGenerator.genCodeLine("      {");
@@ -2958,24 +2958,24 @@ public class NfaState
 
       codeGenerator.genCodeLine("      }");
 
-      codeGenerator.genCodeLine("      if (kind != 0x" + Integer.toHexString(Integer.MAX_VALUE) + ")");
+      codeGenerator.genCodeLine("      if (kind != 0x" + Integer.toHexString(int.MaxValue) + ")");
       codeGenerator.genCodeLine("      {");
       codeGenerator.genCodeLine("         jjmatchedKind = kind;");
       codeGenerator.genCodeLine("         jjmatchedPos = curPos;");
-      codeGenerator.genCodeLine("         kind = 0x" + Integer.toHexString(Integer.MAX_VALUE) + ";");
+      codeGenerator.genCodeLine("         kind = 0x" + Integer.toHexString(int.MaxValue) + ";");
       codeGenerator.genCodeLine("      }");
       codeGenerator.genCodeLine("      ++curPos;");
 
       if (Options.getDebugTokenManager()) {
         if (codeGenerator.isJavaLanguage()) {
           codeGenerator.genCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" +
-                Integer.toHexString(Integer.MAX_VALUE) + ")");
+                Integer.toHexString(int.MaxValue) + ")");
           codeGenerator.genCodeLine("         debugStream.println(" +
                  "\"   Currently matched the first \" + (jjmatchedPos + 1) + \" characters as" +
                  " a \" + tokenImage[jjmatchedKind] + \" token.\");");
         } else {
           codeGenerator.genCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" +
-                Integer.toHexString(Integer.MAX_VALUE) + ")");
+                Integer.toHexString(int.MaxValue) + ")");
           codeGenerator.genCodeLine("   fprintf(debugStream, \"   Currently matched the first %d characters as a \\\"%s\\\" token.\\n\",  (jjmatchedPos + 1),  addUnicodeEscapes(tokenImage[jjmatchedKind]).c_str());");
         }
       }
@@ -3313,7 +3313,7 @@ public class NfaState
      if (matchAnyCharKind > 0) {
        matchAnyChar.Add(lexicalStateIndex, matchAnyCharKind);
      } else {
-       matchAnyChar.Add(lexicalStateIndex, Integer.MAX_VALUE);
+       matchAnyChar.Add(lexicalStateIndex, int.MaxValue);
      }
    }
 

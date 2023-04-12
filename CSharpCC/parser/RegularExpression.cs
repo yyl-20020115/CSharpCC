@@ -25,6 +25,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+using System.Text;
+
 namespace org.javacc.parser;
 
 
@@ -45,14 +47,14 @@ public abstract class RegularExpression:Expansion {
    * used for internal processing and passing information between
    * the parser and the lexical analyzer.
    */
-  int ordinal;
+  public int ordinal;
 
   /**
    * The LHS to which the token value of the regular expression
    * is assigned.  In case there is no LHS, then the list
    * remains empty.
    */
-  public List<Token> lhsTokens = new ArrayList<Token>();
+  public List<Token> lhsTokens = new ();
 
   /**
    * We now allow qualified access to token members. Store it here.
@@ -91,7 +93,7 @@ public abstract class RegularExpression:Expansion {
   int walkStatus = 0;
 
   public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped) {
-    StringBuilder sb = base.dump(indent, alreadyDumped);
+    var sb = base.dump(indent, alreadyDumped);
     alreadyDumped.Add(this);
     sb.Append(' ').Append(label);
     return sb;

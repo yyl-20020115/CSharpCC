@@ -35,7 +35,7 @@ namespace org.javacc.parser;
 public abstract class JavaCCParserInternals:JavaCCGlobals {
 
   static protected void initialize() {
-    Integer i = Integer.valueOf(0);
+    Integer i = (0);
     lexstate_S2I.Add("DEFAULT", i);
     lexstate_I2S.Add(i, "DEFAULT");
     simple_tokens_table.Add("DEFAULT", new Hashtable());
@@ -119,7 +119,7 @@ public abstract class JavaCCParserInternals:JavaCCGlobals {
         }
       }
       if (lexstate_S2I.get(p.lexStates[i]) == null) {
-        ii = Integer.valueOf(nextFreeLexState++);
+        ii = (nextFreeLexState++);
         lexstate_S2I.Add(p.lexStates[i], ii);
         lexstate_I2S.Add(ii, p.lexStates[i]);
         simple_tokens_table.Add(p.lexStates[i], new Hashtable());

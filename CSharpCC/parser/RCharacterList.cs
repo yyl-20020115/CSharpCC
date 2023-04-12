@@ -609,7 +609,7 @@ static readonly char[] diffUpperCaseRanges = {
     descriptors = new ArrayList();
     descriptors.Add(new SingleCharacter(c));
     negated_list = false;
-    ordinal = Integer.MAX_VALUE;
+    ordinal = int.MaxValue;
   }
 
   public bool CanMatchAnyChar()

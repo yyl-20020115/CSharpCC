@@ -31,11 +31,11 @@ public class ParseGenCPP : ParseGen
         genCodeLine("#include \"TokenManager.h\"");
 
 
-        Object object = Options.objectValue(Options.USEROPTION__CPP_PARSER_INCLUDE);
+        Object o = Options.objectValue(Options.USEROPTION__CPP_PARSER_INCLUDE);
 
-        if (object is String)
+        if (o is string)
         {
-            string include = (String)object;
+            string include = (String)o;
             if (include.Length > 0)
             {
                 if (include.charAt(0) == '<')

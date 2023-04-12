@@ -329,7 +329,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             {
                 case INTEGER_LITERAL:
                     v = IntegerLiteral();
-                    JJTreeOptions.setInputFileOption(o, v, o.image, Integer.valueOf(v.image));
+                    JJTreeOptions.setInputFileOption(o, v, o.image, (v.image));
                     jjtn000.initialize(o.image, v.image);
                     break;
                 case FALSE:

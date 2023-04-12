@@ -78,7 +78,7 @@ public class RSequence:RegularExpression {
 
   RSequence(List<Object> seq)
   {
-     ordinal = Integer.MAX_VALUE;
+     ordinal = int.MaxValue;
      units = seq;
   }
 }

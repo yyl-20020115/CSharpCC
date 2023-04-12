@@ -418,7 +418,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
         initialState.GenerateInitMoves(this);
       }
 
-      if (initialState.kind != Integer.MAX_VALUE && initialState.kind != 0)
+      if (initialState.kind != int.MaxValue && initialState.kind != 0)
       {
         if ((toSkip[initialState.kind / 64] & (1L << initialState.kind)) != 0L ||
             (toSpecial[initialState.kind / 64] & (1L << initialState.kind)) != 0L)
@@ -436,7 +436,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
         }
       }
       else if (initMatch[lexStateIndex] == 0)
-        initMatch[lexStateIndex] = Integer.MAX_VALUE;
+        initMatch[lexStateIndex] = int.MaxValue;
 
       RStringLiteral.FillSubString();
 
@@ -854,7 +854,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
         genCodeLine(prefix + "}");
       }
 
-      if (initMatch[i] != Integer.MAX_VALUE && initMatch[i] != 0)
+      if (initMatch[i] != int.MaxValue && initMatch[i] != 0)
       {
         if (Options.getDebugTokenManager())
           genCodeLine("      fprintf(debugStream, \"   Matched the empty string as %s token.\\n\", addUnicodeEscapes(tokenImage[" + initMatch[i] + "]).c_str());");
@@ -865,7 +865,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
       }
       else
       {
-        genCodeLine(prefix + "jjmatchedKind = 0x" + Integer.toHexString(Integer.MAX_VALUE) + ";");
+        genCodeLine(prefix + "jjmatchedKind = 0x" + Integer.toHexString(int.MaxValue) + ";");
         genCodeLine(prefix + "jjmatchedPos = 0;");
       }
 
@@ -880,7 +880,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
 
       if (canMatchAnyChar[i] != -1)
       {
-        if (initMatch[i] != Integer.MAX_VALUE && initMatch[i] != 0)
+        if (initMatch[i] != int.MaxValue && initMatch[i] != 0)
           genCodeLine(prefix + "if (jjmatchedPos < 0 || (jjmatchedPos == 0 && jjmatchedKind > " +
               canMatchAnyChar[i] + "))");
         else
@@ -893,7 +893,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
         }
         genCodeLine(prefix + "   jjmatchedKind = " + canMatchAnyChar[i] + ";");
 
-        if (initMatch[i] != Integer.MAX_VALUE && initMatch[i] != 0)
+        if (initMatch[i] != int.MaxValue && initMatch[i] != 0)
           genCodeLine(prefix + "   jjmatchedPos = 0;");
 
         genCodeLine(prefix + "}");
@@ -906,7 +906,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
     if (maxLexStates > 1)
       genCodeLine(endSwitch);
     else if (maxLexStates == 0)
-      genCodeLine("       jjmatchedKind = 0x" + Integer.toHexString(Integer.MAX_VALUE) + ";");
+      genCodeLine("       jjmatchedKind = 0x" + Integer.toHexString(int.MaxValue) + ";");
 
     if (maxLexStates > 1)
       prefix = "  ";
@@ -915,7 +915,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
 
     if (maxLexStates > 0)
     {
-      genCodeLine(prefix + "   if (jjmatchedKind != 0x" + Integer.toHexString(Integer.MAX_VALUE) + ")");
+      genCodeLine(prefix + "   if (jjmatchedKind != 0x" + Integer.toHexString(int.MaxValue) + ")");
       genCodeLine(prefix + "   {");
       genCodeLine(prefix + "      if (jjmatchedPos + 1 < curPos)");
 
@@ -1032,7 +1032,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
             genCodeLine(prefix + "      curLexState = jjnewLexState[jjmatchedKind];");
           }
           genCodeLine(prefix + "      curPos = 0;");
-          genCodeLine(prefix + "      jjmatchedKind = 0x" + Integer.toHexString(Integer.MAX_VALUE) + ";");
+          genCodeLine(prefix + "      jjmatchedKind = 0x" + Integer.toHexString(int.MaxValue) + ";");
 
           genCodeLine(prefix + "   if (!input_stream->endOfInput()) {");
           genCodeLine(prefix + "         curChar = input_stream->readChar();");

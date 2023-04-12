@@ -510,7 +510,7 @@ public void start()
             startState = initialState.GenerateInitMoves(this);
         }
 
-        if (initialState.kind != Integer.MAX_VALUE && initialState.kind != 0)
+        if (initialState.kind != int.MaxValue && initialState.kind != 0)
         {
             if ((toSkip[initialState.kind / 64] & (1L << initialState.kind)) != 0L ||
                 (toSpecial[initialState.kind / 64] & (1L << initialState.kind)) != 0L)
@@ -528,7 +528,7 @@ public void start()
             }
         }
         else if (initMatch[lexStateIndex] == 0)
-            initMatch[lexStateIndex] = Integer.MAX_VALUE;
+            initMatch[lexStateIndex] = int.MaxValue;
 
         RStringLiteral.FillSubString();
 
@@ -691,7 +691,7 @@ static void CheckEmptyStringMatch()
 Outer:
     for (i = 0; i < maxLexStates; i++)
     {
-        if (done[i] || initMatch[i] == 0 || initMatch[i] == Integer.MAX_VALUE ||
+        if (done[i] || initMatch[i] == 0 || initMatch[i] == int.MaxValue ||
             canMatchAnyChar[i] != -1)
             continue;
 
@@ -715,7 +715,7 @@ Outer:
             cycle += "-->";
             done[j] = true;
             seen[j] = true;
-            if (initMatch[j] == 0 || initMatch[j] == Integer.MAX_VALUE ||
+            if (initMatch[j] == 0 || initMatch[j] == int.MaxValue ||
                 canMatchAnyChar[j] != -1)
                 continue Outer;
             if (len != 0)
