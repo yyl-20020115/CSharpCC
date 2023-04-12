@@ -320,7 +320,7 @@ public class JavaCCParser : JavaCCParserInternals , JavaCCParserConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case INTEGER_LITERAL:
       int_val = IntegerLiteral();
-          Options.setInputFileOption(t, getToken(0), option_name, Integer.valueOf(int_val));
+          Options.setInputFileOption(t, getToken(0), option_name, int.valueOf(int_val));
       break;
     case FALSE:
     case TRUE:
@@ -4016,7 +4016,7 @@ public class JavaCCParser : JavaCCParserInternals , JavaCCParserConstants {
   public int IntegerLiteral() {
     jj_consume_token(INTEGER_LITERAL);
           try {
-            {if (true) return Integer.parseInt(token.image);}
+            {if (true) return int.parseInt(token.image);}
           } catch (NumberFormatException e) {
             {if (true) throw new Error();}
           }

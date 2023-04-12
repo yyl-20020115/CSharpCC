@@ -1,8 +1,7 @@
 using org.javacc.parser;
+using System.IO;
 
 namespace org.javacc.utils;
-
-
 
 
 public class OutputFileGeneratorTest : CSharpCCTestCase
@@ -13,14 +12,13 @@ public class OutputFileGeneratorTest : CSharpCCTestCase
 
     JavaResourceTemplateLocationImpl impl = new JavaResourceTemplateLocationImpl();
     OutputFileGenerator generator = new OutputFileGenerator(
-        impl.getParseExceptionTemplateResourceUrl(), new Dictionary<>());
+        impl.getParseExceptionTemplateResourceUrl(), new Dictionary<object,object>());
     
-    StringWriter stringWriter = new StringWriter();
-    TextWriter writer = new TextWriter(stringWriter);
-    generator.generate(writer);
+    TextWriter stringWriter = new StringWriter();
+    generator.generate(stringWriter);
 
-    assertTrue(stringWriter.ToString().Contains("StringBuilder"));
-    assertFalse(stringWriter.ToString().Contains("StringBuilder"));
+    Assert.IsTrue(stringWriter.ToString().Contains("StringBuilder"));
+    Assert.IsFalse(stringWriter.ToString().Contains("StringBuilder"));
   }
 
   public void testStringBuilder() {
@@ -29,13 +27,12 @@ public class OutputFileGeneratorTest : CSharpCCTestCase
 
     JavaResourceTemplateLocationImpl impl = new JavaResourceTemplateLocationImpl();
     OutputFileGenerator generator = new OutputFileGenerator(
-        impl.getParseExceptionTemplateResourceUrl(), new Dictionary<>());
+        impl.getParseExceptionTemplateResourceUrl(), new Dictionary<object, object>());
 
-    StringWriter stringWriter = new StringWriter();
-    TextWriter writer = new TextWriter(stringWriter);
+    TextWriter writer = new StringWriter();
     generator.generate(writer);
 
-    assertTrue(stringWriter.ToString().Contains("StringBuilder"));
-    assertFalse(stringWriter.ToString().Contains("StringBuilder"));
+    Assert.IsTrue(writer.ToString().Contains("StringBuilder"));
+    Assert.IsFalse(writer.ToString().Contains("StringBuilder"));
   }
 }

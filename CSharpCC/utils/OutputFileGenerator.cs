@@ -37,271 +37,272 @@ namespace org.javacc.utils;
  * @author paulcager
  * @since 4.2
  */
-public class OutputFileGenerator {
+public class OutputFileGenerator
+{
 
-  /**
-   * @param templateName the name of the template. E.g.
-   *        "/templates/Token.template".
-   * @param options the processing options in force, such
-   *        as "STATIC=yes"
-   */
-  public OutputFileGenerator(string templateName, Dictionary options) {
-    this.templateName = templateName;
-    this.options = options;
-  }
-
-  private string templateName;
-  private Dictionary options;
-
-  private string currentLine;
-
-  /**
-   * Generate the output file.
-   * @param out
-   * @throws IOException
-   */
-  public void generate(TextWriter _out)
-  {
-    InputStream is = getClass().getResourceAsStream(templateName);
-    if (is == null)
-      throw new IOException("Invalid template name: " + templateName);
-    BufferedReader in = new BufferedReader(new InputStreamReader(is));
-    process(in, _out, false);
-  }
-
-  private string peekLine(BufferedReader in)
-  {
-    if (currentLine == null)
-      currentLine = in.readLine();
-
-    return currentLine;
-  }
-
-  private string getLine(BufferedReader in)
-  {
-    string line = currentLine;
-    currentLine = null;
-
-    if (line == null)
-      in.readLine();
-
-    return line;
-  }
-
-  private bool evaluate(string condition)
-  {
-    condition = condition.Trim();
-
-    try
+    /**
+     * @param templateName the name of the template. E.g.
+     *        "/templates/Token.template".
+     * @param options the processing options in force, such
+     *        as "STATIC=yes"
+     */
+    public OutputFileGenerator(string templateName, Dictionary<object,object> options)
     {
-      return new ConditionParser(new StringReader(condition)).CompilationUnit(options);
+        this.templateName = templateName;
+        this.options = options;
     }
-    catch (ParseException e)
+
+    private string templateName;
+    private Dictionary<object, object> options;
+
+    private string currentLine;
+
+    /**
+     * Generate the output file.
+     * @param out
+     * @throws IOException
+     */
+    public void generate(TextWriter _out)
     {
-      return false;
+        InputStream _is = getClass().getResourceAsStream(templateName);
+        if (_is == null)
+            throw new IOException("Invalid template name: " + templateName);
+        BufferedReader _in = new BufferedReader(new InputStreamReader(_is));
+        process(_in, _out, false);
     }
-  }
 
-  private string substitute(string text)
-  {
-    int startPos;
-
-    if ( (startPos = text.indexOf("${")) == -1)
+    private string peekLine(TextReader _in)
     {
-      return text;
+        if (currentLine == null)
+            currentLine = _in.readLine();
+
+        return currentLine;
     }
 
-    // Find matching "}".
-    int braceDepth = 1;
-    int endPos = startPos + 2;
-
-    while ( endPos < text.Length && braceDepth > 0)
+    private string getLine(TextReader _in)
     {
-      if (text.charAt(endPos) == '{')
-        braceDepth++;
-      else if (text.charAt(endPos) == '}')
-        braceDepth--;
-
-      endPos++;
-    }
-
-    if (braceDepth != 0)
-      throw new IOException("Mismatched \"{}\" in template string: " + text);
-
-    string variableExpression = text.substring(startPos + 2, endPos - 1);
-
-    // Find the end of the variable name
-    string value = null;
-
-    for (int i = 0; i < variableExpression.Length; i++)
-    {
-      char ch = variableExpression.charAt(i);
-
-      if (ch == ':' && i < variableExpression.Length - 1 && variableExpression.charAt(i+1) == '-' )
-      {
-        value = substituteWithDefault(variableExpression.substring(0, i), variableExpression.substring(i + 2));
-        break;
-      }
-      else if (ch == '?')
-      {
-        value = substituteWithConditional(variableExpression.substring(0, i), variableExpression.substring(i + 1));
-        break;
-      }
-      else if (ch != '_' && !Character.isJavaIdentifierPart(ch))
-      {
-        throw new IOException("Invalid variable in " + text);
-      }
-    }
-
-    if (value == null)
-    {
-      value = substituteWithDefault(variableExpression, "");
-    }
-
-    return text.substring(0, startPos) + value + text.substring(endPos);
-  }
-
-  /**
-   * @param substring
-   * @param defaultValue
-   * @return
-   * @throws IOException
-   */
-  private string substituteWithConditional(string variableName, string values)
-  {
-    // Split values into true and false values.
-
-    int pos = values.indexOf(':');
-    if (pos == -1)
-      throw new IOException("No ':' separator in " + values);
-
-    if (evaluate(variableName))
-      return substitute(values.substring(0, pos));
-    else
-      return substitute(values.substring(pos + 1));
-  }
-
-  /**
-   * @param variableName
-   * @param defaultValue
-   * @return
-   */
-  private string substituteWithDefault(string variableName, string defaultValue)
-  {
-    Object obj = options.get(variableName.Trim());
-    if (obj == null || obj.ToString().Length == 0)
-      return substitute(defaultValue);
-
-    return obj.ToString();
-  }
-
-  private void write(TextWriter _out, string text)
-  {
-    while ( text.IndexOf("${") != -1)
-    {
-    text = substitute(text);
-    }
-
-    if (Options.isOutputLanguageJava() && Options.getGenerateStringBuilder()) {
-        text = text.Replace("StringBuilder", "StringBuilder");
-    }
-
-    // TODO :: Added by Sreenivas on 12 June 2013 for 6.0 release, merged in to 6.1 release for sake of compatibility by cainsley ... This needs to be removed urgently!!!
-    if (text.StartsWith("\\#")) { // Hack to escape # for C++
-      text = text[1..];
-    }
-    _out.WriteLine(text);
-  }
-
-  private void process(TextReader _in, TextWriter _out, bool ignoring)
-      {
-    //    _out.WriteLine("*** process ignore=" + ignoring + " : " + peekLine(in));
-    while ( peekLine(_in) != null)
-    {
-      if (peekLine(_in).Trim().startsWith("#if"))
-      {
-        processIf(in, out, ignoring);
-      }
-      else if (peekLine(in).Trim().startsWith("#"))
-      {
-        break;
-      }
-      else
-      {
-        string line = getLine(in);
-        if (!ignoring) write(_out, line);
-      }
-    }
-
-    _out.flush();
-  }
-
-  private void processIf(BufferedReader _in, TextWriter _out, bool ignoring) 
-  {
-        string line = getLine(in).Trim();
-    assert line.Trim().startsWith("#if");
-    bool foundTrueCondition = false;
-
-    bool condition = evaluate(line.substring(3).Trim());
-    while (true)
-    {
-      process(in, _out, ignoring || foundTrueCondition || !condition);
-      foundTrueCondition |= condition;
-
-      if (peekLine(in) == null || !peekLine(in).Trim().startsWith("#elif"))
-        break;
-
-      condition = evaluate(getLine(in).Trim().substring(5).Trim());
-    }
-
-        if (peekLine(in) != null && peekLine(in).Trim().startsWith("#else"))
-        {
-          getLine(in);   // Discard the #else line
-      process(in, _out, ignoring || foundTrueCondition);
-        }
-
-        line = getLine(in);
+        string line = currentLine;
+        currentLine = null;
 
         if (line == null)
-          throw new IOException("Missing \"#fi\"");
+            _in.readLine();
 
-        if (!line.Trim().startsWith("#fi"))
-          throw new IOException("Expected \"#fi\", got: " + line);
-      }
-
-
-  public static void main(String[] args)
-  {
-    Dictionary map = new Dictionary();
-    map.Add("falseArg", false);
-    map.Add("trueArg", true);
-    map.Add("stringValue", "someString");
-
-    new OutputFileGenerator(args[0], map).generate(new TextWriter(args[1]));
-  }
-
-  public static void generateFromTemplate(
-      string template, Dictionary<String, Object> options,
-      string outputFileName) {
-    OutputFileGenerator gen = new OutputFileGenerator(template, options);
-    StringWriter sw = new StringWriter();
-    gen.generate(new TextWriter(sw));
-    sw.Close();
-    TextWriter fw = null;
-    try {
-      File tmp = new File(outputFileName);
-      fw = new TextWriter(
-              new BufferedWriter(
-              new FileWriter(tmp),
-              8092
-          )
-      );
-
-      fw.print(sw.ToString());
-    } finally {
-      if (fw != null) {
-        fw.Close();
-      }
+        return line;
     }
-  }
+
+    private bool evaluate(string condition)
+    {
+        condition = condition.Trim();
+
+        try
+        {
+            return new ConditionParser(new StringReader(condition)).CompilationUnit(options);
+        }
+        catch (ParseException e)
+        {
+            return false;
+        }
+    }
+
+    private string substitute(string text)
+    {
+        int startPos;
+
+        if ((startPos = text.IndexOf("${")) == -1)
+        {
+            return text;
+        }
+
+        // Find matching "}".
+        int braceDepth = 1;
+        int endPos = startPos + 2;
+
+        while (endPos < text.Length && braceDepth > 0)
+        {
+            if (text[endPos] == '{')
+                braceDepth++;
+            else if (text[endPos] == '}')
+                braceDepth--;
+
+            endPos++;
+        }
+
+        if (braceDepth != 0)
+            throw new IOException("Mismatched \"{}\" in template string: " + text);
+
+        string variableExpression = text.Substring(startPos + 2, endPos - 1);
+
+        // Find the end of the variable name
+        string value = null;
+
+        for (int i = 0; i < variableExpression.Length; i++)
+        {
+            char ch = variableExpression[i];
+
+            if (ch == ':' && i < variableExpression.Length - 1 && variableExpression.charAt(i + 1) == '-')
+            {
+                value = substituteWithDefault(variableExpression.substring(0, i), variableExpression.substring(i + 2));
+                break;
+            }
+            else if (ch == '?')
+            {
+                value = substituteWithConditional(variableExpression.substring(0, i), variableExpression.substring(i + 1));
+                break;
+            }
+            else if (ch != '_' && !Character.isJavaIdentifierPart(ch))
+            {
+                throw new IOException("Invalid variable in " + text);
+            }
+        }
+
+        if (value == null)
+        {
+            value = substituteWithDefault(variableExpression, "");
+        }
+
+        return text[..startPos] + value + text[endPos..];
+    }
+
+    /**
+     * @param substring
+     * @param defaultValue
+     * @return
+     * @throws IOException
+     */
+    private string substituteWithConditional(string variableName, string values)
+    {
+        // Split values into true and false values.
+
+        int pos = values.IndexOf(':');
+        if (pos == -1)
+            throw new IOException("No ':' separator in " + values);
+
+        if (evaluate(variableName))
+            return substitute(values[..pos]);
+        else
+            return substitute(values[(pos + 1)..]);
+    }
+
+    /**
+     * @param variableName
+     * @param defaultValue
+     * @return
+     */
+    private string substituteWithDefault(string variableName, string defaultValue)
+    {
+        Object obj = options.get(variableName.Trim());
+        if (obj == null || obj.ToString().Length == 0)
+            return substitute(defaultValue);
+
+        return obj.ToString();
+    }
+
+    private void write(TextWriter _out, string text)
+    {
+        while (text.IndexOf("${") != -1)
+        {
+            text = substitute(text);
+        }
+
+        if (Options.isOutputLanguageJava() && Options.getGenerateStringBuilder())
+        {
+            text = text.Replace("StringBuilder", "StringBuilder");
+        }
+
+        // TODO :: Added by Sreenivas on 12 June 2013 for 6.0 release, merged in to 6.1 release for sake of compatibility by cainsley ... This needs to be removed urgently!!!
+        if (text.StartsWith("\\#"))
+        { // Hack to escape # for C++
+            text = text[1..];
+        }
+        _out.WriteLine(text);
+    }
+
+    private void process(TextReader _in, TextWriter _out, bool ignoring)
+    {
+        //    _out.WriteLine("*** process ignore=" + ignoring + " : " + peekLine(in));
+        while (peekLine(_in) != null)
+        {
+            if (peekLine(_in).Trim().StartsWith("#if"))
+            {
+                processIf(_in, _out, ignoring);
+            }
+            else if (peekLine(_in).Trim().StartsWith("#"))
+            {
+                break;
+            }
+            else
+            {
+                string line = getLine(_in);
+                if (!ignoring) write(_out, line);
+            }
+        }
+
+        _out.flush();
+    }
+
+    private void processIf(TextReader _in, TextWriter _out, bool ignoring)
+    {
+        string line = getLine(_in).Trim();
+        //assert line.Trim().startsWith("#if");
+        bool foundTrueCondition = false;
+
+        bool condition = evaluate(line.Substring(3).Trim());
+        while (true)
+        {
+            process(_in, _out, ignoring || foundTrueCondition || !condition);
+            foundTrueCondition |= condition;
+
+            if (peekLine(_in) == null || !peekLine(_in).Trim().startsWith("#elif"))
+                break;
+
+            condition = evaluate(getLine(_in).Trim().substring(5).Trim());
+        }
+
+        if (peekLine(_in) != null && peekLine(in).Trim().startsWith("#else"))
+        {
+            getLine(_in);   // Discard the #else line
+            process(_in, _out, ignoring || foundTrueCondition);
+        }
+
+        line = getLine(_in);
+
+        if (line == null)
+            throw new IOException("Missing \"#fi\"");
+
+        if (!line.Trim().StartsWith("#fi"))
+            throw new IOException("Expected \"#fi\", got: " + line);
+    }
+
+
+    public static void main(String[] args)
+    {
+        Dictionary<object, object> map = new ();
+        map.Add("falseArg", false);
+        map.Add("trueArg", true);
+        map.Add("stringValue", "someString");
+
+        new OutputFileGenerator(args[0], map).generate(new StreamWriter(args[1]));
+    }
+
+    public static void generateFromTemplate(
+        string template, Dictionary<String, Object> options,
+        string outputFileName)
+    {
+        OutputFileGenerator gen = new OutputFileGenerator(template, options);
+        gen.generate(new StringWriter());
+        TextWriter fw = null;
+        try
+        {
+            fw = new StreamWriter(outputFileName);
+
+            fw.Write(sw.ToString());
+        }
+        finally
+        {
+            if (fw != null)
+            {
+                fw.Close();
+            }
+        }
+    }
 }

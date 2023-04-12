@@ -52,7 +52,7 @@ public class JJDocMainTest : CSharpCCTestCase
      */
     protected void setUp()
     {
-        base.setUp();
+        //base.setUp();
     }
 
     /**
@@ -61,7 +61,7 @@ public class JJDocMainTest : CSharpCCTestCase
      */
     protected void tearDown()
     {
-        base.tearDown();
+        //base.tearDown();
     }
 
     /**
@@ -76,8 +76,9 @@ public class JJDocMainTest : CSharpCCTestCase
      */
     public void testMainProgramHTML()
     {
-        int result = JJDocMain.mainProgram(new string[] { "-OUTPUT_FILE:" + getJJDocOutputDirectory() + "JavaCC.html", getJJInputDirectory() + "JavaCC.jj" });
-        assertEquals(0, result);
+        int result = JJDocMain.mainProgram(
+            new string[] { "-OUTPUT_FILE:" + getJJDocOutputDirectory() + "JavaCC.html", getJJInputDirectory() + "JavaCC.jj" });
+        Assert.AreEqual(0, result);
     }
 
     /**
@@ -85,7 +86,7 @@ public class JJDocMainTest : CSharpCCTestCase
      */
     public void testMainProgramText()
     {
-        assertEquals(0, JJDocMain.mainProgram(new string[] {"-OUTPUT_FILE:" + getJJDocOutputDirectory() + "JavaCC.txt",
+        Assert.AreEqual(0, JJDocMain.mainProgram(new string[] {"-OUTPUT_FILE:" + getJJDocOutputDirectory() + "JavaCC.txt",
             "-TEXT:true",getJJInputDirectory() + "JavaCC.jj"}));
     }
 

@@ -45,75 +45,75 @@ public class ExpansionTest: CSharpCCTestCase
     }
     public void testZeroOrOneConstructor() {
         ZeroOrOne zoo = new ZeroOrOne(t, e);
-        assertEquals(t.beginColumn, zoo.getColumn());
-        assertEquals(t.beginLine, zoo.getLine());
-        assertEquals(e, zoo.expansion);
-        assertSame(e.parent, zoo);
+        Assert.AreEqual(t.beginColumn, zoo.getColumn());
+        Assert.AreEqual(t.beginLine, zoo.getLine());
+        Assert.AreEqual(e, zoo.expansion);
+        Assert.AreSame(e.parent, zoo);
     }
 
     public void testZeroOrMoreConstructor() {
         ZeroOrMore zom = new ZeroOrMore(t, e);
-        assertEquals(t.beginColumn, zom.getColumn());
-        assertEquals(t.beginLine, zom.getLine());
-        assertEquals(e, zom.expansion);
-        assertEquals(e.parent, zom);
+        Assert.AreEqual(t.beginColumn, zom.getColumn());
+        Assert.AreEqual(t.beginLine, zom.getLine());
+        Assert.AreEqual(e, zom.expansion);
+        Assert.AreEqual(e.parent, zom);
     }
 
     public void testRZeroOrMoreConstructor() {
         RegularExpression r = new RChoice();
         RZeroOrMore rzom = new RZeroOrMore(t, r);
-        assertEquals(t.beginColumn, rzom.getColumn());
-        assertEquals(t.beginLine, rzom.getLine());
-        assertEquals(r, rzom.regexpr);
+        Assert.AreEqual(t.beginColumn, rzom.getColumn());
+        Assert.AreEqual(t.beginLine, rzom.getLine());
+        Assert.AreEqual(r, rzom.regexpr);
     }
 
     public void testROneOrMoreConstructor() {
         RegularExpression r = new RChoice();
         ROneOrMore room = new ROneOrMore(t, r);
-        assertEquals(t.beginColumn, room.getColumn());
-        assertEquals(t.beginLine, room.getLine());
-        assertEquals(r, room.regexpr);
+        Assert.AreEqual(t.beginColumn, room.getColumn());
+        Assert.AreEqual(t.beginLine, room.getLine());
+        Assert.AreEqual(r, room.regexpr);
     }
 
     public void testOneOrMoreConstructor() {
         Expansion rce = new RChoice();
         OneOrMore oom = new OneOrMore(t, rce);
-        assertEquals(t.beginColumn, oom.getColumn());
-        assertEquals(t.beginLine, oom.getLine());
-        assertEquals(rce, oom.expansion);
-        assertEquals(rce.parent, oom);
+        Assert.AreEqual(t.beginColumn, oom.getColumn());
+        Assert.AreEqual(t.beginLine, oom.getLine());
+        Assert.AreEqual(rce, oom.expansion);
+        Assert.AreEqual(rce.parent, oom);
     }
 
 
     public void testRStringLiteralConstructor() {
         RStringLiteral r = new RStringLiteral(t, "hey");
-        assertEquals(t.beginColumn, r.getColumn());
-        assertEquals(t.beginLine, r.getLine());
-        assertEquals("hey", r.image);
+        Assert.AreEqual(t.beginColumn, r.getColumn());
+        Assert.AreEqual(t.beginLine, r.getLine());
+        Assert.AreEqual("hey", r.image);
     }
 
     public void testChoiceConstructor() {
         Choice c = new Choice(t);
-        assertEquals(t.beginColumn, c.getColumn());
-        assertEquals(t.beginLine, c.getLine());
+        Assert.AreEqual(t.beginColumn, c.getColumn());
+        Assert.AreEqual(t.beginLine, c.getLine());
         c = new Choice(e);
-        assertEquals(e.getColumn(), c.getColumn());
-        assertEquals(e.getLine(), c.getLine());
-        assertEquals(e, c.getChoices().get(0));
+        Assert.AreEqual(e.getColumn(), c.getColumn());
+        Assert.AreEqual(e.getLine(), c.getLine());
+        Assert.AreSame(e, c.getChoices()[0]);
     }
 
     public void testRJustNameConstructor() {
         RJustName r = new RJustName(t, "hey");
-        assertEquals(t.beginColumn, r.getColumn());
-        assertEquals(t.beginLine, r.getLine());
-        assertEquals("hey", r.label);
+        Assert.AreEqual(t.beginColumn, r.getColumn());
+        Assert.AreEqual(t.beginLine, r.getLine());
+        Assert.AreEqual("hey", r.label);
     }
 
     public void testSequenceConstructor() {
         Lookahead la = new Lookahead();
         Sequence s = new Sequence(t, la);
-        assertEquals(t.beginColumn, s.getColumn());
-        assertEquals(t.beginLine, s.getLine());
-        assertSame(la, s.units.get(0));
+        Assert.AreEqual(t.beginColumn, s.getColumn());
+        Assert.AreEqual(t.beginLine, s.getLine());
+        Assert.AreSame(la, s.units[0]);
     }
 }

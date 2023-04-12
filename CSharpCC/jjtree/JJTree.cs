@@ -173,7 +173,7 @@ public class JJTree
                 parser.javacc_input();
 
                 ASTGrammar root = (ASTGrammar)parser.jjtree.rootNode();
-                if (bool.getBoolean("jjtree-dump"))
+                if (Boolean.getBoolean("jjtree-dump"))
                 {
                     root.dump(" ");
                 }

@@ -30,6 +30,8 @@
  */
 
 using org.javacc.parser;
+using org.javacc.utils;
+using System.Text;
 
 namespace org.javacc.jjtree;
 

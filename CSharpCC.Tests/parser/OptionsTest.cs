@@ -9,167 +9,175 @@ namespace org.javacc.parser;
  */
 public class OptionsTest : CSharpCCTestCase
 {
-    public void testDefaults() {
+    public void testDefaults()
+    {
         Options.init();
         JavaCCErrors.reInit();
 
-//        assertEquals(49, Options.optionValues.Count);
+        //        Assert.AreEqual(49, Options.optionValues.Count);
 
-        assertEquals(true, Options.getBuildParser());
-        assertEquals(true, Options.getBuildTokenManager());
-        assertEquals(false, Options.getCacheTokens());
-        assertEquals(false, Options.getCommonTokenAction());
-        assertEquals(false, Options.getDebugLookahead());
-        assertEquals(false, Options.getDebugParser());
-        assertEquals(false, Options.getDebugTokenManager());
-        assertEquals(true, Options.getErrorReporting());
-        assertEquals(false, Options.getForceLaCheck());
-        assertEquals(false, Options.getIgnoreCase());
-        assertEquals(false, Options.getJavaUnicodeEscape());
-        assertEquals(true, Options.getKeepLineColumn());
-        assertEquals(true, Options.getSanityCheck());
-        assertEquals(true, Options.getStatic());
-        assertEquals(false, Options.getUnicodeInput());
-        assertEquals(false, Options.getUserCharStream());
-        assertEquals(false, Options.getUserTokenManager());
-        assertEquals(false, Options.getTokenManagerUsesParser());
+        Assert.AreEqual(true, Options.getBuildParser());
+        Assert.AreEqual(true, Options.getBuildTokenManager());
+        Assert.AreEqual(false, Options.getCacheTokens());
+        Assert.AreEqual(false, Options.getCommonTokenAction());
+        Assert.AreEqual(false, Options.getDebugLookahead());
+        Assert.AreEqual(false, Options.getDebugParser());
+        Assert.AreEqual(false, Options.getDebugTokenManager());
+        Assert.AreEqual(true, Options.getErrorReporting());
+        Assert.AreEqual(false, Options.getForceLaCheck());
+        Assert.AreEqual(false, Options.getIgnoreCase());
+        Assert.AreEqual(false, Options.getJavaUnicodeEscape());
+        Assert.AreEqual(true, Options.getKeepLineColumn());
+        Assert.AreEqual(true, Options.getSanityCheck());
+        Assert.AreEqual(true, Options.getStatic());
+        Assert.AreEqual(false, Options.getUnicodeInput());
+        Assert.AreEqual(false, Options.getUserCharStream());
+        Assert.AreEqual(false, Options.getUserTokenManager());
+        Assert.AreEqual(false, Options.getTokenManagerUsesParser());
 
-        assertEquals(2, Options.getChoiceAmbiguityCheck());
-        assertEquals(1, Options.getLookahead());
-        assertEquals(1, Options.getOtherAmbiguityCheck());
+        Assert.AreEqual(2, Options.getChoiceAmbiguityCheck());
+        Assert.AreEqual(1, Options.getLookahead());
+        Assert.AreEqual(1, Options.getOtherAmbiguityCheck());
 
-        assertEquals("1.5", Options.getJdkVersion());
-        assertEquals(new File("."), Options.getOutputDirectory());
-        assertEquals("", Options.getTokenExtends());
-        assertEquals("", Options.getTokenFactory());
-		assertEquals(System.getProperties().get("file.encoding"), Options.getGrammarEncoding());
+        Assert.AreEqual("1.5", Options.getJdkVersion());
+        Assert.AreEqual(".", Options.getOutputDirectory());
+        Assert.AreEqual("", Options.getTokenExtends());
+        Assert.AreEqual("", Options.getTokenFactory());
+        //Assert.AreEqual(System.getProperties().get("file.encoding"), Options.getGrammarEncoding());
 
-        assertEquals(0, JavaCCErrors.get_warning_count());
-        assertEquals(0, JavaCCErrors.get_error_count());
-        assertEquals(0, JavaCCErrors.get_parse_error_count());
-        assertEquals(0, JavaCCErrors.get_semantic_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_warning_count());
+        Assert.AreEqual(0, JavaCCErrors.get_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_parse_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_semantic_error_count());
     }
 
-    public void testSetBooleanOption() {
+    public void testSetBooleanOption()
+    {
         Options.init();
         JavaCCErrors.reInit();
 
-        assertEquals(true, Options.getStatic());
+        Assert.AreEqual(true, Options.getStatic());
         Options.setCmdLineOption("-NOSTATIC");
-        assertEquals(false, Options.getStatic());
+        Assert.AreEqual(false, Options.getStatic());
 
-        assertEquals(false, Options.getJavaUnicodeEscape());
+        Assert.AreEqual(false, Options.getJavaUnicodeEscape());
         Options.setCmdLineOption("-JAVA_UNICODE_ESCAPE:true");
-        assertEquals(true, Options.getJavaUnicodeEscape());
+        Assert.AreEqual(true, Options.getJavaUnicodeEscape());
 
-        assertEquals(true, Options.getSanityCheck());
+        Assert.AreEqual(true, Options.getSanityCheck());
         Options.setCmdLineOption("-SANITY_CHECK=false");
-        assertEquals(false, Options.getSanityCheck());
+        Assert.AreEqual(false, Options.getSanityCheck());
 
-        assertEquals(0, JavaCCErrors.get_warning_count());
-        assertEquals(0, JavaCCErrors.get_error_count());
-        assertEquals(0, JavaCCErrors.get_parse_error_count());
-        assertEquals(0, JavaCCErrors.get_semantic_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_warning_count());
+        Assert.AreEqual(0, JavaCCErrors.get_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_parse_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_semantic_error_count());
     }
 
 
-    public void testIntBooleanOption() {
+    public void testIntBooleanOption()
+    {
         Options.init();
         JavaCCErrors.reInit();
 
-        assertEquals(1, Options.getLookahead());
+        Assert.AreEqual(1, Options.getLookahead());
         Options.setCmdLineOption("LOOKAHEAD=2");
-        assertEquals(2, Options.getLookahead());
-        assertEquals(0, JavaCCErrors.get_warning_count());
+        Assert.AreEqual(2, Options.getLookahead());
+        Assert.AreEqual(0, JavaCCErrors.get_warning_count());
         Options.setCmdLineOption("LOOKAHEAD=0");
-        assertEquals(2, Options.getLookahead());
-        assertEquals(0, JavaCCErrors.get_warning_count());
-        Options.setInputFileOption(null, null, Options.USEROPTION__LOOKAHEAD, Integer.valueOf(0));
-        assertEquals(2, Options.getLookahead());
-        assertEquals(1, JavaCCErrors.get_warning_count());
+        Assert.AreEqual(2, Options.getLookahead());
+        Assert.AreEqual(0, JavaCCErrors.get_warning_count());
+        Options.setInputFileOption(null, null, Options.USEROPTION__LOOKAHEAD, (0));
+        Assert.AreEqual(2, Options.getLookahead());
+        Assert.AreEqual(1, JavaCCErrors.get_warning_count());
 
-        assertEquals(0, JavaCCErrors.get_error_count());
-        assertEquals(0, JavaCCErrors.get_parse_error_count());
-        assertEquals(0, JavaCCErrors.get_semantic_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_parse_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_semantic_error_count());
     }
 
-    public void testSetStringOption() {
+    public void testSetStringOption()
+    {
         Options.init();
         JavaCCErrors.reInit();
 
-        assertEquals("", Options.getTokenExtends());
+        Assert.AreEqual("", Options.getTokenExtends());
         Options.setCmdLineOption("-TOKEN_EXTENDS=java.lang.Object");
-        assertEquals("java.lang.Object", Options.getTokenExtends());
+        Assert.AreEqual("java.lang.Object", Options.getTokenExtends());
         Options.setInputFileOption(null, null, Options.USEROPTION__TOKEN_EXTENDS, "Object");
         // File option does not override cmd line
-        assertEquals("java.lang.Object", Options.getTokenExtends());
+        Assert.AreEqual("java.lang.Object", Options.getTokenExtends());
 
         Options.init();
         JavaCCErrors.reInit();
 
         Options.setInputFileOption(null, null, Options.USEROPTION__TOKEN_EXTENDS, "Object");
-        assertEquals("Object", Options.getTokenExtends());
+        Assert.AreEqual("Object", Options.getTokenExtends());
         Options.setCmdLineOption("-TOKEN_EXTENDS=java.lang.Object");
-        assertEquals("java.lang.Object", Options.getTokenExtends());
+        Assert.AreEqual("java.lang.Object", Options.getTokenExtends());
     }
 
-    public void testSetNonexistentOption() {
+    public void testSetNonexistentOption()
+    {
         Options.init();
         JavaCCErrors.reInit();
 
-        assertEquals(0, JavaCCErrors.get_warning_count());
-        Options.setInputFileOption(null, null, "NONEXISTENTOPTION", true );
-        assertEquals(1, JavaCCErrors.get_warning_count());
+        Assert.AreEqual(0, JavaCCErrors.get_warning_count());
+        Options.setInputFileOption(null, null, "NONEXISTENTOPTION", true);
+        Assert.AreEqual(1, JavaCCErrors.get_warning_count());
 
-        assertEquals(0, JavaCCErrors.get_error_count());
-        assertEquals(0, JavaCCErrors.get_parse_error_count());
-        assertEquals(0, JavaCCErrors.get_semantic_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_parse_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_semantic_error_count());
     }
 
-    public void testSetWrongTypeForOption() {
+    public void testSetWrongTypeForOption()
+    {
         Options.init();
         JavaCCErrors.reInit();
 
-        assertEquals(0, JavaCCErrors.get_warning_count());
-        assertEquals(0, JavaCCErrors.get_error_count());
-        Options.setInputFileOption(null, null, Options.USEROPTION__STATIC, Integer.valueOf(8));
-        assertEquals(1, JavaCCErrors.get_warning_count());
+        Assert.AreEqual(0, JavaCCErrors.get_warning_count());
+        Assert.AreEqual(0, JavaCCErrors.get_error_count());
+        Options.setInputFileOption(null, null, Options.USEROPTION__STATIC, (8));
+        Assert.AreEqual(1, JavaCCErrors.get_warning_count());
 
-        assertEquals(0, JavaCCErrors.get_error_count());
-        assertEquals(0, JavaCCErrors.get_parse_error_count());
-        assertEquals(0, JavaCCErrors.get_semantic_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_parse_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_semantic_error_count());
     }
 
-    public void testNormalize() {
+    public void testNormalize()
+    {
         Options.init();
         JavaCCErrors.reInit();
 
-        assertEquals(false, Options.getDebugLookahead());
-        assertEquals(false, Options.getDebugParser());
+        Assert.AreEqual(false, Options.getDebugLookahead());
+        Assert.AreEqual(false, Options.getDebugParser());
 
         Options.setCmdLineOption("-DEBUG_LOOKAHEAD=TRUE");
         Options.normalize();
 
-        assertEquals(true, Options.getDebugLookahead());
-        assertEquals(true, Options.getDebugParser());
+        Assert.AreEqual(true, Options.getDebugLookahead());
+        Assert.AreEqual(true, Options.getDebugParser());
 
-        assertEquals(0, JavaCCErrors.get_warning_count());
-        assertEquals(0, JavaCCErrors.get_error_count());
-        assertEquals(0, JavaCCErrors.get_parse_error_count());
-        assertEquals(0, JavaCCErrors.get_semantic_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_warning_count());
+        Assert.AreEqual(0, JavaCCErrors.get_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_parse_error_count());
+        Assert.AreEqual(0, JavaCCErrors.get_semantic_error_count());
     }
 
-    public void testOptionsString() {
-      Options.init();
-      JavaCCErrors.reInit();
+    public void testOptionsString()
+    {
+        Options.init();
+        JavaCCErrors.reInit();
 
-      Options.setCmdLineOption("-STATIC=False");
-      Options.setCmdLineOption("-IGNORE_CASE=True");
-      String[] options = {
-    	   Options.USEROPTION__STATIC,
-          Options.USEROPTION__IGNORE_CASE
-      };
-      string optionString = Options.getOptionsString(options);
-      assertEquals("STATIC=false,IGNORE_CASE=true", optionString);
+        Options.setCmdLineOption("-STATIC=False");
+        Options.setCmdLineOption("-IGNORE_CASE=True");
+        String[] options = {
+           Options.USEROPTION__STATIC,
+           Options.USEROPTION__IGNORE_CASE
+        };
+        string optionString = Options.getOptionsString(options);
+        Assert.AreEqual("STATIC=false,IGNORE_CASE=true", optionString);
     }
 }

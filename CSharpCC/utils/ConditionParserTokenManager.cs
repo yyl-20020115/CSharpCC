@@ -742,7 +742,7 @@ public class ConditionParserTokenManager : ConditionParserConstants
         switch (jjmatchedKind)
         {
             case 7:
-                image.append(input_stream.GetSuffix(jjimageLen));
+                image.Append(input_stream.GetSuffix(jjimageLen));
                 jjimageLen = 0;
                 input_stream.backup(1);
                 break;

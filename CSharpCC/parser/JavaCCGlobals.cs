@@ -630,11 +630,11 @@ public class JavaCCGlobals
         token_mgr_decls = null;
         rexprlist = new ();
         tokenCount = 0;
-        named_tokens_table = new Dictionary();
+        named_tokens_table = new ();
         ordered_named_tokens = new ();
         names_of_tokens = new Dictionary<int, String>();
         rexps_of_tokens = new Dictionary<int, RegularExpression>();
-        simple_tokens_table = new Dictionary();
+        simple_tokens_table = new ();
         maskindex = 0;
         jj2index = 0;
         maskVals = new ();

@@ -80,7 +80,7 @@ public static class NodeFiles
             OutputFile outputFile = new OutputFile(file, nodeVersion, options);
             outputFile.setToolName("JJTree");
 
-            nodesGenerated.Add(file.getName());
+            nodesGenerated.Add(file);
 
             if (!outputFile.needToWrite)
             {

@@ -113,7 +113,7 @@ public class JavaFiles:JavaCCGlobals : JavaCCParserConstants
   }
 
 
-  public static class JavaResourceTemplateLocationImpl : JavaResourceTemplateLocations {
+  public class JavaResourceTemplateLocationImpl : JavaResourceTemplateLocations {
 
 	    public string getTokenTemplateResourceUrl() {
 			return "/templates/Token.template";
