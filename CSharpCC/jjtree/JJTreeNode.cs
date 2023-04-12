@@ -47,7 +47,7 @@ public class JJTreeNode : SimpleNode
         return new JJTreeNode(id);
     }
 
-    public void jjtAddChild(Node n, int i)
+    public override void jjtAddChild(Node n, int i)
     {
         base.jjtAddChild(n, i);
         ((JJTreeNode)n).setOrdinal(i);

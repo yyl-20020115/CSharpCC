@@ -2,8 +2,7 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=true,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 namespace org.javacc.jjtree;
 
-public
-class ASTPrimaryExpression : JJTreeNode
+public class ASTPrimaryExpression : JJTreeNode
 {
     public ASTPrimaryExpression(int id) : base(id)
     {

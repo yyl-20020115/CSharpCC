@@ -39,12 +39,15 @@ public class ASTNodeDescriptor : JJTreeNode
 
     private bool faked = false;
 
-    static ASTNodeDescriptor indefinite(string s)
+    public static ASTNodeDescriptor indefinite(string s)
     {
-        ASTNodeDescriptor nd = new ASTNodeDescriptor(JJTreeParserTreeConstants.JJTNODEDESCRIPTOR);
-        nd.name = s;
+        var nd = new ASTNodeDescriptor(JJTreeParserTreeConstants.JJTNODEDESCRIPTOR)
+        {
+            name = s,
+            faked = true
+        };
+
         nd.setNodeIdValue();
-        nd.faked = true;
         return nd;
     }
 
@@ -53,19 +56,19 @@ public class ASTNodeDescriptor : JJTreeNode
     public static List<String> nodeNames = new();
     public static Dictionary<String, String> nodeSeen = new ();
 
-    static List<String> getNodeIds()
+    public static List<String> getNodeIds()
     {
         return nodeIds;
     }
 
-    static List<String> getNodeNames()
+    public static List<String> getNodeNames()
     {
         return nodeNames;
     }
 
-    void setNodeIdValue()
+    public void setNodeIdValue()
     {
-        string k = getNodeId();
+        var k = getNodeId();
         if (!nodeSeen.ContainsKey(k))
         {
             nodeSeen.Add(k, k);
@@ -74,7 +77,7 @@ public class ASTNodeDescriptor : JJTreeNode
         }
     }
 
-    string getNodeId()
+    public string getNodeId()
     {
         return "JJT" + name.ToUpper().Replace('.', '_');
     }
@@ -92,55 +95,34 @@ public class ASTNodeDescriptor : JJTreeNode
 
     public override string ToString()
     {
-        if (faked)
-        {
-            return "(faked) " + name;
-        }
-        else
-        {
-            return base.ToString() + ": " + name;
-        }
+        return faked ? "(faked) " + name : base.ToString() + ": " + name;
     }
 
 
     public string getDescriptor()
     {
-        if (expression == null)
-        {
-            return name;
-        }
-        else
-        {
-            return "#" + name + "(" + (isGT ? ">" : "") + expression_text() + ")";
-        }
+        return expression == null ? name : "#" + name + "(" + (isGT ? ">" : "") + expression_text() + ")";
     }
 
-    string getNodeType()
+    public string getNodeType()
     {
-        if (JJTreeOptions.getMulti())
-        {
-            return JJTreeOptions.getNodePrefix() + name;
-        }
-        else
-        {
-            return "SimpleNode";
-        }
+        return JJTreeOptions.getMulti() ? JJTreeOptions.getNodePrefix() + name : "SimpleNode";
     }
 
 
-    string getNodeName()
+    public string getNodeName()
     {
         return name;
     }
 
 
-    string openNode(string nodeVar)
+    public string openNode(string nodeVar)
     {
         return "jjtree.openNodeScope(" + nodeVar + ");";
     }
 
 
-    string expression_text()
+    public string expression_text()
     {
         if (expression.getFirstToken().image == (")") &&
           expression.getLastToken().image == ("("))
@@ -163,7 +145,7 @@ public class ASTNodeDescriptor : JJTreeNode
     }
 
 
-    string closeNode(string nodeVar)
+    public string closeNode(string nodeVar)
     {
         if (expression == null)
         {
@@ -182,7 +164,7 @@ public class ASTNodeDescriptor : JJTreeNode
     }
 
 
-    string translateImage(Token t)
+    public string translateImage(Token t)
     {
         return whiteOut(t);
     }

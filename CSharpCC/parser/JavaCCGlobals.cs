@@ -118,15 +118,15 @@ public class JavaCCGlobals
 
     /**
      * A mapping of lexical state strings to their integer internal representation.
-     * Integers are stored as java.lang.Integer's.
+     * Integers are stored as java.lang.int's.
      */
-    static public Dictionary<String, Integer> lexstate_S2I = new Dictionary<String, Integer>();
+    static public Dictionary<String, int> lexstate_S2I = new Dictionary<String, int>();
 
     /**
      * A mapping of the internal integer representations of lexical states to
-     * their strings.  Integers are stored as java.lang.Integer's.
+     * their strings.  Integers are stored as java.lang.int's.
      */
-    static public Dictionary<Integer, String> lexstate_I2S = new Dictionary<Integer, String>();
+    static public Dictionary<int, String> lexstate_I2S = new Dictionary<int, String>();
 
     /**
      * The declarations to be inserted into the TokenManager class.
@@ -160,19 +160,19 @@ public class JavaCCGlobals
     static public List<RegularExpression> ordered_named_tokens = new ArrayList<RegularExpression>();
 
     /**
-     * A mapping of ordinal values (represented as objects of type "Integer") to
+     * A mapping of ordinal values (represented as objects of type "int") to
      * the corresponding labels (of type "String").  An entry exists for an ordinal
      * value only if there is a labeled token corresponding to this entry.
      * If there are multiple labels representing the same ordinal value, then
      * only one label is stored.
      */
-    static public Dictionary<Integer, String> names_of_tokens = new Dictionary<Integer, String>();
+    static public Dictionary<int, String> names_of_tokens = new Dictionary<int, String>();
 
     /**
-     * A mapping of ordinal values (represented as objects of type "Integer") to
+     * A mapping of ordinal values (represented as objects of type "int") to
      * the corresponding RegularExpression's.
      */
-    static public Dictionary<Integer, RegularExpression> rexps_of_tokens = new Dictionary<Integer, RegularExpression>();
+    static public Dictionary<int, RegularExpression> rexps_of_tokens = new Dictionary<int, RegularExpression>();
 
     /**
      * This is a three-level symbol table that contains all simple tokens (those
@@ -337,7 +337,7 @@ public class JavaCCGlobals
         return new ();
     }
 
-    public static void createOutputDir(File outputDir)
+    public static void createOutputDir(string outputDir)
     {
         if (!outputDir.exists())
         {
@@ -381,7 +381,7 @@ public class JavaCCGlobals
         char ch;
         for (int i = 0; i < str.Length; i++)
         {
-            ch = str.charAt(i);
+            ch = str[i];
             if (ch == '\b')
             {
                 retval += "\\b";
@@ -416,8 +416,8 @@ public class JavaCCGlobals
             }
             else if (ch < 0x20 || ch > 0x7e)
             {
-                string s = "0000" + Integer.toString(ch, 16);
-                retval += "\\u" + s.substring(s.Length - 4, s.Length);
+                string s = "0000" + Convert.ToString(ch, 16);
+                retval += "\\u" + s[^4..];
             }
             else
             {
@@ -440,11 +440,11 @@ public class JavaCCGlobals
             char ch;
             for (int i = 0; i < str.Length; i++)
             {
-                ch = str.charAt(i);
+                ch = str[i];
                 if (ch < 0x20 || ch > 0x7e /*|| ch == '\\' -- cba commented out 20140305*/ )
                 {
-                    string s = "0000" + Integer.toString(ch, 16);
-                    retval += "\\u" + s.substring(s.Length - 4, s.Length);
+                    string s = "0000" + Convert.ToString(ch, 16);
+                    retval += "\\u" + s[^4..];
                 }
                 else
                 {
@@ -478,7 +478,7 @@ public class JavaCCGlobals
         }
         for (; ccol < t.beginColumn; ccol++)
         {
-            ostr.print(" ");
+            ostr.Write(" ");
         }
         if (t.kind == JavaCCParserConstants.STRING_LITERAL ||
             t.kind == JavaCCParserConstants.CHARACTER_LITERAL)
@@ -487,7 +487,7 @@ public class JavaCCGlobals
             ostr.print(t.image);
         cline = t.endLine;
         ccol = t.endColumn + 1;
-        char last = t.image.charAt(t.image.Length - 1);
+        char last = t.image[^1];
         if (last == '\n' || last == '\r')
         {
             cline++; ccol = 1;
@@ -534,7 +534,7 @@ public class JavaCCGlobals
         }
         if (ccol != 1 && cline != t.beginLine)
         {
-            ostr.println("");
+            ostr.WriteLine();
             cline++; ccol = 1;
         }
     }
@@ -563,7 +563,7 @@ public class JavaCCGlobals
             retval += t.image;
         cline = t.endLine;
         ccol = t.endColumn + 1;
-        char last = t.image.charAt(t.image.Length - 1);
+        char last = t.image[^1];
         if (last == '\n' || last == '\r')
         {
             cline++; ccol = 1;
@@ -620,24 +620,24 @@ public class JavaCCGlobals
         jjtreeGenerated = false;
         toolNames = null;
         cu_name = null;
-        cu_to_insertion_point_1 = new ArrayList<Token>();
-        cu_to_insertion_point_2 = new ArrayList<Token>();
-        cu_from_insertion_point_2 = new ArrayList<Token>();
-        bnfproductions = new ArrayList<NormalProduction>();
-        production_table = new Dictionary<String, Integer>();
-        lexstate_S2I = new Dictionary<String, Integer>();
-        lexstate_I2S = new Dictionary<Integer, String>();
+        cu_to_insertion_point_1 = new ();
+        cu_to_insertion_point_2 = new ();
+        cu_from_insertion_point_2 = new ();
+        bnfproductions = new ();
+        production_table = new Dictionary<String, int>();
+        lexstate_S2I = new Dictionary<String, int>();
+        lexstate_I2S = new Dictionary<int, String>();
         token_mgr_decls = null;
-        rexprlist = new ArrayList<TokenProduction>();
+        rexprlist = new ();
         tokenCount = 0;
         named_tokens_table = new Dictionary();
-        ordered_named_tokens = new ArrayList();
-        names_of_tokens = new Dictionary<Integer, String>();
-        rexps_of_tokens = new Dictionary<Integer, RegularExpression>();
+        ordered_named_tokens = new ();
+        names_of_tokens = new Dictionary<int, String>();
+        rexps_of_tokens = new Dictionary<int, RegularExpression>();
         simple_tokens_table = new Dictionary();
         maskindex = 0;
         jj2index = 0;
-        maskVals = new ArrayList();
+        maskVals = new ();
         cline = 0;
         ccol = 0;
         actForEof = null;
@@ -653,12 +653,12 @@ public class JavaCCGlobals
         {
             return ".java";
         }
-        else if (lang.toLowerCase(Locale.ENGLISH) == (Options.OUTPUT_LANGUAGE__CPP))
+        else if (lang.ToLower(Locale.ENGLISH) == (Options.OUTPUT_LANGUAGE__CPP))
         {
             return ".cc";
         }
 
-        assert(false);
+        //assert(false);
         return null;
     }
 

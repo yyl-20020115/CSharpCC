@@ -30,28 +30,25 @@
  */
 
 using org.javacc.parser;
-using System.Collections.Generic;
 using System.Text;
 
 namespace org.javacc.jjtree;
 
 
 
-public class NodeFiles
+public static class NodeFiles
 {
-    private NodeFiles() { }
-
     /**
      * ID of the latest version (of JJTree) in which one of the Node classes
      * was modified.
      */
     static readonly string nodeVersion = Version.majorDotMinor;
 
-    static HashSet nodesGenerated = new HashSet();
+    static HashSet<Node> nodesGenerated = new ();
 
     static void ensure(IO io, string nodeType)
     {
-        string file = new File(JJTreeOptions.getJJTreeOutputDirectory(), nodeType + ".java");
+        string file = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), nodeType + ".java");
 
         if (nodeType == ("Node"))
         {
@@ -103,7 +100,7 @@ public class NodeFiles
                 generateMULTINode_java(outputFile, nodeType);
             }
 
-            outputFile.Close();
+            outputFile.close();
 
         }
         catch (IOException e)
@@ -120,11 +117,11 @@ public class NodeFiles
         // will default to the parser's package name.
         // If the package names are different we will need to import classes
         // from the parser's package.
-        if (!JJTreeGlobals.nodePackageName == (""))
+        if (JJTreeGlobals.nodePackageName != (""))
         {
             ostr.WriteLine("package " + JJTreeGlobals.nodePackageName + ";");
             ostr.WriteLine();
-            if (!JJTreeGlobals.nodePackageName == (JJTreeGlobals.packageName))
+            if (JJTreeGlobals.nodePackageName != (JJTreeGlobals.packageName))
             {
                 ostr.WriteLine("import " + JJTreeGlobals.packageName + ".*;");
                 ostr.WriteLine();
@@ -134,23 +131,23 @@ public class NodeFiles
     }
 
 
-    static string nodeConstants()
+    public static string nodeConstants()
     {
         return JJTreeGlobals.parserName + "TreeConstants";
     }
 
-    static void generateTreeConstants_java()
+    public static void generateTreeConstants_java()
     {
         string name = nodeConstants();
-        string file = new File(JJTreeOptions.getJJTreeOutputDirectory(), name + ".java");
+        string file = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), name + ".java");
 
         try
         {
             OutputFile outputFile = new OutputFile(file);
             TextWriter ostr = outputFile.getPrintWriter();
 
-            List nodeIds = ASTNodeDescriptor.getNodeIds();
-            List nodeNames = ASTNodeDescriptor.getNodeNames();
+            var nodeIds = ASTNodeDescriptor.getNodeIds();
+            var nodeNames = ASTNodeDescriptor.getNodeNames();
 
             generatePrologue(ostr);
             ostr.WriteLine("public interface " + name);

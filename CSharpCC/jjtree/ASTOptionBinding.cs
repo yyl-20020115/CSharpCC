@@ -30,14 +30,14 @@ namespace org.javacc.jjtree;
 
 public class ASTOptionBinding : JJTreeNode
 {
-    ASTOptionBinding(int id) : base(id)
+    public ASTOptionBinding(int id) : base(id)
     {
     }
 
     private bool suppressed = false;
     private string name;
 
-    void initialize(string n, string v)
+    public void initialize(string n, string v)
     {
         name = n;
 
@@ -51,18 +51,18 @@ public class ASTOptionBinding : JJTreeNode
     }
 
 
-    bool isSuppressed()
+    public bool isSuppressed()
     {
         return suppressed;
     }
 
-    void suppressOption(bool s)
+    public void suppressOption(bool s)
     {
         suppressed = s;
     }
 
 
-    string translateImage(Token t)
+    public string translateImage(Token t)
     {
         if (suppressed)
         {
@@ -75,7 +75,7 @@ public class ASTOptionBinding : JJTreeNode
     }
 
     /** Accept the visitor. **/
-    public object jjtAccept(JJTreeParserVisitor visitor, object data)
+    public override object jjtAccept(JJTreeParserVisitor visitor, object data)
     {
         return visitor.visit(this, data);
     }

@@ -40,7 +40,7 @@ public class JJTJJTreeParserState
        this after a successful parse. */
     public Node rootNode()
     {
-        return nodes.get(0);
+        return nodes[0];
     }
 
     /* Pushes a node on to the stack. */
@@ -64,7 +64,7 @@ public class JJTJJTreeParserState
     /* Returns the node currently on the top of the stack. */
     public Node peekNode()
     {
-        return nodes.get(nodes.Count - 1);
+        return nodes[^1];
     }
 
     /* Returns the number of children on the stack in the current node
@@ -117,7 +117,7 @@ public class JJTJJTreeParserState
        made children of the conditional node, which is then pushed
        on to the stack.  If the condition is false the node is not
        constructed and they are left on the stack. */
-    public void closeNodeScope(Node n, boolean condition)
+    public void closeNodeScope(Node n, bool condition)
     {
         if (condition)
         {

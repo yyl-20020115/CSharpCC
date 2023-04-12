@@ -39,7 +39,7 @@ public class ASTProduction : JJTreeNode
     private Dictionary<NodeScope, int> scopes = new ();
     private int nextNodeScopeNumber = 0;
 
-
+    
     public int GetNodeScopeNumber(NodeScope s)
     {
         if (!scopes.TryGetValue(s,out var i))

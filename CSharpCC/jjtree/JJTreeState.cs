@@ -35,12 +35,9 @@ namespace org.javacc.jjtree;
 /**
  * Generate the State of a tree.
  */
-public class JJTreeState
+public static class JJTreeState
 {
-
-    private JJTreeState() { }
-
-    static void insertParserMembers(IO io)
+    public static void insertParserMembers(IO io)
     {
         string s;
 
@@ -66,7 +63,7 @@ public class JJTreeState
     }
 
 
-    static void generateTreeState_java()
+    public static void generateTreeState_java()
     {
         string file = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), nameState() + ".java");
 

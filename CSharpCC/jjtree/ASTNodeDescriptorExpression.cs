@@ -30,11 +30,11 @@ namespace org.javacc.jjtree;
 
 public class ASTNodeDescriptorExpression : JJTreeNode
 {
-    ASTNodeDescriptorExpression(int id) : base(id)
+    public ASTNodeDescriptorExpression(int id) : base(id)
     {
     }
 
-    string translateImage(Token t)
+    public string translateImage(Token t)
     {
         return whiteOut(t);
     }

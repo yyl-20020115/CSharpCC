@@ -169,11 +169,11 @@ public class JJTree
 
             try
             {
-                JJTreeParser parser = new JJTreeParser(io.getIn());
+                var parser = new JJTreeParser(io.getIn());
                 parser.javacc_input();
 
                 ASTGrammar root = (ASTGrammar)parser.jjtree.rootNode();
-                if (Boolean.getBoolean("jjtree-dump"))
+                if (bool.getBoolean("jjtree-dump"))
                 {
                     root.dump(" ");
                 }

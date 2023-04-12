@@ -73,14 +73,14 @@ public class JJTreeGlobals
      * This set stores the JJTree-specific options that should not be
      * passed down to JavaCC
      */
-    private static Set jjtreeOptions;
+    private static HashSet<string> jjtreeOptions;
 
     public static bool isOptionJJTreeOnly(string optionName)
     {
         return jjtreeOptions.Contains(optionName.ToUpper());
     }
 
-    public static List toolList = new ArrayList();
+    public static List<string> toolList = new ();
 
     /**
      * Use this like className.

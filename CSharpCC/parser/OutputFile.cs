@@ -144,7 +144,7 @@ public class OutputFile
             {
                 // The file has not been altered since JavaCC created it.
                 // Rebuild it.
-                System.out.WriteLine("File \"" + file.getName()
+                Console.WriteLine("File \"" + file.getName()
                     + "\" is being rebuilt.");
                 needToWrite = true;
             }
@@ -152,14 +152,15 @@ public class OutputFile
         else
         {
             // File does not exist
-            System.out.WriteLine("File \"" + file.getName() + "\" does not exist.  Will create one.");
+            Console.WriteLine("File \"" + file.getName() + "\" does not exist.  Will create one.");
             needToWrite = true;
         }
     }
 
-    public OutputFile(File file)
+    public OutputFile(string file)
+        : this(file, null, null)
     {
-        this(file, null, null);
+       
     }
 
     public bool needToWrite = true;

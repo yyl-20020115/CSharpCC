@@ -2,6 +2,9 @@
 /* JavaCCOptions: */
 namespace org.javacc.jjtree;
 
-public class Error :Exception
+public class Error : Exception
 {
+    public Error(string? message) : base(message)
+    {
+    }
 }

@@ -30,13 +30,13 @@ namespace org.javacc.jjtree;
 
 public class NodeScope
 {
-    ASTProduction production;
-    ASTNodeDescriptor node_descriptor;
+    public ASTProduction production;
+    public ASTNodeDescriptor node_descriptor;
 
-    string closedVar;
-    string exceptionVar;
-    string nodeVar;
-    int scopeNumber;
+    public string closedVar;
+    public string exceptionVar;
+    public string nodeVar;
+    public int scopeNumber;
 
     public NodeScope(ASTProduction p, ASTNodeDescriptor n)
     {
