@@ -35,46 +35,46 @@ namespace org.javacc;
 /**
  * Supply the version number.
  */
-public class Version {
-  private Version() {}
+public static class Version
+{
+    public static readonly string majorVersion;
+    public static readonly string minorVersion;
+    public static readonly string patchVersion;
 
-  public static readonly string majorVersion;
-  public static readonly string minorVersion;
-  public static readonly string patchVersion;
 
+    public static readonly string majorDotMinor;
+    public static readonly string versionNumber;
 
-  public static readonly string majorDotMinor;
-  public static readonly string versionNumber;
-
-  static Version(){
-    string major = "??";
-    string minor = "??";
-    string patch = "??";
-
-    Properties props = new Properties();
-    InputStream _is = Version.GetType().getResourceAsStream("/version.properties");
-    if (_is != null)
+    static Version()
     {
-      try
-      {
-        props.load(is);
-      }
-      catch (IOException e)
-      {
-        Console.Error.WriteLine("Could not read version.properties: " + e);
-      }
-      major = props.getProperty("version.major", major);
-      minor = props.getProperty("version.minor", minor);
-      patch = props.getProperty("version.patch", patch);
-    }
+        string major = "??";
+        string minor = "??";
+        string patch = "??";
 
-    majorVersion = major;
-    minorVersion = minor;
-    patchVersion = patch;
-    majorDotMinor = majorVersion + "." + minorVersion;
-    versionNumber = majorVersion + "." + minorVersion +
-                    (patch==("") ? "" : "." + patch);
-  }
+        Properties props = new Properties();
+        InputStream _is = Version.GetType().getResourceAsStream("/version.properties");
+        if (_is != null)
+        {
+            try
+            {
+                props.load(is);
+            }
+            catch (IOException e)
+            {
+                Console.Error.WriteLine("Could not read version.properties: " + e);
+            }
+            major = props.getProperty("version.major", major);
+            minor = props.getProperty("version.minor", minor);
+            patch = props.getProperty("version.patch", patch);
+        }
+
+        majorVersion = major;
+        minorVersion = minor;
+        patchVersion = patch;
+        majorDotMinor = majorVersion + "." + minorVersion;
+        versionNumber = majorVersion + "." + minorVersion +
+                        (patch == ("") ? "" : "." + patch);
+    }
 
 
 }

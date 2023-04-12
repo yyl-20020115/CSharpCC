@@ -314,7 +314,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
     private int jjMoveStringLiteralDfa1_0(long active0, long active1, long active2)
     {
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(0, active0, active1, active2);
             return 1;
@@ -452,7 +452,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(0, old0, old1, old2);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(1, active0, active1, active2);
             return 2;
@@ -549,7 +549,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(1, old0, old1, old2);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(2, active0, active1, active2);
             return 3;
@@ -646,7 +646,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(2, old0, old1, old2);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(3, active0, active1, active2);
             return 4;
@@ -736,12 +736,12 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(3, old0, old1, old2);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(4, active0, active1, active2);
             return 5;
         }
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 65:
                 return jjMoveStringLiteralDfa6_0(active0, 0x80L, active1, 0L, active2, 0L);
@@ -811,12 +811,12 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(4, old0, old1, old2);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(5, active0, active1, active2);
             return 6;
         }
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 68:
                 return jjMoveStringLiteralDfa7_0(active0, 0x20L, active1, 0L, active2, 0L);
@@ -874,12 +874,12 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(5, old0, old1, old2);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(6, active0, active1, active2);
             return 7;
         }
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 65:
                 return jjMoveStringLiteralDfa8_0(active0, 0x2L, active1, 0L, active2, 0L);
@@ -927,12 +927,12 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(6, old0, old1, old2);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(7, active0, active1, 0L);
             return 8;
         }
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 65:
                 return jjMoveStringLiteralDfa9_0(active0, 0x4L, active1, 0L);
@@ -974,12 +974,12 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0) | (active1 &= old1)) == 0L)
             return jjStartNfa_0(7, old0, old1, 0L);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(8, active0, active1, 0L);
             return 9;
         }
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 68:
                 if ((active0 & 0x10L) != 0L)
@@ -1013,12 +1013,12 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0) | (active1 &= old1)) == 0L)
             return jjStartNfa_0(8, old0, old1, 0L);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(9, active0, active1, 0L);
             return 10;
         }
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 68:
                 return jjMoveStringLiteralDfa11_0(active0, 0x400L, active1, 0L);
@@ -1042,12 +1042,12 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0) | (active1 &= old1)) == 0L)
             return jjStartNfa_0(9, old0, old1, 0L);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(10, active0, active1, 0L);
             return 11;
         }
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 69:
                 return jjMoveStringLiteralDfa12_0(active0, 0x480L, active1, 0L);
@@ -1069,12 +1069,12 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0) | (active1 &= old1)) == 0L)
             return jjStartNfa_0(10, old0, old1, 0L);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(11, active0, 0L, 0L);
             return 12;
         }
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 67:
                 return jjMoveStringLiteralDfa13_0(active0, 0x400L);
@@ -1092,12 +1092,12 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0)) == 0L)
             return jjStartNfa_0(11, old0, 0L, 0L);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(12, active0, 0L, 0L);
             return 13;
         }
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 76:
                 return jjMoveStringLiteralDfa14_0(active0, 0x400L);
@@ -1111,12 +1111,12 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         if (((active0 &= old0)) == 0L)
             return jjStartNfa_0(12, old0, 0L, 0L);
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             jjStopStringLiteralDfa_0(13, active0, 0L, 0L);
             return 14;
         }
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 83:
                 if ((active0 & 0x400L) != 0L)
@@ -1132,7 +1132,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         jjmatchedKind = kind;
         jjmatchedPos = pos;
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e) { return pos + 1; }
+        catch (IOException e) { return pos + 1; }
         return jjMoveNfa_0(state, pos + 1);
     }
     static readonly long[] jjbitVec0 = {
@@ -1786,12 +1786,12 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
             if ((i = jjnewStateCnt) == (startsAt = 65 - (jjnewStateCnt = startsAt)))
                 return curPos;
             try { curChar = input_stream.readChar(); }
-            catch (java.io.IOException e) { return curPos; }
+            catch (IOException e) { return curPos; }
         }
     }
     private int jjMoveStringLiteralDfa0_3()
     {
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 42:
                 return jjMoveStringLiteralDfa1_3(0x400000L);
@@ -1802,11 +1802,11 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
     private int jjMoveStringLiteralDfa1_3(long active0)
     {
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             return 1;
         }
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 47:
                 if ((active0 & 0x400000L) != 0L)
@@ -1896,12 +1896,12 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
             if ((i = jjnewStateCnt) == (startsAt = 3 - (jjnewStateCnt = startsAt)))
                 return curPos;
             try { curChar = input_stream.readChar(); }
-            catch (java.io.IOException e) { return curPos; }
+            catch (IOException e) { return curPos; }
         }
     }
     private int jjMoveStringLiteralDfa0_2()
     {
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 42:
                 return jjMoveStringLiteralDfa1_2(0x200000L);
@@ -1912,11 +1912,11 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
     private int jjMoveStringLiteralDfa1_2(long active0)
     {
         try { curChar = input_stream.readChar(); }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             return 1;
         }
-        switch((int)curChar)
+        switch ((int)curChar)
         {
             case 47:
                 if ((active0 & 0x200000L) != 0L)
@@ -1933,7 +1933,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
    60, 61, 62, 10, 11, 17, 18, 20, 25, 27, 29, 36, 37, 40, 41, 46,
    47, 55, 56, 57, 58, 63, 64,
 };
-    private static  bool jjCanMove_0(int hiByte, int i1, int i2, long l1, long l2)
+    private static bool jjCanMove_0(int hiByte, int i1, int i2, long l1, long l2)
     {
         switch (hiByte)
         {
@@ -2116,46 +2116,46 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
 
     /** Token literal values. */
     public static readonly String[] jjstrLiteralImages = {
-"", "\114\117\117\113\101\110\105\101\104", 
-"\111\107\116\117\122\105\137\103\101\123\105", "\120\101\122\123\105\122\137\102\105\107\111\116", 
-"\120\101\122\123\105\122\137\105\116\104", "\112\101\126\101\103\117\104\105", "\124\117\113\105\116", 
-"\123\120\105\103\111\101\114\137\124\117\113\105\116", "\115\117\122\105", "\123\113\111\120", 
-"\124\117\113\105\116\137\115\107\122\137\104\105\103\114\123", "\105\117\106", null, null, null, null, null, null, null, null, null, null, 
-null, null, "\141\142\163\164\162\141\143\164", "\142\157\157\154\145\141\156", 
-"\142\162\145\141\153", "\142\171\164\145", "\143\141\163\145", "\143\141\164\143\150", 
-"\143\150\141\162", "\143\154\141\163\163", "\143\157\156\163\164", 
-"\143\157\156\164\151\156\165\145", "\144\145\146\141\165\154\164", "\144\157", "\144\157\165\142\154\145", 
-"\145\154\163\145", "\145\170\164\145\156\144\163", "\146\141\154\163\145", 
-"\146\151\156\141\154", "\146\151\156\141\154\154\171", "\146\154\157\141\164", "\146\157\162", 
-"\147\157\164\157", "\151\146", "\151\155\160\154\145\155\145\156\164\163", 
-"\151\155\160\157\162\164", "\151\156\163\164\141\156\143\145\157\146", "\151\156\164", 
-"\151\156\164\145\162\146\141\143\145", "\154\157\156\147", "\156\141\164\151\166\145", "\156\145\167", 
-"\156\165\154\154", "\160\141\143\153\141\147\145", "\160\162\151\166\141\164\145", 
-"\160\162\157\164\145\143\164\145\144", "\160\165\142\154\151\143", "\162\145\164\165\162\156", 
-"\163\150\157\162\164", "\163\164\141\164\151\143", "\163\165\160\145\162", 
-"\163\167\151\164\143\150", "\163\171\156\143\150\162\157\156\151\172\145\144", "\164\150\151\163", 
-"\164\150\162\157\167", "\164\150\162\157\167\163", "\164\162\141\156\163\151\145\156\164", 
-"\164\162\165\145", "\164\162\171", "\166\157\151\144", "\166\157\154\141\164\151\154\145", 
-"\167\150\151\154\145", null, null, null, null, null, null, null, null, null, null, null, "\50", 
-"\51", "\173", "\175", "\133", "\135", "\73", "\54", "\56", "\43", "\75", "\74", 
-"\41", "\176", "\77", "\72", "\72\72", "\75\75", "\74\75", "\76\75", "\41\75", 
-"\174\174", "\46\46", "\53\53", "\55\55", "\53", "\55", "\52", "\57", "\46", "\174", 
-"\136", "\45", "\53\75", "\55\75", "\52\75", "\57\75", "\46\75", "\174\75", "\136\75", 
-"\45\75", "\76\76\76", "\76\76", "\76", "\163\164\162\151\143\164\146\160", 
-"\145\156\165\155", "\56\56\56", "\164\145\155\160\154\141\164\145", 
-"\164\171\160\145\156\141\155\145", "\74\74\75", "\76\76\75", "\76\76\76\75", "\74\74", 
+"", "\114\117\117\113\101\110\105\101\104",
+"\111\107\116\117\122\105\137\103\101\123\105", "\120\101\122\123\105\122\137\102\105\107\111\116",
+"\120\101\122\123\105\122\137\105\116\104", "\112\101\126\101\103\117\104\105", "\124\117\113\105\116",
+"\123\120\105\103\111\101\114\137\124\117\113\105\116", "\115\117\122\105", "\123\113\111\120",
+"\124\117\113\105\116\137\115\107\122\137\104\105\103\114\123", "\105\117\106", null, null, null, null, null, null, null, null, null, null,
+null, null, "\141\142\163\164\162\141\143\164", "\142\157\157\154\145\141\156",
+"\142\162\145\141\153", "\142\171\164\145", "\143\141\163\145", "\143\141\164\143\150",
+"\143\150\141\162", "\143\154\141\163\163", "\143\157\156\163\164",
+"\143\157\156\164\151\156\165\145", "\144\145\146\141\165\154\164", "\144\157", "\144\157\165\142\154\145",
+"\145\154\163\145", "\145\170\164\145\156\144\163", "\146\141\154\163\145",
+"\146\151\156\141\154", "\146\151\156\141\154\154\171", "\146\154\157\141\164", "\146\157\162",
+"\147\157\164\157", "\151\146", "\151\155\160\154\145\155\145\156\164\163",
+"\151\155\160\157\162\164", "\151\156\163\164\141\156\143\145\157\146", "\151\156\164",
+"\151\156\164\145\162\146\141\143\145", "\154\157\156\147", "\156\141\164\151\166\145", "\156\145\167",
+"\156\165\154\154", "\160\141\143\153\141\147\145", "\160\162\151\166\141\164\145",
+"\160\162\157\164\145\143\164\145\144", "\160\165\142\154\151\143", "\162\145\164\165\162\156",
+"\163\150\157\162\164", "\163\164\141\164\151\143", "\163\165\160\145\162",
+"\163\167\151\164\143\150", "\163\171\156\143\150\162\157\156\151\172\145\144", "\164\150\151\163",
+"\164\150\162\157\167", "\164\150\162\157\167\163", "\164\162\141\156\163\151\145\156\164",
+"\164\162\165\145", "\164\162\171", "\166\157\151\144", "\166\157\154\141\164\151\154\145",
+"\167\150\151\154\145", null, null, null, null, null, null, null, null, null, null, null, "\50",
+"\51", "\173", "\175", "\133", "\135", "\73", "\54", "\56", "\43", "\75", "\74",
+"\41", "\176", "\77", "\72", "\72\72", "\75\75", "\74\75", "\76\75", "\41\75",
+"\174\174", "\46\46", "\53\53", "\55\55", "\53", "\55", "\52", "\57", "\46", "\174",
+"\136", "\45", "\53\75", "\55\75", "\52\75", "\57\75", "\46\75", "\174\75", "\136\75",
+"\45\75", "\76\76\76", "\76\76", "\76", "\163\164\162\151\143\164\146\160",
+"\145\156\165\155", "\56\56\56", "\164\145\155\160\154\141\164\145",
+"\164\171\160\145\156\141\155\145", "\74\74\75", "\76\76\75", "\76\76\76\75", "\74\74",
 "\141\163\163\145\162\164", "\100", null, null, null, };
 
-/** Lexer state names. */
-public static readonly String[] lexStateNames = {
+    /** Lexer state names. */
+    public static readonly String[] lexStateNames = {
    "DEFAULT",
    "IN_SINGLE_LINE_COMMENT",
    "IN_FORMAL_COMMENT",
    "IN_MULTI_LINE_COMMENT",
 };
 
-/** Lex State array. */
-public static readonly int[] jjnewLexState = {
+    /** Lex State array. */
+    public static readonly int[] jjnewLexState = {
    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 2, 3, 0, 0, 0, -1, -1,
    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -2164,7 +2164,7 @@ public static readonly int[] jjnewLexState = {
    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 };
     static readonly long[] jjtoToken = {
-   0xffffffffff000fffL, 0xfffffffffff847ffL, 0x1fffL,
+   unchecked((long)0xffffffffff000fffL), unchecked((long)0xfffffffffff847ffL), 0x1fffL,
 };
     static readonly long[] jjtoSkip = {
    0x71f000L, 0x0L, 0x0L,
@@ -2176,9 +2176,9 @@ public static readonly int[] jjnewLexState = {
    0x8e0000L, 0x0L, 0x0L,
 };
     protected JavaCharStream input_stream;
-    private  int[] jjrounds = new int[65];
-    private  int[] jjstateSet = new int[130];
-    private  StringBuilder jjimage = new StringBuilder();
+    private int[] jjrounds = new int[65];
+    private int[] jjstateSet = new int[130];
+    private StringBuilder jjimage = new ();
     private StringBuilder image = jjimage;
     private int jjimageLen;
     private int lengthOfMatch;
@@ -2193,8 +2193,8 @@ public static readonly int[] jjnewLexState = {
 
     /** Constructor. */
     public JJTreeParserTokenManager(JavaCharStream stream, int lexState)
+        : this(stream)
     {
-        this(stream);
         SwitchTo(lexState);
     }
 
@@ -2209,9 +2209,9 @@ public static readonly int[] jjnewLexState = {
     private void ReInitRounds()
     {
         int i;
-        jjround = 0x80000001;
+        jjround = unchecked((int)0x80000001);
         for (i = 65; i-- > 0;)
-            jjrounds[i] = 0x80000000;
+            jjrounds[i] = unchecked((int)0x80000000);
     }
 
     /** Reinitialise parser. */
@@ -2232,13 +2232,13 @@ public static readonly int[] jjnewLexState = {
 
     protected Token jjFillToken()
     {
-        final Token t;
-        final String curTokenImage;
-        final int beginLine;
-        final int endLine;
-        final int beginColumn;
-        final int endColumn;
-        String im = jjstrLiteralImages[jjmatchedKind];
+        Token t;
+        String curTokenImage;
+        int beginLine;
+        int endLine;
+        int beginColumn;
+        int endColumn;
+        string im = jjstrLiteralImages[jjmatchedKind];
         curTokenImage = (im == null) ? input_stream.GetImage() : im;
         beginLine = input_stream.getBeginLine();
         beginColumn = input_stream.getBeginColumn();
@@ -2275,7 +2275,7 @@ public static readonly int[] jjnewLexState = {
             {
                 curChar = input_stream.BeginToken();
             }
-            catch (java.io.IOException e)
+            catch (IOException e)
             {
                 jjmatchedKind = 0;
                 matchedToken = jjFillToken();
@@ -2366,14 +2366,14 @@ public static readonly int[] jjnewLexState = {
                         curChar = input_stream.readChar();
                         continue;
                     }
-                    catch (java.io.IOException e1) { }
+                    catch (IOException e1) { }
                 }
                 int error_line = input_stream.getEndLine();
                 int error_column = input_stream.getEndColumn();
                 String error_after = null;
-                boolean EOFSeen = false;
+                bool EOFSeen = false;
                 try { input_stream.readChar(); input_stream.backup(1); }
-                catch (java.io.IOException e1)
+                catch (IOException e1)
                 {
                     EOFSeen = true;
                     error_after = curPos <= 1 ? "" : input_stream.GetImage();

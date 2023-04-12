@@ -222,27 +222,27 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
     hasTokenActions = actForEof != null;
     initStates = new Hashtable();
     canMatchAnyChar = new int[maxLexStates];
-    canLoop = new boolean[maxLexStates];
-    stateHasActions = new boolean[maxLexStates];
+    canLoop = new bool[maxLexStates];
+    stateHasActions = new bool[maxLexStates];
     lexStateName = new String[maxLexStates];
     singlesToSkip = new NfaState[maxLexStates];
-    System.arraycopy(tmpLexStateName, 0, lexStateName, 0, maxLexStates);
+    Array.Copy(tmpLexStateName, 0, lexStateName, 0, maxLexStates);
 
     for (i = 0; i < maxLexStates; i++)
       canMatchAnyChar[i] = -1;
 
-    hasNfa = new boolean[maxLexStates];
-    mixed = new boolean[maxLexStates];
+    hasNfa = new bool[maxLexStates];
+    mixed = new bool[maxLexStates];
     maxLongsReqd = new int[maxLexStates];
     initMatch = new int[maxLexStates];
     newLexState = new String[maxOrdinal];
     newLexState[0] = nextStateForEof;
     hasEmptyMatch = false;
     lexStates = new int[maxOrdinal];
-    ignoreCase = new boolean[maxOrdinal];
+    ignoreCase = new bool[maxOrdinal];
     rexprs = new RegularExpression[maxOrdinal];
     RStringLiteral.allImages = new String[maxOrdinal];
-    canReachOnMore = new boolean[maxLexStates];
+    canReachOnMore = new bool[maxLexStates];
   }
 
   static int GetIndex(string name)
@@ -357,7 +357,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
           {
             int[] tmp = new int[curRE.ordinal + 1];
 
-            System.arraycopy(kinds, 0, tmp, 0, kinds.Length);
+            Array.Copy(kinds, 0, tmp, 0, kinds.Length);
             kinds = tmp;
           }
           //Console.WriteLine("   ordina : " + curRE.ordinal);

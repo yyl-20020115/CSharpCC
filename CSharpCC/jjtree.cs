@@ -30,11 +30,11 @@
  * Having this intermediary allows the OS scripts to be package name
  * independent.
  */
-public static class jjtree {
-
-
-  public static void main(string[] args) {
-    org.javacc.jjtree.Main.main(args);
-  }
+public static class jjtree
+{
+    public static void main(string[] args)
+    {
+        org.javacc.jjtree.Main.main(args);
+    }
 
 }

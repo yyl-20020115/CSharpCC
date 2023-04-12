@@ -510,8 +510,8 @@ public class RStringLiteral:RegularExpression {
   static void FillSubString()
   {
      string image;
-     subString = new boolean[maxStrKind + 1];
-     subStringAtPos = new boolean[maxLen];
+     subString = new bool[maxStrKind + 1];
+     subStringAtPos = new bool[maxLen];
 
      for (int i = 0; i < maxStrKind; i++)
      {
@@ -1263,7 +1263,7 @@ public class RStringLiteral:RegularExpression {
   static void GenerateNfaStartStates(CodeGenerator codeGenerator,
                                                 NfaState initialState)
   {
-     boolean[] seen = new boolean[NfaState.generatedStates];
+     bool[] seen = new bool[NfaState.generatedStates];
      Dictionary stateSets = new Dictionary();
      string stateSetString  = "";
      int i, j, kind, jjmatchedPos = 0;

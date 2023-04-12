@@ -11,7 +11,7 @@ public class OptionsTest : CSharpCCTestCase
 {
     public void testDefaults()
     {
-        Options.init();
+        Options.Init();
         JavaCCErrors.reInit();
 
         //        Assert.AreEqual(49, Options.optionValues.Count);
@@ -53,7 +53,7 @@ public class OptionsTest : CSharpCCTestCase
 
     public void testSetBooleanOption()
     {
-        Options.init();
+        Options.Init();
         JavaCCErrors.reInit();
 
         Assert.AreEqual(true, Options.getStatic());
@@ -77,7 +77,7 @@ public class OptionsTest : CSharpCCTestCase
 
     public void testIntBooleanOption()
     {
-        Options.init();
+        Options.Init();
         JavaCCErrors.reInit();
 
         Assert.AreEqual(1, Options.getLookahead());
@@ -98,7 +98,7 @@ public class OptionsTest : CSharpCCTestCase
 
     public void testSetStringOption()
     {
-        Options.init();
+        Options.Init();
         JavaCCErrors.reInit();
 
         Assert.AreEqual("", Options.getTokenExtends());
@@ -108,7 +108,7 @@ public class OptionsTest : CSharpCCTestCase
         // File option does not override cmd line
         Assert.AreEqual("java.lang.Object", Options.getTokenExtends());
 
-        Options.init();
+        Options.Init();
         JavaCCErrors.reInit();
 
         Options.setInputFileOption(null, null, Options.USEROPTION__TOKEN_EXTENDS, "Object");
@@ -119,7 +119,7 @@ public class OptionsTest : CSharpCCTestCase
 
     public void testSetNonexistentOption()
     {
-        Options.init();
+        Options.Init();
         JavaCCErrors.reInit();
 
         Assert.AreEqual(0, JavaCCErrors.get_warning_count());
@@ -133,7 +133,7 @@ public class OptionsTest : CSharpCCTestCase
 
     public void testSetWrongTypeForOption()
     {
-        Options.init();
+        Options.Init();
         JavaCCErrors.reInit();
 
         Assert.AreEqual(0, JavaCCErrors.get_warning_count());
@@ -148,7 +148,7 @@ public class OptionsTest : CSharpCCTestCase
 
     public void testNormalize()
     {
-        Options.init();
+        Options.Init();
         JavaCCErrors.reInit();
 
         Assert.AreEqual(false, Options.getDebugLookahead());
@@ -168,7 +168,7 @@ public class OptionsTest : CSharpCCTestCase
 
     public void testOptionsString()
     {
-        Options.init();
+        Options.Init();
         JavaCCErrors.reInit();
 
         Options.setCmdLineOption("-STATIC=False");

@@ -370,7 +370,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     }
 
 
-    private void insertCatchBlocks(NodeScope ns, IO io, Enumeration thrown_names,
+    private void insertCatchBlocks(NodeScope ns, IO io, object thrown_names,
            string indent)
     {
         string thrown;

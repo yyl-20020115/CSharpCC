@@ -80,7 +80,7 @@ public class JJTreeNode : SimpleNode
     public Token getLastToken() { return last; }
     public void setLastToken(Token t) { last = t; }
 
-    public string translateImage(Token t)
+    public virtual string translateImage(Token t)
     {
         return t.image;
     }

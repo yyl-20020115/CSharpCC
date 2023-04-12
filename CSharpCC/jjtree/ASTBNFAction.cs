@@ -37,18 +37,18 @@ public class ASTBNFAction : JJTreeNode
 
     public Node GetScopingParent(NodeScope ns)
     {
-        for (Node n = this.jjtGetParent(); n != null; n = n.jjtGetParent())
+        for (var n = this.jjtGetParent(); n != null; n = n.jjtGetParent())
         {
-            if (n is ASTBNFNodeScope)
+            if (n is ASTBNFNodeScope scope)
             {
-                if (((ASTBNFNodeScope)n).node_scope == ns)
+                if (scope.node_scope == ns)
                 {
                     return n;
                 }
             }
-            else if (n is ASTExpansionNodeScope)
+            else if (n is ASTExpansionNodeScope scope1)
             {
-                if (((ASTExpansionNodeScope)n).node_scope == ns)
+                if (scope1.node_scope == ns)
                 {
                     return n;
                 }

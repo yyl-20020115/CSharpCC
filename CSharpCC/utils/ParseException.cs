@@ -90,11 +90,11 @@ public class ParseException : Exception
      * from the parser) the correct error message
      * gets displayed.
      */
-    private static String initialise(Token currentToken,
+    private static string initialise(Token currentToken,
                              int[][] expectedTokenSequences,
-                             String[] tokenImage)
+                             string[] tokenImage)
     {
-        String eol = Environment.NewLine;// System.getProperty("line.separator", "\n");
+        var eol = Environment.NewLine;// System.getProperty("line.separator", "\n");
         var expected = new StringBuilder();
         int maxSize = 0;
         for (int i = 0; i < expectedTokenSequences.Length; i++)
@@ -113,8 +113,8 @@ public class ParseException : Exception
             }
             expected.Append(eol).Append("    ");
         }
-        String retval = "Encountered \"";
-        Token tok = currentToken.next;
+        var retval = "Encountered \"";
+        var tok = currentToken.next;
         for (int i = 0; i < maxSize; i++)
         {
             if (i != 0) retval += " ";

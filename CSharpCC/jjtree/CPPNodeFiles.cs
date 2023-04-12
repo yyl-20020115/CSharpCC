@@ -59,53 +59,53 @@ public static class CPPNodeFiles
 
     public static string nodeIncludeFile()
     {
-        return (JJTreeOptions.getJJTreeOutputDirectory(), "Node.h");
+        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "Node.h");
     }
 
     public static string simpleNodeIncludeFile()
     {
-        return new File(JJTreeOptions.getJJTreeOutputDirectory(), "SimpleNode.h").getAbsolutePath();
+        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "SimpleNode.h");
     }
 
     public static string simpleNodeCodeFile()
     {
-        return new File(JJTreeOptions.getJJTreeOutputDirectory(), "SimpleNode.cc").getAbsolutePath();
+        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "SimpleNode.cc");
     }
 
     public static string jjtreeIncludeFile()
     {
-        return new File(JJTreeOptions.getJJTreeOutputDirectory(), JJTreeGlobals.parserName + "Tree.h").getAbsolutePath();
+        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), JJTreeGlobals.parserName + "Tree.h");
     }
 
     public static string jjtreeImplFile()
     {
-        return new File(JJTreeOptions.getJJTreeOutputDirectory(), JJTreeGlobals.parserName + "Tree.cc").getAbsolutePath();
+        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), JJTreeGlobals.parserName + "Tree.cc");
     }
 
     public static string jjtreeIncludeFile(string s)
     {
-        return new File(JJTreeOptions.getJJTreeOutputDirectory(), s + ".h").getAbsolutePath();
+        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), s + ".h");
     }
 
     public static string jjtreeImplFile(string s)
     {
-        return new File(JJTreeOptions.getJJTreeOutputDirectory(), s + ".cc").getAbsolutePath();
+        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), s + ".cc");
     }
 
     public static string jjtreeASTIncludeFile(string ASTNode)
     {
-        return new File(JJTreeOptions.getJJTreeOutputDirectory(), ASTNode + ".h").getAbsolutePath();
+        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), ASTNode + ".h");
     }
 
     public static string jjtreeASTCodeFile(string ASTNode)
     {
-        return new File(JJTreeOptions.getJJTreeOutputDirectory(), ASTNode + ".cc").getAbsolutePath();
+        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), ASTNode + ".cc");
     }
 
     private static string visitorIncludeFile()
     {
         string name = visitorClass();
-        return new File(JJTreeOptions.getJJTreeOutputDirectory(), name + ".h").getAbsolutePath();
+        return System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), name + ".h");
     }
 
     public static void generateTreeClasses()
@@ -121,7 +121,7 @@ public static class CPPNodeFiles
 
     private static void generateNodeHeader()
     {
-        File file = new File(nodeIncludeFile());
+        string file = nodeIncludeFile();
         OutputFile outputFile = null;
 
         try
@@ -153,7 +153,7 @@ public static class CPPNodeFiles
     }
     private static void generateSimpleNodeHeader()
     {
-        File file = new File(simpleNodeIncludeFile());
+        string file = (simpleNodeIncludeFile());
         OutputFile outputFile = null;
 
         try
@@ -301,7 +301,7 @@ public static class CPPNodeFiles
 
     private static void generateOneTreeInterface()
     {
-        File file = new File(jjtreeIncludeFile());
+        string file = (jjtreeIncludeFile());
         OutputFile outputFile = null;
 
         try
@@ -345,7 +345,7 @@ public static class CPPNodeFiles
 
     private static void generateOneTreeImpl()
     {
-        File file = new File(jjtreeImplFile());
+        string file = (jjtreeImplFile());
         OutputFile outputFile = null;
 
         try
@@ -408,7 +408,7 @@ public static class CPPNodeFiles
     static void generateTreeConstants()
     {
         string name = nodeConstants();
-        File file = new File(JJTreeOptions.getJJTreeOutputDirectory(), name + ".h");
+        string file = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), name + ".h");
         headersForJJTreeH.Add(file.getName());
 
         try
@@ -513,7 +513,7 @@ public static class CPPNodeFiles
         try
         {
             string name = visitorClass();
-            File file = new File(visitorIncludeFile());
+            string file = (visitorIncludeFile());
             OutputFile outputFile = new OutputFile(file);
             TextWriter ostr = outputFile.getPrintWriter();
 
@@ -611,7 +611,7 @@ public static class CPPNodeFiles
         {
             for (int i = 0; i < nodeNames.Count; ++i)
             {
-                string n = (String)nodeNames.get(i);
+                string n = (String)nodeNames[i];
                 if (n == ("void"))
                 {
                     continue;
@@ -627,12 +627,12 @@ public static class CPPNodeFiles
         ostr.WriteLine("};");
     }
 
-    public static void generateFile(OutputFile outputFile, string template, Dictionary<String, Object> options)
+    public static void generateFile(OutputFile outputFile, string template, Dictionary<string, object> options)
     {
         generateFile(outputFile, template, options, true);
     }
 
-    public static void generateFile(OutputFile outputFile, string template, Dictionary<String, Object> options, bool close)
+    public static void generateFile(OutputFile outputFile, string template, Dictionary<string, object> options, bool close)
     {
         TextWriter ostr = outputFile.getPrintWriter();
         generatePrologue(ostr);

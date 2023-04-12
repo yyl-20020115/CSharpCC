@@ -49,7 +49,7 @@ public class BNFGenerator : Generator
     protected TextWriter CreateOutputStream()
     {
 
-        if (JJDocOptions.getOutputFile() == (""))
+        if (JJDocOptions.GetOutputFile() == (""))
         {
             if (JJDocGlobals.input_file == ("standard input"))
             {
@@ -80,7 +80,7 @@ public class BNFGenerator : Generator
         }
         else
         {
-            JJDocGlobals.output_file = JJDocOptions.getOutputFile();
+            JJDocGlobals.output_file = JJDocOptions.GetOutputFile();
         }
         try
         {

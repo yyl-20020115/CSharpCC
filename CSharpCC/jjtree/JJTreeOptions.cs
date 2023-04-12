@@ -55,7 +55,7 @@ public class JJTreeOptions : Options
      */
     public new static void init()
     {
-        Options.init();
+        Options.Init();
 
 
         Options.optionValues.Add("MULTI", false);

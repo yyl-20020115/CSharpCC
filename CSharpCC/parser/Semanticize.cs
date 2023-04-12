@@ -524,7 +524,7 @@ public class Semanticize:JavaCCGlobals {
       }
       if (prod.leIndex == prod.getLeftExpansions().Length) {
         NormalProduction[] newle = new NormalProduction[prod.leIndex*2];
-        System.arraycopy(prod.getLeftExpansions(), 0, newle, 0, prod.leIndex);
+        Array.Copy(prod.getLeftExpansions(), 0, newle, 0, prod.leIndex);
         prod.setLeftExpansions(newle);
       }
       prod.getLeftExpansions()[prod.leIndex++] = ((NonTerminal)exp).getProd();

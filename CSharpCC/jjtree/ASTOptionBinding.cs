@@ -62,7 +62,7 @@ public class ASTOptionBinding : JJTreeNode
     }
 
 
-    public string translateImage(Token t)
+    public override string translateImage(Token t)
     {
         if (suppressed)
         {

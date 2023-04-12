@@ -69,29 +69,29 @@ public class JavaCharStream
         {
             if (wrapAround)
             {
-                System.arraycopy(buffer, tokenBegin, newbuffer, 0, bufsize - tokenBegin);
-                System.arraycopy(buffer, 0, newbuffer, bufsize - tokenBegin, bufpos);
+                Array.Copy(buffer, tokenBegin, newbuffer, 0, bufsize - tokenBegin);
+                Array.Copy(buffer, 0, newbuffer, bufsize - tokenBegin, bufpos);
                 buffer = newbuffer;
 
-                System.arraycopy(bufline, tokenBegin, newbufline, 0, bufsize - tokenBegin);
-                System.arraycopy(bufline, 0, newbufline, bufsize - tokenBegin, bufpos);
+                Array.Copy(bufline, tokenBegin, newbufline, 0, bufsize - tokenBegin);
+                Array.Copy(bufline, 0, newbufline, bufsize - tokenBegin, bufpos);
                 bufline = newbufline;
 
-                System.arraycopy(bufcolumn, tokenBegin, newbufcolumn, 0, bufsize - tokenBegin);
-                System.arraycopy(bufcolumn, 0, newbufcolumn, bufsize - tokenBegin, bufpos);
+                Array.Copy(bufcolumn, tokenBegin, newbufcolumn, 0, bufsize - tokenBegin);
+                Array.Copy(bufcolumn, 0, newbufcolumn, bufsize - tokenBegin, bufpos);
                 bufcolumn = newbufcolumn;
 
                 bufpos += (bufsize - tokenBegin);
             }
             else
             {
-                System.arraycopy(buffer, tokenBegin, newbuffer, 0, bufsize - tokenBegin);
+                Array.Copy(buffer, tokenBegin, newbuffer, 0, bufsize - tokenBegin);
                 buffer = newbuffer;
 
-                System.arraycopy(bufline, tokenBegin, newbufline, 0, bufsize - tokenBegin);
+                Array.Copy(bufline, tokenBegin, newbufline, 0, bufsize - tokenBegin);
                 bufline = newbufline;
 
-                System.arraycopy(bufcolumn, tokenBegin, newbufcolumn, 0, bufsize - tokenBegin);
+                Array.Copy(bufcolumn, tokenBegin, newbufcolumn, 0, bufsize - tokenBegin);
                 bufcolumn = newbufcolumn;
 
                 bufpos -= tokenBegin;
@@ -124,7 +124,7 @@ public class JavaCharStream
                 maxNextCharInd += i;
             return;
         }
-        catch (java.io.IOException e)
+        catch (IOException e)
         {
             if (bufpos != 0)
             {
@@ -275,7 +275,7 @@ public class JavaCharStream
                         return '\\';
                     }
                 }
-                catch (java.io.IOException e)
+                catch (IOException e)
                 {
                     // We are returning one backslash so we should only backup (count-1)
                     if (backSlashCnt > 1)
@@ -301,7 +301,7 @@ public class JavaCharStream
 
                 column += 4;
             }
-            catch (java.io.IOException e)
+            catch (IOException e)
             {
                 throw new Error("Invalid escape character at line " + line +
                                                  " column " + column + ".");
@@ -528,12 +528,12 @@ public char[] GetSuffix(int len)
     char[] ret = new char[len];
 
     if ((bufpos + 1) >= len)
-        System.arraycopy(buffer, bufpos - len + 1, ret, 0, len);
+        Array.Copy(buffer, bufpos - len + 1, ret, 0, len);
     else
     {
-        System.arraycopy(buffer, bufsize - (len - bufpos - 1), ret, 0,
+        Array.Copy(buffer, bufsize - (len - bufpos - 1), ret, 0,
                                                           len - bufpos - 1);
-        System.arraycopy(buffer, 0, ret, len - bufpos - 1, bufpos + 1);
+        Array.Copy(buffer, 0, ret, len - bufpos - 1, bufpos + 1);
     }
 
     return ret;

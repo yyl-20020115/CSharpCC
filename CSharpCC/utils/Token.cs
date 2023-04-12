@@ -90,7 +90,7 @@ public class Token
     /**
      * Constructs a new token for the specified Image and Kind.
      */
-    public Token(int kind, String image)
+    public Token(int kind, string image)
     {
         this.kind = kind;
         this.image = image;
@@ -116,7 +116,7 @@ public class Token
      * to the following switch statement. Then you can cast matchedToken
      * variable to the appropriate type and use sit in your lexical actions.
      */
-    public static Token newToken(int ofKind, String image)
+    public static Token newToken(int ofKind, string image)
     {
         switch (ofKind)
         {

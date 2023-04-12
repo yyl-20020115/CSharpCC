@@ -43,16 +43,14 @@ public class JJDocOptions : Options
      * Limit subclassing to derived classes.
      */
     protected JJDocOptions()
-        : base()
-    {
-    }
+        : base() { }
 
     /**
      * Initialize the options.
      */
-    public new static void init()
+    public new static void Init()
     {
-        Options.init();
+        Options.Init();
 
         Options.optionValues.Add("ONE_TABLE", true);
         Options.optionValues.Add("TEXT", false);
@@ -68,53 +66,35 @@ public class JJDocOptions : Options
      *
      * @return The requested one table value.
      */
-    public static bool getOneTable()
-    {
-        return booleanValue("ONE_TABLE");
-    }
+    public static bool GetOneTable() => booleanValue("ONE_TABLE");
 
     /**
      * Find the CSS value.
      *
      * @return The requested CSS value.
      */
-    public static string getCSS()
-    {
-        return stringValue("CSS");
-    }
+    public static string GetCSS() => stringValue("CSS");
 
     /**
      * Find the text value.
      *
      * @return The requested text value.
      */
-    public static bool getText()
-    {
-        return booleanValue("TEXT");
-    }
+    public static bool GetText() => booleanValue("TEXT");
 
-    public static bool getXText()
-    {
-        return booleanValue("XTEXT");
-    }
+    public static bool GetXText() => booleanValue("XTEXT");
 
     /**
      * Find the BNF value.
      *
      * @return The requested text value.
      */
-    public static bool getBNF()
-    {
-        return booleanValue("BNF");
-    }
+    public static bool GetBNF() => booleanValue("BNF");
 
     /**
      * Find the output file value.
      *
      * @return The requested output value.
      */
-    public static string getOutputFile()
-    {
-        return stringValue("OUTPUT_FILE");
-    }
+    public static string GetOutputFile() => stringValue("OUTPUT_FILE");
 }

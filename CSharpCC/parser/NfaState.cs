@@ -146,7 +146,7 @@ public class NfaState
    private static char[] ExpandCharArr(char[] oldArr, int incr)
    {
       char[] ret = new char[oldArr.Length + incr];
-      System.arraycopy(oldArr, 0, ret, 0, oldArr.Length);
+      Array.Copy(oldArr, 0, ret, 0, oldArr.Length);
       return ret;
    }
 
@@ -379,7 +379,7 @@ public class NfaState
          {
             char[] tmpCharMoves = new char[charMoves.Length +
                                               other.charMoves.Length];
-            System.arraycopy(charMoves, 0, tmpCharMoves, 0, charMoves.Length);
+            Array.Copy(charMoves, 0, tmpCharMoves, 0, charMoves.Length);
             charMoves = tmpCharMoves;
 
             for (int i = 0; i < other.charMoves.Length; i++)
@@ -395,7 +395,7 @@ public class NfaState
          {
             char[] tmpRangeMoves = new char[rangeMoves.Length +
                                                      other.rangeMoves.Length];
-            System.arraycopy(rangeMoves, 0, tmpRangeMoves,
+            Array.Copy(rangeMoves, 0, tmpRangeMoves,
                                                         0, rangeMoves.Length);
             rangeMoves = tmpRangeMoves;
             for (int i = 0; i < other.rangeMoves.Length; i += 2)
@@ -538,7 +538,7 @@ public class NfaState
       while (!done)
       {
          if (mark == null || mark.Length < allStates.Count)
-            mark = new boolean[allStates.Count];
+            mark = new bool[allStates.Count];
 
          for (i = allStates.Count; i-- > 0;)
             mark[i] = false;
@@ -700,7 +700,7 @@ public class NfaState
       {
          int[] statesToPut = new int[usefulEpsilonMoves];
 
-         System.arraycopy(stateNames, 0, statesToPut, 0, cnt);
+         Array.Copy(stateNames, 0, statesToPut, 0, cnt);
          allNextStates.Add(epsilonMovesString, statesToPut);
       }
 
@@ -917,7 +917,7 @@ public class NfaState
       }
 
       long[] common = null;
-      boolean[] done = new boolean[256];
+      bool[] done = new bool[256];
 
       for (i = 0; i <= 255; i++)
       {
@@ -1003,7 +1003,7 @@ public class NfaState
       }
 
       nonAsciiMoveIndices = new int[cnt];
-      System.arraycopy(tmpIndices, 0, nonAsciiMoveIndices, 0, cnt);
+      Array.Copy(tmpIndices, 0, nonAsciiMoveIndices, 0, cnt);
 
 /*
       Console.println("state : " + stateName + " cnt : " + cnt);
@@ -1363,7 +1363,7 @@ public class NfaState
          return false;
 
       if (stateDone == null)
-         stateDone = new boolean[generatedStates];
+         stateDone = new bool[generatedStates];
 
       string set = next.epsilonMovesString;
 
@@ -1374,7 +1374,7 @@ public class NfaState
 
       int i;
       int freq[] = new int[nameSet.Length];
-      bool live[] = new boolean[nameSet.Length];
+      bool live[] = new bool[nameSet.Length];
       int[] count = new int[allNextStates.Count];
 
       for (i = 0; i < nameSet.Length; i++)
@@ -1596,7 +1596,7 @@ public class NfaState
          }
 
          int[] fixed = new int[cnt];
-         System.arraycopy(tmp, 0, fixed, 0, cnt);
+         Array.Copy(tmp, 0, fixed, 0, cnt);
          fixedSets.Add(s, fixed);
          allNextStates.Add(s, fixed);
          //Console.println(" as " + GetStateSetString(fixed));
@@ -1738,7 +1738,7 @@ public class NfaState
       return partition;
    }
 
-   private string PrintNoBreak(CodeGenerator codeGenerator, int byteNum, boolean[] dumped)
+   private string PrintNoBreak(CodeGenerator codeGenerator, int byteNum, bool[] dumped)
    {
       if (inNextOf != 1)
          throw new Error("JavaCC Bug: Please send mail to sankar@cs.stanford.edu");
@@ -1765,7 +1765,7 @@ public class NfaState
    }
 
    private static void DumpCompositeStatesAsciiMoves(CodeGenerator codeGenerator,
-                                string key, int byteNum, boolean[] dumped)
+                                string key, int byteNum, bool[] dumped)
    {
       int i;
 
@@ -2113,7 +2113,7 @@ public class NfaState
 
    private static void DumpAsciiMoves(CodeGenerator codeGenerator, int byteNum)
    {
-      boolean[] dumped = new boolean[Math.max(generatedStates, dummyStateIndex + 1)];
+      bool[] dumped = new bool[Math.max(generatedStates, dummyStateIndex + 1)];
       Enumeration e = compositeStateTable.keys();
 
       DumpHeadForCase(codeGenerator, byteNum);
@@ -2173,7 +2173,7 @@ public class NfaState
    }
 
    private static void DumpCompositeStatesNonAsciiMoves(CodeGenerator codeGenerator,
-                                      string key, boolean[] dumped)
+                                      string key, bool[] dumped)
    {
       int i;
       int[] nameSet = (int[])allNextStates.get(key);
@@ -2470,7 +2470,7 @@ public class NfaState
 
    public static void DumpCharAndRangeMoves(CodeGenerator codeGenerator)
    {
-      boolean[] dumped = new boolean[Math.max(generatedStates, dummyStateIndex + 1)];
+      bool[] dumped = new bool[Math.max(generatedStates, dummyStateIndex + 1)];
       Enumeration e = compositeStateTable.keys();
       int i;
 
@@ -2621,7 +2621,7 @@ public class NfaState
       }
    }
 
-   //private static boolean boilerPlateDumped = false;
+   //private static bool boilerPlateDumped = false;
    static void PrintBoilerPlate(CodeGenerator codeGenerator)
    {
       codeGenerator.genCodeLine((Options.getStatic() ? "static " : "") + "private void " +
@@ -2672,7 +2672,7 @@ public class NfaState
       }
    }
 
-   //private static boolean boilerPlateDumped = false;
+   //private static bool boilerPlateDumped = false;
    static void PrintBoilerPlateCPP(CodeGenerator codeGenerator)
    {
       codeGenerator.switchToIncludeFile();
@@ -2723,7 +2723,7 @@ public class NfaState
    private static void FindStatesWithNoBreak()
    {
       Hashtable printed = new Hashtable();
-      boolean[] put = new boolean[generatedStates];
+      bool[] put = new bool[generatedStates];
       int cnt = 0;
       int i, j, foundAt = 0;
 

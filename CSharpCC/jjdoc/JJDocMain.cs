@@ -39,7 +39,7 @@ namespace org.javacc.jjdoc;
  */
 public class JJDocMain : JJDocGlobals
 {
-    static void help_message()
+    private static void HelpMessage()
     {
         Info("");
         Info("    jjdoc option-settings - (to read from standard input)");
@@ -103,14 +103,14 @@ public class JJDocMain : JJDocGlobals
     {
 
         Main.reInitAll();
-        JJDocOptions.init();
+        JJDocOptions.Init();
 
         bannerLine("Documentation Generator", "0.1.4");
 
         JavaCCParser parser = null;
         if (args.Length == 0)
         {
-            help_message();
+            HelpMessage();
             return 1;
         }
         else
@@ -146,7 +146,7 @@ public class JJDocMain : JJDocGlobals
             Info("Reading from file " + args[args.Length - 1] + " . . .");
             try
             {
-                File fp = new File(args[args.Length - 1]);
+                string fp = (args[^1]);
                 if (!fp.exists())
                 {
                     Error("File " + args[args.Length - 1] + " not found.");

@@ -46,14 +46,14 @@ public class OutputFileGenerator
      * @param options the processing options in force, such
      *        as "STATIC=yes"
      */
-    public OutputFileGenerator(string templateName, Dictionary<object,object> options)
+    public OutputFileGenerator(string templateName, Dictionary<string,object> options)
     {
         this.templateName = templateName;
         this.options = options;
     }
 
     private string templateName;
-    private Dictionary<object, object> options;
+    private Dictionary<string, object> options;
 
     private string currentLine;
 
@@ -74,7 +74,7 @@ public class OutputFileGenerator
     private string peekLine(TextReader _in)
     {
         if (currentLine == null)
-            currentLine = _in.readLine();
+            currentLine = _in.ReadLine();
 
         return currentLine;
     }
@@ -85,7 +85,7 @@ public class OutputFileGenerator
         currentLine = null;
 
         if (line == null)
-            _in.readLine();
+            _in.ReadLine();
 
         return line;
     }
@@ -139,14 +139,14 @@ public class OutputFileGenerator
         {
             char ch = variableExpression[i];
 
-            if (ch == ':' && i < variableExpression.Length - 1 && variableExpression.charAt(i + 1) == '-')
+            if (ch == ':' && i < variableExpression.Length - 1 && variableExpression[i + 1] == '-')
             {
-                value = substituteWithDefault(variableExpression.substring(0, i), variableExpression.substring(i + 2));
+                value = substituteWithDefault(variableExpression[..i], variableExpression[(i + 2)..]);
                 break;
             }
             else if (ch == '?')
             {
-                value = substituteWithConditional(variableExpression.substring(0, i), variableExpression.substring(i + 1));
+                value = substituteWithConditional(variableExpression[..i], variableExpression[(i + 1)..]);
                 break;
             }
             else if (ch != '_' && !Character.isJavaIdentifierPart(ch))
@@ -237,7 +237,7 @@ public class OutputFileGenerator
             }
         }
 
-        _out.flush();
+        _out.Flush();
     }
 
     private void processIf(TextReader _in, TextWriter _out, bool ignoring)
@@ -246,19 +246,19 @@ public class OutputFileGenerator
         //assert line.Trim().startsWith("#if");
         bool foundTrueCondition = false;
 
-        bool condition = evaluate(line.Substring(3).Trim());
+        bool condition = evaluate(line[3..].Trim());
         while (true)
         {
             process(_in, _out, ignoring || foundTrueCondition || !condition);
             foundTrueCondition |= condition;
 
-            if (peekLine(_in) == null || !peekLine(_in).Trim().startsWith("#elif"))
+            if (peekLine(_in) == null || !peekLine(_in).Trim().StartsWith("#elif"))
                 break;
 
-            condition = evaluate(getLine(_in).Trim().substring(5).Trim());
+            condition = evaluate(getLine(_in).Trim()[5..].Trim());
         }
 
-        if (peekLine(_in) != null && peekLine(in).Trim().startsWith("#else"))
+        if (peekLine(_in) != null && peekLine(_in).Trim().StartsWith("#else"))
         {
             getLine(_in);   // Discard the #else line
             process(_in, _out, ignoring || foundTrueCondition);
@@ -276,7 +276,7 @@ public class OutputFileGenerator
 
     public static void main(String[] args)
     {
-        Dictionary<object, object> map = new ();
+        Dictionary<string, object> map = new ();
         map.Add("falseArg", false);
         map.Add("trueArg", true);
         map.Add("stringValue", "someString");
@@ -295,7 +295,7 @@ public class OutputFileGenerator
         {
             fw = new StreamWriter(outputFileName);
 
-            fw.Write(sw.ToString());
+            fw.Write(fw.ToString());
         }
         finally
         {

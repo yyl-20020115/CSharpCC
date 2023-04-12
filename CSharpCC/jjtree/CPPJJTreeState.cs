@@ -17,14 +17,14 @@ public static class CPPJJTreeState
 
     static void generateTreeState()
     {
-        Dictionary options = JJTreeOptions.getOptions();
+        var options = JJTreeOptions.getOptions();
         options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.parserName);
-        string filePrefix = new File(JJTreeOptions.getJJTreeOutputDirectory(), "JJT" + JJTreeGlobals.parserName + "State").getAbsolutePath();
+        string filePrefix = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), "JJT" + JJTreeGlobals.parserName + "State").getAbsolutePath();
 
-        OutputFile outputFile = new OutputFile(new File(filePrefix + ".h"), JJTStateVersion, new String[0]);
+        OutputFile outputFile = new OutputFile((filePrefix + ".h"), JJTStateVersion, new String[0]);
         CPPNodeFiles.generateFile(outputFile, "/templates/cpp/JJTTreeState.h.template", options);
 
-        outputFile = new OutputFile(new File(filePrefix + ".cc"), JJTStateVersion, new String[0]);
+        outputFile = new OutputFile((filePrefix + ".cc"), JJTStateVersion, new String[0]);
         CPPNodeFiles.generateFile(outputFile, "/templates/cpp/JJTTreeState.cc.template", options);
 
     }

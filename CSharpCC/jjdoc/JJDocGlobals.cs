@@ -70,15 +70,15 @@ public class JJDocGlobals : JavaCCGlobals
     {
         if (generator == null)
         {
-            if (JJDocOptions.getText())
+            if (JJDocOptions.GetText())
             {
                 generator = new TextGenerator();
             }
-            else if (JJDocOptions.getBNF())
+            else if (JJDocOptions.GetBNF())
             {
                 generator = new BNFGenerator();
             }
-            else if (JJDocOptions.getXText())
+            else if (JJDocOptions.GetXText())
             {
                 generator = new XTextGenerator();
             }
@@ -89,18 +89,18 @@ public class JJDocGlobals : JavaCCGlobals
         }
         else
         {
-            if (JJDocOptions.getText())
+            if (JJDocOptions.GetText())
             {
                 if (generator is HTMLGenerator)
                 {
                     generator = new TextGenerator();
                 }
             }
-            else if (JJDocOptions.getBNF())
+            else if (JJDocOptions.GetBNF())
             {
                 generator = new BNFGenerator();
             }
-            else if (JJDocOptions.getXText())
+            else if (JJDocOptions.GetXText())
             {
                 generator = new XTextGenerator();
             }

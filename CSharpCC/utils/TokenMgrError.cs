@@ -49,7 +49,7 @@ public class TokenMgrError : Exception
      * Replaces unprintable characters by their escaped (or unicode escaped)
      * equivalents in the given string
      */
-    protected static String addEscapes(String str)
+    protected static string addEscapes(string str)
     {
         var retval = new StringBuilder();
         char ch;
@@ -86,8 +86,8 @@ public class TokenMgrError : Exception
                 default:
                     if ((ch = str[i]) < 0x20 || ch > 0x7e)
                     {
-                        String s = "0000" + Convert.ToString(ch, 16);
-                        retval.Append("\\u" + s.Substring(s.Length - 4));
+                        var s = "0000" + Convert.ToString(ch, 16);
+                        retval.Append("\\u" + s[^4..]);
                     }
                     else
                     {
@@ -111,13 +111,9 @@ public class TokenMgrError : Exception
      *    curchar     : the offending character
      * Note: You can customize the lexical error message by modifying this method.
      */
-    protected static String LexicalError(bool EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar)
+    protected static string LexicalError(bool EOFSeen, int lexState, int errorLine, int errorColumn, string errorAfter, char curChar)
     {
-        return ("Lexical error at line " +
-              errorLine + ", column " +
-              errorColumn + ".  Encountered: " +
-              (EOFSeen ? "<EOF> " : ("\"" + addEscapes(curChar.ToString()) + "\"") + " (" + (int)curChar + "), ") +
-              "after : \"" + addEscapes(errorAfter) + "\"");
+        return ($"Lexical error at line {errorLine}, column {errorColumn}.  Encountered: {(EOFSeen ? "<EOF> " : ("\"" + addEscapes(curChar.ToString()) + "\"") + " (" + (int)curChar + "), ")}after : \"{addEscapes(errorAfter)}\"");
     }
 
     /**
@@ -139,14 +135,14 @@ public class TokenMgrError : Exception
     }
 
     /** Constructor with message and reason. */
-    public TokenMgrError(String message, int reason)
+    public TokenMgrError(string message, int reason)
         : base(message)
     {
         errorCode = reason;
     }
 
     /** Full Constructor. */
-    public TokenMgrError(bool EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar, int reason)
+    public TokenMgrError(bool EOFSeen, int lexState, int errorLine, int errorColumn, string errorAfter, char curChar, int reason)
         : this(LexicalError(EOFSeen, lexState, errorLine, errorColumn, errorAfter, curChar), reason)
     {
     }

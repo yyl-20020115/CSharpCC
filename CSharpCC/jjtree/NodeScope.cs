@@ -94,7 +94,7 @@ public class NodeScope
     }
 
 
-    bool usesCloseNodeVar()
+    public bool usesCloseNodeVar()
     {
         return true;
     }

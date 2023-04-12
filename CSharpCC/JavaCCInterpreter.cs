@@ -1,5 +1,3 @@
-
-
 using org.javacc.parser;
 
 public class JavaCCInterpreter
@@ -23,13 +21,13 @@ public class JavaCCInterpreter
         string grammar = "";
         try
         {
-            File fp = new File(args[args.Length - 2]);
+            File fp = new File(args[^2]);
             byte[] buf = new byte[(int)fp.Length];
             new DataInputStream(
                 new BufferedInputStream(
                     new FileInputStream(fp))).readFully(buf);
             grammar = new String(buf);
-            File inputFile = new File(args[args.Length - 1]);
+            File inputFile = new File(args[^1]);
             buf = new byte[(int)inputFile.Length];
             new DataInputStream(
                 new BufferedInputStream(
@@ -38,10 +36,10 @@ public class JavaCCInterpreter
         }
         catch (FileNotFoundException e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
             Environment.Exit(1);
         }
-        catch (Throwable t)
+        catch (Exception t)
         {
             Environment.Exit(1);
         }
@@ -106,7 +104,7 @@ public class JavaCCInterpreter
             {
                 // We need to go in order so that the longest match works.
                 int litIndex = 0;
-                for (string s : literals)
+                foreach (string s in literals)
                 {
                     int index = 1;
                     // See which literal matches.

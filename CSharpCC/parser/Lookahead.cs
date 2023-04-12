@@ -25,6 +25,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+using System.Text;
+
 namespace org.javacc.parser;
 
 
@@ -36,93 +38,102 @@ namespace org.javacc.parser;
  * and last element.
  */
 
-public class Lookahead:Expansion {
+public class Lookahead : Expansion
+{
 
-  /**
-   * Contains the list of tokens that make up the semantic lookahead
-   * if any.  If this node represents a different kind of lookahead (other
-   * than semantic lookahead), then this list contains nothing.  If
-   * this list contains something, then it is the boolean expression
-   * that forms the semantic lookahead.  In this case, the following
-   * fields "amount" and "la_expansion" are ignored.
-   */
-  private List<Token> action_tokens = new ArrayList<Token>();
+    /**
+     * Contains the list of tokens that make up the semantic lookahead
+     * if any.  If this node represents a different kind of lookahead (other
+     * than semantic lookahead), then this list contains nothing.  If
+     * this list contains something, then it is the boolean expression
+     * that forms the semantic lookahead.  In this case, the following
+     * fields "amount" and "la_expansion" are ignored.
+     */
+    private List<Token> action_tokens = new();
 
-  /**
-   * The lookahead amount.  Its default value essentially gives us
-   * infinite lookahead.
-   */
-  private int amount = Integer.MAX_VALUE;
+    /**
+     * The lookahead amount.  Its default value essentially gives us
+     * infinite lookahead.
+     */
+    private int amount = int.MaxValue;
 
-  /**
-   * The expansion used to determine whether or not to choose the
-   * corresponding parse option.  This expansion is parsed upto
-   * "amount" tokens of lookahead or until a complete match for it
-   * is found.  Usually, this is the same as the expansion to be
-   * parsed.
-   */
-  private Expansion la_expansion;
+    /**
+     * The expansion used to determine whether or not to choose the
+     * corresponding parse option.  This expansion is parsed upto
+     * "amount" tokens of lookahead or until a complete match for it
+     * is found.  Usually, this is the same as the expansion to be
+     * parsed.
+     */
+    private Expansion la_expansion;
 
-  /**
-   * Is set to true if this is an explicit lookahead specification.
-   */
-  private bool isExplicit;
+    /**
+     * Is set to true if this is an explicit lookahead specification.
+     */
+    private bool _isExplicit;
 
-  public StringBuilder dump(int indent, Set alreadyDumped) {
-    StringBuilder sb = base.dump(indent, alreadyDumped).Append(isExplicit ? " explicit" : " implicit");
-    if (alreadyDumped.Contains(this))
-      return sb;
-    alreadyDumped.Add(this);
-    sb.Append(eol).Append(la_expansion.dump(indent + 1, alreadyDumped));
-    return sb;
-  }
+    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
+    {
+        var sb = base.dump(indent, alreadyDumped).Append(isExplicit ? " explicit" : " implicit");
+        if (alreadyDumped.Contains(this))
+            return sb;
+        alreadyDumped.Add(this);
+        sb.Append(eol).Append(la_expansion.dump(indent + 1, alreadyDumped));
+        return sb;
+    }
 
-/**
- * @return the action_tokens
- */
-public List<Token> getActionTokens() {
-	return action_tokens;
-}
+    /**
+     * @return the action_tokens
+     */
+    public List<Token> getActionTokens()
+    {
+        return action_tokens;
+    }
 
-/**
- * @param amount the amount to set
- */
-public void setAmount(int amount) {
-	this.amount = amount;
-}
+    /**
+     * @param amount the amount to set
+     */
+    public void setAmount(int amount)
+    {
+        this.amount = amount;
+    }
 
-/**
- * @return the amount
- */
-public int getAmount() {
-	return amount;
-}
+    /**
+     * @return the amount
+     */
+    public int getAmount()
+    {
+        return amount;
+    }
 
-/**
- * @param la_expansion the la_expansion to set
- */
-public void setLaExpansion(Expansion la_expansion) {
-	this.la_expansion = la_expansion;
-}
+    /**
+     * @param la_expansion the la_expansion to set
+     */
+    public void setLaExpansion(Expansion la_expansion)
+    {
+        this.la_expansion = la_expansion;
+    }
 
-/**
- * @return the la_expansion
- */
-public Expansion getLaExpansion() {
-	return la_expansion;
-}
+    /**
+     * @return the la_expansion
+     */
+    public Expansion getLaExpansion()
+    {
+        return la_expansion;
+    }
 
-/**
- * @param isExplicit the isExplicit to set
- */
-public void setExplicit(bool isExplicit) {
-	this.isExplicit = isExplicit;
-}
+    /**
+     * @param isExplicit the isExplicit to set
+     */
+    public void setExplicit(bool _isExplicit)
+    {
+        this._isExplicit = _isExplicit;
+    }
 
-/**
- * @return the isExplicit
- */
-public bool isExplicit() {
-	return isExplicit;
-}
+    /**
+     * @return the isExplicit
+     */
+    public bool isExplicit()
+    {
+        return _isExplicit;
+    }
 }

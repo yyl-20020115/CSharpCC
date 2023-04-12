@@ -148,72 +148,71 @@ public class Options
 
     static Options()
     {
-        HashSet<OptionInfo> temp = new HashSet<OptionInfo>();
+        var options = new HashSet<OptionInfo>
+        {
+            new OptionInfo(USEROPTION__LOOKAHEAD, OptionType.INTEGER, (1)),
+            new OptionInfo(USEROPTION__CHOICE_AMBIGUITY_CHECK, OptionType.INTEGER, (2)),
+            new OptionInfo(USEROPTION__OTHER_AMBIGUITY_CHECK, OptionType.INTEGER, (1)),
+            new OptionInfo(USEROPTION__STATIC, OptionType.BOOLEAN, true),
+            new OptionInfo(USEROPTION__PARSER_CODE_GENERATOR, OptionType.STRING, ""),
+            new OptionInfo(USEROPTION__TOKEN_MANAGER_CODE_GENERATOR, OptionType.STRING, ""),
+            new OptionInfo(USEROPTION__NO_DFA, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__DEBUG_PARSER, OptionType.BOOLEAN, Boolean.FALSE),
 
-        temp.Add(new OptionInfo(USEROPTION__LOOKAHEAD, OptionType.INTEGER, (1)));
+            new OptionInfo(USEROPTION__DEBUG_LOOKAHEAD, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__DEBUG_TOKEN_MANAGER, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__ERROR_REPORTING, OptionType.BOOLEAN, true),
+            new OptionInfo(USEROPTION__JAVA_UNICODE_ESCAPE, OptionType.BOOLEAN, false),
 
-        temp.Add(new OptionInfo(USEROPTION__CHOICE_AMBIGUITY_CHECK, OptionType.INTEGER, (2)));
-        temp.Add(new OptionInfo(USEROPTION__OTHER_AMBIGUITY_CHECK, OptionType.INTEGER, (1)));
-        temp.Add(new OptionInfo(USEROPTION__STATIC, OptionType.BOOLEAN, true));
-        temp.Add(new OptionInfo(USEROPTION__PARSER_CODE_GENERATOR, OptionType.STRING, ""));
-        temp.Add(new OptionInfo(USEROPTION__TOKEN_MANAGER_CODE_GENERATOR, OptionType.STRING, ""));
-        temp.Add(new OptionInfo(USEROPTION__NO_DFA, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__DEBUG_PARSER, OptionType.BOOLEAN, Boolean.FALSE));
+            new OptionInfo(USEROPTION__UNICODE_INPUT, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__IGNORE_CASE, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__USER_TOKEN_MANAGER, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__USER_CHAR_STREAM, OptionType.BOOLEAN, false),
 
-        temp.Add(new OptionInfo(USEROPTION__DEBUG_LOOKAHEAD, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__DEBUG_TOKEN_MANAGER, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__ERROR_REPORTING, OptionType.BOOLEAN, true));
-        temp.Add(new OptionInfo(USEROPTION__JAVA_UNICODE_ESCAPE, OptionType.BOOLEAN, false));
+            new OptionInfo(USEROPTION__BUILD_PARSER, OptionType.BOOLEAN, true),
+            new OptionInfo(USEROPTION__BUILD_TOKEN_MANAGER, OptionType.BOOLEAN, true),
+            new OptionInfo(USEROPTION__TOKEN_MANAGER_USES_PARSER, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__SANITY_CHECK, OptionType.BOOLEAN, true),
 
-        temp.Add(new OptionInfo(USEROPTION__UNICODE_INPUT, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__IGNORE_CASE, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__USER_TOKEN_MANAGER, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__USER_CHAR_STREAM, OptionType.BOOLEAN, false));
+            new OptionInfo(USEROPTION__FORCE_LA_CHECK, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__COMMON_TOKEN_ACTION, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__CACHE_TOKENS, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__KEEP_LINE_COLUMN, OptionType.BOOLEAN, true),
 
-        temp.Add(new OptionInfo(USEROPTION__BUILD_PARSER, OptionType.BOOLEAN, true));
-        temp.Add(new OptionInfo(USEROPTION__BUILD_TOKEN_MANAGER, OptionType.BOOLEAN, true));
-        temp.Add(new OptionInfo(USEROPTION__TOKEN_MANAGER_USES_PARSER, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__SANITY_CHECK, OptionType.BOOLEAN, true));
+            new OptionInfo(USEROPTION__GENERATE_CHAINED_EXCEPTION, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__GENERATE_GENERICS, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__GENERATE_BOILERPLATE, OptionType.BOOLEAN, true),
+            new OptionInfo(USEROPTION__GENERATE_STRING_BUILDER, OptionType.BOOLEAN, false),
 
-        temp.Add(new OptionInfo(USEROPTION__FORCE_LA_CHECK, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__COMMON_TOKEN_ACTION, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__CACHE_TOKENS, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__KEEP_LINE_COLUMN, OptionType.BOOLEAN, true));
+            new OptionInfo(USEROPTION__GENERATE_ANNOTATIONS, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC, OptionType.BOOLEAN, true),
+            new OptionInfo(USEROPTION__OUTPUT_DIRECTORY, OptionType.STRING, "."),
+            new OptionInfo(USEROPTION__JDK_VERSION, OptionType.STRING, "1.5"),
 
-        temp.Add(new OptionInfo(USEROPTION__GENERATE_CHAINED_EXCEPTION, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__GENERATE_GENERICS, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__GENERATE_BOILERPLATE, OptionType.BOOLEAN, true));
-        temp.Add(new OptionInfo(USEROPTION__GENERATE_STRING_BUILDER, OptionType.BOOLEAN, false));
+            new OptionInfo(USEROPTION__TOKEN_FACTORY, OptionType.STRING, ""),
+            new OptionInfo(USEROPTION__TOKEN_EXTENDS, OptionType.STRING, ""),
+            new OptionInfo(USEROPTION__GRAMMAR_ENCODING, OptionType.STRING, ""),
+            new OptionInfo(USEROPTION__OUTPUT_LANGUAGE, OptionType.STRING, OUTPUT_LANGUAGE__JAVA),
+            new OptionInfo(USEROPTION__JAVA_TEMPLATE_TYPE, OptionType.STRING, JAVA_TEMPLATE_TYPE_CLASSIC),
+            new OptionInfo(USEROPTION__CPP_NAMESPACE, OptionType.STRING, ""),
 
-        temp.Add(new OptionInfo(USEROPTION__GENERATE_ANNOTATIONS, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC, OptionType.BOOLEAN, true));
-        temp.Add(new OptionInfo(USEROPTION__OUTPUT_DIRECTORY, OptionType.STRING, "."));
-        temp.Add(new OptionInfo(USEROPTION__JDK_VERSION, OptionType.STRING, "1.5"));
+            new OptionInfo(USEROPTION__TOKEN_SUPER_CLASS, OptionType.STRING, null),
+            new OptionInfo(USEROPTION__PARSER_SUPER_CLASS, OptionType.STRING, null),
+            new OptionInfo(USEROPTION__TOKEN_MANAGER_SUPER_CLASS, OptionType.STRING, null),
 
-        temp.Add(new OptionInfo(USEROPTION__TOKEN_FACTORY, OptionType.STRING, ""));
-        temp.Add(new OptionInfo(USEROPTION__TOKEN_EXTENDS, OptionType.STRING, ""));
-        temp.Add(new OptionInfo(USEROPTION__GRAMMAR_ENCODING, OptionType.STRING, ""));
-        temp.Add(new OptionInfo(USEROPTION__OUTPUT_LANGUAGE, OptionType.STRING, OUTPUT_LANGUAGE__JAVA));
+            new OptionInfo(USEROPTION__CPP_TOKEN_INCLUDE, OptionType.STRING, ""),
+            new OptionInfo(USEROPTION__CPP_PARSER_INCLUDE, OptionType.STRING, ""),
+            new OptionInfo(USEROPTION__CPP_TOKEN_MANAGER_INCLUDE, OptionType.STRING, ""),
+
+            new OptionInfo(USEROPTION__CPP_IGNORE_ACTIONS, OptionType.BOOLEAN, false),
+            new OptionInfo(USEROPTION__CPP_STOP_ON_FIRST_ERROR, OptionType.BOOLEAN, false),
+
+            new OptionInfo(USEROPTION__DEPTH_LIMIT, OptionType.INTEGER, (0)),
+            new OptionInfo(USEROPTION__CPP_STACK_LIMIT, OptionType.STRING, "")
+        };
+
+        userOptions = (options);
         language = Language.java;
-
-        temp.Add(new OptionInfo(USEROPTION__JAVA_TEMPLATE_TYPE, OptionType.STRING, JAVA_TEMPLATE_TYPE_CLASSIC));
-        temp.Add(new OptionInfo(USEROPTION__CPP_NAMESPACE, OptionType.STRING, ""));
-
-        temp.Add(new OptionInfo(USEROPTION__TOKEN_SUPER_CLASS, OptionType.STRING, null));
-        temp.Add(new OptionInfo(USEROPTION__PARSER_SUPER_CLASS, OptionType.STRING, null));
-        temp.Add(new OptionInfo(USEROPTION__TOKEN_MANAGER_SUPER_CLASS, OptionType.STRING, null));
-
-        temp.Add(new OptionInfo(USEROPTION__CPP_TOKEN_INCLUDE, OptionType.STRING, ""));
-        temp.Add(new OptionInfo(USEROPTION__CPP_PARSER_INCLUDE, OptionType.STRING, ""));
-        temp.Add(new OptionInfo(USEROPTION__CPP_TOKEN_MANAGER_INCLUDE, OptionType.STRING, ""));
-
-        temp.Add(new OptionInfo(USEROPTION__CPP_IGNORE_ACTIONS, OptionType.BOOLEAN, false));
-        temp.Add(new OptionInfo(USEROPTION__CPP_STOP_ON_FIRST_ERROR, OptionType.BOOLEAN, false));
-
-        temp.Add(new OptionInfo(USEROPTION__DEPTH_LIMIT, OptionType.INTEGER, (0)));
-        temp.Add(new OptionInfo(USEROPTION__CPP_STACK_LIMIT, OptionType.STRING, ""));
-
-        userOptions = (temp);
         supportedJavaTemplateTypes.Add(JAVA_TEMPLATE_TYPE_CLASSIC);
         supportedJavaTemplateTypes.Add(JAVA_TEMPLATE_TYPE_MODERN);
         supportedLanguages.Add(OUTPUT_LANGUAGE__JAVA);
@@ -227,12 +226,12 @@ public class Options
      * set of legal options. Its initial values define the default option
      * values, and the option types can be determined from these values too.
      */
-    protected static Dictionary<String, object> optionValues = null;
+    protected static Dictionary<String, object> optionValues = new();
 
     /**
      * Initialize for JavaCC
      */
-    public static void init()
+    public static void Init()
     {
         optionValues = new Dictionary<String, object>();
         cmdLineSetting = new HashSet<String>();
@@ -244,7 +243,7 @@ public class Options
         }
 
         {
-            object o = optionValues.get(USEROPTION__JAVA_TEMPLATE_TYPE);
+            object o = optionValues[(USEROPTION__JAVA_TEMPLATE_TYPE)];
             bool isLegacy = JAVA_TEMPLATE_TYPE_CLASSIC == (o);
             optionValues.Add(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING, isLegacy);
         }
@@ -256,7 +255,7 @@ public class Options
      */
     public static int intValue(string option)
     {
-        return ((Integer)optionValues.get(option)).intValue();
+        return (optionValues.get(option)).intValue();
     }
 
     /**

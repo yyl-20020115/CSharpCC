@@ -198,8 +198,8 @@ public class ConditionParser : ConditionParserConstants
         }
         else if (obj is String)
         {
-            String string = ((String)obj).trim();
-            { if (true) return string.Length > 0 && !string.equalsIgnoreCase("false") && !string.equalsIgnoreCase("no"); }
+            String s = ((String)obj).trim();
+            { if (true) return s.Length > 0 && !s.equalsIgnoreCase("false") && !s.equalsIgnoreCase("no"); }
         }
 
         { if (true) return false; }

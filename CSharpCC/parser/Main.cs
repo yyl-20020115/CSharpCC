@@ -383,7 +383,7 @@ public class Main
         org.javacc.parser.Expansion.reInit();
         org.javacc.parser.JavaCCErrors.reInit();
         org.javacc.parser.JavaCCGlobals.reInit();
-        Options.init();
+        Options.Init();
         org.javacc.parser.JavaCCParserInternals.reInit();
         org.javacc.parser.RStringLiteral.reInit();
         org.javacc.parser.JavaFiles.reInit();

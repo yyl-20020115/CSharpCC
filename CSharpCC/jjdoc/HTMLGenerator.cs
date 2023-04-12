@@ -25,12 +25,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 using org.javacc.parser;
 
 namespace org.javacc.jjdoc;
-
-
 
 /**
  * Output BNF in HTML 3.2 format.
@@ -96,9 +93,9 @@ public class HTMLGenerator : TextGenerator
         Println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2//EN\">");
         Println("<HTML>");
         Println("<HEAD>");
-        if ("" != (JJDocOptions.getCSS()))
+        if ("" != (JJDocOptions.GetCSS()))
         {
-            Println("<LINK REL=\"stylesheet\" type=\"text/css\" href=\"" + JJDocOptions.getCSS() + "\"/>");
+            Println("<LINK REL=\"stylesheet\" type=\"text/css\" href=\"" + JJDocOptions.GetCSS() + "\"/>");
         }
         if (JJDocGlobals.input_file != null)
         {
@@ -154,14 +151,14 @@ public class HTMLGenerator : TextGenerator
     public override void NonterminalsStart()
     {
         Println("<H2 ALIGN=CENTER>NON-TERMINALS</H2>");
-        if (JJDocOptions.getOneTable())
+        if (JJDocOptions.GetOneTable())
         {
             Println("<TABLE>");
         }
     }
     public override void NonterminalsEnd()
     {
-        if (JJDocOptions.getOneTable())
+        if (JJDocOptions.GetOneTable())
         {
             Println("</TABLE>");
         }
@@ -193,7 +190,7 @@ public class HTMLGenerator : TextGenerator
 
     public override void ProductionStart(NormalProduction np)
     {
-        if (!JJDocOptions.getOneTable())
+        if (!JJDocOptions.GetOneTable())
         {
             Println("");
             Println("<TABLE ALIGN=CENTER>");
@@ -206,7 +203,7 @@ public class HTMLGenerator : TextGenerator
     }
     public override void ProductionEnd(NormalProduction np)
     {
-        if (!JJDocOptions.getOneTable())
+        if (!JJDocOptions.GetOneTable())
         {
             Println("</TABLE>");
             Println("<HR>");

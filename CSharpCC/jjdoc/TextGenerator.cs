@@ -228,7 +228,7 @@ public class TextGenerator : Generator
     protected TextWriter CreateOutputStream()
     {
 
-        if (JJDocOptions.getOutputFile() == (""))
+        if (JJDocOptions.GetOutputFile() == (""))
         {
             if (JJDocGlobals.input_file == ("standard input"))
             {
@@ -238,11 +238,11 @@ public class TextGenerator : Generator
             {
                 string ext = ".html";
 
-                if (JJDocOptions.getText())
+                if (JJDocOptions.GetText())
                 {
                     ext = ".txt";
                 }
-                else if (JJDocOptions.getXText())
+                else if (JJDocOptions.GetXText())
                 {
                     ext = ".xtext";
                 }
@@ -269,7 +269,7 @@ public class TextGenerator : Generator
         }
         else
         {
-            JJDocGlobals.output_file = JJDocOptions.getOutputFile();
+            JJDocGlobals.output_file = JJDocOptions.GetOutputFile();
         }
 
         try

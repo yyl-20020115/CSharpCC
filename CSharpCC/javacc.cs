@@ -30,9 +30,10 @@
  * Having this intermediary allows the OS scripts to be package name
  * independent.
  */
-public static class javacc {
-  public static void main(String[] args) {
-    org.javacc.parser.Main.main(args);
-  }
-
+public static class javacc
+{
+    public static void main(string[] args)
+    {
+        org.javacc.parser.Main.main(args);
+    }
 }
