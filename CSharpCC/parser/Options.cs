@@ -234,8 +234,8 @@ public class Options
     public static void Init()
     {
         optionValues = new Dictionary<String, object>();
-        cmdLineSetting = new HashSet<String>();
-        inputFileSetting = new HashSet<String>();
+        cmdLineSetting = new HashSet<string>();
+        inputFileSetting = new HashSet<string>();
 
         foreach (OptionInfo t in userOptions)
         {
@@ -292,14 +292,14 @@ public class Options
      * this to see if the options set from the command line and the ones set in
      * the input files clash in any way.
      */
-    private static HashSet<String> cmdLineSetting = null;
+    private static HashSet<string> cmdLineSetting = null;
 
     /**
      * Keep track of what options were set from the grammar file. We use this to
      * see if the options set from the command line and the ones set in the
      * input files clash in any way.
      */
-    private static HashSet<String> inputFileSetting = null;
+    private static HashSet<string> inputFileSetting = null;
 
     /**
      * Returns a string representation of the specified options of interest.
@@ -1039,9 +1039,9 @@ public class Options
         }
     }
 
-    private static readonly HashSet<String> supportedJavaTemplateTypes = new HashSet<String>();
+    private static readonly HashSet<string> supportedJavaTemplateTypes = new HashSet<string>();
 
-    private static readonly HashSet<String> supportedLanguages = new HashSet<String>();
+    private static readonly HashSet<string> supportedLanguages = new HashSet<string>();
 
     public static bool isValidOutputLanguage(string language)
     {

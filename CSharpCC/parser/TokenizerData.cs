@@ -18,7 +18,7 @@ public class TokenizerData {
   // just going through the sequence in the order.
   // Since they are all literals, there is no duplication (JavaCC checks that)
   // and hence if a longer match is matched, no need to check the shorter match.
-  public Dictionary<int, List<String>> literalSequence;
+  public Dictionary<int, List<string>> literalSequence;
 
   // A map of list of kind values indexed by ((int0LexicalState << 16 | (int)c)
   // same key as before.
@@ -109,7 +109,7 @@ public class TokenizerData {
     this.decls = decls;
   }
 
-  public void setLiteralSequence(Dictionary<int, List<String>> literalSequence) {
+  public void setLiteralSequence(Dictionary<int, List<string>> literalSequence) {
     this.literalSequence = literalSequence;
   }
 

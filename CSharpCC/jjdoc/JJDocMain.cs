@@ -175,7 +175,7 @@ public class JJDocMain : JJDocGlobals
         {
 
             parser.javacc_input();
-            JJDoc.start();
+            JJDoc.Start();
 
             if (JavaCCErrors.get_error_count() == 0)
             {
@@ -212,5 +212,4 @@ public class JJDocMain : JJDocGlobals
             return 1;
         }
     }
-
 }

@@ -141,6 +141,4 @@ public class JJDocGlobals : JavaCCGlobals
     {
         GetGenerator().Error(message);
     }
-
-
 }

@@ -84,12 +84,12 @@ public class HTMLGenerator : TextGenerator
 
     public override void Print(string s)
     {
-        ostr.Write(s);
+        writer.Write(s);
     }
 
     public override void DocumentStart()
     {
-        ostr = CreateOutputStream();
+        writer = CreateOutputStream();
         Println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2//EN\">");
         Println("<HTML>");
         Println("<HEAD>");
@@ -114,7 +114,7 @@ public class HTMLGenerator : TextGenerator
     {
         Println("</BODY>");
         Println("</HTML>");
-        ostr.Close();
+        writer.Close();
     }
 
     /**
@@ -140,7 +140,7 @@ public class HTMLGenerator : TextGenerator
         Println(" <TR>");
         Println("  <TD>");
         Println("   <PRE>");
-        string _text = JJDoc.getStandardTokenProductionText(tp);
+        string _text = JJDoc.GetStandardTokenProductionText(tp);
         Text(_text);
         Println("   </PRE>");
         Println("  </TD>");

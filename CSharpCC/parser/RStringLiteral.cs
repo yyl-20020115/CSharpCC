@@ -1768,8 +1768,8 @@ public class RStringLiteral : RegularExpression
       }
     */
 
-    static readonly Dictionary<int, List<String>> literalsByLength =
-        new Dictionary<int, List<String>>();
+    static readonly Dictionary<int, List<string>> literalsByLength =
+        new Dictionary<int, List<string>>();
     static readonly Dictionary<int, List<int>> literalKinds =
         new Dictionary<int, List<int>>();
     static readonly Dictionary<int, int> kindToLexicalState =
@@ -1810,7 +1810,7 @@ public class RStringLiteral : RegularExpression
             }
             char c = s.charAt(0);
             int key = (int)Main.lg.lexStateIndex << 16 | (int)c;
-            List<String> l = literalsByLength.get(key);
+            List<string> l = literalsByLength.get(key);
             List<int> kinds = literalKinds.get(key);
             int j = 0;
             if (l == null)

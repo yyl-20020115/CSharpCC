@@ -1177,7 +1177,7 @@ public class NfaState
                (starts && ((NfaState)indexedAllStates.get(nameSet[toRet])).inNextOf > 1))
             toRet++;
 
-        Enumeration<String> e = compositeStateTable.keys();
+        Enumeration<string> e = compositeStateTable.keys();
         string s;
         while (e.hasMoreElements())
         {

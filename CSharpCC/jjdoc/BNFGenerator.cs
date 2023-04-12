@@ -168,16 +168,15 @@ public class BNFGenerator : Generator
         printing = true;
     }
 
-    public void Debug(string message) { Console.Error.WriteLine(message); }
-    public void Info(string message) { Console.Error.WriteLine(message); }
-    public void Warn(string message) { Console.Error.WriteLine(message); }
-    public void Error(string message) { Console.Error.WriteLine(message); }
+    public void Debug(string message) => Console.Error.WriteLine(message);
+    public void Info(string message) => Console.Error.WriteLine(message);
+    public void Warn(string message) => Console.Error.WriteLine(message);
+    public void Error(string message) => Console.Error.WriteLine(message);
 
-    //@Override
     public void HandleTokenProduction(TokenProduction tp)
     {
         printing = false;
-        string _text = JJDoc.getStandardTokenProductionText(tp);
+        string _text = JJDoc.GetStandardTokenProductionText(tp);
         Text(_text);
         printing = true;
     }

@@ -40,14 +40,14 @@ namespace org.javacc.jjtree;
 public static class CPPNodeFiles
 {
 
-    private static List<String> headersForJJTreeH = new();
+    private static List<string> headersForJJTreeH = new();
     /**
      * ID of the latest version (of JJTree) in which one of the Node classes
      * was modified.
      */
     static readonly string nodeVersion = Version.majorDotMinor;
 
-    static HashSet<String> nodesToGenerate = new HashSet<String>();
+    static HashSet<string> nodesToGenerate = new HashSet<string>();
 
     public static void addType(string type)
     {
@@ -222,7 +222,7 @@ public static class CPPNodeFiles
 
         try
         {
-            for (Iterator<String> i = nodesToGenerate.iterator(); i.hasNext();)
+            for (Iterator<string> i = nodesToGenerate.iterator(); i.hasNext();)
             {
                 string node = (String)i.next();
                 File file = new File(jjtreeIncludeFile(node));
@@ -263,7 +263,7 @@ public static class CPPNodeFiles
 
         try
         {
-            for (Iterator<String> i = nodesToGenerate.iterator(); i.hasNext();)
+            for (Iterator<string> i = nodesToGenerate.iterator(); i.hasNext();)
             {
                 string node = (String)i.next();
                 string file = (jjtreeImplFile(node));
@@ -326,7 +326,7 @@ public static class CPPNodeFiles
             ostr.WriteLine("#ifndef " + includeName);
             ostr.WriteLine("#define " + includeName);
             ostr.WriteLine("#include \"SimpleNode.h\"");
-            for (Iterator<String> i = nodesToGenerate.iterator(); i.hasNext();)
+            for (Iterator<string> i = nodesToGenerate.iterator(); i.hasNext();)
             {
                 string s = (String)i.next();
                 ostr.WriteLine("#include \"" + s + ".h\"");
@@ -372,7 +372,7 @@ public static class CPPNodeFiles
                 outputFile.getPrintWriter().WriteLine("namespace " + JJTreeOptions.stringValue("NAMESPACE_OPEN"));
             }
 
-            for (Iterator<String> i = nodesToGenerate.iterator(); i.hasNext();)
+            for (Iterator<string> i = nodesToGenerate.iterator(); i.hasNext();)
             {
                 string s = (String)i.next();
                 optionMap.Add("NODE_TYPE", s);
@@ -416,8 +416,8 @@ public static class CPPNodeFiles
             OutputFile outputFile = new OutputFile(file);
             TextWriter ostr = outputFile.getPrintWriter();
 
-            List<String> nodeIds = ASTNodeDescriptor.getNodeIds();
-            List<String> nodeNames = ASTNodeDescriptor.getNodeNames();
+            List<string> nodeIds = ASTNodeDescriptor.getNodeIds();
+            List<string> nodeNames = ASTNodeDescriptor.getNodeNames();
 
             generatePrologue(ostr);
             ostr.WriteLine("#ifndef " + file.getName().Replace('.', '_').ToUpper());
@@ -549,7 +549,7 @@ public static class CPPNodeFiles
     private static void generateVisitorInterface(TextWriter ostr)
     {
         string name = visitorClass();
-        List<String> nodeNames = ASTNodeDescriptor.getNodeNames();
+        List<string> nodeNames = ASTNodeDescriptor.getNodeNames();
 
         ostr.WriteLine("class " + name);
         ostr.WriteLine("{");
@@ -590,7 +590,7 @@ public static class CPPNodeFiles
     private static void generateDefaultVisitor(TextWriter ostr)
     {
         string className = defaultVisitorClass();
-        List<String> nodeNames = ASTNodeDescriptor.getNodeNames();
+        List<string> nodeNames = ASTNodeDescriptor.getNodeNames();
 
         ostr.WriteLine("class " + className + " : public " + visitorClass() + " {");
 

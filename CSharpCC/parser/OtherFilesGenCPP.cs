@@ -65,7 +65,7 @@ public class OtherFilesGenCPP: JavaCCGlobals {
       throw new Error();
     }
 
-    List<String> tn = new (toolNames);
+    List<string> tn = new (toolNames);
     tn.Add(toolName);
     ostr.WriteLine("/* " + getIdString(tn, cu_name + "Constants.java") + " */");
 

@@ -52,16 +52,16 @@ public class ASTNodeDescriptor : JJTreeNode
     }
 
 
-    public static List<String> nodeIds = new();
-    public static List<String> nodeNames = new();
-    public static Dictionary<String, String> nodeSeen = new ();
+    public static List<string> nodeIds = new();
+    public static List<string> nodeNames = new();
+    public static Dictionary<string, string> nodeSeen = new ();
 
-    public static List<String> getNodeIds()
+    public static List<string> getNodeIds()
     {
         return nodeIds;
     }
 
-    public static List<String> getNodeNames()
+    public static List<string> getNodeNames()
     {
         return nodeNames;
     }

@@ -180,7 +180,7 @@ public class Semanticize:JavaCCGlobals {
       if (tp.lexStates == null) {
         tp.lexStates = new String[lexstate_I2S.Count];
         int i = 0;
-        for (Enumeration<String> enum1 = lexstate_I2S.elements(); enum1.hasMoreElements();) {
+        for (Enumeration<string> enum1 = lexstate_I2S.elements(); enum1.hasMoreElements();) {
           tp.lexStates[i++] = (String)(enum1.nextElement());
         }
       }

@@ -47,7 +47,7 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 		}
 
 		if (Options.getBuildParser()) {
-			List<String> tn = new (toolNames);
+			List<string> tn = new (toolNames);
 			tn.Add(toolName);
 
 			// This is the first line generated -- the the comment line at the top of the generated parser

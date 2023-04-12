@@ -113,7 +113,7 @@ public class OtherFilesGen : JavaCCGlobals, JavaCCParserConstants
             throw new Error();
         }
 
-        List<String> tn = new(toolNames);
+        List<string> tn = new(toolNames);
         tn.Add(toolName);
         ostr.WriteLine("/* " + getIdString(tn, cu_name + CONSTANTS_FILENAME_SUFFIX) + " */");
 

@@ -65,7 +65,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         foreach (int key in tokenizerData.literalSequence.keySet())
         {
             int[] arr = new int[2];
-            List<String> l = tokenizerData.literalSequence.get(key);
+            List<string> l = tokenizerData.literalSequence.get(key);
             List<int> kinds = tokenizerData.literalKinds.get(key);
             arr[0] = i;
             arr[1] = l.Count;

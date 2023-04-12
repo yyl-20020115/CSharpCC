@@ -18,7 +18,7 @@ public class ParseGenCPP : ParseGen
 
         if (JavaCCErrors.get_error_count() != 0) throw new MetaParseException();
 
-        List<String> tn = new(toolNames);
+        List<string> tn = new(toolNames);
         tn.Add(toolName);
         switchToStaticsFile();
 

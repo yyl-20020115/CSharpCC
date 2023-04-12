@@ -100,7 +100,7 @@ public class LexGen : CodeGenerator
         int i, j;
         bool bHasImport = false;
 
-        List<String> tn = new(toolNames);
+        List<string> tn = new(toolNames);
         tn.Add(toolName);
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
         genCodeLine("/* " + getIdString(tn, tokMgrClassName + getFileExtension(Options.getOutputLanguage())) + " */");

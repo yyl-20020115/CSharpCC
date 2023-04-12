@@ -99,7 +99,7 @@ public class JavaCCInterpreter
             char c = input[curPos];
             if (Options.getIgnoreCase()) c = char.ToLower(c);
             int key = curLexState << 16 | (int)c;
-            List<String> literals = td.literalSequence.get(key);
+            List<string> literals = td.literalSequence.get(key);
             if (literals != null)
             {
                 // We need to go in order so that the longest match works.

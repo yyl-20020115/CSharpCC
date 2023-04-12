@@ -39,15 +39,15 @@ namespace org.javacc.jjdoc;
 public class JJDoc : JJDocGlobals
 {
 
-    public static void start()
+    public static void Start()
     {
         generator = GetGenerator();
         generator.DocumentStart();
-        emitTokenProductions(generator, rexprlist);
-        emitNormalProductions(generator, bnfproductions);
+        EmitTokenProductions(generator, rexprlist);
+        EmitNormalProductions(generator, bnfproductions);
         generator.DocumentEnd();
     }
-    private static Token getPrecedingSpecialToken(Token tok)
+    private static Token GetPrecedingSpecialToken(Token tok)
     {
         Token t = tok;
         while (t.specialToken != null)
@@ -56,14 +56,14 @@ public class JJDoc : JJDocGlobals
         }
         return (t != tok) ? t : null;
     }
-    private static void emitTopLevelSpecialTokens(Token tok, Generator gen)
+    private static void EmitTopLevelSpecialTokens(Token tok, Generator gen)
     {
         if (tok == null)
         {
             // Strange ...
             return;
         }
-        tok = getPrecedingSpecialToken(tok);
+        tok = GetPrecedingSpecialToken(tok);
         string s = "";
         if (tok != null)
         {
@@ -89,13 +89,13 @@ public class JJDoc : JJDocGlobals
     }
     */
 
-    private static void emitTokenProductions(Generator gen, List<TokenProduction> prods)
+    private static void EmitTokenProductions(Generator gen, List<TokenProduction> prods)
     {
         gen.TokensStart();
         // FIXME there are many empty productions here
         foreach (TokenProduction tp in prods)
         {
-            emitTopLevelSpecialTokens(tp.firstToken, gen);
+            EmitTopLevelSpecialTokens(tp.firstToken, gen);
 
             gen.HandleTokenProduction(tp);
 
@@ -108,7 +108,7 @@ public class JJDoc : JJDocGlobals
         }
         gen.TokensEnd();
     }
-    public static string getStandardTokenProductionText(TokenProduction tp)
+    public static string GetStandardTokenProductionText(TokenProduction tp)
     {
         string token = "";
         if (tp.isExplicit)
@@ -144,7 +144,7 @@ public class JJDoc : JJDocGlobals
                     token += "| ";
                 }
                 first = false;
-                token += emitRE(res.rexp);
+                token += EmitRE(res.rexp);
 
                 if (res.nsTok != null)
                 {
@@ -158,12 +158,12 @@ public class JJDoc : JJDocGlobals
         return token;
     }
 
-    private static void emitNormalProductions(Generator gen, List<NormalProduction> prods)
+    private static void EmitNormalProductions(Generator gen, List<NormalProduction> prods)
     {
         gen.NonterminalsStart();
         foreach (NormalProduction np in prods)
         {
-            emitTopLevelSpecialTokens(np.getFirstToken(), gen);
+            EmitTopLevelSpecialTokens(np.getFirstToken(), gen);
             if (np is BNFProduction)
             {
                 gen.ProductionStart(np);
@@ -174,7 +174,7 @@ public class JJDoc : JJDocGlobals
                     foreach (Expansion e in c.getChoices())
                     {
                         gen.ExpansionStart(e, first);
-                        emitExpansionTree(e, gen);
+                        EmitExpansionTree(e, gen);
                         gen.ExpansionEnd(e, first);
                         first = false;
                     }
@@ -182,7 +182,7 @@ public class JJDoc : JJDocGlobals
                 else
                 {
                     gen.ExpansionStart(np.getExpansion(), true);
-                    emitExpansionTree(np.getExpansion(), gen);
+                    EmitExpansionTree(np.getExpansion(), gen);
                     gen.ExpansionEnd(np.getExpansion(), true);
                 }
                 gen.ProductionEnd(np);
@@ -198,48 +198,48 @@ public class JJDoc : JJDocGlobals
         }
         gen.NonterminalsEnd();
     }
-    private static void emitExpansionTree(Expansion exp, Generator gen)
+    private static void EmitExpansionTree(Expansion exp, Generator gen)
     {
         //     gen.text("[->" + exp.getClass().getName() + "]");
         if (exp is parser.Action)
         {
-            emitExpansionAction((parser.Action)exp, gen);
+            EmitExpansionAction((parser.Action)exp, gen);
         }
         else if (exp is Choice)
         {
-            emitExpansionChoice((Choice)exp, gen);
+            EmitExpansionChoice((Choice)exp, gen);
         }
         else if (exp is Lookahead)
         {
-            emitExpansionLookahead((Lookahead)exp, gen);
+            EmitExpansionLookahead((Lookahead)exp, gen);
         }
         else if (exp is NonTerminal)
         {
-            emitExpansionNonTerminal((NonTerminal)exp, gen);
+            EmitExpansionNonTerminal((NonTerminal)exp, gen);
         }
         else if (exp is OneOrMore)
         {
-            emitExpansionOneOrMore((OneOrMore)exp, gen);
+            EmitExpansionOneOrMore((OneOrMore)exp, gen);
         }
         else if (exp is RegularExpression)
         {
-            emitExpansionRegularExpression((RegularExpression)exp, gen);
+            EmitExpansionRegularExpression((RegularExpression)exp, gen);
         }
         else if (exp is Sequence)
         {
-            emitExpansionSequence((Sequence)exp, gen);
+            EmitExpansionSequence((Sequence)exp, gen);
         }
         else if (exp is TryBlock)
         {
-            emitExpansionTryBlock((TryBlock)exp, gen);
+            EmitExpansionTryBlock((TryBlock)exp, gen);
         }
         else if (exp is ZeroOrMore)
         {
-            emitExpansionZeroOrMore((ZeroOrMore)exp, gen);
+            EmitExpansionZeroOrMore((ZeroOrMore)exp, gen);
         }
         else if (exp is ZeroOrOne)
         {
-            emitExpansionZeroOrOne((ZeroOrOne)exp, gen);
+            EmitExpansionZeroOrOne((ZeroOrOne)exp, gen);
         }
         else
         {
@@ -247,10 +247,10 @@ public class JJDoc : JJDocGlobals
         }
         //     gen.text("[<-" + exp.getClass().getName() + "]");
     }
-    private static void emitExpansionAction(Action a, Generator gen)
+    private static void EmitExpansionAction(Action a, Generator gen)
     {
     }
-    private static void emitExpansionChoice(Choice c, Generator gen)
+    private static void EmitExpansionChoice(Choice c, Generator gen)
     {
         var first = true;
         foreach (Expansion e in c.getChoices())
@@ -260,28 +260,28 @@ public class JJDoc : JJDocGlobals
                 gen.Text(" | ");
             }
             first = false;
-            emitExpansionTree(e, gen);
+            EmitExpansionTree(e, gen);
         }
     }
-    private static void emitExpansionLookahead(Lookahead l, Generator gen)
+    private static void EmitExpansionLookahead(Lookahead l, Generator gen)
     {
     }
-    private static void emitExpansionNonTerminal(NonTerminal nt, Generator gen)
+    private static void EmitExpansionNonTerminal(NonTerminal nt, Generator gen)
     {
         gen.NonTerminalStart(nt);
         gen.Text(nt.getName());
         gen.NonTerminalEnd(nt);
     }
-    private static void emitExpansionOneOrMore(OneOrMore o, Generator gen)
+    private static void EmitExpansionOneOrMore(OneOrMore o, Generator gen)
     {
         gen.Text("( ");
-        emitExpansionTree(o.expansion, gen);
+        EmitExpansionTree(o.expansion, gen);
         gen.Text(" )+");
     }
-    private static void emitExpansionRegularExpression(RegularExpression r,
+    private static void EmitExpansionRegularExpression(RegularExpression r,
         Generator gen)
     {
-        string reRendered = emitRE(r);
+        string reRendered = EmitRE(r);
         if (reRendered != (""))
         {
             gen.ReStart(r);
@@ -289,7 +289,7 @@ public class JJDoc : JJDocGlobals
             gen.ReEnd(r);
         }
     }
-    private static void emitExpansionSequence(Sequence s, Generator gen)
+    private static void EmitExpansionSequence(Sequence s, Generator gen)
     {
         bool firstUnit = true;
         foreach (var e in s.units)
@@ -307,7 +307,7 @@ public class JJDoc : JJDocGlobals
             {
                 gen.Text("( ");
             }
-            emitExpansionTree(e, gen);
+            EmitExpansionTree(e, gen);
             if (needParens)
             {
                 gen.Text(" )");
@@ -315,32 +315,32 @@ public class JJDoc : JJDocGlobals
             firstUnit = false;
         }
     }
-    private static void emitExpansionTryBlock(TryBlock t, Generator gen)
+    private static void EmitExpansionTryBlock(TryBlock t, Generator gen)
     {
         bool needParens = t.exp is Choice;
         if (needParens)
         {
             gen.Text("( ");
         }
-        emitExpansionTree(t.exp, gen);
+        EmitExpansionTree(t.exp, gen);
         if (needParens)
         {
             gen.Text(" )");
         }
     }
-    private static void emitExpansionZeroOrMore(ZeroOrMore z, Generator gen)
+    private static void EmitExpansionZeroOrMore(ZeroOrMore z, Generator gen)
     {
         gen.Text("( ");
-        emitExpansionTree(z.expansion, gen);
+        EmitExpansionTree(z.expansion, gen);
         gen.Text(" )*");
     }
-    private static void emitExpansionZeroOrOne(ZeroOrOne z, Generator gen)
+    private static void EmitExpansionZeroOrOne(ZeroOrOne z, Generator gen)
     {
         gen.Text("( ");
-        emitExpansionTree(z.expansion, gen);
+        EmitExpansionTree(z.expansion, gen);
         gen.Text(" )?");
     }
-    public static string emitRE(RegularExpression re)
+    public static string EmitRE(RegularExpression re)
     {
         string returnString = "";
         bool hasLabel = re.label != ("");
@@ -417,7 +417,7 @@ public class JJDoc : JJDocGlobals
                     returnString += " | ";
                 }
                 first = false;
-                returnString += emitRE(sub);
+                returnString += EmitRE(sub);
             }
         }
         else if (re is REndOfFile)
@@ -433,7 +433,7 @@ public class JJDoc : JJDocGlobals
         {
             ROneOrMore om = (ROneOrMore)re;
             returnString += "(";
-            returnString += emitRE(om.regexpr);
+            returnString += EmitRE(om.regexpr);
             returnString += ")+";
         }
         else if (re is RSequence)
@@ -456,7 +456,7 @@ public class JJDoc : JJDocGlobals
                 {
                     returnString += "(";
                 }
-                returnString += emitRE(sub);
+                returnString += EmitRE(sub);
                 if (needParens)
                 {
                     returnString += ")";
@@ -472,21 +472,21 @@ public class JJDoc : JJDocGlobals
         {
             RZeroOrMore zm = (RZeroOrMore)re;
             returnString += "(";
-            returnString += emitRE(zm.regexpr);
+            returnString += EmitRE(zm.regexpr);
             returnString += ")*";
         }
         else if (re is RZeroOrOne)
         {
             RZeroOrOne zo = (RZeroOrOne)re;
             returnString += "(";
-            returnString += emitRE(zo.regexpr);
+            returnString += EmitRE(zo.regexpr);
             returnString += ")?";
         }
         else if (re is RRepetitionRange)
         {
             RRepetitionRange zo = (RRepetitionRange)re;
             returnString += "(";
-            returnString += emitRE(zo.regexpr);
+            returnString += EmitRE(zo.regexpr);
             returnString += ")";
             returnString += "{";
             if (zo.hasMax)

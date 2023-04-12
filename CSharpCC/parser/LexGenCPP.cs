@@ -46,7 +46,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
   {
     int i, j;
 
-    List<String> tn = new (toolNames);
+    List<string> tn = new (toolNames);
     tn.Add(toolName);
 
     switchToStaticsFile();

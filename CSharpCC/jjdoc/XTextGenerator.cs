@@ -53,7 +53,7 @@ public class XTextGenerator : TextGenerator
 
         foreach(var res in tp.respecs)
         {
-            var regularExpressionText = JJDoc.emitRE(res.rexp);
+            var regularExpressionText = JJDoc.EmitRE(res.rexp);
             sb.Append(regularExpressionText);
 
             if (res.nsTok != null)
@@ -104,13 +104,13 @@ public class XTextGenerator : TextGenerator
 
     public override void Print(string s)
     {
-        ostr.Write(s);
+        writer.Write(s);
     }
 
 
     public override void DocumentStart()
     {
-        ostr = CreateOutputStream();
+        writer = CreateOutputStream();
         Println("grammar " + JJDocGlobals.input_file + " with org.eclipse.xtext.common.Terminals");
         Println("import \"http://www.eclipse.org/emf/2002/Ecore\" as ecore");
         Println("");
@@ -135,7 +135,7 @@ public class XTextGenerator : TextGenerator
     {
         //    WriteLine("</BODY>");
         //    WriteLine("</HTML>");
-        ostr.Close();
+        writer.Close();
     }
 
     /**

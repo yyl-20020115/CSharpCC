@@ -314,7 +314,7 @@ public class JavaCCParser : JavaCCParserInternals
         int int_val;
         bool bool_val;
         String string_val;
-        List<String> string_list;
+        List<string> string_list;
         Token t = getToken(1);
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
         {
@@ -367,9 +367,9 @@ public class JavaCCParser : JavaCCParserInternals
         jj_consume_token(SEMICOLON);
     }
 
-    public List<String> StringList()
+    public List<string> StringList()
     {
-        List<String> strings = new ArrayList<String>(); 
+        List<string> strings = new ArrayList<string>(); 
         String s;
         jj_consume_token(LPAREN);
         s = StringLiteral();

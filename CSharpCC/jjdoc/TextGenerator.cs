@@ -38,7 +38,7 @@ namespace org.javacc.jjdoc;
  */
 public class TextGenerator : Generator
 {
-    protected TextWriter ostr;
+    protected TextWriter writer;
 
     public TextGenerator()
     {
@@ -59,7 +59,7 @@ public class TextGenerator : Generator
      */
     public virtual void Print(string s)
     {
-        ostr.Write(s);
+        writer.Write(s);
     }
 
     /**
@@ -68,8 +68,8 @@ public class TextGenerator : Generator
      */
     public virtual void DocumentStart()
     {
-        ostr = CreateOutputStream();
-        ostr.Write("\nDOCUMENT START\n");
+        writer = CreateOutputStream();
+        writer.Write("\nDOCUMENT START\n");
     }
     /**
      * {@inheritDoc}
@@ -77,8 +77,8 @@ public class TextGenerator : Generator
      */
     public virtual void DocumentEnd()
     {
-        ostr.Write("\nDOCUMENT END\n");
-        ostr.Close();
+        writer.Write("\nDOCUMENT END\n");
+        writer.Close();
     }
 
     /**
@@ -87,7 +87,7 @@ public class TextGenerator : Generator
      */
     public virtual void SpecialTokens(string s)
     {
-        ostr.Write(s);
+        writer.Write(s);
     }
 
 
@@ -119,7 +119,7 @@ public class TextGenerator : Generator
     //@Override
     public virtual void HandleTokenProduction(TokenProduction tp)
     {
-        string t = JJDoc.getStandardTokenProductionText(tp);
+        string t = JJDoc.GetStandardTokenProductionText(tp);
         Text(t);
     }
 
@@ -160,7 +160,7 @@ public class TextGenerator : Generator
      */
     public virtual void ProductionStart(NormalProduction np)
     {
-        ostr.Write("\t" + np.getLhs() + "\t:=\t");
+        writer.Write("\t" + np.getLhs() + "\t:=\t");
     }
     /**
      * {@inheritDoc}
@@ -168,7 +168,7 @@ public class TextGenerator : Generator
      */
     public virtual void ProductionEnd(NormalProduction np)
     {
-        ostr.Write("\n");
+        writer.Write("\n");
     }
 
     /**
@@ -179,7 +179,7 @@ public class TextGenerator : Generator
     {
         if (!first)
         {
-            ostr.Write("\n\t\t|\t");
+            writer.Write("\n\t\t|\t");
         }
     }
     /**
@@ -274,16 +274,16 @@ public class TextGenerator : Generator
 
         try
         {
-            ostr = new StreamWriter(JJDocGlobals.output_file);
+            writer = new StreamWriter(JJDocGlobals.output_file);
         }
         catch (IOException e)
         {
             Error("JJDoc: can't open output stream on file "
                 + JJDocGlobals.output_file + ".  Using standard output.");
-            ostr = Console.Out;
+            writer = Console.Out;
         }
 
-        return ostr;
+        return writer;
     }
 
     /**
