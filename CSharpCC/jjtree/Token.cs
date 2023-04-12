@@ -140,6 +140,6 @@ public class Token
         {
         }
 
-        int realKind = JJTreeParserConstants.GT;
+        public int realKind = JJTreeParserConstants.GT;
     }
 }

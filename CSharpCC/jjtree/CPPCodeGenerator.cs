@@ -420,7 +420,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     }
 
 
-    private static void findThrown(NodeScope ns, Hashtable thrown_set,
+    private static void findThrown(NodeScope ns, Dictionary thrown_set,
         JJTreeNode expansion_unit)
     {
         if (expansion_unit is ASTBNFNonTerminal)
@@ -457,7 +457,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         openJJTreeComment(io, null);
         io.println();
 
-        Hashtable thrown_set = new Hashtable();
+        Dictionary thrown_set = new Dictionary();
         findThrown(ns, thrown_set, expansion_unit);
         Enumeration thrown_names = thrown_set.elements();
         insertCatchBlocks(ns, io, thrown_names, indent);

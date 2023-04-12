@@ -13,7 +13,7 @@ namespace org.javacc.parser;
 /**
  * Generate CharStream, TokenManager and Exceptions.
  */
-public class CPPFiles : JavaCCGlobals, JavaCCParserConstants
+public class CPPFiles : JavaCCGlobals
 {
     /**
     * ID of the latest version (of JavaCC) in which one of the CharStream classes
@@ -79,7 +79,7 @@ public class CPPFiles : JavaCCGlobals, JavaCCParserConstants
     static double getVersion(string fileName)
     {
         string commentHeader = "/* " + getIdString(toolName, fileName) + " Version ";
-        string file = new File(Options.getOutputDirectory(), replaceBackslash(fileName));
+        string file = System.IO.Path.Combine(Options.getOutputDirectory(), replaceBackslash(fileName));
 
         if (!file.exists())
         {
@@ -106,7 +106,7 @@ public class CPPFiles : JavaCCGlobals, JavaCCParserConstants
             // user might have put comments before it.
             while ((str = reader.readLine()) != null)
             {
-                if (str.startsWith(commentHeader))
+                if (str.StartsWith(commentHeader))
                 {
                     str = str.substring(commentHeader.Length);
                     int pos = str.IndexOf(' ');

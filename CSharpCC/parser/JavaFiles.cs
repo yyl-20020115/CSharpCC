@@ -26,6 +26,8 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using org.javacc.jjtree;
+using org.javacc.utils;
 using System.Text;
 
 namespace org.javacc.parser;
@@ -178,7 +180,7 @@ public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
    * @return The version as a double, eg 4.1
    * @since 4.1
    */
-  static double getVersion(string fileName)
+  public static double getVersion(string fileName)
   {
     string commentHeader = "/* " + getIdString(toolName, fileName) + " Version ";
     File file = new File(Options.getOutputDirectory(), replaceBackslash(fileName));
@@ -202,7 +204,7 @@ public class JavaFiles:JavaCCGlobals , JavaCCParserConstants
       // Although the version comment should be the first line, sometimes the
       // user might have put comments before it.
       while ( (str = reader.readLine()) != null) {
-        if (str.startsWith(commentHeader)) {
+        if (str.StartsWith(commentHeader)) {
           str = str.substring(commentHeader.Length);
           int pos = str.IndexOf(' ');
           if (pos >= 0) str = str.substring(0, pos);

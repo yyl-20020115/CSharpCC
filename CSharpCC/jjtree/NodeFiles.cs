@@ -30,6 +30,7 @@
  */
 
 using org.javacc.parser;
+using org.javacc.utils;
 using System.Text;
 
 namespace org.javacc.jjtree;
@@ -252,10 +253,10 @@ public static class NodeFiles
         var sb = new StringBuilder("visit");
         if (JJTreeOptions.booleanValue("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME"))
         {
-            sb.Append(Character.ToUpper(className.charAt(0)));
+            sb.Append(char.ToUpper(className[0]));
             for (int i = 1; i < className.Length; i++)
             {
-                sb.Append(className.charAt(i));
+                sb.Append(className[i]);
             }
         }
 

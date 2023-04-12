@@ -158,6 +158,6 @@ public class Token
 
         }
 
-        int realKind = JavaCCParserConstants.GT;
+        public int realKind = JavaCCParserConstants.GT;
     }
 }

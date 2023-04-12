@@ -90,7 +90,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                     JJTreeGlobals.nodePackageName = JJTreeOptions.getNodePackage();
                 }
             }
-            catch (Throwable jjte001)
+            catch (Exception jjte001)
             {
                 if (jjtc001)
                 {
@@ -166,7 +166,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                     }
                 }
             }
-            catch (Throwable jjte002)
+            catch (Exception jjte002)
             {
                 if (jjtc002)
                 {
@@ -197,7 +197,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
             }
             jj_consume_token(0);
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -259,7 +259,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 }
                 jj_consume_token(RBRACE);
             }
-            catch (Throwable jjte001)
+            catch (Exception jjte001)
             {
                 if (jjtc001)
                 {
@@ -352,7 +352,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
             }
             jj_consume_token(SEMICOLON);
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -585,7 +585,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 jjtreeCloseNodeScope(jjtn001);
                 jjtn001.node_scope = new NodeScope(prod, nd);
             }
-            catch (Throwable jjte001)
+            catch (Exception jjte001)
             {
                 if (jjtc001)
                 {
@@ -620,7 +620,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
             jjtreeCloseNodeScope(jjtn000);
             JJTreeGlobals.productions.Add(prod.name, prod);
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -803,7 +803,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 jjtreeCloseNodeScope(jjtn001);
                 jjtn001.node_scope = ns;
             }
-            catch (Throwable jjte001)
+            catch (Exception jjte001)
             {
                 if (jjtc001)
                 {
@@ -847,7 +847,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 jjtn002.node_scope = ns;
                 jjtn002.expansion_unit = eu;
             }
-            catch (Throwable jjte002)
+            catch (Exception jjte002)
             {
                 if (jjtc002)
                 {
@@ -882,7 +882,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
             jjtreeCloseNodeScope(jjtn000);
             JJTreeGlobals.productions.Add(prod.name, prod);
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -1028,7 +1028,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
             }
             jj_consume_token(RBRACE);
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -1086,7 +1086,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                     ;
             }
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -1170,7 +1170,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                     ;
             }
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -1231,7 +1231,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
             jjtreeCloseNodeScope(jjtn000);
             { if (true) return (JJTreeNode)jjtree.peekNode(); }
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -1287,7 +1287,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                         local_lookahead(p);
                         jj_consume_token(RPAREN);
                     }
-                    catch (Throwable jjte001)
+                    catch (Exception jjte001)
                     {
                         if (jjtc001)
                         {
@@ -1349,7 +1349,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                         jjtn002.expansion_unit = eu;
                     }
                 }
-                catch (Throwable jjte002)
+                catch (Exception jjte002)
                 {
                     if (jjtc002)
                     {
@@ -1388,7 +1388,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 }
             }
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -1539,7 +1539,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                     local_lookahead(p);
                     jj_consume_token(RPAREN);
                 }
-                catch (Throwable jjte001)
+                catch (Exception jjte001)
                 {
                     if (jjtc001)
                     {
@@ -1578,7 +1578,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 {
                     Block();
                 }
-                catch (Throwable jjte002)
+                catch (Exception jjte002)
                 {
                     if (jjtc002)
                     {
@@ -1619,7 +1619,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                     expansion_choices(p);
                     jj_consume_token(RBRACKET);
                 }
-                catch (Throwable jjte003)
+                catch (Exception jjte003)
                 {
                     if (jjtc003)
                     {
@@ -1701,7 +1701,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                             ;
                     }
                 }
-                catch (Throwable jjte004)
+                catch (Exception jjte004)
                 {
                     if (jjtc004)
                     {
@@ -1776,7 +1776,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                                     identifier();
                                     Arguments();
                                 }
-                                catch (Throwable jjte005)
+                                catch (Exception jjte005)
                                 {
                                     if (jjtc005)
                                     {
@@ -1812,7 +1812,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                                 throw new ParseException();
                         }
                     }
-                    catch (Throwable jjte006)
+                    catch (Exception jjte006)
                     {
                         if (jjtc006)
                         {
@@ -1954,7 +1954,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 {
                     StringLiteral();
                 }
-                catch (Throwable jjte001)
+                catch (Exception jjte001)
                 {
                     if (jjtc001)
                     {
@@ -2018,7 +2018,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                         complex_regular_expression_choices();
                         jj_consume_token(GT);
                     }
-                    catch (Throwable jjte002)
+                    catch (Exception jjte002)
                     {
                         if (jjtc002)
                         {
@@ -2060,7 +2060,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                         identifier();
                         jj_consume_token(GT);
                     }
-                    catch (Throwable jjte003)
+                    catch (Exception jjte003)
                     {
                         if (jjtc003)
                         {
@@ -2149,7 +2149,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 complex_regular_expression();
             }
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -2208,7 +2208,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 }
             }
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -2253,7 +2253,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 {
                     StringLiteral();
                 }
-                catch (Throwable jjte001)
+                catch (Exception jjte001)
                 {
                     if (jjtc001)
                     {
@@ -2294,7 +2294,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                     identifier();
                     jj_consume_token(GT);
                 }
-                catch (Throwable jjte002)
+                catch (Exception jjte002)
                 {
                     if (jjtc002)
                     {
@@ -2502,7 +2502,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
             }
             jj_consume_token(RBRACKET);
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -2554,7 +2554,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                     ;
             }
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -2662,7 +2662,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
             jjtn000.setNodeIdValue();
             { if (true) return jjtn000; }
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -5201,7 +5201,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
                 PrimarySuffix();
             }
         }
-        catch (Throwable jjte000)
+        catch (Exception jjte000)
         {
             if (jjtc000)
             {
@@ -11139,7 +11139,7 @@ public class JJTreeParse: JJTreeParserConstants, JJTreeParserTreeConstants
             {
                 jj_expentry[i] = jj_lasttokens[i];
             }
-        jj_entries_loop: for (Iterator <?> it = jj_expentries.iterator(); it.hasNext();)
+        jj_entries_loop: for (Iterator it = jj_expentries.iterator(); it.hasNext();)
             {
                 int[] oldentry = (int[])(it.next());
                 if (oldentry.Length == jj_expentry.Length)

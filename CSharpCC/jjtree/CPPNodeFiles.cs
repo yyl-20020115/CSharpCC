@@ -185,7 +185,7 @@ public static class CPPNodeFiles
     }
     private static void generateSimpleNodeCode()
     {
-        File file = new File(simpleNodeCodeFile());
+        string file = new File(simpleNodeCodeFile());
         OutputFile outputFile = null;
 
         try
@@ -266,7 +266,7 @@ public static class CPPNodeFiles
             for (Iterator<String> i = nodesToGenerate.iterator(); i.hasNext();)
             {
                 string node = (String)i.next();
-                File file = new File(jjtreeImplFile(node));
+                string file = (jjtreeImplFile(node));
                 String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
                 outputFile = new OutputFile(file, nodeVersion, options);
                 outputFile.setToolName("JJTree");
@@ -405,7 +405,7 @@ public static class CPPNodeFiles
         return JJTreeGlobals.parserName + "TreeConstants";
     }
 
-    static void generateTreeConstants()
+    public static void generateTreeConstants()
     {
         string name = nodeConstants();
         string file = System.IO.Path.Combine(JJTreeOptions.getJJTreeOutputDirectory(), name + ".h");
@@ -478,13 +478,13 @@ public static class CPPNodeFiles
 
     private static string getVisitMethodName(string className)
     {
-        StringBuilder sb = new StringBuilder("visit");
+        var sb = new StringBuilder("visit");
         if (JJTreeOptions.booleanValue("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME"))
         {
-            sb.Append(Character.ToUpper(className.charAt(0)));
+            sb.Append(char.ToUpper(className[0]));
             for (int i = 1; i < className.Length; i++)
             {
-                sb.Append(className.charAt(i));
+                sb.Append(className[i]);
             }
         }
 
@@ -518,8 +518,8 @@ public static class CPPNodeFiles
             TextWriter ostr = outputFile.getPrintWriter();
 
             generatePrologue(ostr);
-            ostr.WriteLine("#ifndef " + file.getName().Replace('.', '_').ToUpper());
-            ostr.WriteLine("#define " + file.getName().Replace('.', '_').ToUpper());
+            ostr.WriteLine("#ifndef " + file.Replace('.', '_').ToUpper());
+            ostr.WriteLine("#define " + file.Replace('.', '_').ToUpper());
             ostr.WriteLine("\n#include \"JavaCC.h\"");
             ostr.WriteLine("#include \"" + JJTreeGlobals.parserName + "Tree.h" + "\"");
 
@@ -556,7 +556,7 @@ public static class CPPNodeFiles
 
         string argumentType = getVisitorArgumentType();
         string returnType = getVisitorReturnType();
-        if (!JJTreeOptions.getVisitorDataType() == (""))
+        if (JJTreeOptions.getVisitorDataType() != (""))
         {
             argumentType = JJTreeOptions.getVisitorDataType();
         }

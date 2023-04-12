@@ -51,8 +51,8 @@ public class Expansion
      * An internal name for this expansion.  This is used to generate parser
      * routines.
      */
-    string internal_name = "";
-    int internal_index = -1;
+    public string internal_name = "";
+    public int internal_index = -1;
 
     /**
      * The parser routines are generated in three phases.  The generation

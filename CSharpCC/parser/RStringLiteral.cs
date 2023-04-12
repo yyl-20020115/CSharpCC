@@ -390,7 +390,7 @@ public class RStringLiteral : RegularExpression
             }
         }
 
-        maxLenForActive[ordinal / 64] = Math.max(maxLenForActive[ordinal / 64],
+        maxLenForActive[ordinal / 64] = Math.Max(maxLenForActive[ordinal / 64],
                                                                            len - 1);
         allImages[ordinal] = image;
     }

@@ -402,13 +402,13 @@ public class Options
             object o = null;
             if (value is List)
             {
-                o = ((List <?>)value).get(0);
+                o = ((List)value).get(0);
             }
             else
             {
                 o = value;
             }
-            bool isValidInteger = (object is Integer && ((Integer)value).intValue() <= 0);
+            bool isValidInteger = (o is Integer && ((Integer)value).intValue() <= 0);
             if (isIndirectProperty || (existingValue.getClass() != object.getClass())
                     || (isValidInteger))
             {

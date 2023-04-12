@@ -149,7 +149,7 @@ public class OutputFileGenerator
                 value = substituteWithConditional(variableExpression[..i], variableExpression[(i + 1)..]);
                 break;
             }
-            else if (ch != '_' && !Character.isJavaIdentifierPart(ch))
+            else if (ch != '_' && !char.isJavaIdentifierPart(ch))
             {
                 throw new IOException("Invalid variable in " + text);
             }
@@ -243,7 +243,7 @@ public class OutputFileGenerator
     private void processIf(TextReader _in, TextWriter _out, bool ignoring)
     {
         string line = getLine(_in).Trim();
-        //assert line.Trim().startsWith("#if");
+        //assert line.Trim().StartsWith("#if");
         bool foundTrueCondition = false;
 
         bool condition = evaluate(line[3..].Trim());

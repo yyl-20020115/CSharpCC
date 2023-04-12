@@ -447,7 +447,7 @@ public class JavaCCParser : JavaCCParserInternals
         Token t = getToken(1);
         p.setFirstToken(t);
         List excName;
-        p.setThrowsList(new ArrayList());
+        p.setThrowsList(new ());
         p.setLine(t.beginLine);
         p.setColumn(t.beginColumn);
         jj_consume_token(_JAVACODE);
@@ -460,7 +460,7 @@ public class JavaCCParser : JavaCCParserInternals
         {
             case THROWS:
                 jj_consume_token(THROWS);
-                excName = new ArrayList();
+                excName = new ();
                 Name(excName);
                 p.getThrowsList().Add(excName);
             label_4:
@@ -475,7 +475,7 @@ public class JavaCCParser : JavaCCParserInternals
                             jj_la1[6] = jj_gen;
                             break label_4;
                     }
-                    excName = new ArrayList();
+                    excName = new ();
                     jj_consume_token(COMMA);
                     Name(excName);
                     p.getThrowsList().Add(excName);
@@ -497,7 +497,7 @@ public class JavaCCParser : JavaCCParserInternals
         Token t = getToken(1);
         p.setFirstToken(t);
         List excName;
-        p.setThrowsList(new ArrayList());
+        p.setThrowsList(new ());
         p.setLine(t.beginLine);
         p.setColumn(t.beginColumn);
         jj_consume_token(_CPPCODE);
@@ -510,7 +510,7 @@ public class JavaCCParser : JavaCCParserInternals
         {
             case THROWS:
                 jj_consume_token(THROWS);
-                excName = new ArrayList();
+                excName = new ();
                 Name(excName);
                 p.getThrowsList().Add(excName);
             label_5:
@@ -525,7 +525,7 @@ public class JavaCCParser : JavaCCParserInternals
                             jj_la1[8] = jj_gen;
                             break label_5;
                     }
-                    excName = new ArrayList();
+                    excName = new ();
                     jj_consume_token(COMMA);
                     Name(excName);
                     p.getThrowsList().Add(excName);
@@ -548,7 +548,7 @@ public class JavaCCParser : JavaCCParserInternals
         p.setFirstToken(t);
         List excName;
         String lhs;
-        p.setThrowsList(new ArrayList());
+        p.setThrowsList(new ());
         p.setLine(t.beginLine);
         p.setColumn(t.beginColumn);
         jumpPatched = false;
@@ -561,7 +561,7 @@ public class JavaCCParser : JavaCCParserInternals
         {
             case THROWS:
                 jj_consume_token(THROWS);
-                excName = new ArrayList();
+                excName = new ();
                 Name(excName);
                 p.getThrowsList().Add(excName);
             label_6:
@@ -576,7 +576,7 @@ public class JavaCCParser : JavaCCParserInternals
                             jj_la1[10] = jj_gen;
                             break label_6;
                     }
-                    excName = new ArrayList();
+                    excName = new ();
                     jj_consume_token(COMMA);
                     Name(excName);
                     p.getThrowsList().Add(excName);
@@ -658,7 +658,7 @@ public class JavaCCParser : JavaCCParserInternals
                     {
                         case LANGLE:
                             jj_consume_token(LANGLE);
-                            states = new ArrayList();
+                            states = new ();
                             t = jj_consume_token(IDENTIFIER);
                             states.Add(t.image);
                         label_7:
@@ -741,7 +741,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void token_manager_decls()
     {
-        List decls = new ArrayList();
+        List decls = new ();
         Token t;
         t = jj_consume_token(_TOKEN_MGR_DECLS);
         jj_consume_token(COLON);
@@ -1067,7 +1067,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void expansion_unit(Container c)
     {
         String name;
-        List lhsTokens = new ArrayList();
+        List lhsTokens = new ();
         NonTerminal nt;
         Action act;
         Token t;
@@ -1175,12 +1175,12 @@ public class JavaCCParser : JavaCCParserInternals
                     jj_consume_token(RPAREN);
                     types.Add(vec);
                     ids.Add(t);
-                    vec = new ArrayList();
+                    vec = new ();
                     inAction = true;
                     Block(vec);
                     inAction = false;
                     catchblks.Add(vec);
-                    vec = new ArrayList();
+                    vec = new ();
                 }
                 switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
                 {
@@ -1659,7 +1659,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         if (isrange)
         {
-            CharacterRange cr = new CharacterRange();
+            var cr = new CharacterRange();
             cr.setLine(t.beginLine);
             cr.setColumn(t.beginColumn);
             cr.setLeft(c1);
@@ -1668,7 +1668,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            SingleCharacter sc = new SingleCharacter();
+            var sc = new SingleCharacter();
             sc.setLine(t.beginLine);
             sc.setColumn(t.beginColumn);
             sc.ch = c1;
@@ -2003,7 +2003,7 @@ public class JavaCCParser : JavaCCParserInternals
         Token t;
         bool is_parser_class = false;
         if (tokens == null)
-            tokens = new ArrayList();
+            tokens = new ();
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
         {
             case CLASS:
@@ -2346,7 +2346,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         Token first, last;
         if (tokens == null)
-            tokens = new ArrayList();
+            tokens = new ();
         jj_consume_token(LBRACE);
         first = getToken(1);
     label_24:
@@ -2810,7 +2810,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         Token first, last;
         if (tokens == null)
-            tokens = new ArrayList();
+            tokens = new ();
         jj_consume_token(LPAREN);
         first = getToken(1);
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
@@ -3333,7 +3333,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         Token first, last;
         if (tokens == null)
-            tokens = new ArrayList();
+            tokens = new ();
         jj_consume_token(LANGLE);
         first = getToken(0);
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
@@ -3489,7 +3489,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         Token first = getToken(1);
         if (tokens == null)
-            tokens = new ArrayList();
+            tokens = new ();
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
         {
             case VOID:
@@ -3575,7 +3575,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void Name(List tokens)
     {
         if (tokens == null)
-            tokens = new ArrayList();
+            tokens = new ();
         Token first = getToken(1);
         JavaIdentifier();
     label_36:
@@ -3629,7 +3629,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         Token first = getToken(1);
         if (tokens == null)
-            tokens = new ArrayList();
+            tokens = new ();
         ConditionalExpression();
         if (jj_2_24(2))
         {
@@ -4546,7 +4546,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         Token first, last;
         if (tokens == null)
-            tokens = new ArrayList();
+            tokens = new ();
         jj_consume_token(LPAREN);
         first = getToken(1);
         // Added by Sreenivas Viswanadha for 6.0
@@ -4904,7 +4904,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         Token first, last;
         if (tokens == null)
-            tokens = new ArrayList();
+            tokens = new ();
         jj_consume_token(LBRACE);
         first = getToken(1);
         if (!isJavaLanguage())
@@ -5811,7 +5811,7 @@ public class JavaCCParser : JavaCCParserInternals
         // 'if ("" != null)'
         if (inAction && (Options.isLegacyExceptionHandling()))
         {
-            t.image = "{if (\u005c"\u005c" != null) return";
+            t.image = "{if (\u005c\"\u005c\" != null) return";
             jumpPatched = true;
         }
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
@@ -10573,7 +10573,7 @@ public class JavaCCParser : JavaCCParserInternals
             return (jj_ntk = jj_nt.kind);
     }
 
-    private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
+    private List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
     private int[] jj_expentry;
     private int jj_kind = -1;
     private int[] jj_lasttokens = new int[100];
@@ -10593,7 +10593,7 @@ public class JavaCCParser : JavaCCParserInternals
             {
                 jj_expentry[i] = jj_lasttokens[i];
             }
-        jj_entries_loop: for (java.util.Iterator <?> it = jj_expentries.iterator(); it.hasNext();)
+        jj_entries_loop: for (java.util.Iterator it = jj_expentries.iterator(); it.hasNext();)
             {
                 int[] oldentry = (int[])(it.next());
                 if (oldentry.Length == jj_expentry.Length)

@@ -293,11 +293,11 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
                     if (image.charAt(j) <= 0xff)
                     {
                         codeGenerator.genCode(
-                            "\\" + Integer.toOctalString((int)image.charAt(j)));
+                            "\\" + int.toOctalString((int)image.charAt(j)));
                     }
                     else
                     {
-                        string hexVal = Integer.toHexString((int)image.charAt(j));
+                        string hexVal = int.toHexString((int)image.charAt(j));
                         if (hexVal.Length == 3)
                             hexVal = "0" + hexVal;
                         codeGenerator.genCode("\\u" + hexVal);
@@ -322,7 +322,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         for (int i = 0; i < newStates.Length; i++)
         {
             if (i > 0) codeGenerator.genCode(", ");
-            codeGenerator.genCode("0x" + Integer.toHexString(newStates[i]));
+            codeGenerator.genCode("0x" + int.toHexString(newStates[i]));
         }
         codeGenerator.genCodeLine("};");
 

@@ -29,6 +29,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 using org.javacc.utils;
+using System.Security;
 using System.Text;
 
 namespace org.javacc.parser;
@@ -80,7 +81,7 @@ public class Main
         int maxLengthBool = 0;
         int maxLengthString = 0;
 
-        for (OptionInfo i : options)
+        foreach (OptionInfo i in options)
         {
             int length = i.getName().Length;
 
@@ -108,7 +109,7 @@ public class Main
         {
             Console.WriteLine("The integer valued options are:");
             Console.WriteLine("");
-            for (OptionInfo i : options)
+            foreach (OptionInfo i in options)
             {
                 printOptionInfo(OptionType.INTEGER, i, maxLengthInt);
             }
@@ -120,7 +121,7 @@ public class Main
         {
             Console.WriteLine("The boolean valued options are:");
             Console.WriteLine("");
-            for (OptionInfo i : options)
+            foreach (OptionInfo i in options)
             {
                 printOptionInfo(OptionType.BOOLEAN, i, maxLengthBool);
             }
@@ -131,7 +132,7 @@ public class Main
         {
             Console.WriteLine("The string valued options are:");
             Console.WriteLine("");
-            for (OptionInfo i : options)
+            foreach (OptionInfo i in options)
             {
                 printOptionInfo(OptionType.STRING, i, maxLengthString);
             }
@@ -187,7 +188,7 @@ public class Main
     public static int mainProgram(string[] args)
     {
 
-        if (args.Length == 1 && args[args.Length - 1].equalsIgnoreCase("-version"))
+        if (args.Length == 1 && args[args.Length - 1].Equals("-version",StringComparison.InvariantCultureIgnoreCase))
         {
             Console.WriteLine(Version.versionNumber);
             return 0;
@@ -230,15 +231,15 @@ public class Main
 
         try
         {
-            File fp = new File(args[args.Length - 1]);
-            if (!fp.exists())
+            string fp = (args[^1]);
+            if (!File.Exists(fp))
             {
-                Console.WriteLine("File " + args[args.Length - 1] + " not found.");
+                Console.WriteLine("File " + args[^1] + " not found.");
                 return 1;
             }
-            if (fp.isDirectory())
+            if (Directory.Exists(fp))
             {
-                Console.WriteLine(args[args.Length - 1] + " is a directory. Please use a valid file name.");
+                Console.WriteLine(args[^1] + " is a directory. Please use a valid file name.");
                 return 1;
             }
             parser = new JavaCCParser(new BufferedReader(new InputStreamReader(new FileInputStream(args[args.Length - 1]), Options.getGrammarEncoding())));

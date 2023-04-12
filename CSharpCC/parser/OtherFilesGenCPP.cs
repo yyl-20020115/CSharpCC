@@ -28,13 +28,15 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+using org.javacc.jjtree;
+
 namespace org.javacc.parser;
 
 
 /**
  * Generates the Constants file.
  */
-public class OtherFilesGenCPP:JavaCCGlobals , JavaCCParserConstants {
+public class OtherFilesGenCPP: JavaCCGlobals {
 
   static public void start() {
 
@@ -162,7 +164,7 @@ public class OtherFilesGenCPP:JavaCCGlobals , JavaCCParserConstants {
    public static void printCharArray(TextWriter ostr, string s) {
      ostr.print("{");
      for (int i = 0; i < s.Length; i++) {
-       ostr.print("0x" + Integer.toHexString((int)s.charAt(i)) + ", ");
+       ostr.print("0x" + int.toHexString((int)s[i]) + ", ");
      }
      ostr.print("0}");
    }

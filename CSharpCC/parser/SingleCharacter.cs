@@ -47,11 +47,11 @@ public class SingleCharacter
      */
     public char ch;
 
-    SingleCharacter()
+    public SingleCharacter()
     {
     }
 
-    SingleCharacter(char c)
+    public SingleCharacter(char c)
     {
         ch = c;
     }

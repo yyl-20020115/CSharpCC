@@ -8,7 +8,7 @@ namespace org.javacc.parser;
 
 
 
-public class CodeGenerator
+public class CodeGenerator : JavaCCParserConstants
 {
     protected StringBuilder mainBuffer = new StringBuilder();
     protected StringBuilder includeBuffer = new StringBuilder();
@@ -105,15 +105,15 @@ public class CodeGenerator
         for (int i = 0; i < sb.Length - 1; i++)
         {
             int beg = i;
-            char c1 = sb.charAt(i);
-            char c2 = sb.charAt(i + 1);
+            char c1 = sb[i];
+            char c2 = sb[i + 1];
             if (char.IsDigit(c1) || (c1 == '0' && c2 == 'x'))
             {
                 i += c1 == '0' ? 2 : 1;
-                while (isHexDigit(sb.charAt(i))) i++;
-                if (sb.charAt(i) == 'L')
+                while (isHexDigit(sb[i])) i++;
+                if (sb[i] == 'L')
                 {
-                    sb.insert(i, "UL");
+                    sb.Insert(i, "UL");
                 }
                 i++;
             }
@@ -326,13 +326,13 @@ public class CodeGenerator
      */
     public void genClassStart(string mod, string name, String[] superClasses, String[] superInterfaces)
     {
-        bool isJavaLanguage = isJavaLanguage();
-        if (isJavaLanguage && mod != null)
+        bool _isJavaLanguage = isJavaLanguage();
+        if (_isJavaLanguage && mod != null)
         {
             genModifier(mod);
         }
         genCode("class " + name);
-        if (isJavaLanguage)
+        if (_isJavaLanguage)
         {
             if (superClasses.Length == 1 && superClasses[0] != null)
             {

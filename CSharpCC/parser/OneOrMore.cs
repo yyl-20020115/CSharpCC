@@ -26,6 +26,8 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using System.Text;
+
 namespace org.javacc.parser;
 
 

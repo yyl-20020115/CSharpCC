@@ -25,6 +25,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+using org.javacc.jjtree;
+
 namespace org.javacc.parser;
 
 
@@ -70,10 +72,10 @@ public class JavaCCGlobals : JavaCCParserConstants
      */
     static public void bannerLine(string fullName, string ver)
     {
-        Console.print("Java Compiler Compiler Version " + Version.versionNumber + " (" + fullName);
-        if (!ver == (""))
+        Console.Write("Java Compiler Compiler Version " + Version.versionNumber + " (" + fullName);
+        if (ver != (""))
         {
-            Console.print(" Version " + ver);
+            Console.Write(" Version " + ver);
         }
         Console.WriteLine(")");
     }
@@ -192,12 +194,12 @@ public class JavaCCGlobals : JavaCCParserConstants
     static protected int maskindex = 0;
     static protected int jj2index = 0;
     public static bool lookaheadNeeded;
-    static protected List maskVals = new ArrayList();
+    public static protected List maskVals = new ();
 
-    static Action actForEof;
-    static string nextStateForEof;
-    static public Token otherLanguageDeclTokenBeg;
-    static public Token otherLanguageDeclTokenEnd;
+    public static Action actForEof;
+    public static string nextStateForEof;
+    public static Token otherLanguageDeclTokenBeg;
+    public static Token otherLanguageDeclTokenEnd;
 
 
     // Some general purpose utilities follow.

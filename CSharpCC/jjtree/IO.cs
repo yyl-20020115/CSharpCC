@@ -26,6 +26,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 using org.javacc.parser;
+using System.Security;
 
 namespace org.javacc.jjtree;
 
@@ -163,7 +164,7 @@ public class IO
         { // Should never happen
             throw new JJTreeIOException(ne.ToString());
         }
-        catch (SecurityException se)
+        catch (SecurityException)
         {
             throw new JJTreeIOException("Security violation while trying to open " + fn);
         }

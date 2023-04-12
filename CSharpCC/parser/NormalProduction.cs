@@ -75,7 +75,7 @@ public class NormalProduction
      * exception in the throws list of this production.  This list does not
      * include ParseException which is always thrown.
      */
-    private List throws_list = new ArrayList();
+    private List throws_list = new ();
 
     /**
      * The RHS of this production.  Not used for JavaCodeProduction.

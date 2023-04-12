@@ -83,7 +83,7 @@ public class ParseGenCPP : ParseGen
         if (cu_to_insertion_point_2.Count != 0)
         {
             printTokenSetup((cu_to_insertion_point_2.get(0)));
-            for (Iterator <?> it = cu_to_insertion_point_2.iterator(); it.hasNext();)
+            for (Iterator it = cu_to_insertion_point_2.iterator(); it.hasNext();)
             {
                 t = (Token)it.next();
                 printToken(t);
@@ -143,7 +143,7 @@ public class ParseGenCPP : ParseGen
                 if (maskVals.Count > 0)
                 {
                     genCodeLine("  unsigned int jj_la1_" + i + "[] = {");
-                    for (Iterator <?> it = maskVals.iterator(); it.hasNext();)
+                    for (Iterator it = maskVals.iterator(); it.hasNext();)
                     {
                         int[] tokenMask = (int[])(it.next());
                         genCode("0x" + Integer.toHexString(tokenMask[i]) + ",");
@@ -736,7 +736,7 @@ public class ParseGenCPP : ParseGen
         if (cu_from_insertion_point_2.Count != 0)
         {
             printTokenSetup((cu_from_insertion_point_2.get(0))); this.ccol = 1;
-            for (Iterator <?> it = cu_from_insertion_point_2.iterator(); it.hasNext();)
+            for (Iterator it = cu_from_insertion_point_2.iterator(); it.hasNext();)
             {
                 t = (Token)it.next();
                 printToken(t);

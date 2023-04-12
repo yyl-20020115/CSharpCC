@@ -38,7 +38,7 @@ public class RChoice:RegularExpression {
    * The list of choices of this regular expression.  Each
    * list component will narrow to RegularExpression.
    */
-  private List choices = new ArrayList();
+  private List choices = new ();
 
   /**
    * @param choices the choices to set

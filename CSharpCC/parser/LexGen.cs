@@ -36,7 +36,7 @@ namespace org.javacc.parser;
 /**
  * Generate lexer.
  */
-public class LexGen : CodeGenerator, JavaCCParserConstants
+public class LexGen : CodeGenerator
 {
     private static readonly string DUMP_STATIC_VAR_DECLARATIONS_TEMPLATE_RESOURCE_URL = "/templates/DumpStaticVarDeclarations.template";
     private static readonly string DUMP_DEBUG_METHODS_TEMPLATE_RESOURCE_URL = "/templates/DumpDebugMethods.template";
@@ -226,7 +226,7 @@ public class LexGen : CodeGenerator, JavaCCParserConstants
         options.Add("hasActions", hasMoreActions || hasSkipActions || hasTokenActions);
         options.Add("tokMgrClassName", tokMgrClassName);
         int x = 0;
-    for (int l in maxLongsReqd) x = Math.max(x, l);
+    for (int l in maxLongsReqd) x = Math.Max(x, l);
         options.Add("maxLongs", x);
         options.Add("cu_name", cu_name);
 

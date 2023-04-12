@@ -93,7 +93,7 @@ public class JavaCCInterpreter
         {
             int beg = curPos;
             int matchedPos = beg;
-            int matchedKind = int.MAX_VALUE;
+            int matchedKind = int.MaxValue;
             int nfaStartState = td.initialStates.get(curLexState);
 
             char c = input.charAt(curPos);

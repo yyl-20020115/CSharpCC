@@ -25,6 +25,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+using System.Text;
+
 namespace org.javacc.parser;
 
 
@@ -32,103 +34,115 @@ namespace org.javacc.parser;
  * Describes non terminals.
  */
 
-public class NonTerminal:Expansion {
+public class NonTerminal : Expansion
+{
 
-  /**
-   * The LHS to which the return value of the non-terminal
-   * is assigned.  In case there is no LHS, then the vector
-   * remains empty.
-   */
-  private List<Token> lhsTokens = new ArrayList<Token>();
+    /**
+     * The LHS to which the return value of the non-terminal
+     * is assigned.  In case there is no LHS, then the vector
+     * remains empty.
+     */
+    private List<Token> lhsTokens = new ArrayList<Token>();
 
-  /**
-   * The name of the non-terminal.
-   */
-  private string name;
+    /**
+     * The name of the non-terminal.
+     */
+    private string name;
 
-  /**
-   * The list of all tokens in the argument list.
-   */
-  private List<Token> argument_tokens = new ArrayList<Token>();
+    /**
+     * The list of all tokens in the argument list.
+     */
+    private List<Token> argument_tokens = new ArrayList<Token>();
 
-  private List<Token> parametrized_type__tokens = new ArrayList<Token>();
-  /**
-   * The production this non-terminal corresponds to.
-   */
-  private NormalProduction prod;
+    private List<Token> parametrized_type__tokens = new ArrayList<Token>();
+    /**
+     * The production this non-terminal corresponds to.
+     */
+    private NormalProduction prod;
 
-  public StringBuilder dump(int indent, Set alreadyDumped) {
-    StringBuilder value = base.dump(indent, alreadyDumped).Append(' ').Append(name);
-    return value;
-  }
+    public StringBuilder dump(int indent, Set alreadyDumped)
+    {
+        StringBuilder value = base.dump(indent, alreadyDumped).Append(' ').Append(name);
+        return value;
+    }
 
-/**
- * @param lhsTokens the lhsTokens to set
- */
-public void setLhsTokens(List<Token> lhsTokens) {
-	this.lhsTokens = lhsTokens;
-}
+    /**
+     * @param lhsTokens the lhsTokens to set
+     */
+    public void setLhsTokens(List<Token> lhsTokens)
+    {
+        this.lhsTokens = lhsTokens;
+    }
 
-/**
- * @return the lhsTokens
- */
-public List<Token> getLhsTokens() {
-	return lhsTokens;
-}
+    /**
+     * @return the lhsTokens
+     */
+    public List<Token> getLhsTokens()
+    {
+        return lhsTokens;
+    }
 
-/**
- * @param name the name to set
- */
-public void setName(string name) {
-	this.name = name;
-}
+    /**
+     * @param name the name to set
+     */
+    public void setName(string name)
+    {
+        this.name = name;
+    }
 
-/**
- * @return the name
- */
-public string getName() {
-	return name;
-}
+    /**
+     * @return the name
+     */
+    public string getName()
+    {
+        return name;
+    }
 
-/**
- * @param argument_tokens the argument_tokens to set
- */
-public void setParametrizedTypeTokens(List<Token> argument_tokens) {
-	this.argument_tokens = argument_tokens;
-}
+    /**
+     * @param argument_tokens the argument_tokens to set
+     */
+    public void setParametrizedTypeTokens(List<Token> argument_tokens)
+    {
+        this.argument_tokens = argument_tokens;
+    }
 
-/**
- * @return the argument_tokens
- */
-public List<Token> getParametrizedTypeTokens() {
-	return parametrized_type__tokens;
-}
+    /**
+     * @return the argument_tokens
+     */
+    public List<Token> getParametrizedTypeTokens()
+    {
+        return parametrized_type__tokens;
+    }
 
-/**
- * @param argument_tokens the argument_tokens to set
- */
-public void setArgumentTokens(List<Token> parametrized_type__tokens) {
-	this.parametrized_type__tokens = parametrized_type__tokens;
-}
+    /**
+     * @param argument_tokens the argument_tokens to set
+     */
+    public void setArgumentTokens(List<Token> parametrized_type__tokens)
+    {
+        this.parametrized_type__tokens = parametrized_type__tokens;
+    }
 
-/**
- * @return the argument_tokens
- */
-public List<Token> getArgumentTokens() {
-	return argument_tokens;
-}
+    /**
+     * @return the argument_tokens
+     */
+    public List<Token> getArgumentTokens()
+    {
+        return argument_tokens;
+    }
 
-/**
- * @param prod the prod to set
- */
-public NormalProduction setProd(NormalProduction prod) {
-	return this.prod = prod;
-}
+    /**
+     * @param prod the prod to set
+     */
+    public NormalProduction setProd(NormalProduction prod)
+    {
+        return this.prod = prod;
+    }
 
-/**
- * @return the prod
- */
-public NormalProduction getProd() {
-	return prod;
-}
+    /**
+     * @return the prod
+     */
+    public NormalProduction getProd()
+    {
+        return prod;
+    }
 }

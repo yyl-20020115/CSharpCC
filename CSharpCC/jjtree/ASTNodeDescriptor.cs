@@ -83,9 +83,9 @@ public class ASTNodeDescriptor : JJTreeNode
     }
 
 
-    string name;
-    bool isGT;
-    ASTNodeDescriptorExpression expression;
+    public string name;
+    public bool isGT;
+    public ASTNodeDescriptorExpression expression;
 
 
     public bool isVoid()

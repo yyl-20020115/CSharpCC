@@ -23,6 +23,9 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using org.javacc.jjtree;
+using System.Text;
+
 namespace org.javacc.parser;
 
 
@@ -109,7 +112,7 @@ public class OutputFile
             string existingMD5 = null;
             while ((line = br.readLine()) != null)
             {
-                if (line.startsWith(MD5_LINE_PART_1))
+                if (line.StartsWith(MD5_LINE_PART_1))
                 {
                     existingMD5 = line.replaceAll(MD5_LINE_PART_1q, "").replaceAll(
                         MD5_LINE_PART_2q, "");
@@ -171,7 +174,7 @@ public class OutputFile
      * @param fileName
      * @param versionId
      */
-    private void checkVersion(File file, string versionId)
+    private void checkVersion(string file, string versionId)
     {
         string firstLine = "/* " + JavaCCGlobals.getIdString(toolName, file.getName()) + " Version ";
 
@@ -182,7 +185,7 @@ public class OutputFile
             string line;
             while ((line = reader.readLine()) != null)
             {
-                if (line.startsWith(firstLine))
+                if (line.StartsWith(firstLine))
                 {
                     string version = line.replaceFirst(".*Version ", "").replaceAll(" \\*/", "");
                     if (!version == (versionId))
@@ -217,7 +220,7 @@ public class OutputFile
      * @param fileName
      * @param options
      */
-    private void checkOptions(File file, String[] options)
+    private void checkOptions(string file, String[] options)
     {
         try
         {
@@ -226,7 +229,7 @@ public class OutputFile
             string line;
             while ((line = reader.readLine()) != null)
             {
-                if (line.startsWith("/* JavaCCOptions:"))
+                if (line.StartsWith("/* JavaCCOptions:"))
                 {
                     string currentOptions = Options.getOptionsString(options);
                     if (line.IndexOf(currentOptions) == -1)
@@ -321,7 +324,7 @@ public class OutputFile
     private static char[] HEX_DIGITS = new char[] { '0', '1', '2', '3',
     '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
-    private static readonly string toHexString(byte[] bytes)
+    private static string toHexString(byte[] bytes)
     {
         StringBuilder sb = new StringBuilder(32);
         for (int i = 0; i < bytes.Length; i++)

@@ -28,191 +28,246 @@
 namespace org.javacc.parser;
 
 
-public static class LookaheadWalk {
+public static class LookaheadWalk
+{
 
-  public static bool considerSemanticLA;
+    public static bool considerSemanticLA;
 
-  public static ArrayList<MatchInfo> sizeLimitedMatches;
+    public static List<MatchInfo> sizeLimitedMatches;
 
-  private LookaheadWalk() {}
-
-  private static void listAppend(List<MatchInfo> vToAppendTo, List<MatchInfo> vToAppend) {
-    for (int i = 0; i < vToAppend.Count; i++) {
-      vToAppendTo.Add(vToAppend.get(i));
-    }
-  }
-
-  public static List<MatchInfo> genFirstSet(List<MatchInfo> partialMatches, Expansion exp) {
-    if (exp is RegularExpression) {
-      List<MatchInfo> retval = new ArrayList<MatchInfo>();
-      for (int i = 0; i < partialMatches.Count; i++) {
-        MatchInfo m = (MatchInfo)partialMatches.get(i);
-        MatchInfo mnew = new MatchInfo();
-        for (int j = 0; j < m.firstFreeLoc; j++) {
-          mnew.match[j] = m.match[j];
+    private static void listAppend(List<MatchInfo> vToAppendTo, List<MatchInfo> vToAppend)
+    {
+        for (int i = 0; i < vToAppend.Count; i++)
+        {
+            vToAppendTo.Add(vToAppend.get(i));
         }
-        mnew.firstFreeLoc = m.firstFreeLoc;
-        mnew.match[mnew.firstFreeLoc++] = ((RegularExpression)exp).ordinal;
-        if (mnew.firstFreeLoc == MatchInfo.laLimit) {
-          sizeLimitedMatches.Add(mnew);
-        } else {
-          retval.Add(mnew);
-        }
-      }
-      return retval;
-    } else if (exp is NonTerminal) {
-      NormalProduction prod = ((NonTerminal)exp).getProd();
-      if (prod is CodeProduction) {
-        return new ArrayList<MatchInfo>();
-      } else {
-        return genFirstSet(partialMatches, prod.getExpansion());
-      }
-    } else if (exp is Choice) {
-      List<MatchInfo> retval = new ArrayList<MatchInfo>();
-      Choice ch = (Choice)exp;
-      for (int i = 0; i < ch.getChoices().Count; i++) {
-        List<MatchInfo> v = genFirstSet(partialMatches, (Expansion)ch.getChoices().get(i));
-        listAppend(retval, v);
-      }
-      return retval;
-    } else if (exp is Sequence) {
-      List<MatchInfo> v = partialMatches;
-      Sequence seq = (Sequence)exp;
-      for (int i = 0; i < seq.units.Count; i++) {
-        v = genFirstSet(v, (Expansion)seq.units.get(i));
-        if (v.Count == 0) break;
-      }
-      return v;
-    } else if (exp is OneOrMore) {
-      List<MatchInfo> retval = new ArrayList<MatchInfo>();
-      List<MatchInfo> v = partialMatches;
-      OneOrMore om = (OneOrMore)exp;
-      while (true) {
-        v = genFirstSet(v, om.expansion);
-        if (v.Count == 0) break;
-        listAppend(retval, v);
-      }
-      return retval;
-    } else if (exp is ZeroOrMore) {
-      List<MatchInfo> retval = new ArrayList<MatchInfo>();
-      listAppend(retval, partialMatches);
-      List<MatchInfo> v = partialMatches;
-      ZeroOrMore zm = (ZeroOrMore)exp;
-      while (true) {
-        v = genFirstSet(v, zm.expansion);
-        if (v.Count == 0) break;
-        listAppend(retval, v);
-      }
-      return retval;
-    } else if (exp is ZeroOrOne) {
-      List<MatchInfo> retval = new ArrayList<MatchInfo>();
-      listAppend(retval, partialMatches);
-      listAppend(retval, genFirstSet(partialMatches, ((ZeroOrOne)exp).expansion));
-      return retval;
-    } else if (exp is TryBlock) {
-      return genFirstSet(partialMatches, ((TryBlock)exp).exp);
-    } else if (considerSemanticLA &&
-               exp is Lookahead &&
-               ((Lookahead)exp).getActionTokens().Count != 0
-              ) {
-      return new ArrayList<MatchInfo>();
-    } else {
-      List<MatchInfo> retval = new ArrayList<MatchInfo>();
-      listAppend(retval, partialMatches);
-      return retval;
     }
-  }
 
-  private static void listSplit(List toSplit, List mask, List partInMask, List rest) {
+    public static List<MatchInfo> genFirstSet(List<MatchInfo> partialMatches, Expansion exp)
+    {
+        if (exp is RegularExpression)
+        {
+            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            for (int i = 0; i < partialMatches.Count; i++)
+            {
+                MatchInfo m = (MatchInfo)partialMatches.get(i);
+                MatchInfo mnew = new MatchInfo();
+                for (int j = 0; j < m.firstFreeLoc; j++)
+                {
+                    mnew.match[j] = m.match[j];
+                }
+                mnew.firstFreeLoc = m.firstFreeLoc;
+                mnew.match[mnew.firstFreeLoc++] = ((RegularExpression)exp).ordinal;
+                if (mnew.firstFreeLoc == MatchInfo.laLimit)
+                {
+                    sizeLimitedMatches.Add(mnew);
+                }
+                else
+                {
+                    retval.Add(mnew);
+                }
+            }
+            return retval;
+        }
+        else if (exp is NonTerminal)
+        {
+            NormalProduction prod = ((NonTerminal)exp).getProd();
+            if (prod is CodeProduction)
+            {
+                return new ArrayList<MatchInfo>();
+            }
+            else
+            {
+                return genFirstSet(partialMatches, prod.getExpansion());
+            }
+        }
+        else if (exp is Choice)
+        {
+            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            Choice ch = (Choice)exp;
+            for (int i = 0; i < ch.getChoices().Count; i++)
+            {
+                List<MatchInfo> v = genFirstSet(partialMatches, (Expansion)ch.getChoices().get(i));
+                listAppend(retval, v);
+            }
+            return retval;
+        }
+        else if (exp is Sequence)
+        {
+            List<MatchInfo> v = partialMatches;
+            Sequence seq = (Sequence)exp;
+            for (int i = 0; i < seq.units.Count; i++)
+            {
+                v = genFirstSet(v, (Expansion)seq.units.get(i));
+                if (v.Count == 0) break;
+            }
+            return v;
+        }
+        else if (exp is OneOrMore)
+        {
+            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            List<MatchInfo> v = partialMatches;
+            OneOrMore om = (OneOrMore)exp;
+            while (true)
+            {
+                v = genFirstSet(v, om.expansion);
+                if (v.Count == 0) break;
+                listAppend(retval, v);
+            }
+            return retval;
+        }
+        else if (exp is ZeroOrMore)
+        {
+            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            listAppend(retval, partialMatches);
+            List<MatchInfo> v = partialMatches;
+            ZeroOrMore zm = (ZeroOrMore)exp;
+            while (true)
+            {
+                v = genFirstSet(v, zm.expansion);
+                if (v.Count == 0) break;
+                listAppend(retval, v);
+            }
+            return retval;
+        }
+        else if (exp is ZeroOrOne)
+        {
+            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            listAppend(retval, partialMatches);
+            listAppend(retval, genFirstSet(partialMatches, ((ZeroOrOne)exp).expansion));
+            return retval;
+        }
+        else if (exp is TryBlock)
+        {
+            return genFirstSet(partialMatches, ((TryBlock)exp).exp);
+        }
+        else if (considerSemanticLA &&
+                   exp is Lookahead &&
+                   ((Lookahead)exp).getActionTokens().Count != 0
+                  )
+        {
+            return new ArrayList<MatchInfo>();
+        }
+        else
+        {
+            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            listAppend(retval, partialMatches);
+            return retval;
+        }
+    }
+
+    private static void listSplit(List toSplit, List mask, List partInMask, List rest)
+    {
     OuterLoop:
-    for (int i = 0; i < toSplit.Count; i++) {
-      for (int j = 0; j < mask.Count; j++) {
-        if (toSplit.get(i) == mask.get(j)) {
-          partInMask.Add(toSplit.get(i));
-          continue OuterLoop;
+        for (int i = 0; i < toSplit.Count; i++)
+        {
+            for (int j = 0; j < mask.Count; j++)
+            {
+                if (toSplit.get(i) == mask.get(j))
+                {
+                    partInMask.Add(toSplit.get(i));
+                    continue OuterLoop;
+                }
+            }
+            rest.Add(toSplit.get(i));
         }
-      }
-      rest.Add(toSplit.get(i));
     }
-  }
 
-  public static List<MatchInfo> genFollowSet(List<MatchInfo> partialMatches, Expansion exp, long generation) {
-    if (exp.myGeneration == generation) {
-      return new ArrayList<MatchInfo>();
+    public static List<MatchInfo> genFollowSet(List<MatchInfo> partialMatches, Expansion exp, long generation)
+    {
+        if (exp.myGeneration == generation)
+        {
+            return new ArrayList<MatchInfo>();
+        }
+        //  Console.WriteLine("*** Parent: " + exp.parent);
+        exp.myGeneration = generation;
+        if (exp.parent == null)
+        {
+            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            listAppend(retval, partialMatches);
+            return retval;
+        }
+        else
+
+        if (exp.parent is NormalProduction)
+        {
+            List parents = ((NormalProduction)exp.parent).getParents();
+            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            //    Console.WriteLine("1; gen: " + generation + "; exp: " + exp);
+            for (int i = 0; i < parents.Count; i++)
+            {
+                List<MatchInfo> v = genFollowSet(partialMatches, (Expansion)parents.get(i), generation);
+                listAppend(retval, v);
+            }
+            return retval;
+        }
+        else
+
+        if (exp.parent is Sequence)
+        {
+            Sequence seq = (Sequence)exp.parent;
+            List<MatchInfo> v = partialMatches;
+            for (int i = exp.ordinal + 1; i < seq.units.Count; i++)
+            {
+                v = genFirstSet(v, (Expansion)seq.units.get(i));
+                if (v.Count == 0) return v;
+            }
+            List<MatchInfo> v1 = new ArrayList<MatchInfo>();
+            List<MatchInfo> v2 = new ArrayList<MatchInfo>();
+            listSplit(v, partialMatches, v1, v2);
+            if (v1.Count != 0)
+            {
+                //Console.WriteLine("2; gen: " + generation + "; exp: " + exp);
+                v1 = genFollowSet(v1, seq, generation);
+            }
+            if (v2.Count != 0)
+            {
+                //Console.WriteLine("3; gen: " + generation + "; exp: " + exp);
+                v2 = genFollowSet(v2, seq, Expansion.nextGenerationIndex++);
+            }
+            listAppend(v2, v1);
+            return v2;
+        }
+        else
+
+        if (exp.parent is OneOrMore || exp.parent is ZeroOrMore)
+        {
+            List<MatchInfo> moreMatches = new ArrayList<MatchInfo>();
+            listAppend(moreMatches, partialMatches);
+            List<MatchInfo> v = partialMatches;
+            while (true)
+            {
+                v = genFirstSet(v, exp);
+                if (v.Count == 0) break;
+                listAppend(moreMatches, v);
+            }
+            List<MatchInfo> v1 = new ();
+            List<MatchInfo> v2 = new ();
+            listSplit(moreMatches, partialMatches, v1, v2);
+            if (v1.Count != 0)
+            {
+                //		Console.WriteLine("4; gen: " + generation + "; exp: " + exp);
+                v1 = genFollowSet(v1, (Expansion)exp.parent, generation);
+            }
+            if (v2.Count != 0)
+            {
+                //		Console.WriteLine("5; gen: " + generation + "; exp: " + exp);
+                v2 = genFollowSet(v2, (Expansion)exp.parent, Expansion.nextGenerationIndex++);
+            }
+            listAppend(v2, v1);
+            return v2;
+        }
+        else
+        {
+            //		Console.WriteLine("6; gen: " + generation + "; exp: " + exp);
+            return genFollowSet(partialMatches, (Expansion)exp.parent, generation);
+        }
     }
-//  Console.WriteLine("*** Parent: " + exp.parent);
-    exp.myGeneration = generation;
-    if (exp.parent == null) {
-      List<MatchInfo> retval = new ArrayList<MatchInfo>();
-      listAppend(retval, partialMatches);
-      return retval;
-    } else
 
-    if (exp.parent is NormalProduction) {
-      List parents = ((NormalProduction)exp.parent).getParents();
-      List<MatchInfo> retval = new ArrayList<MatchInfo>();
-//    Console.WriteLine("1; gen: " + generation + "; exp: " + exp);
-      for (int i = 0; i < parents.Count; i++) {
-        List<MatchInfo> v = genFollowSet(partialMatches, (Expansion)parents.get(i), generation);
-        listAppend(retval, v);
-      }
-      return retval;
-    } else
-
-    if (exp.parent is Sequence) {
-      Sequence seq = (Sequence)exp.parent;
-      List<MatchInfo> v = partialMatches;
-      for (int i = exp.ordinal+1; i < seq.units.Count; i++) {
-        v = genFirstSet(v, (Expansion)seq.units.get(i));
-        if (v.Count == 0) return v;
-      }
-      List<MatchInfo>v1 = new ArrayList<MatchInfo>();
-      List<MatchInfo> v2 = new ArrayList<MatchInfo>();
-      listSplit(v, partialMatches, v1, v2);
-      if (v1.Count != 0) {
-//Console.WriteLine("2; gen: " + generation + "; exp: " + exp);
-        v1 = genFollowSet(v1, seq, generation);
-      }
-      if (v2.Count != 0) {
-//Console.WriteLine("3; gen: " + generation + "; exp: " + exp);
-        v2 = genFollowSet(v2, seq, Expansion.nextGenerationIndex++);
-      }
-      listAppend(v2, v1);
-      return v2;
-    } else
-
-    if (exp.parent is OneOrMore || exp.parent is ZeroOrMore) {
-      List<MatchInfo> moreMatches = new ArrayList<MatchInfo>();
-      listAppend(moreMatches, partialMatches);
-      List<MatchInfo> v = partialMatches;
-      while (true) {
-        v = genFirstSet(v, exp);
-        if (v.Count == 0) break;
-        listAppend(moreMatches, v);
-      }
-      List<MatchInfo> v1 = new ArrayList<MatchInfo>();
-      List<MatchInfo> v2 = new ArrayList<MatchInfo>();
-      listSplit(moreMatches, partialMatches, v1, v2);
-      if (v1.Count != 0) {
-//		Console.WriteLine("4; gen: " + generation + "; exp: " + exp);
-        v1 = genFollowSet(v1, (Expansion)exp.parent, generation);
-      }
-      if (v2.Count != 0) {
-//		Console.WriteLine("5; gen: " + generation + "; exp: " + exp);
-        v2 = genFollowSet(v2, (Expansion)exp.parent, Expansion.nextGenerationIndex++);
-      }
-      listAppend(v2, v1);
-      return v2;
-    } else {
-//		Console.WriteLine("6; gen: " + generation + "; exp: " + exp);
-    	return genFollowSet(partialMatches, (Expansion)exp.parent, generation);
+    public static void reInit()
+    {
+        considerSemanticLA = false;
+        sizeLimitedMatches = null;
     }
-  }
-
-   public static void reInit()
-   {
-      considerSemanticLA = false;
-      sizeLimitedMatches = null;
-   }
 
 }

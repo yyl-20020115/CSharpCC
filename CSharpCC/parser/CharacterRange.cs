@@ -49,9 +49,9 @@ public class CharacterRange
 
     private char left;
 
-    CharacterRange() { }
+    public CharacterRange() { }
 
-    CharacterRange(char l, char r)
+    public CharacterRange(char l, char r)
     {
         if (l > r)
             JavaCCErrors.semantic_error(this, "Invalid range : \"" + (int)l + "\" - \""

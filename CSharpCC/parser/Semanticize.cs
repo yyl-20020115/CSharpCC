@@ -184,7 +184,7 @@ public class Semanticize:JavaCCGlobals {
           tp.lexStates[i++] = (String)(enum1.nextElement());
         }
       }
-      Hashtable table[] = new Hashtable[tp.lexStates.Length];
+      Hashtable[] table= new Hashtable[tp.lexStates.Length];
       for (int i = 0; i < tp.lexStates.Length; i++) {
         table[i] = (Hashtable)simple_tokens_table.get(tp.lexStates[i]);
       }

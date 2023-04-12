@@ -147,7 +147,7 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 					genCode("	   jj_la1_" + i + " = new int[] {");
 					for (Iterator<?> it = maskVals.iterator(); it.hasNext();) {
 						int[] tokenMask = (int[]) (it.next());
-						genCode("0x" + Integer.toHexString(tokenMask[i]) + ",");
+						genCode("0x" + int.toHexString(tokenMask[i]) + ",");
 					}
 					genCodeLine("};");
 					genCodeLine("	}");

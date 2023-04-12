@@ -94,8 +94,8 @@ public class LookaheadCalc:JavaCCGlobals {
     // dbl[i] and dbr[i] are lists of size limited matches for choice i
     // of ch.  dbl ignores matches with semantic lookaheads (when force_la_check
     // is false), while dbr ignores semantic lookahead.
-    List[] dbl = new ArrayList[ch.getChoices().Count];
-    List[] dbr = new ArrayList[ch.getChoices().Count];
+    List[] dbl = new List[ch.getChoices().Count];
+    List[] dbr = new List[ch.getChoices().Count];
     int[] minLA = new int[ch.getChoices().Count-1];
     MatchInfo[] overlapInfo = new MatchInfo[ch.getChoices().Count-1];
     int[] other = new int[ch.getChoices().Count-1];

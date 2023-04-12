@@ -38,7 +38,7 @@ public static class ExpansionTreeWalker {
    * i.e., it executes opObj.action first and then visits the
    * children.
    */
-  static void preOrderWalk(Expansion node, TreeWalkerOp opObj) {
+  public static void preOrderWalk(Expansion node, TreeWalkerOp opObj) {
     opObj.Action(node);
     if (opObj.GoDeeper(node)) {
       if (node is Choice) {
