@@ -332,7 +332,7 @@ public class OutputFile
         return sb.ToString();
     }
 
-    private static class NullOutputStream : OutputStream
+    private class NullOutputStream : Stream
     {
 
         public void write(byte[] arg0, int arg1, int arg2)

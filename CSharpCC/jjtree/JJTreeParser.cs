@@ -129,7 +129,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 while (true)
                 {
                     production();
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -243,7 +243,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             label_2:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -305,7 +305,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         jjtreeOpenNodeScope(jjtn000); Token o, v;
         try
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case IDENTIFIER:
                     o = jj_consume_token(IDENTIFIER);
@@ -325,7 +325,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     throw new ParseException();
             }
             jj_consume_token(ASSIGN);
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case INTEGER_LITERAL:
                     v = IntegerLiteral();
@@ -385,7 +385,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void production()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _JAVACODE:
                 javacode_production();
@@ -454,7 +454,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     getNextToken();
                 }
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case THROWS:
                     jj_consume_token(THROWS);
@@ -463,7 +463,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 label_3:
                     while (true)
                     {
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                         {
                             case COMMA:
                                 ;
@@ -481,7 +481,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     jj_la1[6] = jj_gen;
                     ;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case HASH:
                     nd = node_descriptor();
@@ -507,7 +507,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             label_4:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -670,7 +670,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             ResultType();
             t1 = identifier();
             FormalParameters();
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case THROWS:
                     jj_consume_token(THROWS);
@@ -679,7 +679,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 label_5:
                     while (true)
                     {
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                         {
                             case COMMA:
                                 ;
@@ -697,7 +697,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     jj_la1[10] = jj_gen;
                     ;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case HASH:
                     nd = node_descriptor();
@@ -725,7 +725,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             label_6:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -915,12 +915,12 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void AccessModifier()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case PRIVATE:
             case PROTECTED:
             case PUBLIC:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case PUBLIC:
                         jj_consume_token(PUBLIC);
@@ -952,7 +952,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         jjtreeOpenNodeScope(jjtn000);
         try
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LT:
                     if (jj_2_1(2))
@@ -963,7 +963,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     }
                     else
                     {
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                         {
                             case LT:
                                 jj_consume_token(LT);
@@ -971,7 +971,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                             label_7:
                                 while (true)
                                 {
-                                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                                     {
                                         case COMMA:
                                             ;
@@ -997,7 +997,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     ;
             }
             regexpr_kind();
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LBRACKET:
                     jj_consume_token(LBRACKET);
@@ -1014,7 +1014,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         label_8:
             while (true)
             {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case BIT_OR:
                         ;
@@ -1076,7 +1076,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 eatUptoCloseBrace();
                 getNextToken(); // eat } 
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LBRACE:
                     ClassOrInterfaceBody();
@@ -1119,7 +1119,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void regexpr_kind()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _TOKEN:
                 jj_consume_token(_TOKEN);
@@ -1150,7 +1150,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         try
         {
             regular_expression();
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LBRACE:
                     Block();
@@ -1159,7 +1159,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     jj_la1[22] = jj_gen;
                     ;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case COLON:
                     jj_consume_token(COLON);
@@ -1214,7 +1214,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         label_9:
             while (true)
             {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case BIT_OR:
                         ;
@@ -1273,7 +1273,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         ASTNodeDescriptor nd = null;
         try
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case _LOOKAHEAD:
                     ASTBNFLookahead jjtn001 = new ASTBNFLookahead(JJTBNFLOOKAHEAD);
@@ -1331,7 +1331,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 try
                 {
                     eu = expansion_unit(p);
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case HASH:
                             nd = node_descriptor();
@@ -1422,7 +1422,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void local_lookahead(ASTProduction p)
     {
         bool commaAtEnd = false, emptyLA = true;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case INTEGER_LITERAL:
                 IntegerLiteral();
@@ -1466,7 +1466,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             {
                 eatUptoCloseBrace();
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -1525,7 +1525,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public JJTreeNode expansion_unit(ASTProduction p)
     {
         Token t;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _LOOKAHEAD:
                 ASTBNFLookahead jjtn001 = new ASTBNFLookahead(JJTBNFLOOKAHEAD);
@@ -1674,7 +1674,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 label_11:
                     while (true)
                     {
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                         {
                             case CATCH:
                                 ;
@@ -1690,7 +1690,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                         jj_consume_token(RPAREN);
                         Block();
                     }
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case FINALLY:
                             jj_consume_token(FINALLY);
@@ -1750,12 +1750,12 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                         {
                             ;
                         }
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                         {
                             case STRING_LITERAL:
                             case LT:
                                 regular_expression();
-                                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                                 {
                                     case DOT:
                                         jj_consume_token(DOT);
@@ -1844,13 +1844,13 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case LPAREN:
                             t = jj_consume_token(LPAREN);
                             expansion_choices(p);
                             jj_consume_token(RPAREN);
-                            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                             {
                                 case PLUS:
                                     ASTBNFOneOrMore jjtn007 = new ASTBNFOneOrMore(JJTBNFONEORMORE);
@@ -1943,7 +1943,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void regular_expression()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case STRING_LITERAL:
                 ASTREStringLiteral jjtn001 = new ASTREStringLiteral(JJTRESTRINGLITERAL);
@@ -1995,11 +1995,11 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     try
                     {
                         jj_consume_token(LT);
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                         {
                             case HASH:
                             case IDENTIFIER:
-                                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                                 {
                                     case HASH:
                                         jj_consume_token(HASH);
@@ -2092,7 +2092,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case LT:
                             ASTREEOF jjtn004 = new ASTREEOF(JJTREEOF);
@@ -2136,7 +2136,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         label_12:
             while (true)
             {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case BIT_OR:
                         ;
@@ -2193,7 +2193,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             while (true)
             {
                 complex_regular_expression_unit();
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case STRING_LITERAL:
                     case LPAREN:
@@ -2242,7 +2242,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void complex_regular_expression_unit()
     {
         Token t;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case STRING_LITERAL:
                 ASTREStringLiteral jjtn001 = new ASTREStringLiteral(JJTRESTRINGLITERAL);
@@ -2332,7 +2332,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 t = jj_consume_token(LPAREN);
                 complex_regular_expression_choices();
                 jj_consume_token(RPAREN);
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case PLUS:
                         ASTREOneOrMore jjtn003 = new ASTREOneOrMore(JJTREONEORMORE);
@@ -2391,11 +2391,11 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     case LBRACE:
                         jj_consume_token(LBRACE);
                         IntegerLiteral();
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                         {
                             case COMMA:
                                 jj_consume_token(COMMA);
-                                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                                 {
                                     case INTEGER_LITERAL:
                                         IntegerLiteral();
@@ -2466,7 +2466,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         jjtreeOpenNodeScope(jjtn000);
         try
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case TILDE:
                     jj_consume_token(TILDE);
@@ -2476,14 +2476,14 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     ;
             }
             jj_consume_token(LBRACKET);
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case STRING_LITERAL:
                     character_descriptor();
                 label_14:
                     while (true)
                     {
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                         {
                             case COMMA:
                                 ;
@@ -2543,7 +2543,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         try
         {
             StringLiteral();
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case MINUS:
                     jj_consume_token(MINUS);
@@ -2607,7 +2607,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         try
         {
             jj_consume_token(HASH);
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -2633,11 +2633,11 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     jj_consume_token(-1);
                     throw new ParseException();
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LPAREN:
                     jj_consume_token(LPAREN);
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case GT:
                             jj_consume_token(GT);
@@ -2746,7 +2746,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
      */
     public String JavaIdentifier()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case IDENTIFIER:
                 jj_consume_token(IDENTIFIER);
@@ -2810,7 +2810,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_15:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case IMPORT:
                     ;
@@ -2824,7 +2824,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_16:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case ABSTRACT:
                 case CLASS:
@@ -2865,7 +2865,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void ImportDeclaration()
     {
         jj_consume_token(IMPORT);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case STATIC:
                 jj_consume_token(STATIC);
@@ -2875,7 +2875,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 ;
         }
         Name();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case DOT:
                 jj_consume_token(DOT);
@@ -2906,7 +2906,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             {
                 break label_17;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case PUBLIC:
                     jj_consume_token(PUBLIC);
@@ -2958,7 +2958,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void TypeDeclaration()
     {
         ;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case SEMICOLON:
                 jj_consume_token(SEMICOLON);
@@ -2979,7 +2979,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             case 130:
             case 139:
                 Modifiers();
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case CLASS:
                     case INTERFACE:
@@ -3008,7 +3008,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     {
         Token t = null;
         String s;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case CLASS:
                 jj_consume_token(CLASS);
@@ -3022,7 +3022,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 throw new ParseException();
         }
         s = JavaIdentifier();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case LT:
                 TypeParameters();
@@ -3031,7 +3031,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 jj_la1[62] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case EXTENDS:
                 ExtendsList();
@@ -3040,7 +3040,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 jj_la1[63] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case IMPLEMENTS:
                 t = getToken(1);
@@ -3072,7 +3072,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_18:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -3093,7 +3093,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_19:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -3111,7 +3111,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     {
         jj_consume_token(130);
         JavaIdentifier();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case IMPLEMENTS:
                 ImplementsList();
@@ -3126,7 +3126,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void EnumBody()
     {
         jj_consume_token(LBRACE);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -3172,7 +3172,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 jj_la1[68] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case COMMA:
                 jj_consume_token(COMMA);
@@ -3181,14 +3181,14 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 jj_la1[69] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case SEMICOLON:
                 jj_consume_token(SEMICOLON);
             label_21:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -3251,7 +3251,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     {
         Modifiers();
         JavaIdentifier();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case LPAREN:
                 Arguments();
@@ -3260,7 +3260,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 jj_la1[72] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case LBRACE:
                 ClassOrInterfaceBody();
@@ -3278,7 +3278,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_22:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -3296,7 +3296,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void TypeParameter()
     {
         JavaIdentifier();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case EXTENDS:
                 TypeBound();
@@ -3314,7 +3314,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_23:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case BIT_AND:
                     ;
@@ -3334,7 +3334,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_24:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -3396,7 +3396,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -3438,7 +3438,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 case 139:
                 case IDENTIFIER:
                     Modifiers();
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case CLASS:
                         case INTERFACE:
@@ -3459,7 +3459,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                             }
                             else
                             {
-                                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                                 {
                                     case _LOOKAHEAD:
                                     case _IGNORE_CASE:
@@ -3513,7 +3513,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_25:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -3531,7 +3531,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void VariableDeclarator()
     {
         VariableDeclaratorId();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case ASSIGN:
                 jj_consume_token(ASSIGN);
@@ -3549,7 +3549,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_26:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LBRACKET:
                     ;
@@ -3565,7 +3565,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void VariableInitializer()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case LBRACE:
                 ArrayInitializer();
@@ -3622,7 +3622,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void ArrayInitializer()
     {
         jj_consume_token(LBRACE);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -3685,7 +3685,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 jj_la1[85] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case COMMA:
                 jj_consume_token(COMMA);
@@ -3699,7 +3699,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void MethodDeclaration()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case LT:
                 TypeParameters();
@@ -3710,7 +3710,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         ResultType();
         MethodDeclarator();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case THROWS:
                 jj_consume_token(THROWS);
@@ -3720,7 +3720,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 jj_la1[88] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case LBRACE:
                 Block();
@@ -3742,7 +3742,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_28:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LBRACKET:
                     ;
@@ -3759,7 +3759,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void FormalParameters()
     {
         jj_consume_token(LPAREN);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -3798,7 +3798,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             label_29:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case COMMA:
                             ;
@@ -3822,12 +3822,12 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     {
         Modifiers();
         Type();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case STAR:
             case BIT_AND:
             case 131:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case BIT_AND:
                         jj_consume_token(BIT_AND);
@@ -3853,7 +3853,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void ConstructorDeclaration()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case LT:
                 TypeParameters();
@@ -3864,7 +3864,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         JavaIdentifier();
         FormalParameters();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case THROWS:
                 jj_consume_token(THROWS);
@@ -3886,7 +3886,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_30:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -3972,7 +3972,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -4031,7 +4031,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void Initializer()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case STATIC:
                 jj_consume_token(STATIC);
@@ -4054,7 +4054,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case BOOLEAN:
                 case BYTE:
@@ -4076,7 +4076,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void ReferenceType()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case BOOLEAN:
             case BYTE:
@@ -4115,7 +4115,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             case _EOF:
             case 132:
             case IDENTIFIER:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case 132:
                         Template();
@@ -4155,7 +4155,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_33:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -4173,7 +4173,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void TemplatePack()
     {
         TemplateBase();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case 131:
                 jj_consume_token(131);
@@ -4187,7 +4187,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void TemplateBase()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case CLASS:
                 jj_consume_token(CLASS);
@@ -4224,7 +4224,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             {
                 break label_34;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case DOT:
                     jj_consume_token(DOT);
@@ -4256,7 +4256,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_35:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -4267,7 +4267,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             }
             jj_consume_token(COMMA);
             TypeArgument();
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case 131:
                     jj_consume_token(131);
@@ -4282,7 +4282,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void TypeArgument()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -4309,7 +4309,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 break;
             case HOOK:
                 jj_consume_token(HOOK);
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case EXTENDS:
                     case SUPER:
@@ -4329,7 +4329,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void WildcardBounds()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case EXTENDS:
                 jj_consume_token(EXTENDS);
@@ -4348,7 +4348,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void PrimitiveType()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case BOOLEAN:
                 jj_consume_token(BOOLEAN);
@@ -4383,11 +4383,11 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void ResultType()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case VOID:
                 jj_consume_token(VOID);
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case STAR:
                         jj_consume_token(STAR);
@@ -4419,7 +4419,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             case SHORT:
             case 132:
             case IDENTIFIER:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case CONST:
                         jj_consume_token(CONST);
@@ -4429,11 +4429,11 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                         ;
                 }
                 Type();
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case STAR:
                     case BIT_AND:
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                         {
                             case STAR:
                                 jj_consume_token(STAR);
@@ -4488,7 +4488,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_37:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -4521,7 +4521,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void AssignmentOperator()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case ASSIGN:
                 jj_consume_token(ASSIGN);
@@ -4569,7 +4569,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void ConditionalExpression()
     {
         ConditionalOrExpression();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case HOOK:
                 jj_consume_token(HOOK);
@@ -4589,7 +4589,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_38:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case SC_OR:
                     ;
@@ -4609,7 +4609,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_39:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case SC_AND:
                     ;
@@ -4629,7 +4629,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_40:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case BIT_OR:
                     ;
@@ -4649,7 +4649,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_41:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case XOR:
                     ;
@@ -4669,7 +4669,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_42:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case BIT_AND:
                     ;
@@ -4689,7 +4689,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_43:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case EQ:
                 case NE:
@@ -4699,7 +4699,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     jj_la1[126] = jj_gen;
                     break label_43;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case EQ:
                     jj_consume_token(EQ);
@@ -4719,7 +4719,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void InstanceOfExpression()
     {
         RelationalExpression();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case INSTANCEOF:
                 jj_consume_token(INSTANCEOF);
@@ -4737,7 +4737,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_44:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LT:
                 case LE:
@@ -4749,7 +4749,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     jj_la1[129] = jj_gen;
                     break label_44;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LT:
                     jj_consume_token(LT);
@@ -4786,7 +4786,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             {
                 break label_45;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case 137:
                     jj_consume_token(137);
@@ -4817,7 +4817,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_46:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case PLUS:
                 case MINUS:
@@ -4827,7 +4827,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     jj_la1[132] = jj_gen;
                     break label_46;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case PLUS:
                     jj_consume_token(PLUS);
@@ -4850,7 +4850,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_47:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case STAR:
                 case SLASH:
@@ -4861,7 +4861,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     jj_la1[134] = jj_gen;
                     break label_47;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case STAR:
                     jj_consume_token(STAR);
@@ -4883,11 +4883,11 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void UnaryExpression()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case PLUS:
             case MINUS:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case PLUS:
                         jj_consume_token(PLUS);
@@ -4967,11 +4967,11 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void UnaryExpressionNotPlusMinus()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case BANG:
             case TILDE:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case TILDE:
                         jj_consume_token(TILDE);
@@ -4994,7 +4994,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -5060,13 +5060,13 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LPAREN:
                     jj_consume_token(LPAREN);
                     Type();
                     jj_consume_token(RPAREN);
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case TILDE:
                             jj_consume_token(TILDE);
@@ -5126,11 +5126,11 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void PostfixExpression()
     {
         PrimaryExpression();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case INCR:
             case DECR:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case INCR:
                         jj_consume_token(INCR);
@@ -5161,7 +5161,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LPAREN:
                     jj_consume_token(LPAREN);
@@ -5241,7 +5241,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void PrimaryPrefix()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case FALSE:
             case NULL:
@@ -5278,7 +5278,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -5321,7 +5321,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LBRACKET:
                     jj_consume_token(LBRACKET);
@@ -5345,7 +5345,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void Literal()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case INTEGER_LITERAL:
                 jj_consume_token(INTEGER_LITERAL);
@@ -5384,7 +5384,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public Token BooleanLiteral()
     {
         Token t;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case TRUE:
                 t = jj_consume_token(TRUE);
@@ -5418,7 +5418,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void Arguments()
     {
         jj_consume_token(LPAREN);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -5475,7 +5475,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_49:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -5499,12 +5499,12 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case NEW:
                     jj_consume_token(NEW);
                     ClassOrInterfaceType();
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case LT:
                             TypeArguments();
@@ -5513,14 +5513,14 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                             jj_la1[153] = jj_gen;
                             ;
                     }
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case LBRACKET:
                             ArrayDimsAndInits();
                             break;
                         case LPAREN:
                             Arguments();
-                            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                             {
                                 case LBRACE:
                                     ClassOrInterfaceBody();
@@ -5584,7 +5584,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case LBRACKET:
                 label_52:
@@ -5592,7 +5592,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     {
                         jj_consume_token(LBRACKET);
                         jj_consume_token(RBRACKET);
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                         {
                             case LBRACKET:
                                 ;
@@ -5623,7 +5623,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case 138:
                     AssertStatement();
@@ -5718,7 +5718,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     {
         jj_consume_token(138);
         Expression();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case COLON:
                 jj_consume_token(COLON);
@@ -5748,7 +5748,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_53:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -5833,7 +5833,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -5907,7 +5907,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_54:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -5928,7 +5928,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void StatementExpression()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case INCR:
                 PreIncrementExpression();
@@ -5971,7 +5971,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             case 132:
             case IDENTIFIER:
                 PrimaryExpression();
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case ASSIGN:
                     case INCR:
@@ -5987,7 +5987,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     case 134:
                     case 135:
                     case 136:
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                         {
                             case INCR:
                                 jj_consume_token(INCR);
@@ -6038,7 +6038,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_55:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case CASE:
                 case _DEFAULT:
@@ -6052,7 +6052,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         label_56:
             while (true)
             {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                 {
                     case _LOOKAHEAD:
                     case _IGNORE_CASE:
@@ -6131,7 +6131,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void SwitchLabel()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case CASE:
                 jj_consume_token(CASE);
@@ -6156,7 +6156,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         Expression();
         jj_consume_token(RPAREN);
         Statement();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case ELSE:
                 jj_consume_token(ELSE);
@@ -6202,7 +6202,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -6253,7 +6253,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 case 132:
                 case 139:
                 case IDENTIFIER:
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -6310,7 +6310,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                             ;
                     }
                     jj_consume_token(SEMICOLON);
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -6359,7 +6359,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                             ;
                     }
                     jj_consume_token(SEMICOLON);
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -6422,7 +6422,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -6476,7 +6476,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_57:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -6498,7 +6498,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void BreakStatement()
     {
         jj_consume_token(BREAK);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -6524,7 +6524,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void ContinueStatement()
     {
         jj_consume_token(CONTINUE);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -6550,7 +6550,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     public void ReturnStatement()
     {
         jj_consume_token(RETURN);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -6624,7 +6624,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_58:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case CATCH:
                     ;
@@ -6639,7 +6639,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             jj_consume_token(RPAREN);
             Block();
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case FINALLY:
                 jj_consume_token(FINALLY);
@@ -6700,7 +6700,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case 139:
                     MarkerAnnotation();
@@ -6718,7 +6718,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         jj_consume_token(139);
         Name();
         jj_consume_token(LPAREN);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -6762,7 +6762,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_59:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -6785,7 +6785,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void MemberValue()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case 139:
                 Annotation();
@@ -6860,7 +6860,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
             jj_consume_token(COMMA);
             MemberValue();
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case COMMA:
                 jj_consume_token(COMMA);
@@ -6887,7 +6887,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
     label_61:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -6939,7 +6939,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
 
     public void AnnotationTypeMemberDeclaration()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -6984,7 +6984,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                     JavaIdentifier();
                     jj_consume_token(LPAREN);
                     jj_consume_token(RPAREN);
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case _DEFAULT:
                             DefaultValue();
@@ -6997,7 +6997,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
                     {
                         case CLASS:
                         case INTERFACE:
@@ -11111,7 +11111,7 @@ public class JJTreeParser/*@bgen(jjtree)*/: JJTreeParserTreeConstants, JJTreePar
         return t;
     }
 
-    private int jj_ntk()
+    private int jj_ntk_func()
     {
         if ((jj_nt = token.next) == null)
             return (jj_ntk = (token.next = token_source.getNextToken()).kind);

@@ -91,7 +91,7 @@ public class CodeGenerator {
       int beg = i;
       char c1 = sb.charAt(i);
       char c2 = sb.charAt(i + 1);
-      if (char.isDigit(c1) || (c1 == '0' && c2 == 'x')) {
+      if (char.IsDigit(c1) || (c1 == '0' && c2 == 'x')) {
         i += c1 == '0' ? 2 : 1;
         while (isHexDigit(sb.charAt(i))) i++;
         if (sb.charAt(i) == 'L') {

@@ -33,8 +33,6 @@ namespace org.javacc.parser;
  * various ways.
  */
 public static class ExpansionTreeWalker {
-  private ExpansionTreeWalker() {}
-
   /**
    * Visits the nodes of the tree rooted at "node" in pre-order.
    * i.e., it executes opObj.action first and then visits the

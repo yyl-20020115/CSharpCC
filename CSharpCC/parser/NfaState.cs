@@ -43,19 +43,19 @@ public class NfaState
    private static int lohiByteCnt;
    private static int dummyStateIndex = -1;
    private static bool done;
-   private static bool mark[];
-   private static bool stateDone[];
+   private static bool[] mark;
+   private static bool[] stateDone;
 
    private static List<NfaState> allStates = new ();
    private static List<NfaState> indexedAllStates = new ();
    private static List<NfaState> nonAsciiTableForMethod = new ();
-   private static Hashtable equivStatesTable = new Hashtable();
-   private static Hashtable allNextStates = new Hashtable();
-   private static Hashtable lohiByteTab = new Hashtable();
-   private static Hashtable stateNameForComposite = new Hashtable();
-   private static Hashtable compositeStateTable = new Hashtable();
-   private static Hashtable stateBlockTable = new Hashtable();
-   private static Hashtable stateSetsToFix = new Hashtable();
+   private static Hashtable equivStatesTable = new ();
+   private static Hashtable allNextStates = new ();
+   private static Hashtable lohiByteTab = new ();
+   private static Hashtable stateNameForComposite = new ();
+   private static Hashtable compositeStateTable = new ();
+   private static Hashtable stateBlockTable = new ();
+   private static Hashtable stateSetsToFix = new ();
 
    private static bool jjCheckNAddStatesUnaryNeeded = false;
    private static bool jjCheckNAddStatesDualNeeded = false;
@@ -1373,8 +1373,8 @@ public class NfaState
          return false;
 
       int i;
-      int freq[] = new int[nameSet.Length];
-      bool live[] = new bool[nameSet.Length];
+      int[] freq = new int[nameSet.Length];
+      bool[] live = new bool[nameSet.Length];
       int[] count = new int[allNextStates.Count];
 
       for (i = 0; i < nameSet.Length; i++)
@@ -1595,10 +1595,10 @@ public class NfaState
                tmp[cnt++] = toFix[i];
          }
 
-         int[] fixed = new int[cnt];
-         Array.Copy(tmp, 0, fixed, 0, cnt);
-         fixedSets.Add(s, fixed);
-         allNextStates.Add(s, fixed);
+         int[] _fixed = new int[cnt];
+         Array.Copy(tmp, 0, _fixed, 0, cnt);
+         fixedSets.Add(s, _fixed);
+         allNextStates.Add(s, _fixed);
          //Console.println(" as " + GetStateSetString(fixed));
       }
 

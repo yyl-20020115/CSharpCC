@@ -5,15 +5,12 @@
  */
 
 namespace org.javacc.parser;
-import static org.javacc.parser.Options.*;
-import java.util.List;
-import java.util.ArrayList;
 
 /** Token Manager. */
-public class JavaCCParserTokenManager implements JavaCCParserConstants
+public class JavaCCParserTokenManager : JavaCCParserConstants
 {
-   int beginLine[] = new int[10];
-   int beginCol[] = new int[10];
+   int[] beginLine = new int[10];
+   int[] beginCol = new int[10];
    int depth = 0;
    int size = 10;
 
@@ -22,8 +19,8 @@ public class JavaCCParserTokenManager implements JavaCCParserConstants
       if (depth == size)
       {
          size += 5;
-         int tmpbeginLine[] = new int[size];
-         int tmpbeginCol[] = new int[size];
+         int[] tmpbeginLine = new int[size];
+         int[] tmpbeginCol = new int[size];
 
          Array.Copy(beginLine, 0, beginLine = tmpbeginLine, 0, depth);
          Array.Copy(beginCol, 0, beginCol = tmpbeginCol, 0, depth);

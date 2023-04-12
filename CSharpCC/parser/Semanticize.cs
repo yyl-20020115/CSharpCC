@@ -647,7 +647,7 @@ public class Semanticize:JavaCCGlobals {
    * Objects of this class are created from class Semanticize to work on
    * references to regular expressions from RJustName's.
    */
-  static class FixRJustNames:JavaCCGlobals , TreeWalkerOp {
+  class FixRJustNames:JavaCCGlobals , TreeWalkerOp {
 
     public RegularExpression root;
 
@@ -676,7 +676,7 @@ public class Semanticize:JavaCCGlobals {
 
   }
 
-  static class LookaheadFixer:JavaCCGlobals , TreeWalkerOp {
+  class LookaheadFixer:JavaCCGlobals , TreeWalkerOp {
 
     public bool GoDeeper(Expansion e) {
       if (e is RegularExpression) {
@@ -735,7 +735,7 @@ public class Semanticize:JavaCCGlobals {
 
   }
 
-  static class ProductionDefinedChecker : JavaCCGlobals , TreeWalkerOp {
+  class ProductionDefinedChecker : JavaCCGlobals , TreeWalkerOp {
 
     public bool GoDeeper(Expansion e) {
       if (e is RegularExpression) {
@@ -758,7 +758,7 @@ public class Semanticize:JavaCCGlobals {
 
   }
 
-  static class EmptyChecker:JavaCCGlobals implements TreeWalkerOp {
+  class EmptyChecker:JavaCCGlobals implements TreeWalkerOp {
 
     public bool GoDeeper(Expansion e) {
       if (e is RegularExpression) {
@@ -786,7 +786,7 @@ public class Semanticize:JavaCCGlobals {
 
   }
 
-  static class LookaheadChecker:JavaCCGlobals implements TreeWalkerOp {
+  class LookaheadChecker:JavaCCGlobals , TreeWalkerOp {
 
     public bool GoDeeper(Expansion e) {
       if (e is RegularExpression) {
