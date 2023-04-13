@@ -121,7 +121,7 @@ public class Token
      */
     public static Token NewToken(int ofKind, string? image) => ofKind switch
     {
-        JavaCCParserConstants.RUNSIGNEDSHIFT or JavaCCParserConstants.RSIGNEDSHIFT or JavaCCParserConstants.GT => new GTToken(ofKind, image),
+        JavaCCParserConstants.RUNSIGNEDSHIFT_VALUE or JavaCCParserConstants.RSIGNEDSHIFT_VALUE or JavaCCParserConstants.GT => new GTToken(ofKind, image),
         _ => new Token(ofKind, image),
     };
 

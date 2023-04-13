@@ -259,9 +259,9 @@ public class JavaCCParserConstants
     /** RegularExpression Id. */
     public const int REMASSIGN = 134;
     /** RegularExpression Id. */
-    public const int RUNSIGNEDSHIFT = 135;
+    public const int RUNSIGNEDSHIFT_VALUE = 135;
     /** RegularExpression Id. */
-    public const int RSIGNEDSHIFT = 136;
+    public const int RSIGNEDSHIFT_VALUE = 136;
     /** RegularExpression Id. */
     public const int GT = 137;
     /** RegularExpression Id. */

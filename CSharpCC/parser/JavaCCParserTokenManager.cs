@@ -2803,7 +2803,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
                 image.Append(jjstrLiteralImages[135]);
                 lengthOfMatch = jjstrLiteralImages[135].Length;
                 matchedToken.kind = GT;
-                ((Token.GTToken)matchedToken).realKind = RUNSIGNEDSHIFT;
+                ((Token.GTToken)matchedToken).realKind = RUNSIGNEDSHIFT_VALUE;
                 input_stream.Backup(2);
                 matchedToken.image = ">";
                 break;
@@ -2811,7 +2811,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
                 image.Append(jjstrLiteralImages[136]);
                 lengthOfMatch = jjstrLiteralImages[136].Length;
                 matchedToken.kind = GT;
-                ((Token.GTToken)matchedToken).realKind = RSIGNEDSHIFT;
+                ((Token.GTToken)matchedToken).realKind = RSIGNEDSHIFT_VALUE;
                 input_stream.Backup(1);
                 matchedToken.image = ">";
                 break;
