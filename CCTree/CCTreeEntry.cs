@@ -30,11 +30,13 @@
  * Having this intermediary allows the OS scripts to be package name
  * independent.
  */
-namespace CSharpCC;
-public static class CSharpCC
+namespace CSharpCC.CCTree;
+
+public static class CCTreeEntry
 {
     public static void Main(string[] args)
     {
-        global::CSharpCC.Parser.MainParser.Main(args);
+        MainClass.Main(args);
     }
+
 }

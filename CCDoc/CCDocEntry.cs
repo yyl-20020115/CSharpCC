@@ -25,17 +25,17 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+namespace CSharpCC.CCDoc;
 /**
  * Intermediary between OS script and main program of application.
  * Having this intermediary allows the OS scripts to be package name
  * independent.
  */
-
-public static class CCTree
+public static class CCDocEntry
 {
+
     public static void Main(string[] args)
     {
-        CSharpCC.CCTree.MainClass.Main(args);
+        CCDocMain.Main(args);
     }
-
 }

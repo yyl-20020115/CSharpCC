@@ -153,6 +153,12 @@ public class TextGenerator : Generator
         Text("c++ code");
         ProductionEnd(cp);
     }
+    public virtual void CScode(CppCodeProduction cp)
+    {
+        ProductionStart(cp);
+        Text("c# code");
+        ProductionEnd(cp);
+    }
 
     /**
      * {@inheritDoc}
@@ -278,7 +284,7 @@ public class TextGenerator : Generator
         }
         catch (IOException e)
         {
-            Error("JJDoc: can't open output stream on file "
+            Error("CCDoc: can't open output stream on file "
                 + CCDocGlobals.output_file + ".  Using standard output.");
             writer = Console.Out;
         }

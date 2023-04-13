@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CCDoc\CCDoc.csproj" />
+    <ProjectReference Include="..\CCInterpreter\CCInterpreter.csproj" />
+    <ProjectReference Include="..\CCTree\CCTree.csproj" />
     <ProjectReference Include="..\CSharpCC\CSharpCC.csproj" />
   </ItemGroup>
 

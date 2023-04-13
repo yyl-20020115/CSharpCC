@@ -43,9 +43,9 @@ public class CCDocMain : CCDocGlobals
     private static void HelpMessage()
     {
         Info("");
-        Info("    jjdoc option-settings - (to read from standard input)");
+        Info("    CCDoc option-settings - (to read from standard input)");
         Info("OR");
-        Info("    jjdoc option-settings inputfile (to read from a file)");
+        Info("    CCDoc option-settings inputfile (to read from a file)");
         Info("");
         Info("WHERE");
         Info("    \"option-settings\" is a sequence of settings separated by spaces.");
@@ -76,11 +76,11 @@ public class CCDocMain : CCDocGlobals
 
         Info("");
         Info("EXAMPLES:");
-        Info("    jjdoc -ONE_TABLE=false mygrammar.jj");
-        Info("    jjdoc - < mygrammar.jj");
+        Info("    CCDoc -ONE_TABLE=false mygrammar.jj");
+        Info("    CCDoc - < mygrammar.jj");
         Info("");
-        Info("ABOUT JJDoc:");
-        Info("    JJDoc generates JavaDoc documentation from JavaCC grammar files.");
+        Info("ABOUT CCDoc:");
+        Info("    CCDoc generates JavaDoc documentation from JavaCC grammar files.");
         Info("");
         Info("    For more information, see the online JJDoc documentation at");
         Info("    https://javacc.dev.java.net/doc/JJDoc.html");
@@ -91,7 +91,7 @@ public class CCDocMain : CCDocGlobals
      */
     public static void Main(string[] args)
     {
-        int errorcode = mainProgram(args);
+        int errorcode = MainProgram(args);
         Environment.Exit(errorcode);
     }
 
@@ -100,7 +100,7 @@ public class CCDocMain : CCDocGlobals
      * It returns an error code.  See how the main program above uses
      * this method.
      */
-    public static int mainProgram(string[] args)
+    public static int MainProgram(string[] args)
     {
 
         global::CSharpCC.Parser.MainParser.ReInitAll();

@@ -75,7 +75,7 @@ public class CCDocMainTest : CSharpCCTestCase
     [TestMethod]
     public void TestMainProgramHTML()
     {
-        int result = CCDocMain.mainProgram(
+        int result = CCDoc.CCDocMain.MainProgram(
             new string[] { "-OUTPUT_FILE:" + GetCCDocOutputDirectory() + "JavaCC.html", GetCCInputDirectory() + "JavaCC.jj" });
         Assert.AreEqual(0, result);
     }
@@ -86,7 +86,7 @@ public class CCDocMainTest : CSharpCCTestCase
     [TestMethod]
     public void TestMainProgramText()
     {
-        Assert.AreEqual(0, CCDocMain.mainProgram(new string[] {"-OUTPUT_FILE:" + GetCCDocOutputDirectory() + "JavaCC.txt",
+        Assert.AreEqual(0, CCDoc.CCDocMain.MainProgram(new string[] {"-OUTPUT_FILE:" + GetCCDocOutputDirectory() + "JavaCC.txt",
             "-TEXT:true",GetCCInputDirectory() + "JavaCC.jj"}));
     }
 

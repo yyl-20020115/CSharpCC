@@ -103,7 +103,7 @@ public class HTMLGenerator : TextGenerator
         }
         else
         {
-            Println("<TITLE>A BNF grammar by JJDoc</TITLE>");
+            Println("<TITLE>A BNF grammar by CCDoc</TITLE>");
         }
         Println("</HEAD>");
         Println("<BODY>");
