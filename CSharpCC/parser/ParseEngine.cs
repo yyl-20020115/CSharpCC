@@ -662,7 +662,7 @@ public class ParseEngine
         sig.Append(t.image); 
         if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
         if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
-
+         
         for (int i = 1; i < p.GetReturnTypeTokens().Count; i++)
         {
             t = (Token)(p.GetReturnTypeTokens()[i]);

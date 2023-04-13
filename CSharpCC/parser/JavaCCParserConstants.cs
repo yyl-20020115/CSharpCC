@@ -3,9 +3,7 @@
  * This file contains the code for JavaCCParser generated
  * by JavaCCParser itself.
  */
-
 namespace org.javacc.parser;
-
 
 /**
  * Token literal values and constants.

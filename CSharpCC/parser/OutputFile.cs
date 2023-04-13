@@ -172,7 +172,7 @@ public class OutputFile
      * Output a warning if the file was created with an incompatible version
      * of JavaCC.
      * @param fileName
-     * @param versionId
+     * @param versionId 
      */
     private void checkVersion(string file, string versionId)
     { 

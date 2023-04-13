@@ -162,7 +162,7 @@ public class MainParser
 
             for (int i = 0; i < charsToPad; i++)
             {
-                sb.Append(" ");
+                sb.Append(' ');
             }
 
             return sb.ToString();

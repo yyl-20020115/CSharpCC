@@ -636,7 +636,7 @@ public class JavaCCGlobals : JavaCCParserConstants
     }
 
 
-    static string GetFileExtension(string language)
+    public static string GetFileExtension(string language)
     {
         string lang = Options.getOutputLanguage();
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class

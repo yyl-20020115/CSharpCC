@@ -36,9 +36,8 @@ namespace org.javacc.parser;
  * a bunch of other more specific classes.
  */
 
-public class Expansion :Descriptor
+public class Expansion : Descriptor
 {
-
     /**
      * The line and column number of the construct that corresponds
      * most closely to this node.
@@ -122,7 +121,7 @@ public class Expansion :Descriptor
 
     public string GetProductionName()
     {
-        Object next = this;
+        object next = this;
         // Limit the number of iterations in case there's a cycle
         for (int i = 0; i < 42 && next != null; i++)
         {

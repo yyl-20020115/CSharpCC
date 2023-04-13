@@ -33,5 +33,5 @@ namespace org.javacc.parser;
 
 public class Container
 {
-    public Descriptor Member;
+    public Descriptor? Member;
 }

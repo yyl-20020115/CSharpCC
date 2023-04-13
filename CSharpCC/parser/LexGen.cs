@@ -155,7 +155,7 @@ public class LexGen : CodeGenerator
         if (Options.getSupportClassVisibilityPublic())
         {
             //genModifier("public ");
-            GenModifier("public "); 
+            GenModifier("public ");  
         }
         //GenCodeLine("class " + tokMgrClassName + " implements " +
         //cu_name + "Constants");

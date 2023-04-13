@@ -86,7 +86,7 @@ public class OtherFilesGen : JavaCCGlobals
             if (Options.isGenerateBoilerplateCode())
             {
                 if (Options.getJavaUnicodeEscape())
-                {
+                { 
                     JavaFiles.gen_JavaCharStream(templateLoc);
                 }
                 else

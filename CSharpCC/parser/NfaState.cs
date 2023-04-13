@@ -956,12 +956,12 @@ public class NfaState
             if (common != null)
             {
                 int ind;
-                string tmp;
+                string tmp; 
 
-                tmp = "{\n   0x" + Long.toHexString(common[0]) + "L, " +
-                        "0x" + Long.toHexString(common[1]) + "L, " +
-                        "0x" + Long.toHexString(common[2]) + "L, " +
-                        "0x" + Long.toHexString(common[3]) + "L\n};";
+                tmp = "{\n   0x" + Convert.ToString(common[0],16) + "L, " +
+                        "0x" + Convert.ToString(common[1], 16) + "L, " +
+                        "0x" + Convert.ToString(common[2], 16) + "L, " +
+                        "0x" + Convert.ToString(common[3], 16) + "L\n};";
                 if ((ind = (int)lohiByteTab.get(tmp)) == null)
                 {
                     allBitVectors.Add(tmp);
@@ -981,7 +981,7 @@ public class NfaState
                     lohiByteTab.Add(tmp, ind = (lohiByteCnt++));
                 }
 
-                tmpIndices[cnt++] = ind.intValue();
+                tmpIndices[cnt++] = ind;
 
                 tmp = "{\n   0x" + Long.toHexString(loBytes[i][0]) + "L, " +
                         "0x" + Long.toHexString(loBytes[i][1]) + "L, " +
@@ -1005,7 +1005,7 @@ public class NfaState
                     lohiByteTab.Add(tmp, ind = (lohiByteCnt++));
                 }
 
-                tmpIndices[cnt++] = ind.intValue();
+                tmpIndices[cnt++] = ind;
 
                 common = null;
             }

@@ -316,7 +316,7 @@ public class CodeGenerator : JavaCCGlobals
      * Generate a class with a given name, an array of superclass and
      * another array of super interfaes
      */
-    public void GenClassStart(string mod, string name, String[] superClasses, String[] superInterfaces)
+    public void GenClassStart(string mod, string name, string[] superClasses, string[] superInterfaces)
     {
         bool _isJavaLanguage = IsJavaLanguage();
         if (_isJavaLanguage && mod != null)
@@ -353,7 +353,7 @@ public class CodeGenerator : JavaCCGlobals
         }
     }
 
-    private void GenCommaSeperatedString(String[] strings)
+    private void GenCommaSeperatedString(string[] strings)
     {
         for (int i = 0; i < strings.Length; i++)
         {
@@ -444,24 +444,13 @@ public class CodeGenerator : JavaCCGlobals
         return className == null ? "" : className + "::";
     }
 
-    public static string GetCharStreamName()
-    {
-        if (Options.getUserCharStream())
-        {
-            return "CharStream";
-        }
-        else
-        {
-            return Options.getJavaUnicodeEscape() ? "JavaCharStream"
+    public static string GetCharStreamName() => Options.getUserCharStream()
+            ? "CharStream"
+            : Options.getJavaUnicodeEscape() ? "JavaCharStream"
                                                   : "SimpleCharStream";
-        }
-    }
     public void WriteTemplate(string name, Dictionary<String, object> options, params object[] additionalOptions)
     {
-
         // options.Add("", .valueOf(maxOrdinal));
-
-
         for (int i = 0; i < additionalOptions.Length; i++)
         {
             object o = additionalOptions[i];
@@ -473,12 +462,12 @@ public class CodeGenerator : JavaCCGlobals
                     options.Add(v.Key, v.Value);
                 }
             }
-            else
+            else if (o is string s)
             {
                 if (i == additionalOptions.Length - 1)
                     throw new ArgumentException("Must supply pairs of [name value] args");
 
-                options.Add((String)o, additionalOptions[i + 1]);
+                options.Add(s, additionalOptions[i + 1]);
                 i++;
             }
         }

@@ -284,7 +284,7 @@ public class Semanticize : JavaCCGlobals
                             if (sl.ordinal == 0)
                             {
                                 sl.ordinal = tokenCount++;
-                            }
+                            } 
                             table2.Add(sl.image, sl);
                             // The above "put" may override an existing entry (that is not IGNORE_CASE) and that's
                             // the desired behavior. 

@@ -86,7 +86,7 @@ public class RStringLiteral : RegularExpression
         this.SetColumn(t.beginColumn);
         this.image = image;
     }
-
+     
     private static int maxStrKind = 0;
     private static int maxLen = 0;
     private static int charCnt = 0;

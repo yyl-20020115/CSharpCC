@@ -33,9 +33,6 @@ using org.javacc.jjtree;
 
 namespace org.javacc.parser;
 
-
-
- 
 /**
  * Generate lexer.
  */

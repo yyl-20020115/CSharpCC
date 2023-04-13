@@ -627,7 +627,7 @@ public class Options
                     || inputFileSetting.Contains(USEROPTION__DEBUG_PARSER))
             {
                 JavaCCErrors
-                        .Warning("True setting of option DEBUG_LOOKAHEAD overrides "
+                        .Warning("True setting of option DEBUG_LOOKAHEAD overrides " 
                                 + "false setting of option DEBUG_PARSER.");
             }
             optionValues.Add(USEROPTION__DEBUG_PARSER, true);

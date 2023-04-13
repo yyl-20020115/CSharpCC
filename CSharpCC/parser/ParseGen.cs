@@ -63,7 +63,7 @@ public class ParseGen : CodeGenerator {
 					if (t.kind == IMPLEMENTS) {
 						implementsExists = true;
 					} else if (t.kind == CLASS) {
-						implementsExists = false; 
+						implementsExists = false;  
 					}
 
 					PrintToken(t);

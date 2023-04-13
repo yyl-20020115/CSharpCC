@@ -32,7 +32,4 @@ namespace org.javacc.parser;
  * Describes CPPCODE productions.
  */
 
-public class CppCodeProduction : CodeProduction
-{
-
-}
+public class CppCodeProduction : CodeProduction { }

@@ -82,7 +82,7 @@ public class OtherFilesGenCPP : JavaCCGlobals
                         t = (Token)(cu_to_insertion_point_1[j]);
                         PrintToken(t, ostr);
                     }
-                    PrintTrailingComments(t, ostr);
+                    PrintTrailingComments(t, ostr); 
                     ostr.WriteLine("");
                     ostr.WriteLine("");
                     break;
