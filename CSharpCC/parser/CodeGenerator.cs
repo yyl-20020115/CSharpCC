@@ -71,18 +71,18 @@ public class CodeGenerator : JavaCCGlobals
             mainBuffer.Insert(0, staticsBuffer);
 
             // Finally enclose the whole thing in the namespace, if specified.
-            if (Options.stringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0)
+            if (Options.StringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0)
             {
-                mainBuffer.Insert(0, "namespace " + Options.stringValue("NAMESPACE_OPEN") + "\n");
-                mainBuffer.Append(Options.stringValue("NAMESPACE_CLOSE") + "\n");
-                includeBuffer.Append(Options.stringValue("NAMESPACE_CLOSE") + "\n");
+                mainBuffer.Insert(0, "namespace " + Options.StringValue("NAMESPACE_OPEN") + "\n");
+                mainBuffer.Append(Options.StringValue("NAMESPACE_CLOSE") + "\n");
+                includeBuffer.Append(Options.StringValue("NAMESPACE_CLOSE") + "\n");
             }
 
             if (JjtreeGenerated)
             {
                 mainBuffer.Insert(0, "#include \"SimpleNode.h\"\n");
             }
-            if (Options.getTokenManagerUsesParser())
+            if (Options.GetTokenManagerUsesParser())
                 mainBuffer.Insert(0, "#include \"" + CuName + ".h\"\n");
             mainBuffer.Insert(0, "#include \"TokenMgrError.h\"\n");
             mainBuffer.Insert(0, "#include \"" + incfileName + "\"\n");
@@ -278,17 +278,17 @@ public class CodeGenerator : JavaCCGlobals
      */
     public void GenAnnotation(string ann)
     {
-        if (Options.isOutputLanguageJava())
+        if (Options.IsOutputLanguageJava())
         {
             GenCode("@" + ann);
         }
-        else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+        else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         { // For now, it's only C++ for now
             GenCode("/*" + ann + "*/");
         }
         else
         {
-            throw new Exception("Unknown language : " + Options.getOutputLanguage());
+            throw new Exception("Unknown language : " + Options.GetOutputLanguage());
         }
     }
 
@@ -347,7 +347,7 @@ public class CodeGenerator : JavaCCGlobals
 
         GenCommaSeperatedString(superInterfaces);
         GenCodeLine(" {");
-        if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+        if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
             GenCodeLine("public:");
         }
@@ -369,7 +369,7 @@ public class CodeGenerator : JavaCCGlobals
     public static bool IsJavaLanguage()
     {
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        return Options.isOutputLanguageJava();
+        return Options.IsOutputLanguageJava();
     }
 
     public void SwitchToMainFile()
@@ -444,9 +444,9 @@ public class CodeGenerator : JavaCCGlobals
         return className == null ? "" : className + "::";
     }
 
-    public static string GetCharStreamName() => Options.getUserCharStream()
+    public static string GetCharStreamName() => Options.GetUserCharStream()
             ? "CharStream"
-            : Options.getJavaUnicodeEscape() ? "JavaCharStream"
+            : Options.GetJavaUnicodeEscape() ? "JavaCharStream"
                                                   : "SimpleCharStream";
     public void WriteTemplate(string name, Dictionary<String, object> options, params object[] additionalOptions)
     {

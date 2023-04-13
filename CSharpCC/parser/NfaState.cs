@@ -193,8 +193,8 @@ public class NfaState
                 break;
 
         if (!unicodeWarningGiven && c > 0xff &&
-            !Options.getJavaUnicodeEscape() &&
-            !Options.getUserCharStream())
+            !Options.GetJavaUnicodeEscape() &&
+            !Options.GetUserCharStream())
         {
             unicodeWarningGiven = true;
             JavaCCErrors.Warning(LexGen.curRE, "Non-ASCII characters used in regular expression.\n" +
@@ -237,8 +237,8 @@ public class NfaState
         }
 
         if (!unicodeWarningGiven && (left > 0xff || right > 0xff) &&
-            !Options.getJavaUnicodeEscape() &&
-            !Options.getUserCharStream())
+            !Options.GetJavaUnicodeEscape() &&
+            !Options.GetUserCharStream())
         {
             unicodeWarningGiven = true;
             JavaCCErrors.Warning(LexGen.curRE, "Non-ASCII characters used in regular expression.\n" +
@@ -970,12 +970,12 @@ public class NfaState
                     {
                         if (CodeGenerator.IsJavaLanguage())
                         {
-                            codeGenerator.GenCodeLine("static final " + Options.getLongType() + "[] jjbitVec" + lohiByteCnt + " = " + tmp);
+                            codeGenerator.GenCodeLine("static final " + Options.GetLongType() + "[] jjbitVec" + lohiByteCnt + " = " + tmp);
                         }
                         else
                         {
                             codeGenerator.SwitchToStaticsFile();
-                            codeGenerator.GenCodeLine("static const " + Options.getLongType() + " jjbitVec" + lohiByteCnt + "[] = " + tmp);
+                            codeGenerator.GenCodeLine("static const " + Options.GetLongType() + " jjbitVec" + lohiByteCnt + "[] = " + tmp);
                         }
                     }
                     lohiByteTab.Add(tmp, ind = (lohiByteCnt++));
@@ -994,12 +994,12 @@ public class NfaState
                     if (!AllBitsSet(tmp))
                         if (CodeGenerator.IsJavaLanguage())
                         {
-                            codeGenerator.GenCodeLine("static final " + Options.getLongType() + "[] jjbitVec" + lohiByteCnt + " = " + tmp);
+                            codeGenerator.GenCodeLine("static final " + Options.GetLongType() + "[] jjbitVec" + lohiByteCnt + " = " + tmp);
                         }
                         else
                         {
                             codeGenerator.SwitchToStaticsFile();
-                            codeGenerator.GenCodeLine("static const " + Options.getLongType() + " jjbitVec" + lohiByteCnt + "[] = " + tmp);
+                            codeGenerator.GenCodeLine("static const " + Options.GetLongType() + " jjbitVec" + lohiByteCnt + "[] = " + tmp);
                             codeGenerator.SwitchToMainFile();
                         }
                     lohiByteTab.Add(tmp, ind = (lohiByteCnt++));
@@ -1046,12 +1046,12 @@ public class NfaState
                     if (!AllBitsSet(tmp))
                         if (CodeGenerator.IsJavaLanguage())
                         {
-                            codeGenerator.GenCodeLine("static final " + Options.getLongType() + "[] jjbitVec" + lohiByteCnt + " = " + tmp);
+                            codeGenerator.GenCodeLine("static final " + Options.GetLongType() + "[] jjbitVec" + lohiByteCnt + " = " + tmp);
                         }
                         else
                         {
                             codeGenerator.SwitchToStaticsFile();
-                            codeGenerator.GenCodeLine("static const " + Options.getLongType() + " jjbitVec" + lohiByteCnt + "[] = " + tmp);
+                            codeGenerator.GenCodeLine("static const " + Options.GetLongType() + " jjbitVec" + lohiByteCnt + "[] = " + tmp);
                         }
                     lohiByteTab.Add(tmp, ind = (lohiByteCnt++));
                 }
@@ -1203,7 +1203,7 @@ public class NfaState
                 tmp = ++dummyStateIndex;
 
             // TODO(sreeni) : Fix this
-            if (Options.getTokenManagerCodeGenerator() != null)
+            if (Options.GetTokenManagerCodeGenerator() != null)
             {
                 NfaState dummyState = new NfaState();
                 dummyState.isComposite = true;
@@ -1258,7 +1258,7 @@ public class NfaState
         {
             ret = new int[2];
             ret[0] = lastIndex;
-            ret[1] = lastIndex + set.Length - 1;
+            ret[1] = lastIndex + set.Length - 1; 
             lastIndex += set.Length;
             tableToDump.Add(arrayString, ret);
             orderedStateSet.Add(set);
@@ -1667,7 +1667,7 @@ public class NfaState
     {
         if (byteNum == 0)
         {
-            codeGenerator.GenCodeLine("         " + Options.getLongType() + " l = 1L << curChar;");
+            codeGenerator.GenCodeLine("         " + Options.GetLongType() + " l = 1L << curChar;");
             if (!CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("         (void)l;");
@@ -1675,7 +1675,7 @@ public class NfaState
         }
         else if (byteNum == 1)
         {
-            codeGenerator.GenCodeLine("         " + Options.getLongType() + " l = 1L << (curChar & 077);");
+            codeGenerator.GenCodeLine("         " + Options.GetLongType() + " l = 1L << (curChar & 077);");
             if (!CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("         (void)l;");
@@ -1683,15 +1683,15 @@ public class NfaState
         }
         else
         {
-            if (Options.getJavaUnicodeEscape() || unicodeWarningGiven)
+            if (Options.GetJavaUnicodeEscape() || unicodeWarningGiven)
             {
                 codeGenerator.GenCodeLine("         int hiByte = (curChar >> 8);");
                 codeGenerator.GenCodeLine("         int i1 = hiByte >> 6;");
-                codeGenerator.GenCodeLine("         " + Options.getLongType() + " l1 = 1L << (hiByte & 077);");
+                codeGenerator.GenCodeLine("         " + Options.GetLongType() + " l1 = 1L << (hiByte & 077);");
             }
 
             codeGenerator.GenCodeLine("         int i2 = (curChar & 0xff) >> 6;");
-            codeGenerator.GenCodeLine("         " + Options.getLongType() + " l2 = 1L << (curChar & 077);");
+            codeGenerator.GenCodeLine("         " + Options.GetLongType() + " l2 = 1L << (curChar & 077);");
         }
 
         //codeGenerator.GenCodeLine("         MatchLoop: do");
@@ -2320,7 +2320,7 @@ public class NfaState
             }
         }
 
-        if (!Options.getJavaUnicodeEscape() && !unicodeWarningGiven)
+        if (!Options.GetJavaUnicodeEscape() && !unicodeWarningGiven)
         {
             if (loByteVec != null && loByteVec.Count > 1)
                 codeGenerator.GenCodeLine("                  if ((jjbitVec" +
@@ -2418,7 +2418,7 @@ public class NfaState
         {
             string kindCheck = " && kind > " + kindToPrint;
 
-            if (!Options.getJavaUnicodeEscape() && !unicodeWarningGiven)
+            if (!Options.GetJavaUnicodeEscape() && !unicodeWarningGiven)
             {
                 if (loByteVec != null && loByteVec.Count > 1)
                     codeGenerator.GenCodeLine("                  if ((jjbitVec" +
@@ -2438,7 +2438,7 @@ public class NfaState
         string prefix = "   ";
         if (kindToPrint != int.MaxValue)
         {
-            if (!Options.getJavaUnicodeEscape() && !unicodeWarningGiven)
+            if (!Options.GetJavaUnicodeEscape() && !unicodeWarningGiven)
             {
                 if (loByteVec != null && loByteVec.Count > 1)
                 {
@@ -2459,7 +2459,7 @@ public class NfaState
             codeGenerator.GenCodeLine("                     kind = " + kindToPrint + ";");
             prefix = "";
         }
-        else if (!Options.getJavaUnicodeEscape() && !unicodeWarningGiven)
+        else if (!Options.GetJavaUnicodeEscape() && !unicodeWarningGiven)
         {
             if (loByteVec != null && loByteVec.Count > 1)
                 codeGenerator.GenCodeLine("                  if ((jjbitVec" +
@@ -2569,7 +2569,7 @@ public class NfaState
         }
 
 
-        if (Options.getJavaUnicodeEscape() || unicodeWarningGiven)
+        if (Options.GetJavaUnicodeEscape() || unicodeWarningGiven)
         {
             codeGenerator.GenCodeLine("               default : if (i1 == 0 || l1 == 0 || i2 == 0 ||  l2 == 0) break; else break;");
         }
@@ -2583,7 +2583,7 @@ public class NfaState
 
     public static void DumpNonAsciiMoveMethods(CodeGenerator codeGenerator)
     {
-        if (!Options.getJavaUnicodeEscape() && !unicodeWarningGiven)
+        if (!Options.GetJavaUnicodeEscape() && !unicodeWarningGiven)
             return;
 
         if (nonAsciiTableForMethod.Count <= 0)
@@ -2601,13 +2601,13 @@ public class NfaState
         int j;
         if (CodeGenerator.IsJavaLanguage())
         {
-            codeGenerator.GenCodeLine("private static final " + Options.getBooleanType() + " jjCanMove_" + nonAsciiMethod +
-                           "(int hiByte, int i1, int i2, " + Options.getLongType() + " l1, " + Options.getLongType() + " l2)");
+            codeGenerator.GenCodeLine("private static final " + Options.GetBooleanType() + " jjCanMove_" + nonAsciiMethod +
+                           "(int hiByte, int i1, int i2, " + Options.GetLongType() + " l1, " + Options.GetLongType() + " l2)");
         }
         else
         {
-            codeGenerator.GenerateMethodDefHeader("" + Options.getBooleanType() + "", LexGen.tokMgrClassName, "jjCanMove_" + nonAsciiMethod +
-                           "(int hiByte, int i1, int i2, " + Options.getLongType() + " l1, " + Options.getLongType() + " l2)");
+            codeGenerator.GenerateMethodDefHeader("" + Options.GetBooleanType() + "", LexGen.tokMgrClassName, "jjCanMove_" + nonAsciiMethod +
+                           "(int hiByte, int i1, int i2, " + Options.GetLongType() + " l1, " + Options.GetLongType() + " l2)");
         }
         codeGenerator.GenCodeLine("{");
         codeGenerator.GenCodeLine("   switch(hiByte)");
@@ -2678,7 +2678,7 @@ public class NfaState
     //private static bool boilerPlateDumped = false;
     public static void PrintBoilerPlate(CodeGenerator codeGenerator)
     {
-        codeGenerator.GenCodeLine((Options.getStatic() ? "static " : "") + "private void " +
+        codeGenerator.GenCodeLine((Options.GetStatic() ? "static " : "") + "private void " +
                      "jjCheckNAdd(int state)");
         codeGenerator.GenCodeLine("{");
         codeGenerator.GenCodeLine("   if (jjrounds[state] != jjround)");
@@ -2688,7 +2688,7 @@ public class NfaState
         codeGenerator.GenCodeLine("   }");
         codeGenerator.GenCodeLine("}");
 
-        codeGenerator.GenCodeLine((Options.getStatic() ? "static " : "") + "private void " +
+        codeGenerator.GenCodeLine((Options.GetStatic() ? "static " : "") + "private void " +
                       "jjAddStates(int start, int end)");
         codeGenerator.GenCodeLine("{");
         codeGenerator.GenCodeLine("   do {");
@@ -2696,7 +2696,7 @@ public class NfaState
         codeGenerator.GenCodeLine("   } while (start++ != end);");
         codeGenerator.GenCodeLine("}");
 
-        codeGenerator.GenCodeLine((Options.getStatic() ? "static " : "") + "private void " +
+        codeGenerator.GenCodeLine((Options.GetStatic() ? "static " : "") + "private void " +
                       "jjCheckNAddTwoStates(int state1, int state2)");
         codeGenerator.GenCodeLine("{");
         codeGenerator.GenCodeLine("   jjCheckNAdd(state1);");
@@ -2706,7 +2706,7 @@ public class NfaState
 
         if (jjCheckNAddStatesDualNeeded)
         {
-            codeGenerator.GenCodeLine((Options.getStatic() ? "static " : "") + "private void " +
+            codeGenerator.GenCodeLine((Options.GetStatic() ? "static " : "") + "private void " +
                          "jjCheckNAddStates(int start, int end)");
             codeGenerator.GenCodeLine("{");
             codeGenerator.GenCodeLine("   do {");
@@ -2718,7 +2718,7 @@ public class NfaState
 
         if (jjCheckNAddStatesUnaryNeeded)
         {
-            codeGenerator.GenCodeLine((Options.getStatic() ? "static " : "") + "private void " +
+            codeGenerator.GenCodeLine((Options.GetStatic() ? "static " : "") + "private void " +
                       "jjCheckNAddStates(int start)");
             codeGenerator.GenCodeLine("{");
             codeGenerator.GenCodeLine("   jjCheckNAdd(jjnextStates[start]);");
@@ -2932,7 +2932,7 @@ public class NfaState
 
         if (CodeGenerator.IsJavaLanguage())
         {
-            codeGenerator.GenCodeLine((Options.getStatic() ? "static " : "") + "private int " +
+            codeGenerator.GenCodeLine((Options.GetStatic() ? "static " : "") + "private int " +
                         "jjMoveNfa" + LexGen.lexStateSuffix + "(int startState, int curPos)");
         }
         else
@@ -2972,7 +2972,7 @@ public class NfaState
         codeGenerator.GenCodeLine("   int i = 1;");
         codeGenerator.GenCodeLine("   jjstateSet[0] = startState;");
 
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
         {
             if (CodeGenerator.IsJavaLanguage())
             {
@@ -2985,7 +2985,7 @@ public class NfaState
             }
         }
 
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
         {
             if (CodeGenerator.IsJavaLanguage())
             {
@@ -3038,7 +3038,7 @@ public class NfaState
         codeGenerator.GenCodeLine("      }");
         codeGenerator.GenCodeLine("      ++curPos;");
 
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
         {
             if (CodeGenerator.IsJavaLanguage())
             {
@@ -3071,7 +3071,7 @@ public class NfaState
         else
             codeGenerator.GenCodeLine("         return curPos;");
 
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
         {
             if (CodeGenerator.IsJavaLanguage())
             {
@@ -3116,7 +3116,7 @@ public class NfaState
             }
         }
 
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
         {
             if (CodeGenerator.IsJavaLanguage())
             {

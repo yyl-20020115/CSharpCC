@@ -56,7 +56,7 @@ public class Semanticize : JavaCCGlobals
 
         if (JavaCCErrors.GetErrorCount() != 0) throw new MetaParseException();
 
-        if (Options.getLookahead() > 1 && !Options.GetForceLaCheck() && Options.getSanityCheck())
+        if (Options.GetLookahead() > 1 && !Options.GetForceLaCheck() && Options.GetSanityCheck())
         {
             JavaCCErrors.Warning("Lookahead adequacy checking not being performed since option LOOKAHEAD " +
                     "is more than 1.  Set option FORCE_LA_CHECK to true to force checking.");
@@ -135,12 +135,12 @@ public class Semanticize : JavaCCGlobals
                     nextStateForEof = res.nextState;
                     prepareToRemove(respecs, res);
                 }
-                else if (tp.isExplicit && Options.getUserTokenManager())
+                else if (tp.isExplicit && Options.GetUserTokenManager())
                 {
                     JavaCCErrors.Warning(res.rexp, "Ignoring regular expression specification since " +
                             "option USER_TOKEN_MANAGER has been set to true.");
                 }
-                else if (tp.isExplicit && !Options.getUserTokenManager() && res.rexp is RJustName)
+                else if (tp.isExplicit && !Options.GetUserTokenManager() && res.rexp is RJustName)
                 {
                     JavaCCErrors.Warning(res.rexp, "Ignoring free-standing regular expression reference.  " +
                             "If you really want this, you must give it a different label as <NEWLABEL:<"
@@ -324,7 +324,7 @@ public class Semanticize : JavaCCGlobals
                                 JavaCCErrors.SemanticError(sl, "String token \"" + sl.image +
                                         "\" has been defined as a private regular expression.");
                             }
-                            else
+                            else 
                             {
                                 // This is now a legitimate reference to an existing RStringLiteral.
                                 // So we assign it a number and take it out of "rexprlist".
@@ -366,7 +366,7 @@ public class Semanticize : JavaCCGlobals
          * true.  Instead the following block of code is executed.
          */
 
-        if (!Options.getUserTokenManager())
+        if (!Options.GetUserTokenManager())
         {
             FixRJustNames frjn = new FixRJustNames();
             for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
@@ -399,7 +399,7 @@ public class Semanticize : JavaCCGlobals
          * execution of this code.
          */
 
-        if (Options.getUserTokenManager())
+        if (Options.GetUserTokenManager())
         {
             for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
             {
@@ -439,7 +439,7 @@ public class Semanticize : JavaCCGlobals
          * "ordered_named_tokens" so that they may be generated into the ...Constants
          * file.
          */
-        if (Options.getUserTokenManager())
+        if (Options.GetUserTokenManager())
         {
             for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
             {
@@ -481,7 +481,7 @@ public class Semanticize : JavaCCGlobals
             }
         }
 
-        if (Options.getSanityCheck() && JavaCCErrors.GetErrorCount() == 0)
+        if (Options.GetSanityCheck() && JavaCCErrors.GetErrorCount() == 0)
         {
 
             // The following code checks that all ZeroOrMore, ZeroOrOne, and OneOrMore nodes
@@ -517,7 +517,7 @@ public class Semanticize : JavaCCGlobals
             // the grammar.  Here we are looking for any kind of loop, not just left recursions,
             // so we only need to do the equivalent of the above walk.
             // This is not done if option USER_TOKEN_MANAGER is set to true.
-            if (!Options.getUserTokenManager())
+            if (!Options.GetUserTokenManager())
             {
                 for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
                 {
@@ -1043,27 +1043,27 @@ public class Semanticize : JavaCCGlobals
         {
             if (e is Choice choice)
             {
-                if (Options.getLookahead() == 1 || Options.GetForceLaCheck())
+                if (Options.GetLookahead() == 1 || Options.GetForceLaCheck())
                 {
                     LookaheadCalc.ChoiceCalc(choice);
                 }
             }
             else if (e is OneOrMore exp)
             {
-                if (Options.GetForceLaCheck() || (ImplicitLA(exp.expansion) && Options.getLookahead() == 1))
+                if (Options.GetForceLaCheck() || (ImplicitLA(exp.expansion) && Options.GetLookahead() == 1))
                 {
                     LookaheadCalc.EbnfCalc(exp, exp.expansion);
                 }
             }
             else if (e is ZeroOrMore exp2)
             {
-                if (Options.GetForceLaCheck() || (ImplicitLA(exp2.expansion) && Options.getLookahead() == 1))
+                if (Options.GetForceLaCheck() || (ImplicitLA(exp2.expansion) && Options.GetLookahead() == 1))
                 {
                     LookaheadCalc.EbnfCalc(exp2, exp2.expansion);
                 }
             }
             else if (e is ZeroOrOne exp3)
-            {   if (Options.GetForceLaCheck() || (ImplicitLA(exp3.expansion) && Options.getLookahead() == 1))
+            {   if (Options.GetForceLaCheck() || (ImplicitLA(exp3.expansion) && Options.GetLookahead() == 1))
                 {
                     LookaheadCalc.EbnfCalc(exp3, exp3.expansion);
                 }

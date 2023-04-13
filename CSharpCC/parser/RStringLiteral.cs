@@ -94,12 +94,12 @@ public class RStringLiteral : RegularExpression
     public static void DumpStrLiteralImages(CodeGenerator codeGenerator)
     {
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        if (Options.isOutputLanguageJava())
+        if (Options.IsOutputLanguageJava())
         {
             DumpStrLiteralImagesForJava(codeGenerator);
             return;
         }
-        else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+        else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
 
             // For C++
@@ -128,7 +128,7 @@ public class RStringLiteral : RegularExpression
                     (LexGen.toSkip[i / 64] & (1L << (i % 64))) != 0L ||
                     (LexGen.toMore[i / 64] & (1L << (i % 64))) != 0L ||
                     LexGen.canReachOnMore[LexGen.lexStates[i]] ||
-                    ((Options.getIgnoreCase() || LexGen.ignoreCase[i]) &&
+                    ((Options.GetIgnoreCase() || LexGen.ignoreCase[i]) &&
                      (image != (image.ToLower()) ||
                       image != (image.ToUpper()))))
                 {
@@ -188,7 +188,7 @@ public class RStringLiteral : RegularExpression
         }
         else
         {
-            throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+            throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
         }
     }
 
@@ -218,7 +218,7 @@ public class RStringLiteral : RegularExpression
                 (LexGen.toSkip[i / 64] & (1UL << (i % 64))) != 0L ||
                 (LexGen.toMore[i / 64] & (1UL << (i % 64))) != 0L ||
                 LexGen.canReachOnMore[LexGen.lexStates[i]] ||
-                ((Options.getIgnoreCase() || LexGen.ignoreCase[i]) &&
+                ((Options.GetIgnoreCase() || LexGen.ignoreCase[i]) &&
                  (image != (image.ToLower()) ||
                   image != (image.ToUpper()))))
             {
@@ -292,14 +292,14 @@ public class RStringLiteral : RegularExpression
         char c;
         for (int i = 0; i < len; i++)
         {
-            if (Options.getIgnoreCase())
+            if (Options.GetIgnoreCase())
                 s = ("" + (c = image[i])).ToLower();
             else
                 s = "" + (c = image[i]);
 
             if (!NfaState.unicodeWarningGiven && c > 0xff &&
-                !Options.getJavaUnicodeEscape() &&
-                !Options.getUserCharStream())
+                !Options.GetJavaUnicodeEscape() &&
+                !Options.GetUserCharStream())
             {
                 NfaState.unicodeWarningGiven = true;
                 JavaCCErrors.Warning(LexGen.curRE, "Non-ASCII characters used in regular expression." +
@@ -320,7 +320,7 @@ public class RStringLiteral : RegularExpression
             else
                 info.InsertValidKind(ordinal);
 
-            if (!Options.getIgnoreCase() && LexGen.ignoreCase[ordinal] &&
+            if (!Options.GetIgnoreCase() && LexGen.ignoreCase[ordinal] &&
                 c != char.ToLower(c))
             {
                 s = ("" + image[i]).ToLower();
@@ -339,7 +339,7 @@ public class RStringLiteral : RegularExpression
                     info.InsertValidKind(ordinal);
             }
 
-            if (!Options.getIgnoreCase() && LexGen.ignoreCase[ordinal] &&
+            if (!Options.GetIgnoreCase() && LexGen.ignoreCase[ordinal] &&
                 c != char.ToUpper(c))
             {
                 s = ("" + image[i]).ToUpper();
@@ -387,7 +387,7 @@ public class RStringLiteral : RegularExpression
             startState.charMoves = new char[1];
             startState.AddChar(image[i]);
 
-            if (Options.getIgnoreCase() || ignoreCase)
+            if (Options.GetIgnoreCase() || ignoreCase)
             {
                 startState.AddChar(char.ToLower(image[i]));
                 startState.AddChar(char.ToUpper(image[i]));
@@ -520,7 +520,7 @@ public class RStringLiteral : RegularExpression
                         subStringAtPos[image.Length - 1] = true;
                         break;
                     }
-                    else if (Options.getIgnoreCase() &&
+                    else if (Options.GetIgnoreCase() &&
                              StartsWithIgnoreCase((String)allImages[j], image))
                     {
                         subString[i] = true;
@@ -535,24 +535,24 @@ public class RStringLiteral : RegularExpression
     static void DumpStartWithStates(CodeGenerator codeGenerator)
     {
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        if (Options.isOutputLanguageJava())
+        if (Options.IsOutputLanguageJava())
         {
-            codeGenerator.GenCodeLine((Options.getStatic() ? "static " : "") + "private int " +
+            codeGenerator.GenCodeLine((Options.GetStatic() ? "static " : "") + "private int " +
                          "jjStartNfaWithStates" + LexGen.lexStateSuffix + "(int pos, int kind, int state)");
         }
-        else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+        else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
             codeGenerator.generateMethodDefHeader("int", LexGen.tokMgrClassName, "jjStartNfaWithStates" + LexGen.lexStateSuffix + "(int pos, int kind, int state)");
         }
         else
         {
-            throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+            throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
         }
         codeGenerator.GenCodeLine("{");
         codeGenerator.GenCodeLine("   jjmatchedKind = kind;");
         codeGenerator.GenCodeLine("   jjmatchedPos = pos;");
 
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
         {
             if (CodeGenerator.IsJavaLanguage())
             {
@@ -568,21 +568,21 @@ public class RStringLiteral : RegularExpression
         }
 
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        if (Options.isOutputLanguageJava())
+        if (Options.IsOutputLanguageJava())
         {
             codeGenerator.GenCodeLine("   try { curChar = input_stream.readChar(); }");
             codeGenerator.GenCodeLine("   catch(java.io.IOException e) { return pos + 1; }");
         }
-        else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+        else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
             codeGenerator.GenCodeLine("   if (input_stream->endOfInput()) { return pos + 1; }");
             codeGenerator.GenCodeLine("   curChar = input_stream->readChar();");
         }
         else
         {
-            throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+            throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
         }
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
         {
             if (CodeGenerator.IsJavaLanguage())
             {
@@ -592,7 +592,7 @@ public class RStringLiteral : RegularExpression
                      ".addEscapes(String.valueOf(curChar)) + \" (\" + (int)curChar + \") " +
                      "at line \" + input_stream.getEndLine() + \" column \" + input_stream.getEndColumn());");
             }
-            else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+            else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
             {
                 codeGenerator.GenCodeLine("   fprintf(debugStream, " +
                    "\"<%s>Current character : %c(%d) at line %d column %d\\n\"," +
@@ -601,7 +601,7 @@ public class RStringLiteral : RegularExpression
             }
             else
             {
-                throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+                throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
             }
         }
 
@@ -613,24 +613,24 @@ public class RStringLiteral : RegularExpression
     static void DumpBoilerPlate(CodeGenerator codeGenerator)
     {
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        if (Options.isOutputLanguageJava())
+        if (Options.IsOutputLanguageJava())
         {
-            codeGenerator.GenCodeLine((Options.getStatic() ? "static " : "") + "private int " +
+            codeGenerator.GenCodeLine((Options.GetStatic() ? "static " : "") + "private int " +
                          "jjStopAtPos(int pos, int kind)");
         }
-        else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+        else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
             codeGenerator.GenerateMethodDefHeader(" int ", LexGen.tokMgrClassName, "jjStopAtPos(int pos, int kind)");
         }
         else
         {
-            throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+            throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
         }
         codeGenerator.GenCodeLine("{");
         codeGenerator.GenCodeLine("   jjmatchedKind = kind;");
         codeGenerator.GenCodeLine("   jjmatchedPos = pos;");
 
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
         {
             // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
             if (CodeGenerator.IsJavaLanguage())
@@ -639,14 +639,14 @@ public class RStringLiteral : RegularExpression
                 codeGenerator.GenCodeLine("   debugStream.println(\"   Currently matched the first \" + (jjmatchedPos + 1) + " +
                        "\" characters as a \" + tokenImage[jjmatchedKind] + \" token.\");");
             }
-            else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+            else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
             {
                 codeGenerator.GenCodeLine("   fprintf(debugStream, \"   No more string literal token matches are possible.\");");
                 codeGenerator.GenCodeLine("   fprintf(debugStream, \"   Currently matched the first %d characters as a \\\"%s\\\" token.\\n\",  (jjmatchedPos + 1),  addUnicodeEscapes(tokenImage[jjmatchedKind]).c_str());");
             }
             else
             {
-                throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+                throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
             }
         }
 
@@ -692,18 +692,18 @@ public class RStringLiteral : RegularExpression
         if (maxLen == 0)
         {
             // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-            if (Options.isOutputLanguageJava())
+            if (Options.IsOutputLanguageJava())
             {
-                codeGenerator.GenCodeLine((Options.getStatic() ? "static " : "") + "private int " +
+                codeGenerator.GenCodeLine((Options.GetStatic() ? "static " : "") + "private int " +
                                "jjMoveStringLiteralDfa0" + LexGen.lexStateSuffix + "()");
             }
-            else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+            else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
             {
                 codeGenerator.generateMethodDefHeader(" int ", LexGen.tokMgrClassName, "jjMoveStringLiteralDfa0" + LexGen.lexStateSuffix + "()");
             }
             else
             {
-                throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+                throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
             }
             DumpNullStrLiterals(codeGenerator);
             return;
@@ -736,14 +736,14 @@ public class RStringLiteral : RegularExpression
                                 _params.Append(", ");
                             else
                                 atLeastOne = true;
-                            _params.Append("" + Options.getLongType() + " active" + j);
+                            _params.Append("" + Options.GetLongType() + " active" + j);
                         }
 
                     if (i <= maxLenForActive[j])
                     {
                         if (atLeastOne)
                             _params.Append(", ");
-                        _params.Append("" + Options.getLongType() + " active" + j);
+                        _params.Append("" + Options.GetLongType() + " active" + j);
                     }
                 }
                 else
@@ -755,32 +755,32 @@ public class RStringLiteral : RegularExpression
                                 _params.Append(", ");
                             else
                                 atLeastOne = true;
-                            _params.Append("" + Options.getLongType() + " old" + j + ", " + Options.getLongType() + " active" + j);
+                            _params.Append("" + Options.GetLongType() + " old" + j + ", " + Options.GetLongType() + " active" + j);
                         }
 
                     if (i <= maxLenForActive[j] + 1)
                     {
                         if (atLeastOne)
                             _params.Append(", ");
-                        _params.Append("" + Options.getLongType() + " old" + j + ", " + Options.getLongType() + " active" + j);
+                        _params.Append("" + Options.GetLongType() + " old" + j + ", " + Options.GetLongType() + " active" + j);
                     }
                 }
             }
             _params.Append(")");
 
             // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-            if (Options.isOutputLanguageJava())
+            if (Options.IsOutputLanguageJava())
             {
-                codeGenerator.GenCode((Options.getStatic() ? "static " : "") + "private int " +
+                codeGenerator.GenCode((Options.GetStatic() ? "static " : "") + "private int " +
                                "jjMoveStringLiteralDfa" + i + LexGen.lexStateSuffix + _params);
             }
-            else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+            else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
             {
                 codeGenerator.generateMethodDefHeader(" int ", LexGen.tokMgrClassName, "jjMoveStringLiteralDfa" + i + LexGen.lexStateSuffix + _params);
             }
             else
             {
-                throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+                throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
             }
 
             codeGenerator.GenCodeLine("{");
@@ -831,7 +831,7 @@ public class RStringLiteral : RegularExpression
                         codeGenerator.GenCodeLine("      return " + i + ";");
                 }
 
-                if (i != 0 && Options.getDebugTokenManager())
+                if (i != 0 && Options.GetDebugTokenManager())
                 {
                     if (CodeGenerator.IsJavaLanguage())
                     {
@@ -878,30 +878,30 @@ public class RStringLiteral : RegularExpression
                     {
                         codeGenerator.GenCodeLine(" + \" } \");");
                     }
-                    else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+                    else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
                     {
                         fmt.Append("}\\n");
                         codeGenerator.GenCodeLine("    fprintf(debugStream, \"" + fmt + "\"," + args + ");");
                     }
                     else
                     {
-                        throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+                        throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
                     }
                 }
 
                 // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-                if (Options.isOutputLanguageJava())
+                if (Options.IsOutputLanguageJava())
                 {
                     codeGenerator.GenCodeLine("   try { curChar = input_stream.readChar(); }");
                     codeGenerator.GenCodeLine("   catch(java.io.IOException e) {");
                 }
-                else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+                else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
                 {
                     codeGenerator.GenCodeLine("   if (input_stream->endOfInput()) {");
                 }
                 else
                 {
-                    throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+                    throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
                 }
 
                 if (!LexGen.mixed[LexGen.lexStateIndex] && NfaState.generatedStates != 0)
@@ -925,7 +925,7 @@ public class RStringLiteral : RegularExpression
                     }
 
 
-                    if (i != 0 && Options.getDebugTokenManager())
+                    if (i != 0 && Options.GetDebugTokenManager())
                     {
                         if (CodeGenerator.IsJavaLanguage())
                         {
@@ -957,12 +957,12 @@ public class RStringLiteral : RegularExpression
 
 
             // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-            if (i != 0 && Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+            if (i != 0 && Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
             {
                 codeGenerator.GenCodeLine("   curChar = input_stream->readChar();");
             }
 
-            if (i != 0 && Options.getDebugTokenManager())
+            if (i != 0 && Options.GetDebugTokenManager())
             {
 
                 // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
@@ -974,7 +974,7 @@ public class RStringLiteral : RegularExpression
                            ".addEscapes(String.valueOf(curChar)) + \" (\" + (int)curChar + \") " +
                            "at line \" + input_stream.getEndLine() + \" column \" + input_stream.getEndColumn());");
                 }
-                else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+                else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
                 {
                     codeGenerator.GenCodeLine("   fprintf(debugStream, " +
                       "\"<%s>Current character : %c(%d) at line %d column %d\\n\"," +
@@ -983,7 +983,7 @@ public class RStringLiteral : RegularExpression
                 }
                 else
                 {
-                    throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+                    throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
                 }
             }
 
@@ -1025,7 +1025,7 @@ public class RStringLiteral : RegularExpression
                             {
                                 LexGen.AddCharToSkip(c, kind);
 
-                                if (Options.getIgnoreCase())
+                                if (Options.GetIgnoreCase())
                                 {
                                     if (c != char.ToUpper(c))
                                         LexGen.AddCharToSkip(char.ToUpper(c), kind);
@@ -1039,7 +1039,7 @@ public class RStringLiteral : RegularExpression
                 }
 
                 // Since we know key is a single character ...
-                if (Options.getIgnoreCase())
+                if (Options.GetIgnoreCase())
                 {
                     if (c != char.ToUpper(c))
                         codeGenerator.GenCodeLine("      case " + (int)char.ToUpper(c) + ":");
@@ -1129,7 +1129,7 @@ public class RStringLiteral : RegularExpression
                                 if ((LexGen.initMatch[LexGen.lexStateIndex] != 0 &&
                                      LexGen.initMatch[LexGen.lexStateIndex] != int.MaxValue) ||
                                      i != 0)
-                                {
+                                { 
                                     codeGenerator.GenCodeLine("         {");
                                     codeGenerator.GenCodeLine(prefix + "jjmatchedKind = " +
                                                                kindToPrint + ";");
@@ -1234,7 +1234,7 @@ public class RStringLiteral : RegularExpression
                strings at this position. */
             codeGenerator.GenCodeLine("      default :");
 
-            if (Options.getDebugTokenManager())
+            if (Options.GetDebugTokenManager())
             {
                 if (CodeGenerator.IsJavaLanguage())
                 {
@@ -1447,7 +1447,7 @@ public class RStringLiteral : RegularExpression
         }
 
         // TODO(Sreeni) : Fix this mess.
-        if (Options.getTokenManagerCodeGenerator() == null)
+        if (Options.GetTokenManagerCodeGenerator() == null)
         {
             DumpNfaStartStatesCode(statesForPos, codeGenerator);
         }
@@ -1467,40 +1467,40 @@ public class RStringLiteral : RegularExpression
 
         StringBuilder _params = new StringBuilder();
         for (i = 0; i < maxKindsReqd - 1; i++)
-            _params.Append("" + Options.getLongType() + " active" + i + ", ");
-        _params.Append("" + Options.getLongType() + " active" + i + ")");
+            _params.Append("" + Options.GetLongType() + " active" + i + ", ");
+        _params.Append("" + Options.GetLongType() + " active" + i + ")");
 
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        if (Options.isOutputLanguageJava())
+        if (Options.IsOutputLanguageJava())
         {
-            codeGenerator.GenCode("private" + (Options.getStatic() ? " static" : "") + " final int jjStopStringLiteralDfa" +
+            codeGenerator.GenCode("private" + (Options.GetStatic() ? " static" : "") + " final int jjStopStringLiteralDfa" +
                          LexGen.lexStateSuffix + "(int pos, " + _params);
         }
-        else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+        else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
             codeGenerator.generateMethodDefHeader(" int", LexGen.tokMgrClassName, "jjStopStringLiteralDfa" + LexGen.lexStateSuffix + "(int pos, " + _params);
         }
         else
         {
-            throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+            throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
         }
 
         codeGenerator.GenCodeLine("{");
 
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
         {
             // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
             if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("      debugStream.println(\"   No more string literal token matches are possible.\");");
             }
-            else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+            else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
             {
                 codeGenerator.GenCodeLine("      fprintf(debugStream, \"   No more string literal token matches are possible.\");");
             }
             else
             {
-                throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
+                throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
             }
         }
 
@@ -1617,12 +1617,12 @@ public class RStringLiteral : RegularExpression
         _params.Capacity = 0;
         _params.Append("(int pos, ");
         for (i = 0; i < maxKindsReqd - 1; i++)
-            _params.Append("" + Options.getLongType() + " active" + i + ", ");
-        _params.Append("" + Options.getLongType() + " active" + i + ")");
+            _params.Append("" + Options.GetLongType() + " active" + i + ", ");
+        _params.Append("" + Options.GetLongType() + " active" + i + ")");
 
         if (CodeGenerator.IsJavaLanguage())
         {
-            codeGenerator.GenCode("private" + (Options.getStatic() ? " static" : "") + " final int jjStartNfa" +
+            codeGenerator.GenCode("private" + (Options.GetStatic() ? " static" : "") + " final int jjStartNfa" +
                        LexGen.lexStateSuffix + _params);
         }
         else
@@ -1773,7 +1773,7 @@ public class RStringLiteral : RegularExpression
                 actualKind = kind;
             }
             kindToLexicalState.Add(actualKind, lexStateIndex);
-            if (Options.getIgnoreCase())
+            if (Options.GetIgnoreCase())
             {
                 s = s.ToLower();
             }

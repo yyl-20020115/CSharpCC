@@ -79,7 +79,7 @@ public partial class CPPFiles : JavaCCGlobals
     public static double GetVersion(string fileName)
     {
         string commentHeader = "/* " + GetIdString(ToolName, fileName) + " Version ";
-        string file = Path.Combine(Options.getOutputDirectory(), ReplaceBackslash(fileName));
+        string file = Path.Combine(Options.GetOutputDirectory(), ReplaceBackslash(fileName));
 
         if (!File.Exists(file))
         {
@@ -130,7 +130,7 @@ public partial class CPPFiles : JavaCCGlobals
 
     private static void GenFile(string name, string version, string[] parameters)
     {
-        string file = Path.Combine(Options.getOutputDirectory(), name);
+        string file = Path.Combine(Options.GetOutputDirectory(), name);
         try
         {
             var outputFile = new OutputFile(file, version, parameters);

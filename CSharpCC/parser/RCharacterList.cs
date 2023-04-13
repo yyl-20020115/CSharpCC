@@ -305,7 +305,7 @@ public class RCharacterList : RegularExpression
     {
         if (!transformed)
         {
-            if (Options.getIgnoreCase() || ignoreCase)
+            if (Options.GetIgnoreCase() || ignoreCase)
             {
                 /*
                            int i;
@@ -566,7 +566,7 @@ public class RCharacterList : RegularExpression
         }
 
         //Console.WriteLine("lastRem : " + (int)lastRemoved);
-        if (NfaState.unicodeWarningGiven || Options.getJavaUnicodeEscape())
+        if (NfaState.unicodeWarningGiven || Options.GetJavaUnicodeEscape())
         {
             if (lastRemoved < (char)0xffff)
                 newDescriptors.Add(new CharacterRange((char)(lastRemoved + 1),

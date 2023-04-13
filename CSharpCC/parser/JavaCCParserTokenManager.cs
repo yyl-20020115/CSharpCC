@@ -2343,7 +2343,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
         }
     }
 
-    /** Token literal values. */
+    /** Token literal values. */ 
     public static string[] jjstrLiteralImages = {
 "", "\114\117\117\113\101\110\105\101\104", 
 "\111\107\116\117\122\105\137\103\101\123\105", "\120\101\122\123\105\122\137\102\105\107\111\116",

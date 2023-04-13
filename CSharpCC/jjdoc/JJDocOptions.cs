@@ -66,35 +66,35 @@ public class JJDocOptions : Options
      *
      * @return The requested one table value.
      */
-    public static bool GetOneTable() => booleanValue("ONE_TABLE");
+    public static bool GetOneTable() => BooleanValue("ONE_TABLE");
 
     /**
      * Find the CSS value.
      *
      * @return The requested CSS value.
      */
-    public static string GetCSS() => stringValue("CSS");
+    public static string GetCSS() => StringValue("CSS");
 
     /**
      * Find the text value.
      *
      * @return The requested text value.
      */
-    public static bool GetText() => booleanValue("TEXT");
+    public static bool GetText() => BooleanValue("TEXT");
 
-    public static bool GetXText() => booleanValue("XTEXT");
+    public static bool GetXText() => BooleanValue("XTEXT");
 
     /**
      * Find the BNF value.
      *
      * @return The requested text value.
      */
-    public static bool GetBNF() => booleanValue("BNF");
+    public static bool GetBNF() => BooleanValue("BNF");
 
     /**
      * Find the output file value.
      *
      * @return The requested output value.
      */
-    public static string GetOutputFile() => stringValue("OUTPUT_FILE");
+    public static string GetOutputFile() => StringValue("OUTPUT_FILE");
 }

@@ -194,7 +194,7 @@ public class OutputFileGenerator
             text = Substitute(text);
         }
 
-        if (Options.isOutputLanguageJava() && Options.getGenerateStringBuilder())
+        if (Options.IsOutputLanguageJava() && Options.GetGenerateStringBuilder())
         {
             text = text.Replace("StringBuilder", "StringBuilder");
         }

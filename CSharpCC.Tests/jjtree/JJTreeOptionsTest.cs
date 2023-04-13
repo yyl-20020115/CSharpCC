@@ -16,17 +16,17 @@ public class JJTreeOptionsTest : CSharpCCTestCase
         JJTreeOptions.Init();
         JavaCCErrors.ReInit();
 
-        Assert.AreEqual(("."), JJTreeOptions.getOutputDirectory());
+        Assert.AreEqual(("."), JJTreeOptions.GetOutputDirectory());
         Assert.AreEqual(("."), JJTreeOptions.GetJJTreeOutputDirectory());
 
-        Options.setInputFileOption(null, null, Options.USEROPTION__OUTPUT_DIRECTORY,
+        Options.SetInputFileOption(null, null, Options.USEROPTION__OUTPUT_DIRECTORY,
         "test/output");
-        Assert.AreEqual(("test/output"), JJTreeOptions.getOutputDirectory());
+        Assert.AreEqual(("test/output"), JJTreeOptions.GetOutputDirectory());
         Assert.AreEqual(("test/output"), JJTreeOptions.GetJJTreeOutputDirectory());
 
-        Options.setInputFileOption(null, null, "JJTREE_OUTPUT_DIRECTORY",
+        Options.SetInputFileOption(null, null, "JJTREE_OUTPUT_DIRECTORY",
                 "test/jjtreeoutput");
-        Assert.AreEqual(("test/output"), JJTreeOptions.getOutputDirectory());
+        Assert.AreEqual(("test/output"), JJTreeOptions.GetOutputDirectory());
         Assert.AreEqual(("test/jjtreeoutput"), JJTreeOptions.GetJJTreeOutputDirectory());
 
         Assert.AreEqual(0, JavaCCErrors.GetWarningCount());
@@ -41,15 +41,15 @@ public class JJTreeOptionsTest : CSharpCCTestCase
 
       Assert.AreEqual(0, JavaCCErrors.GetWarningCount());
       Assert.AreEqual(0, JavaCCErrors.GetErrorCount());
-      JJTreeOptions.setInputFileOption(null, null, "NODE_FACTORY", false);
+      JJTreeOptions.SetInputFileOption(null, null, "NODE_FACTORY", false);
       Assert.AreEqual(JJTreeOptions.GetNodeFactory(), "");
 
       JJTreeOptions.Init();
-      JJTreeOptions.setInputFileOption(null, null, "NODE_FACTORY", true);
+      JJTreeOptions.SetInputFileOption(null, null, "NODE_FACTORY", true);
       Assert.AreEqual(JJTreeOptions.GetNodeFactory(), "*");
 
       JJTreeOptions.Init();
-      JJTreeOptions.setInputFileOption(null, null, "NODE_FACTORY", "mypackage.MyNode");
+      JJTreeOptions.SetInputFileOption(null, null, "NODE_FACTORY", "mypackage.MyNode");
       Assert.AreEqual(JJTreeOptions.GetNodeFactory(), "mypackage.MyNode");
 
       Assert.AreEqual(0, JavaCCErrors.GetWarningCount());
@@ -74,22 +74,22 @@ public class JJTreeOptionsTest : CSharpCCTestCase
       JJTreeOptions.Init();
       JavaCCErrors.ReInit();
 
-      JJTreeOptions.setCmdLineOption("VISITOR_DATA_TYPE=Object");
+      JJTreeOptions.SetCmdLineOption("VISITOR_DATA_TYPE=Object");
       JJTreeOptions.Validate();
       Assert.AreEqual(1, JavaCCErrors.GetWarningCount());
 
       JJTreeOptions.Init();
       JavaCCErrors.ReInit();
 
-      JJTreeOptions.setCmdLineOption("VISITOR_DATA_TYPE=Object");
-      JJTreeOptions.setCmdLineOption("VISITOR=true");
+      JJTreeOptions.SetCmdLineOption("VISITOR_DATA_TYPE=Object");
+      JJTreeOptions.SetCmdLineOption("VISITOR=true");
       JJTreeOptions.Validate();
       Assert.AreEqual(0, JavaCCErrors.GetWarningCount());
 
       JJTreeOptions.Init();
       JavaCCErrors.ReInit();
 
-      JJTreeOptions.setCmdLineOption("VISITOR_DATA_TYPE=Object");
+      JJTreeOptions.SetCmdLineOption("VISITOR_DATA_TYPE=Object");
       JJTreeOptions.Validate();
       Assert.AreEqual(1, JavaCCErrors.GetWarningCount());
     }
@@ -98,22 +98,22 @@ public class JJTreeOptionsTest : CSharpCCTestCase
       JJTreeOptions.Init();
       JavaCCErrors.ReInit();
 
-      JJTreeOptions.setCmdLineOption("VISITOR_DATA_TYPE=String");
+      JJTreeOptions.SetCmdLineOption("VISITOR_DATA_TYPE=String");
       JJTreeOptions.Validate();
       Assert.AreEqual(1, JavaCCErrors.GetWarningCount());
 
       JJTreeOptions.Init();
       JavaCCErrors.ReInit();
 
-      JJTreeOptions.setCmdLineOption("VISITOR_DATA_TYPE=String");
-      JJTreeOptions.setCmdLineOption("VISITOR=true");
+      JJTreeOptions.SetCmdLineOption("VISITOR_DATA_TYPE=String");
+      JJTreeOptions.SetCmdLineOption("VISITOR=true");
       JJTreeOptions.Validate();
       Assert.AreEqual(0, JavaCCErrors.GetWarningCount());
 
       JJTreeOptions.Init();
       JavaCCErrors.ReInit();
 
-      JJTreeOptions.setCmdLineOption("VISITOR_DATA_TYPE=String");
+      JJTreeOptions.SetCmdLineOption("VISITOR_DATA_TYPE=String");
       JJTreeOptions.Validate();
       Assert.AreEqual(1, JavaCCErrors.GetWarningCount());
     }

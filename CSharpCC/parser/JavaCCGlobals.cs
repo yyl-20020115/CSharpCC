@@ -365,7 +365,7 @@ public class JavaCCGlobals : JavaCCParserConstants
 
     static public string StaticOpt()
     {
-        return Options.getStatic() ? "static " : "";
+        return Options.GetStatic() ? "static " : "";
     }
 
     static public string AddEscapes(string str)
@@ -423,11 +423,11 @@ public class JavaCCGlobals : JavaCCParserConstants
     static public string AddUnicodeEscapes(string str)
     {
 
-        if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+        if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
             return str;
         }
-        else if (Options.isOutputLanguageJava())
+        else if (Options.IsOutputLanguageJava())
         {
             string retval = "";
             char ch;
@@ -449,7 +449,7 @@ public class JavaCCGlobals : JavaCCParserConstants
         else
         {
             // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-            throw new Exception("Unhandled Output Language : " + Options.getOutputLanguage());
+            throw new Exception("Unhandled Output Language : " + Options.GetOutputLanguage());
         }
     }
 
@@ -638,9 +638,9 @@ public class JavaCCGlobals : JavaCCParserConstants
 
     public static string GetFileExtension(string language)
     {
-        string lang = Options.getOutputLanguage();
+        string lang = Options.GetOutputLanguage();
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        if (Options.isOutputLanguageJava())
+        if (Options.IsOutputLanguageJava())
         {
             return ".java";
         }

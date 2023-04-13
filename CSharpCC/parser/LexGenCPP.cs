@@ -58,16 +58,16 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         GenCodeLine("#include \"TokenManager.h\"");
         GenCodeLine("#include \"" + CuName + "Constants.h\"");
 
-        if (Options.stringValue(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDE).Length > 0)
+        if (Options.StringValue(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDE).Length > 0)
         {
-            GenCodeLine("#include \"" + Options.stringValue(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDE) + "\"\n");
+            GenCodeLine("#include \"" + Options.StringValue(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDE) + "\"\n");
         }
 
         GenCodeLine("");
 
-        if (Options.stringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0)
+        if (Options.StringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0)
         {
-            GenCodeLine("namespace " + Options.stringValue("NAMESPACE_OPEN"));
+            GenCodeLine("namespace " + Options.StringValue("NAMESPACE_OPEN"));
         }
 
         GenCodeLine("class " + CuName + ";");
@@ -85,7 +85,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             for (; i < cu_to_insertion_point_1.size(); i++) {
               kind = ((Token)cu_to_insertion_point_1[i]).kind;
               if (kind == CLASS)
-              {
+              { 
                 cline = ((Token)(cu_to_insertion_point_1[l])).beginLine;
                 ccol = ((Token)(cu_to_insertion_point_1[l])).beginColumn;
                 for (j = l; j < i; j++) {
@@ -105,14 +105,14 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
         GenCodeLine("");
         GenCodeLine("/** Token Manager. */");
-        string superClass = Options.stringValue(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS);
+        string superClass = Options.StringValue(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS);
         GenClassStart(null, tokMgrClassName, new String[] { }, new String[] { "public TokenManager" + (superClass == null ? "" : ", public " + superClass) });
 
         if (token_mgr_decls != null && token_mgr_decls.Count > 0)
         {
             Token t = (Token)token_mgr_decls[0];
             bool commonTokenActionSeen = false;
-            bool commonTokenActionNeeded = Options.getCommonTokenAction();
+            bool commonTokenActionNeeded = Options.GetCommonTokenAction();
 
             PrintTokenSetup((Token)token_mgr_decls[0]);
             ccol = 1;
@@ -136,7 +136,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             SwitchToIncludeFile();
             GenCodeLine("  void CommonTokenAction(Token* token);");
 
-            if (Options.getTokenManagerUsesParser())
+            if (Options.GetTokenManagerUsesParser())
             {
                 GenCodeLine("  void setParser(void* parser) {");
                 GenCodeLine("      this->parser = (" + CuName + "*) parser;");
@@ -151,7 +151,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 "in your TOKEN_MGR_DECLS. The generated token manager will not compile.");
 
         }
-        else if (Options.getCommonTokenAction())
+        else if (Options.GetCommonTokenAction())
         {
             JavaCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
                 "But you have not defined the method :\n" +
@@ -166,7 +166,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         GenCodeLine("{ debugStream = ds; }");
 
         SwitchToIncludeFile();
-        if (Options.getTokenManagerUsesParser())
+        if (Options.GetTokenManagerUsesParser())
         {
             GenCodeLine("");
             GenCodeLine("private:");
@@ -266,18 +266,18 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
     public new void Start()
     {
-        if (!Options.getBuildTokenManager() ||
-            Options.getUserTokenManager() ||
+        if (!Options.GetBuildTokenManager() ||
+            Options.GetUserTokenManager() ||
             JavaCCErrors.GetErrorCount() > 0)
             return;
 
-        keepLineCol = Options.getKeepLineColumn();
+        keepLineCol = Options.GetKeepLineColumn();
         List<Expansion> choices = new();
         Enumeration e;
         TokenProduction tp;
         int i, j;
 
-        staticString = (Options.getStatic() ? "static " : "");
+        staticString = (Options.GetStatic() ? "static " : "");
         tokMgrClassName = CuName + "TokenManager";
 
         PrintClassHead();
@@ -466,7 +466,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         DumpFillToken();
         DumpGetNextToken();
 
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
         {
             NfaState.DumpStatesForKind(this);
             DumpDebugMethods();
@@ -491,11 +491,11 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         NfaState.PrintBoilerPlateCPP(this);
 
         string charStreamName;
-        if (Options.getUserCharStream())
+        if (Options.GetUserCharStream())
             charStreamName = "CharStream";
         else
         {
-            if (Options.getJavaUnicodeEscape())
+            if (Options.GetJavaUnicodeEscape())
                 charStreamName = "JavaCharStream";
             else
                 charStreamName = "SimpleCharStream";
@@ -520,9 +520,9 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
         SwitchToStaticsFile();
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        string fileName = Options.getOutputDirectory() + File.separator +
+        string fileName = Options.GetOutputDirectory() + File.separator +
                           tokMgrClassName +
-                          GetFileExtension(Options.getOutputLanguage());
+                          GetFileExtension(Options.GetOutputLanguage());
         SaveOutput(fileName);
     }
 
@@ -543,7 +543,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         GenCodeLine("  void ReInit(JAVACC_CHARSTREAM *stream, int lexState = " + defaultLexState + ");");
         GenCodeLine("  void SwitchTo(int lexState);");
         GenCodeLine("  void clear();");
-        GenCodeLine("  const JJSimpleString jjKindsForBitVector(int i, " + Options.getLongType() + " vec);");
+        GenCodeLine("  const JJSimpleString jjKindsForBitVector(int i, " + Options.GetLongType() + " vec);");
         GenCodeLine("  const JJSimpleString jjKindsForStateVector(int lexState, int vec[], int start, int end);");
         GenCodeLine("");
     }
@@ -579,7 +579,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         if (hasSkip || hasMore || hasSpecial)
         {
             // Bit vector for TOKEN
-            GenCode("static const " + Options.getLongType() + " jjtoToken[] = {");
+            GenCode("static const " + Options.GetLongType() + " jjtoToken[] = {");
             for (i = 0; i < maxOrdinal / 64 + 1; i++)
             {
                 if (i % 4 == 0)
@@ -592,7 +592,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         if (hasSkip || hasSpecial)
         {
             // Bit vector for SKIP
-            GenCode("static const " + Options.getLongType() + " jjtoSkip[] = {");
+            GenCode("static const " + Options.GetLongType() + " jjtoSkip[] = {");
             for (i = 0; i < maxOrdinal / 64 + 1; i++)
             {
                 if (i % 4 == 0)
@@ -605,7 +605,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         if (hasSpecial)
         {
             // Bit vector for SPECIAL
-            GenCode("static const " + Options.getLongType() + " jjtoSpecial[] = {");
+            GenCode("static const " + Options.GetLongType() + " jjtoSpecial[] = {");
             for (i = 0; i < maxOrdinal / 64 + 1; i++)
             {
                 if (i % 4 == 0)
@@ -693,9 +693,9 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             }
         }
 
-        if (Options.getTokenFactory().Length > 0)
+        if (Options.GetTokenFactory().Length > 0)
         {
-            GenCodeLine("   t = " + GetClassQualifier(Options.getTokenFactory()) + "newToken(jjmatchedKind, curTokenImage);");
+            GenCodeLine("   t = " + GetClassQualifier(Options.GetTokenFactory()) + "newToken(jjmatchedKind, curTokenImage);");
         }
         else if (hasBinaryNewToken)
         {
@@ -761,7 +761,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         GenCodeLine("   {");
         //GenCodeLine("     input_stream->backup(1);");
 
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
             GenCodeLine("      fprintf(debugStream, \"Returning the <EOF> token.\\n\");");
 
         GenCodeLine("      jjmatchedKind = 0;");
@@ -774,7 +774,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         if (nextStateForEof != null || actForEof != null)
             GenCodeLine("      TokenLexicalActions(matchedToken);");
 
-        if (Options.getCommonTokenAction())
+        if (Options.GetCommonTokenAction())
             GenCodeLine("      CommonTokenAction(matchedToken);");
 
         GenCodeLine("      return matchedToken;");
@@ -848,7 +848,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 }
 
                 GenCodeLine(prefix + "{");
-                if (Options.getDebugTokenManager())
+                if (Options.GetDebugTokenManager())
                 {
                     if (maxLexStates > 1)
                     {
@@ -866,7 +866,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
             if (initMatch[i] != int.MaxValue && initMatch[i] != 0)
             {
-                if (Options.getDebugTokenManager())
+                if (Options.GetDebugTokenManager())
                     GenCodeLine("      fprintf(debugStream, \"   Matched the empty string as %s token.\\n\", addUnicodeEscapes(tokenImage[" + initMatch[i] + "]).c_str());");
 
                 GenCodeLine(prefix + "jjmatchedKind = " + initMatch[i] + ";");
@@ -879,7 +879,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 GenCodeLine(prefix + "jjmatchedPos = 0;");
             }
 
-            if (Options.getDebugTokenManager())
+            if (Options.GetDebugTokenManager())
             {
                 GenCodeLine("   fprintf(debugStream, " +
                   "\"<%s>Current character : %c(%d) at line %d column %d\\n\"," +
@@ -899,7 +899,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                         canMatchAnyChar[i] + ")");
                 GenCodeLine(prefix + "{");
 
-                if (Options.getDebugTokenManager())
+                if (Options.GetDebugTokenManager())
                 {
                     GenCodeLine("           fprintf(debugStream, \"   Current character matched as a %s token.\\n\", addUnicodeEscapes(tokenImage[" + canMatchAnyChar[i] + "]).c_str());");
                 }
@@ -931,7 +931,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             GenCodeLine(prefix + "   {");
             GenCodeLine(prefix + "      if (jjmatchedPos + 1 < curPos)");
 
-            if (Options.getDebugTokenManager())
+            if (Options.GetDebugTokenManager())
             {
                 GenCodeLine(prefix + "      {");
                 GenCodeLine(prefix + "         fprintf(debugStream, " +
@@ -940,12 +940,12 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
             GenCodeLine(prefix + "         input_stream->backup(curPos - jjmatchedPos - 1);");
 
-            if (Options.getDebugTokenManager())
+            if (Options.GetDebugTokenManager())
             {
                 GenCodeLine(prefix + "      }");
             }
 
-            if (Options.getDebugTokenManager())
+            if (Options.GetDebugTokenManager())
             {
                 GenCodeLine("    fprintf(debugStream, " +
                     "\"****** FOUND A %d(%s) MATCH (%s) ******\\n\", jjmatchedKind, addUnicodeEscapes(tokenImage[jjmatchedKind]).c_str(), addUnicodeEscapes(input_stream->GetSuffix(jjmatchedPos + 1)).c_str());");
@@ -972,7 +972,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 GenCodeLine(prefix + "       curLexState = jjnewLexState[jjmatchedKind];");
             }
 
-            if (Options.getCommonTokenAction())
+            if (Options.GetCommonTokenAction())
                 GenCodeLine(prefix + "         CommonTokenAction(matchedToken);");
 
             GenCodeLine(prefix + "         return matchedToken;");
@@ -1051,7 +1051,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                     GenCodeLine(prefix + "   if (!input_stream->endOfInput()) {");
                     GenCodeLine(prefix + "         curChar = input_stream->readChar();");
 
-                    if (Options.getDebugTokenManager())
+                    if (Options.GetDebugTokenManager())
                     {
                         GenCodeLine("   fprintf(debugStream, " +
                          "\"<%s>Current character : %c(%d) at line %d column %d\\n\"," +

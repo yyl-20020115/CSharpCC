@@ -119,19 +119,19 @@ public class JJDocMain : JJDocGlobals
         }
 
 
-        if (JJDocOptions.isOption(args[^1]))
+        if (JJDocOptions.IsOption(args[^1]))
         {
             Error("Last argument \"" + args[^1] + "\" is not a filename or \"-\".  ");
             return 1;
         }
         for (int arg = 0; arg < args.Length - 1; arg++)
         {
-            if (!JJDocOptions.isOption(args[arg]))
+            if (!JJDocOptions.IsOption(args[arg]))
             {
                 Error("Argument \"" + args[arg] + "\" must be an option setting.  ");
                 return 1;
             }
-            JJDocOptions.setCmdLineOption(args[arg]);
+            JJDocOptions.SetCmdLineOption(args[arg]);
         }
 
         if (args[^1] == ("-"))
@@ -158,7 +158,7 @@ public class JJDocMain : JJDocGlobals
                     return 1;
                 }
                 JJDocGlobals.input_file = fp.getName();
-                parser = new JavaCCParser(new BufferedReader(new InputStreamReader(new FileInputStream(args[args.Length - 1]), JJDocOptions.getGrammarEncoding())));
+                parser = new JavaCCParser(new BufferedReader(new InputStreamReader(new FileInputStream(args[args.Length - 1]), JJDocOptions.GetGrammarEncoding())));
             }
             catch (SecurityException se)
             {

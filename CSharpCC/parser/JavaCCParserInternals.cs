@@ -121,7 +121,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
     {
         int ii;
         rexprlist.Add(p);
-        if (Options.getUserTokenManager())
+        if (Options.GetUserTokenManager())
         {
             if (p.lexStates == null || p.lexStates.Length != 1 || p.lexStates[0] != ("DEFAULT"))
             {
@@ -161,7 +161,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         else
         {
             token_mgr_decls = decls;
-            if (Options.getUserTokenManager())
+            if (Options.GetUserTokenManager())
             {
                 JavaCCErrors.Warning(t, "Ignoring declarations in \"TOKEN_MGR_DECLS\" since option " +
                                         "USER_TOKEN_MANAGER has been set to true.");

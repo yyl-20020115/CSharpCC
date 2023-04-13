@@ -103,7 +103,7 @@ public class LexGen : CodeGenerator
         List<string> tn = new(ToolNames);
         tn.Add(ToolName);
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        GenCodeLine("/* " + GetIdString(tn, tokMgrClassName + GetFileExtension(Options.getOutputLanguage())) + " */");
+        GenCodeLine("/* " + GetIdString(tn, tokMgrClassName + GetFileExtension(Options.GetOutputLanguage())) + " */");
 
         int l = 0, kind;
         i = 1;
@@ -148,11 +148,11 @@ public class LexGen : CodeGenerator
         GenCodeLine("");
         GenCodeLine("/** Token Manager. */");
 
-        if (bHasImport && Options.getGenerateAnnotations())
+        if (bHasImport && Options.GetGenerateAnnotations())
         {
             GenCodeLine("@SuppressWarnings (\"unused\")");
         }
-        if (Options.getSupportClassVisibilityPublic())
+        if (Options.GetSupportClassVisibilityPublic())
         {
             //genModifier("public ");
             GenModifier("public ");  
@@ -167,7 +167,7 @@ public class LexGen : CodeGenerator
         {
             Token t = (Token)token_mgr_decls[0];
             bool commonTokenActionSeen = false;
-            bool commonTokenActionNeeded = Options.getCommonTokenAction();
+            bool commonTokenActionNeeded = Options.GetCommonTokenAction();
 
             PrintTokenSetup((Token)token_mgr_decls[0]);
             ccol = 1;
@@ -191,7 +191,7 @@ public class LexGen : CodeGenerator
                 "in your TOKEN_MGR_DECLS. The generated token manager will not compile.");
 
         }
-        else if (Options.getCommonTokenAction())
+        else if (Options.GetCommonTokenAction())
         {
             JavaCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
                 "But you have not defined the method :\n" +
@@ -205,7 +205,7 @@ public class LexGen : CodeGenerator
         GenCodeLine("  /** Set debug output. */");
         GenCodeLine("  public " + staticString + " void setDebugStream(java.io.PrintStream ds) { debugStream = ds; }");
 
-        if (Options.getTokenManagerUsesParser())
+        if (Options.GetTokenManagerUsesParser())
         {
             GenCodeLine("");
             GenCodeLine("  public " + CuName + " parser = null;");
@@ -352,20 +352,20 @@ public class LexGen : CodeGenerator
 
     public void start()
     {
-        if (!Options.getBuildTokenManager() ||
-            Options.getUserTokenManager() ||
+        if (!Options.GetBuildTokenManager() ||
+            Options.GetUserTokenManager() ||
             JavaCCErrors.GetErrorCount() > 0)
             return;
 
-        string codeGeneratorClass = Options.getTokenManagerCodeGenerator();
-        keepLineCol = Options.getKeepLineColumn();
+        string codeGeneratorClass = Options.GetTokenManagerCodeGenerator();
+        keepLineCol = Options.GetKeepLineColumn();
         errorHandlingClass = Options.getTokenMgrErrorClass();
         List choices = new();
         Enumeration e;
         TokenProduction tp;
         int i, j;
 
-        staticString = (Options.getStatic() ? "static " : "");
+        staticString = (Options.GetStatic() ? "static " : "");
         tokMgrClassName = CuName + "TokenManager";
 
         if (!GenerateDataOnly && codeGeneratorClass == null) PrintClassHead();
@@ -420,7 +420,7 @@ public class LexGen : CodeGenerator
                         continue;
                     }
 
-                    if (!Options.getNoDfa() && curRE is RStringLiteral &&
+                    if (!Options.GetNoDfa() && curRE is RStringLiteral &&
                         !((RStringLiteral)curRE).image == (""))
                     {
                         ((RStringLiteral)curRE).GenerateDfa(this, curRE.ordinal);
@@ -632,7 +632,7 @@ public class LexGen : CodeGenerator
         NfaState.DumpNonAsciiMoveMethods(this);
         DumpGetNextToken();
 
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
         {
             NfaState.DumpStatesForKind(this);
             DumpDebugMethods();
@@ -642,7 +642,7 @@ public class LexGen : CodeGenerator
         {
             GenCodeLine(staticString + "int[] jjemptyLineNo = new int[" + maxLexStates + "];");
             GenCodeLine(staticString + "int[] jjemptyColNo = new int[" + maxLexStates + "];");
-            GenCodeLine(staticString + "" + Options.getBooleanType() + "[] jjbeenHere = new " + Options.getBooleanType() + "[" + maxLexStates + "];");
+            GenCodeLine(staticString + "" + Options.GetBooleanType() + "[] jjbeenHere = new " + Options.GetBooleanType() + "[" + maxLexStates + "];");
         }
 
         DumpSkipActions();
@@ -652,11 +652,11 @@ public class LexGen : CodeGenerator
         NfaState.PrintBoilerPlate(this);
 
         string charStreamName;
-        if (Options.getUserCharStream())
+        if (Options.GetUserCharStream())
             charStreamName = "CharStream";
         else
         {
-            if (Options.getJavaUnicodeEscape())
+            if (Options.GetJavaUnicodeEscape())
                 charStreamName = "JavaCharStream";
             else
                 charStreamName = "SimpleCharStream";
@@ -666,18 +666,18 @@ public class LexGen : CodeGenerator
           "charStreamName", charStreamName,
           "lexStateNameLength", lexStateName.Length,
           "defaultLexState", defaultLexState,
-          "noDfa", Options.getNoDfa(),
+          "noDfa", Options.GetNoDfa(),
           "generatedStates", totalNumStates);
 
         DumpStaticVarDeclarations(charStreamName);
         GenCodeLine(/*{*/ "}");
 
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        string fileName = Options.getOutputDirectory() + File.separator +
+        string fileName = Options.GetOutputDirectory() + File.separator +
                           tokMgrClassName +
-                          GetFileExtension(Options.getOutputLanguage());
+                          GetFileExtension(Options.GetOutputLanguage());
 
-        if (Options.getBuildParser())
+        if (Options.GetBuildParser())
         {
             SaveOutput(fileName);
         }
@@ -719,7 +719,7 @@ public class LexGen : CodeGenerator
                 done[j] = true;
                 seen[j] = true;
                 if (initMatch[j] == 0 || initMatch[j] == int.MaxValue ||
-                    canMatchAnyChar[j] != -1)
+                    canMatchAnyChar[j] != -1) 
                     continue Outer;
                 if (len != 0)
                     reList += "; ";
@@ -912,9 +912,9 @@ public class LexGen : CodeGenerator
             }
         }
 
-        if (Options.getTokenFactory().Length > 0)
+        if (Options.GetTokenFactory().Length > 0)
         {
-            GenCodeLine("   t = " + Options.getTokenFactory() + ".newToken(jjmatchedKind, curTokenImage);");
+            GenCodeLine("   t = " + Options.GetTokenFactory() + ".newToken(jjmatchedKind, curTokenImage);");
         }
         else if (hasBinaryNewToken)
         {
@@ -973,7 +973,7 @@ public class LexGen : CodeGenerator
         GenCodeLine("   catch(Exception e)");
         GenCodeLine("   {");
 
-        if (Options.getDebugTokenManager())
+        if (Options.GetDebugTokenManager())
             GenCodeLine("      debugStream.println(\"Returning the <EOF> token.\\n\");");
 
         GenCodeLine("      jjmatchedKind = 0;");
@@ -986,7 +986,7 @@ public class LexGen : CodeGenerator
         if (nextStateForEof != null || actForEof != null)
             GenCodeLine("      TokenLexicalActions(matchedToken);");
 
-        if (Options.getCommonTokenAction())
+        if (Options.GetCommonTokenAction())
             GenCodeLine("      CommonTokenAction(matchedToken);");
 
         GenCodeLine("      return matchedToken;");
@@ -1058,7 +1058,7 @@ public class LexGen : CodeGenerator
                     "L & (1L << (curChar & 077))) != 0L)");
                 }
 
-                if (Options.getDebugTokenManager())
+                if (Options.GetDebugTokenManager())
                 {
                     GenCodeLine(prefix + "{");
                     GenCodeLine("      debugStream.println(" +
@@ -1069,7 +1069,7 @@ public class LexGen : CodeGenerator
                 }
                 GenCodeLine(prefix + "      curChar = input_stream.BeginToken();");
 
-                if (Options.getDebugTokenManager())
+                if (Options.GetDebugTokenManager())
                     GenCodeLine(prefix + "}");
 
                 GenCodeLine(prefix + "}");
@@ -1078,7 +1078,7 @@ public class LexGen : CodeGenerator
 
             if (initMatch[i] != int.MaxValue && initMatch[i] != 0)
             {
-                if (Options.getDebugTokenManager())
+                if (Options.GetDebugTokenManager())
                     GenCodeLine("      debugStream.println(\"   Matched the empty string as \" + tokenImage[" +
                         initMatch[i] + "] + \" token.\");");
 
@@ -1092,7 +1092,7 @@ public class LexGen : CodeGenerator
                 GenCodeLine(prefix + "jjmatchedPos = 0;");
             }
 
-            if (Options.getDebugTokenManager())
+            if (Options.GetDebugTokenManager())
                 GenCodeLine("      debugStream.println(" +
                     (maxLexStates > 1 ? "\"<\" + lexStateNames[curLexState] + \">\" + " : "") +
                     "\"Current character : \" + " +
@@ -1110,7 +1110,7 @@ public class LexGen : CodeGenerator
                         canMatchAnyChar[i] + ")");
                 GenCodeLine(prefix + "{");
 
-                if (Options.getDebugTokenManager())
+                if (Options.GetDebugTokenManager())
                     GenCodeLine("           debugStream.println(\"   Current character matched as a \" + tokenImage[" +
                         canMatchAnyChar[i] + "] + \" token.\");");
                 GenCodeLine(prefix + "   jjmatchedKind = " + canMatchAnyChar[i] + ";");
@@ -1141,7 +1141,7 @@ public class LexGen : CodeGenerator
             GenCodeLine(prefix + "   {");
             GenCodeLine(prefix + "      if (jjmatchedPos + 1 < curPos)");
 
-            if (Options.getDebugTokenManager())
+            if (Options.GetDebugTokenManager())
             {
                 GenCodeLine(prefix + "      {");
                 GenCodeLine(prefix + "         debugStream.println(" +
@@ -1150,13 +1150,13 @@ public class LexGen : CodeGenerator
 
             GenCodeLine(prefix + "         input_stream.backup(curPos - jjmatchedPos - 1);");
 
-            if (Options.getDebugTokenManager())
+            if (Options.GetDebugTokenManager())
                 GenCodeLine(prefix + "      }");
 
-            if (Options.getDebugTokenManager())
+            if (Options.GetDebugTokenManager())
             {
-                if (Options.getJavaUnicodeEscape() ||
-                    Options.getUserCharStream())
+                if (Options.GetJavaUnicodeEscape() ||
+                    Options.GetUserCharStream())
                     GenCodeLine("    debugStream.println(" +
                         "\"****** FOUND A \" + tokenImage[jjmatchedKind] + \" MATCH " +
                         "(\" + " + errorHandlingClass + ".addEscapes(new String(input_stream.GetSuffix(jjmatchedPos + 1))) + " +
@@ -1189,7 +1189,7 @@ public class LexGen : CodeGenerator
                 GenCodeLine(prefix + "       curLexState = jjnewLexState[jjmatchedKind];");
             }
 
-            if (Options.getCommonTokenAction())
+            if (Options.GetCommonTokenAction())
                 GenCodeLine(prefix + "         CommonTokenAction(matchedToken);");
 
             GenCodeLine(prefix + "         return matchedToken;");
@@ -1268,7 +1268,7 @@ public class LexGen : CodeGenerator
                     GenCodeLine(prefix + "      try {");
                     GenCodeLine(prefix + "         curChar = input_stream.readChar();");
 
-                    if (Options.getDebugTokenManager())
+                    if (Options.GetDebugTokenManager())
                         GenCodeLine("   debugStream.println(" +
                             (maxLexStates > 1 ? "\"<\" + lexStateNames[curLexState] + \">\" + " : "") +
                             "\"Current character : \" + " +
@@ -1284,7 +1284,7 @@ public class LexGen : CodeGenerator
             GenCodeLine(prefix + "   int error_line = input_stream.getEndLine();");
             GenCodeLine(prefix + "   int error_column = input_stream.getEndColumn();");
             GenCodeLine(prefix + "   String error_after = null;");
-            GenCodeLine(prefix + "   " + Options.getBooleanType() + " EOFSeen = false;");
+            GenCodeLine(prefix + "   " + Options.GetBooleanType() + " EOFSeen = false;");
             GenCodeLine(prefix + "   try { input_stream.readChar(); input_stream.backup(1); }");
             GenCodeLine(prefix + "   catch (java.io.IOException e1) {");
             GenCodeLine(prefix + "      EOFSeen = true;");

@@ -56,7 +56,7 @@ public class OtherFilesGenCPP : JavaCCGlobals
         try
         {
             ostr = new StreamWriter(
-                System.IO.Path.Combine(Options.getOutputDirectory(), CuName + "Constants.h"));
+                System.IO.Path.Combine(Options.GetOutputDirectory(), CuName + "Constants.h"));
         }
         catch (IOException e)
         {
@@ -100,9 +100,9 @@ public class OtherFilesGenCPP : JavaCCGlobals
         ostr.WriteLine("#define " + define);
         ostr.WriteLine("#include \"JavaCC.h\"");
         ostr.WriteLine("");
-        if (Options.stringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0)
+        if (Options.StringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0)
         {
-            ostr.WriteLine("namespace " + Options.stringValue("NAMESPACE_OPEN"));
+            ostr.WriteLine("namespace " + Options.StringValue("NAMESPACE_OPEN"));
         }
 
         string constPrefix = "const";
@@ -115,7 +115,7 @@ public class OtherFilesGenCPP : JavaCCGlobals
         }
         ostr.WriteLine("");
 
-        if (!Options.getUserTokenManager() && Options.getBuildTokenManager())
+        if (!Options.GetUserTokenManager() && Options.GetBuildTokenManager())
         {
             for (int i = 0; i < LexGen.lexStateName.Length; i++)
             {
@@ -163,9 +163,9 @@ public class OtherFilesGenCPP : JavaCCGlobals
         }
         ostr.WriteLine("  };");
         ostr.WriteLine("");
-        if (Options.stringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0)
+        if (Options.StringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0)
         {
-            ostr.WriteLine(Options.stringValue("NAMESPACE_CLOSE"));
+            ostr.WriteLine(Options.StringValue("NAMESPACE_CLOSE"));
         }
         ostr.WriteLine("#endif");
         ostr.Close();

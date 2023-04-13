@@ -180,7 +180,7 @@ public partial class JavaFiles : JavaCCGlobals
     public static double GetVersion(string fileName)
     {
         string commentHeader = "/* " + GetIdString(ToolName, fileName) + " Version ";
-        string file = Path.Combine(Options.getOutputDirectory(), ReplaceBackslash(fileName));
+        string file = Path.Combine(Options.GetOutputDirectory(), ReplaceBackslash(fileName));
 
         if (!File.Exists(file))
         {
@@ -245,7 +245,7 @@ public partial class JavaFiles : JavaCCGlobals
     {
         try
         {
-            string file = Path.Combine(Options.getOutputDirectory(), "JavaCharStream.java");
+            string file = Path.Combine(Options.GetOutputDirectory(), "JavaCharStream.java");
             var outputFile = new OutputFile(file, charStreamVersion, new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
@@ -275,7 +275,7 @@ public partial class JavaFiles : JavaCCGlobals
                     }
                 }
             }
-            string prefix = Options.getStatic() ? "static " : "";
+            string prefix = Options.GetStatic() ? "static " : "";
             Dictionary<string,object> options = new (Options.getOptions());
             options.Add("PREFIX", prefix);
 
@@ -300,7 +300,7 @@ public partial class JavaFiles : JavaCCGlobals
     {
         try
         {
-            string file = Path.Combine(Options.getOutputDirectory(), "SimpleCharStream.java");
+            string file = Path.Combine(Options.GetOutputDirectory(), "SimpleCharStream.java");
             var outputFile = new OutputFile(file, charStreamVersion, new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
@@ -330,7 +330,7 @@ public partial class JavaFiles : JavaCCGlobals
                     }
                 }
             }
-            string prefix = Options.getStatic() ? "static " : "";
+            string prefix = Options.GetStatic() ? "static " : "";
             var options = new Dictionary<string,object>(Options.getOptions());
             options.Add("PREFIX", prefix);
 
@@ -355,7 +355,7 @@ public partial class JavaFiles : JavaCCGlobals
     {
         try
         {
-            var file = Path.Combine(Options.getOutputDirectory(), "CharStream.java");
+            var file = Path.Combine(Options.GetOutputDirectory(), "CharStream.java");
             var outputFile = new OutputFile(file, charStreamVersion, new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
@@ -416,7 +416,7 @@ public partial class JavaFiles : JavaCCGlobals
     {
         try
         {
-            var file = Path.Combine(Options.getOutputDirectory(), fileName);
+            var file = Path.Combine(Options.GetOutputDirectory(), fileName);
             var outputFile = new OutputFile(file, parseExceptionVersion, new string[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN });
 
             if (!outputFile.NeedToWrite)
@@ -466,7 +466,7 @@ public partial class JavaFiles : JavaCCGlobals
     {
         try
         {
-            string file = Path.Combine(Options.getOutputDirectory(), "ParseException.java");
+            string file = Path.Combine(Options.GetOutputDirectory(), "ParseException.java");
             OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new string[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN });
 
             if (!outputFile.NeedToWrite)
@@ -518,12 +518,12 @@ public partial class JavaFiles : JavaCCGlobals
     {
 
 
-        bool isLegacyExceptionHandling = Options.isLegacyExceptionHandling();
+        bool isLegacyExceptionHandling = Options.IsLegacyExceptionHandling();
         string filename = isLegacyExceptionHandling ? "TokenMgrError.java" : "TokenMgrException.java";
         try
         {
 
-            string file = Path.Combine(Options.getOutputDirectory(), filename);
+            string file = Path.Combine(Options.GetOutputDirectory(), filename);
             OutputFile outputFile = new OutputFile(file, tokenMgrErrorVersion, new string[0]);
 
             if (!outputFile.NeedToWrite)
@@ -578,7 +578,7 @@ public partial class JavaFiles : JavaCCGlobals
     {
         try
         {
-            string file = Path.Combine(Options.getOutputDirectory(), "Token.java");
+            string file = Path.Combine(Options.GetOutputDirectory(), "Token.java");
             OutputFile outputFile = new OutputFile(file, tokenVersion, new string[] { Options.USEROPTION__TOKEN_EXTENDS, Options.USEROPTION__KEEP_LINE_COLUMN, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
@@ -630,7 +630,7 @@ public partial class JavaFiles : JavaCCGlobals
     {
         try
         {
-            string file = Path.Combine(Options.getOutputDirectory(), "TokenManager.java");
+            string file = Path.Combine(Options.GetOutputDirectory(), "TokenManager.java");
             OutputFile outputFile = new OutputFile(file, tokenManagerVersion, new string[] { Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)

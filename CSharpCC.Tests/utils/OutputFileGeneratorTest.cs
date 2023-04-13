@@ -23,7 +23,7 @@ public class OutputFileGeneratorTest : CSharpCCTestCase
 
   public void testStringBuilder() {
     Options.Init();
-    Options.setCmdLineOption(Options.USEROPTION__GENERATE_STRING_BUILDER);
+    Options.SetCmdLineOption(Options.USEROPTION__GENERATE_STRING_BUILDER);
 
     JavaResourceTemplateLocationImpl impl = new JavaResourceTemplateLocationImpl();
     OutputFileGenerator generator = new OutputFileGenerator(

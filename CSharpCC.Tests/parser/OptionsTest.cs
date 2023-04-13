@@ -16,33 +16,33 @@ public class OptionsTest : CSharpCCTestCase
 
         //        Assert.AreEqual(49, Options.optionValues.Count);
 
-        Assert.AreEqual(true, Options.getBuildParser());
-        Assert.AreEqual(true, Options.getBuildTokenManager());
-        Assert.AreEqual(false, Options.getCacheTokens());
-        Assert.AreEqual(false, Options.getCommonTokenAction());
-        Assert.AreEqual(false, Options.getDebugLookahead());
-        Assert.AreEqual(false, Options.getDebugParser());
-        Assert.AreEqual(false, Options.getDebugTokenManager());
-        Assert.AreEqual(true, Options.getErrorReporting());
+        Assert.AreEqual(true, Options.GetBuildParser());
+        Assert.AreEqual(true, Options.GetBuildTokenManager());
+        Assert.AreEqual(false, Options.GetCacheTokens());
+        Assert.AreEqual(false, Options.GetCommonTokenAction());
+        Assert.AreEqual(false, Options.GetDebugLookahead());
+        Assert.AreEqual(false, Options.GetDebugParser());
+        Assert.AreEqual(false, Options.GetDebugTokenManager());
+        Assert.AreEqual(true, Options.GetErrorReporting());
         Assert.AreEqual(false, Options.GetForceLaCheck());
-        Assert.AreEqual(false, Options.getIgnoreCase());
-        Assert.AreEqual(false, Options.getJavaUnicodeEscape());
-        Assert.AreEqual(true, Options.getKeepLineColumn());
-        Assert.AreEqual(true, Options.getSanityCheck());
-        Assert.AreEqual(true, Options.getStatic());
-        Assert.AreEqual(false, Options.getUnicodeInput());
-        Assert.AreEqual(false, Options.getUserCharStream());
-        Assert.AreEqual(false, Options.getUserTokenManager());
-        Assert.AreEqual(false, Options.getTokenManagerUsesParser());
+        Assert.AreEqual(false, Options.GetIgnoreCase());
+        Assert.AreEqual(false, Options.GetJavaUnicodeEscape());
+        Assert.AreEqual(true, Options.GetKeepLineColumn());
+        Assert.AreEqual(true, Options.GetSanityCheck());
+        Assert.AreEqual(true, Options.GetStatic());
+        Assert.AreEqual(false, Options.GetUnicodeInput());
+        Assert.AreEqual(false, Options.GetUserCharStream());
+        Assert.AreEqual(false, Options.GetUserTokenManager());
+        Assert.AreEqual(false, Options.GetTokenManagerUsesParser());
 
-        Assert.AreEqual(2, Options.getChoiceAmbiguityCheck());
-        Assert.AreEqual(1, Options.getLookahead());
-        Assert.AreEqual(1, Options.getOtherAmbiguityCheck());
+        Assert.AreEqual(2, Options.GetChoiceAmbiguityCheck());
+        Assert.AreEqual(1, Options.GetLookahead());
+        Assert.AreEqual(1, Options.GetOtherAmbiguityCheck());
 
-        Assert.AreEqual("1.5", Options.getJdkVersion());
-        Assert.AreEqual(".", Options.getOutputDirectory());
-        Assert.AreEqual("", Options.getTokenExtends());
-        Assert.AreEqual("", Options.getTokenFactory());
+        Assert.AreEqual("1.5", Options.GetJdkVersion());
+        Assert.AreEqual(".", Options.GetOutputDirectory());
+        Assert.AreEqual("", Options.GetTokenExtends());
+        Assert.AreEqual("", Options.GetTokenFactory());
         //Assert.AreEqual(System.getProperties().get("file.encoding"), Options.getGrammarEncoding());
 
         Assert.AreEqual(0, JavaCCErrors.GetWarningCount());
@@ -56,17 +56,17 @@ public class OptionsTest : CSharpCCTestCase
         Options.Init();
         JavaCCErrors.ReInit();
 
-        Assert.AreEqual(true, Options.getStatic());
-        Options.setCmdLineOption("-NOSTATIC");
-        Assert.AreEqual(false, Options.getStatic());
+        Assert.AreEqual(true, Options.GetStatic());
+        Options.SetCmdLineOption("-NOSTATIC");
+        Assert.AreEqual(false, Options.GetStatic());
 
-        Assert.AreEqual(false, Options.getJavaUnicodeEscape());
-        Options.setCmdLineOption("-JAVA_UNICODE_ESCAPE:true");
-        Assert.AreEqual(true, Options.getJavaUnicodeEscape());
+        Assert.AreEqual(false, Options.GetJavaUnicodeEscape());
+        Options.SetCmdLineOption("-JAVA_UNICODE_ESCAPE:true");
+        Assert.AreEqual(true, Options.GetJavaUnicodeEscape());
 
-        Assert.AreEqual(true, Options.getSanityCheck());
-        Options.setCmdLineOption("-SANITY_CHECK=false");
-        Assert.AreEqual(false, Options.getSanityCheck());
+        Assert.AreEqual(true, Options.GetSanityCheck());
+        Options.SetCmdLineOption("-SANITY_CHECK=false");
+        Assert.AreEqual(false, Options.GetSanityCheck());
 
         Assert.AreEqual(0, JavaCCErrors.GetWarningCount());
         Assert.AreEqual(0, JavaCCErrors.GetErrorCount());
@@ -80,15 +80,15 @@ public class OptionsTest : CSharpCCTestCase
         Options.Init();
         JavaCCErrors.ReInit();
 
-        Assert.AreEqual(1, Options.getLookahead());
-        Options.setCmdLineOption("LOOKAHEAD=2");
-        Assert.AreEqual(2, Options.getLookahead());
+        Assert.AreEqual(1, Options.GetLookahead());
+        Options.SetCmdLineOption("LOOKAHEAD=2");
+        Assert.AreEqual(2, Options.GetLookahead());
         Assert.AreEqual(0, JavaCCErrors.GetWarningCount());
-        Options.setCmdLineOption("LOOKAHEAD=0");
-        Assert.AreEqual(2, Options.getLookahead());
+        Options.SetCmdLineOption("LOOKAHEAD=0");
+        Assert.AreEqual(2, Options.GetLookahead());
         Assert.AreEqual(0, JavaCCErrors.GetWarningCount());
-        Options.setInputFileOption(null, null, Options.USEROPTION__LOOKAHEAD, (0));
-        Assert.AreEqual(2, Options.getLookahead());
+        Options.SetInputFileOption(null, null, Options.USEROPTION__LOOKAHEAD, (0));
+        Assert.AreEqual(2, Options.GetLookahead());
         Assert.AreEqual(1, JavaCCErrors.GetWarningCount());
 
         Assert.AreEqual(0, JavaCCErrors.GetErrorCount());
@@ -101,20 +101,20 @@ public class OptionsTest : CSharpCCTestCase
         Options.Init();
         JavaCCErrors.ReInit();
 
-        Assert.AreEqual("", Options.getTokenExtends());
-        Options.setCmdLineOption("-TOKEN_EXTENDS=java.lang.Object");
-        Assert.AreEqual("java.lang.Object", Options.getTokenExtends());
-        Options.setInputFileOption(null, null, Options.USEROPTION__TOKEN_EXTENDS, "Object");
+        Assert.AreEqual("", Options.GetTokenExtends());
+        Options.SetCmdLineOption("-TOKEN_EXTENDS=java.lang.Object");
+        Assert.AreEqual("java.lang.Object", Options.GetTokenExtends());
+        Options.SetInputFileOption(null, null, Options.USEROPTION__TOKEN_EXTENDS, "Object");
         // File option does not override cmd line
-        Assert.AreEqual("java.lang.Object", Options.getTokenExtends());
+        Assert.AreEqual("java.lang.Object", Options.GetTokenExtends());
 
         Options.Init();
         JavaCCErrors.ReInit();
 
-        Options.setInputFileOption(null, null, Options.USEROPTION__TOKEN_EXTENDS, "Object");
-        Assert.AreEqual("Object", Options.getTokenExtends());
-        Options.setCmdLineOption("-TOKEN_EXTENDS=java.lang.Object");
-        Assert.AreEqual("java.lang.Object", Options.getTokenExtends());
+        Options.SetInputFileOption(null, null, Options.USEROPTION__TOKEN_EXTENDS, "Object");
+        Assert.AreEqual("Object", Options.GetTokenExtends());
+        Options.SetCmdLineOption("-TOKEN_EXTENDS=java.lang.Object");
+        Assert.AreEqual("java.lang.Object", Options.GetTokenExtends());
     }
 
     public void testSetNonexistentOption()
@@ -123,7 +123,7 @@ public class OptionsTest : CSharpCCTestCase
         JavaCCErrors.ReInit();
 
         Assert.AreEqual(0, JavaCCErrors.GetWarningCount());
-        Options.setInputFileOption(null, null, "NONEXISTENTOPTION", true);
+        Options.SetInputFileOption(null, null, "NONEXISTENTOPTION", true);
         Assert.AreEqual(1, JavaCCErrors.GetWarningCount());
 
         Assert.AreEqual(0, JavaCCErrors.GetErrorCount());
@@ -138,7 +138,7 @@ public class OptionsTest : CSharpCCTestCase
 
         Assert.AreEqual(0, JavaCCErrors.GetWarningCount());
         Assert.AreEqual(0, JavaCCErrors.GetErrorCount());
-        Options.setInputFileOption(null, null, Options.USEROPTION__STATIC, (8));
+        Options.SetInputFileOption(null, null, Options.USEROPTION__STATIC, (8));
         Assert.AreEqual(1, JavaCCErrors.GetWarningCount());
 
         Assert.AreEqual(0, JavaCCErrors.GetErrorCount());
@@ -151,14 +151,14 @@ public class OptionsTest : CSharpCCTestCase
         Options.Init();
         JavaCCErrors.ReInit();
 
-        Assert.AreEqual(false, Options.getDebugLookahead());
-        Assert.AreEqual(false, Options.getDebugParser());
+        Assert.AreEqual(false, Options.GetDebugLookahead());
+        Assert.AreEqual(false, Options.GetDebugParser());
 
-        Options.setCmdLineOption("-DEBUG_LOOKAHEAD=TRUE");
-        Options.normalize();
+        Options.SetCmdLineOption("-DEBUG_LOOKAHEAD=TRUE");
+        Options.Normalize();
 
-        Assert.AreEqual(true, Options.getDebugLookahead());
-        Assert.AreEqual(true, Options.getDebugParser());
+        Assert.AreEqual(true, Options.GetDebugLookahead());
+        Assert.AreEqual(true, Options.GetDebugParser());
 
         Assert.AreEqual(0, JavaCCErrors.GetWarningCount());
         Assert.AreEqual(0, JavaCCErrors.GetErrorCount());
@@ -171,13 +171,13 @@ public class OptionsTest : CSharpCCTestCase
         Options.Init();
         JavaCCErrors.ReInit();
 
-        Options.setCmdLineOption("-STATIC=False");
-        Options.setCmdLineOption("-IGNORE_CASE=True");
+        Options.SetCmdLineOption("-STATIC=False");
+        Options.SetCmdLineOption("-IGNORE_CASE=True");
         String[] options = {
            Options.USEROPTION__STATIC,
            Options.USEROPTION__IGNORE_CASE
         };
-        string optionString = Options.getOptionsString(options);
+        string optionString = Options.GetOptionsString(options);
         Assert.AreEqual("STATIC=false,IGNORE_CASE=true", optionString);
     }
 }

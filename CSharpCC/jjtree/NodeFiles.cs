@@ -251,7 +251,7 @@ public static class NodeFiles
     private static string getVisitMethodName(string className)
     {
         var sb = new StringBuilder("visit");
-        if (JJTreeOptions.booleanValue("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME"))
+        if (JJTreeOptions.BooleanValue("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME"))
         {
             sb.Append(char.ToUpper(className[0]));
             for (int i = 1; i < className.Length; i++)

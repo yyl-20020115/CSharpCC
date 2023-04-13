@@ -139,7 +139,7 @@ public class OutputFile
                 {
                     checkOptions(file, options);
                 }
-
+                 
             }
             else
             {
@@ -229,7 +229,7 @@ public class OutputFile
             {
                 if (line.StartsWith("/* JavaCCOptions:"))
                 {
-                    string currentOptions = Options.getOptionsString(options);
+                    string currentOptions = Options.GetOptionsString(options);
                     if (line.IndexOf(currentOptions) == -1)
                     {
                         JavaCCErrors
@@ -287,7 +287,7 @@ public class OutputFile
                 + " Version " + version + " */");
             if (options != null)
             {
-                pw.WriteLine("/* JavaCCOptions:" + Options.getOptionsString(options) + " */");
+                pw.WriteLine("/* JavaCCOptions:" + Options.GetOptionsString(options) + " */");
             }
         }
 

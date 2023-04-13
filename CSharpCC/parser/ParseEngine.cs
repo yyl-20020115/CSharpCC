@@ -32,18 +32,13 @@ using System.Text;
 
 namespace org.javacc.parser;
 
-
-
 public class ParseEngine
 {
-
     private int gensymindex = 0;
     private int indentamt;
     private bool jj2LA;
     private CodeGenerator codeGenerator;
-    private bool isJavaDialect = Options.isOutputLanguageJava();
-
-
+    private bool isJavaDialect = Options.IsOutputLanguageJava();
 
     /**
      * These lists are used to maintain expansions for which code generation
@@ -64,9 +59,9 @@ public class ParseEngine
      * This optimization and the hashtable makes it look like we do not need
      * the flag "phase3done" any more.  But this has not been removed yet.
      */
-    private List phase2list = new ();
-    private List phase3list = new ();
-    private Dictionary phase3table = new Dictionary();
+    private List<Phase3Data> phase2list = new ();
+    private List<Phase3Data> phase3list = new ();
+    private Dictionary<Expansion,Phase3Data> phase3table = new ();
 
     /**
      * The phase 1 routines generates their output into String's and dumps
@@ -81,42 +76,40 @@ public class ParseEngine
      * Returns true if there is a JAVACODE production that the argument expansion
      * may directly expand to (without consuming tokens or encountering lookahead).
      */
-    private bool javaCodeCheck(Expansion exp)
+    private bool JavaCodeCheck(Expansion exp)
     {
         if (exp is RegularExpression)
-        {
+        { 
             return false;
         }
-        else if (exp is NonTerminal)
+        else if (exp is NonTerminal terminal)
         {
-            NormalProduction prod = ((NonTerminal)exp).GetProd();
+            var prod = terminal.GetProd();
             if (prod is CodeProduction)
             {
                 return true;
             }
             else
             {
-                return javaCodeCheck(prod.GetExpansion());
+                return JavaCodeCheck(prod.GetExpansion());
             }
         }
-        else if (exp is Choice)
+        else if (exp is Choice ch)
         {
-            Choice ch = (Choice)exp;
             for (int i = 0; i < ch.GetChoices().Count; i++)
             {
-                if (javaCodeCheck((Expansion)(ch.GetChoices()[i])))
+                if (JavaCodeCheck((Expansion)(ch.GetChoices()[i])))
                 {
                     return true;
                 }
             }
             return false;
         }
-        else if (exp is Sequence)
+        else if (exp is Sequence seq)
         {
-            Sequence seq = (Sequence)exp;
             for (int i = 0; i < seq.units.Count; i++)
             {
-                Expansion[] units = (Expansion[])seq.units.toArray(new Expansion[seq.units.Count]);
+                Expansion[] units = (Expansion[])seq.units.ToArray(new Expansion[seq.units.Count]);
                 if (units[i] is Lookahead && ((Lookahead)units[i]).IsExplicit())
                 {
                     // An explicit lookahead (rather than one generated implicitly). Assume
@@ -124,7 +117,7 @@ public class ParseEngine
                     //    "A" ( "B" | LOOKAHEAD("X") jcode() | "C" )* "D"
                     return false;
                 }
-                else if (javaCodeCheck((units[i])))
+                else if (JavaCodeCheck((units[i])))
                 {
                     return true;
                 }
@@ -138,22 +131,22 @@ public class ParseEngine
         else if (exp is OneOrMore)
         {
             OneOrMore om = (OneOrMore)exp;
-            return javaCodeCheck(om.expansion);
+            return JavaCodeCheck(om.expansion);
         }
         else if (exp is ZeroOrMore)
         {
             ZeroOrMore zm = (ZeroOrMore)exp;
-            return javaCodeCheck(zm.expansion);
+            return JavaCodeCheck(zm.expansion);
         }
         else if (exp is ZeroOrOne)
         {
             ZeroOrOne zo = (ZeroOrOne)exp;
-            return javaCodeCheck(zo.expansion);
+            return JavaCodeCheck(zo.expansion);
         }
         else if (exp is TryBlock)
         {
             TryBlock tb = (TryBlock)exp;
-            return javaCodeCheck(tb.exp);
+            return JavaCodeCheck(tb.exp);
         }
         else
         {
@@ -172,32 +165,30 @@ public class ParseEngine
      * passed to it.  Since this is a recursive function, it assumes that
      * "firstSet" has been reset before the first call.
      */
-    private void genFirstSet(Expansion exp)
+    private void GenFirstSet(Expansion exp)
     {
-        if (exp is RegularExpression)
+        if (exp is RegularExpression expression)
         {
-            firstSet[((RegularExpression)exp).ordinal] = true;
+            firstSet[expression.ordinal] = true;
         }
-        else if (exp is NonTerminal)
+        else if (exp is NonTerminal terminal)
         {
-            if (!(((NonTerminal)exp).GetProd() is CodeProduction))
+            if (terminal.GetProd() is not CodeProduction)
             {
-                genFirstSet(((BNFProduction)(((NonTerminal)exp).GetProd())).GetExpansion());
+                GenFirstSet(((BNFProduction)(terminal.GetProd())).GetExpansion());
             }
         }
-        else if (exp is Choice)
+        else if (exp is Choice ch)
         {
-            Choice ch = (Choice)exp;
             for (int i = 0; i < ch.GetChoices().Count; i++)
             {
-                genFirstSet((Expansion)(ch.GetChoices()[i]));
+                GenFirstSet((Expansion)(ch.GetChoices()[i]));
             }
         }
-        else if (exp is Sequence)
+        else if (exp is Sequence seq)
         {
-            Sequence seq = (Sequence)exp;
             object obj = seq.units[0];
-            if ((obj is Lookahead) && (((Lookahead)obj).GetActionTokens().Count != 0))
+            if ((obj is Lookahead lookahead) && (lookahead.GetActionTokens().Count != 0))
             {
                 jj2LA = true;
             }
@@ -207,19 +198,19 @@ public class ParseEngine
                 // Javacode productions can not have FIRST sets. Instead we generate the FIRST set
                 // for the preceding LOOKAHEAD (the semantic checks should have made sure that
                 // the LOOKAHEAD is suitable).
-                if (unit is NonTerminal && ((NonTerminal)unit).GetProd() is CodeProduction)
+                if (unit is NonTerminal terminal1 && terminal1.GetProd() is CodeProduction)
                 {
-                    if (i > 0 && seq.units.get(i - 1) is Lookahead)
+                    if (i > 0 && seq.units[i - 1] is Lookahead)
                     {
-                        Lookahead la = (Lookahead)seq.units.get(i - 1);
-                        genFirstSet(la.GetLaExpansion());
+                        Lookahead la = (Lookahead)seq.units[i - 1];
+                        GenFirstSet(la.GetLaExpansion());
                     }
                 }
                 else
                 {
-                    genFirstSet((Expansion)(seq.units[i]));
+                    GenFirstSet(seq.units[i]);
                 }
-                if (!Semanticize.EmptyExpansionExists((Expansion)(seq.units[i])))
+                if (!Semanticize.EmptyExpansionExists(seq.units[i]))
                 {
                     break;
                 }
@@ -228,22 +219,22 @@ public class ParseEngine
         else if (exp is OneOrMore)
         {
             OneOrMore om = (OneOrMore)exp;
-            genFirstSet(om.expansion);
+            GenFirstSet(om.expansion);
         }
         else if (exp is ZeroOrMore)
         {
             ZeroOrMore zm = (ZeroOrMore)exp;
-            genFirstSet(zm.expansion);
+            GenFirstSet(zm.expansion);
         }
         else if (exp is ZeroOrOne)
         {
             ZeroOrOne zo = (ZeroOrOne)exp;
-            genFirstSet(zo.expansion);
+            GenFirstSet(zo.expansion);
         }
         else if (exp is TryBlock)
         {
             TryBlock tb = (TryBlock)exp;
-            genFirstSet(tb.exp);
+            GenFirstSet(tb.exp);
         }
     }
 
@@ -304,7 +295,7 @@ public class ParseEngine
 
             if ((la.GetAmount() == 0) ||
                 Semanticize.EmptyExpansionExists(la.GetLaExpansion()) ||
-                javaCodeCheck(la.GetLaExpansion())
+                JavaCodeCheck(la.GetLaExpansion())
             )
             {
 
@@ -338,7 +329,7 @@ public class ParseEngine
                             break;
                         case OPENSWITCH:
                             retval += "\u0002\n" + "default:" + "\u0001";
-                            if (Options.getErrorReporting())
+                            if (Options.GetErrorReporting())
                             {
                                 retval += "\njj_la1[" + maskindex + "] = jj_gen;";
                                 maskindex++;
@@ -375,7 +366,7 @@ public class ParseEngine
                 // jj2LA is set to false at the beginning of the containing "if" statement.
                 // It is checked immediately after the end of the same statement to determine
                 // if lookaheads are to be performed using calls to the jj2 methods.
-                genFirstSet(la.GetLaExpansion());
+                GenFirstSet(la.GetLaExpansion());
                 // genFirstSet may find that semantic attributes are appropriate for the next
                 // token.  In which case, it sets jj2LA to true.
                 if (!jj2LA)
@@ -390,9 +381,9 @@ public class ParseEngine
                         //$FALL-THROUGH$ Control flows through to next case.
                         case NOOPENSTM:
                             retval += "\n" + "switch (";
-                            if (Options.getCacheTokens())
+                            if (Options.GetCacheTokens())
                             {
-                                if (Options.isOutputLanguageCpp())
+                                if (Options.IsOutputLanguageCpp())
                                 {
                                     retval += "jj_nt->kind";
                                 }
@@ -475,7 +466,7 @@ public class ParseEngine
                         break;
                     case OPENSWITCH:
                         retval += "\u0002\n" + "default:" + "\u0001";
-                        if (Options.getErrorReporting())
+                        if (Options.GetErrorReporting())
                         {
                             retval += "\njj_la1[" + maskindex + "] = jj_gen;";
                             maskindex++;
@@ -525,7 +516,7 @@ public class ParseEngine
                 break;
             case OPENSWITCH:
                 retval += "\u0002\n" + "default:" + "\u0001";
-                if (Options.getErrorReporting())
+                if (Options.GetErrorReporting())
                 {
                     retval += "\njj_la1[" + maskindex + "] = jj_gen;";
                     maskVals.Add(tokenMask);
@@ -711,11 +702,11 @@ public class ParseEngine
 
     void genStackCheck(bool voidReturn)
     {
-        if (Options.getDepthLimit() > 0)
+        if (Options.GetDepthLimit() > 0)
         {
             if (isJavaDialect)
             {
-                codeGenerator.GenCodeLine("if(++jj_depth > " + Options.getDepthLimit() + ") {");
+                codeGenerator.GenCodeLine("if(++jj_depth > " + Options.GetDepthLimit() + ") {");
                 codeGenerator.GenCodeLine("  jj_consume_token(-1);");
                 codeGenerator.GenCodeLine("  throw new ParseException();");
                 codeGenerator.GenCodeLine("}");
@@ -732,7 +723,7 @@ public class ParseEngine
                     codeGenerator.GenCodeLine("if(jj_depth_error){ return; }");
                 }
                 codeGenerator.GenCodeLine("__jj_depth_inc __jj_depth_counter(this);");
-                codeGenerator.GenCodeLine("if(jj_depth > " + Options.getDepthLimit() + ") {");
+                codeGenerator.GenCodeLine("if(jj_depth > " + Options.GetDepthLimit() + ") {");
                 codeGenerator.GenCodeLine("  jj_depth_error = true;");
                 codeGenerator.GenCodeLine("  jj_consume_token(-1);");
                 codeGenerator.GenCodeLine("  errorHandler->handleParseError(token, getToken(1), __FUNCTION__, this), hasError = true;");
@@ -751,7 +742,7 @@ public class ParseEngine
 
     void genStackCheckEnd()
     {
-        if (Options.getDepthLimit() > 0)
+        if (Options.GetDepthLimit() > 0)
         {
             if (isJavaDialect)
             {
@@ -817,8 +808,8 @@ public class ParseEngine
 
         codeGenerator.GenCode(" {");
 
-        if ((Options.booleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR) && error_ret != null)
-            || (Options.getDepthLimit() > 0 && !voidReturn && !isJavaDialect))
+        if ((Options.BooleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR) && error_ret != null)
+            || (Options.GetDepthLimit() > 0 && !voidReturn && !isJavaDialect))
         {
             codeGenerator.GenCode(error_ret);
         }
@@ -830,7 +821,7 @@ public class ParseEngine
         genStackCheck(voidReturn);
 
         indentamt = 4;
-        if (Options.getDebugParser())
+        if (Options.GetDebugParser())
         {
             codeGenerator.GenCodeLine("");
             if (isJavaDialect)
@@ -846,7 +837,7 @@ public class ParseEngine
             indentamt = 6;
         }
 
-        if (!Options.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) &&
+        if (!Options.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) &&
             p.GetDeclarationTokens().Count != 0)
         {
             JavaCCGlobals.PrintTokenSetup((Token)(p.GetDeclarationTokens()[0])); cline--;
@@ -867,14 +858,14 @@ public class ParseEngine
             if (isJavaDialect)
             {
                 // This line is required for Java!
-                codeGenerator.GenCodeLine("    throw new " + (Options.isLegacyExceptionHandling() ? "Error" : "RuntimeException") + "(\"Missing return statement in function\");");
+                codeGenerator.GenCodeLine("    throw new " + (Options.IsLegacyExceptionHandling() ? "Error" : "RuntimeException") + "(\"Missing return statement in function\");");
             }
             else
             {
                 codeGenerator.GenCodeLine("    throw \"Missing return statement in function\";");
             }
         }
-        if (Options.getDebugParser())
+        if (Options.GetDebugParser())
         {
             if (isJavaDialect)
             {
@@ -954,7 +945,7 @@ public class ParseEngine
                 retval += "jj_consume_token(" + e_nrw.label + tail;
             }
 
-            if (!isJavaDialect && Options.booleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR))
+            if (!isJavaDialect && Options.BooleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR))
             {
                 retval += "\n    { if (hasError) { return __ERROR_RET__; } }\n";
             }
@@ -987,7 +978,7 @@ public class ParseEngine
                 retval += codeGenerator.GetTrailingComments(t);
             }
             retval += ");";
-            if (!isJavaDialect && Options.booleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR))
+            if (!isJavaDialect && Options.BooleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR))
             {
                 retval += "\n    { if (hasError) { return __ERROR_RET__; } }\n";
             }
@@ -996,7 +987,7 @@ public class ParseEngine
         {
             Action e_nrw = (Action)e;
             retval += "\u0003\n";
-            if (!Options.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) &&
+            if (!Options.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) &&
                 e_nrw.GetActionTokens().Count != 0)
             {
                 JavaCCGlobals.PrintTokenSetup((Token)(e_nrw.GetActionTokens()[0])); ccol = 1;
@@ -1017,7 +1008,7 @@ public class ParseEngine
             actions[e_nrw.GetChoices().Count] = "\n" + "jj_consume_token(-1);\n" +
                       (isJavaDialect ? "throw new ParseException();"
                                       : ("errorHandler->handleParseError(token, getToken(1), __FUNCTION__, this), hasError = true;" +
-                       (Options.booleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR) ? "return __ERROR_RET__;\n" : "")));
+                       (Options.BooleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR) ? "return __ERROR_RET__;\n" : "")));
 
             // In previous line, the "throw" never throws an exception since the
             // evaluation of jj_consume_token(-1) causes ParseException to be
@@ -1072,7 +1063,7 @@ public class ParseEngine
             else
             {
                 la = new Lookahead();
-                la.SetAmount(Options.getLookahead());
+                la.SetAmount(Options.GetLookahead());
                 la.SetLaExpansion(nested_e);
             }
             retval += "\n";
@@ -1116,7 +1107,7 @@ public class ParseEngine
             else
             {
                 la = new Lookahead();
-                la.SetAmount(Options.getLookahead());
+                la.SetAmount(Options.GetLookahead());
                 la.SetLaExpansion(nested_e);
             }
             retval += "\n";
@@ -1158,7 +1149,7 @@ public class ParseEngine
             else
             {
                 la = new Lookahead();
-                la.SetAmount(Options.getLookahead());
+                la.SetAmount(Options.GetLookahead());
                 la.SetLaExpansion(nested_e);
             }
             conds = new Lookahead[1];
@@ -1242,7 +1233,7 @@ public class ParseEngine
         Expansion e = la.GetLaExpansion();
         if (isJavaDialect)
         {
-            codeGenerator.GenCodeLine("  " + staticOpt() + "private " + Options.getBooleanType() + " jj_2" + e.internal_name + "(int xla)");
+            codeGenerator.GenCodeLine("  " + staticOpt() + "private " + Options.GetBooleanType() + " jj_2" + e.internal_name + "(int xla)");
         }
         else
         {
@@ -1252,7 +1243,7 @@ public class ParseEngine
         codeGenerator.GenCodeLine("    jj_la = xla; jj_lastpos = jj_scanpos = token;");
 
         string ret_suffix = "";
-        if (Options.getDepthLimit() > 0)
+        if (Options.GetDepthLimit() > 0)
         {
             ret_suffix = " && !jj_depth_error";
         }
@@ -1267,13 +1258,13 @@ public class ParseEngine
             codeGenerator.GenCodeLine("    jj_done = false;");
             codeGenerator.GenCodeLine("    return (!jj_3" + e.internal_name + "() || jj_done)" + ret_suffix + ";");
         }
-        if (Options.getErrorReporting())
+        if (Options.GetErrorReporting())
         {
             codeGenerator.GenCodeLine((isJavaDialect ? "    finally " : " ") + "{ jj_save(" + (int.parseInt(e.internal_name.substring(1)) - 1) + ", xla); }");
         }
         codeGenerator.GenCodeLine("  }");
         codeGenerator.GenCodeLine("");
-        Phase3Data p3d = new Phase3Data(e, la.GetAmount());
+        var p3d = new Phase3Data(e, la.GetAmount());
         phase3list.Add(p3d);
         phase3table.Add(e, p3d);
     }
@@ -1285,11 +1276,11 @@ public class ParseEngine
     string genReturn(bool value)
     {
         string retval = (value ? "true" : "false");
-        if (Options.getDebugLookahead() && jj3_expansion != null)
+        if (Options.GetDebugLookahead() && jj3_expansion != null)
         {
             string tracecode = "trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(((NormalProduction)jj3_expansion.parent).GetLhs()) +
             "(LOOKAHEAD " + (value ? "FAILED" : "SUCCEEDED") + ")\");";
-            if (Options.getErrorReporting())
+            if (Options.GetErrorReporting())
             {
                 tracecode = "if (!jj_rescan) " + tracecode;
             }
@@ -1446,7 +1437,7 @@ public class ParseEngine
         {
             if (isJavaDialect)
             {
-                codeGenerator.GenCodeLine("  " + staticOpt() + "private " + Options.getBooleanType() + " jj_3" + e.internal_name + "()");
+                codeGenerator.GenCodeLine("  " + staticOpt() + "private " + Options.GetBooleanType() + " jj_3" + e.internal_name + "()");
             }
             else
             {
@@ -1457,17 +1448,17 @@ public class ParseEngine
             if (!isJavaDialect)
             {
                 codeGenerator.GenCodeLine("    if (jj_done) return true;");
-                if (Options.getDepthLimit() > 0)
+                if (Options.GetDepthLimit() > 0)
                 {
                     codeGenerator.GenCodeLine("#define __ERROR_RET__ true");
                 }
             }
             genStackCheck(false);
             xsp_declared = false;
-            if (Options.getDebugLookahead() && e.parent is NormalProduction)
+            if (Options.GetDebugLookahead() && e.parent is NormalProduction)
             {
                 codeGenerator.GenCode("    ");
-                if (Options.getErrorReporting())
+                if (Options.GetErrorReporting())
                 {
                     codeGenerator.GenCode("if (!jj_rescan) ");
                 }
@@ -1653,7 +1644,7 @@ public class ParseEngine
         {
             codeGenerator.GenCodeLine("    " + genReturn(false));
             genStackCheckEnd();
-            if (!isJavaDialect && Options.getDepthLimit() > 0)
+            if (!isJavaDialect && Options.GetDepthLimit() > 0)
             {
                 codeGenerator.GenCodeLine("#undef __ERROR_RET__");
             }
@@ -1811,7 +1802,7 @@ public class ParseEngine
                 //            }
                 //          }
                 codeGenerator.GenCodeLine(" {");
-                if (Options.getDebugParser())
+                if (Options.GetDebugParser())
                 {
                     codeGenerator.GenCodeLine("");
                     if (isJavaDialect)
@@ -1831,7 +1822,7 @@ public class ParseEngine
                     codeGenerator.PrintTokenList(cp.GetCodeTokens());
                 }
                 codeGenerator.GenCodeLine("");
-                if (Options.getDebugParser())
+                if (Options.GetDebugParser())
                 {
                     codeGenerator.GenCodeLine("    } catch(...) { }");
                 }
@@ -1886,7 +1877,7 @@ public class ParseEngine
                     }
                 }
                 codeGenerator.GenCode(" {");
-                if (Options.getDebugParser())
+                if (Options.GetDebugParser())
                 {
                     codeGenerator.GenCodeLine("");
                     codeGenerator.GenCodeLine("    trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(jp.GetLhs()) + "\");");
@@ -1898,7 +1889,7 @@ public class ParseEngine
                     codeGenerator.PrintTokenList(jp.GetCodeTokens());
                 }
                 codeGenerator.GenCodeLine("");
-                if (Options.getDebugParser())
+                if (Options.GetDebugParser())
                 {
                     codeGenerator.GenCodeLine("    } finally {");
                     codeGenerator.GenCodeLine("      trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(jp.GetLhs()) + "\");");

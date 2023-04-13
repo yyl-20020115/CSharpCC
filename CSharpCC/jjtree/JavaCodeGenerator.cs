@@ -334,7 +334,7 @@ public class JavaCodeGenerator : DefaultJJTreeVisitor
         NodeFiles.ensure(io, type);
 
         io.Print(indent + nodeClass + " " + ns.nodeVar + " = ");
-        string p = JJTreeOptions.getStatic() ? "null" : "this";
+        string p = JJTreeOptions.GetStatic() ? "null" : "this";
         string parserArg = JJTreeOptions.GetNodeUsesParser() ? (p + ", ") : "";
 
         if (JJTreeOptions.GetNodeFactory() == ("*"))

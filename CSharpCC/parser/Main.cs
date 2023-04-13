@@ -73,7 +73,7 @@ public class MainParser
     private static void PrintOptions()
     {
 
-        HashSet<OptionInfo> options = Options.getUserOptions();
+        HashSet<OptionInfo> options = Options.GetUserOptions();
 
         int maxLengthInt = 0;
         int maxLengthBool = 0;
@@ -209,19 +209,19 @@ public class MainParser
             Console.WriteLine("(type \"javacc\" with no arguments for help)");
         }
 
-        if (Options.isOption(args[^1]))
+        if (Options.IsOption(args[^1]))
         {
             Console.WriteLine("Last argument \"" + args[args.Length - 1] + "\" is not a filename.");
             return 1;
         }
         for (int arg = 0; arg < args.Length - 1; arg++)
         {
-            if (!Options.isOption(args[arg]))
+            if (!Options.IsOption(args[arg]))
             {
                 Console.WriteLine("Argument \"" + args[arg] + "\" must be an option setting.");
                 return 1;
             }
-            Options.setCmdLineOption(args[arg]);
+            Options.SetCmdLineOption(args[arg]);
         }
 
 
@@ -240,7 +240,7 @@ public class MainParser
                 Console.WriteLine(args[^1] + " is a directory. Please use a valid file name.");
                 return 1;
             }
-            parser = new JavaCCParser(new StreamReader(args[^1], Encoding.GetEncoding(Options.getGrammarEncoding())));
+            parser = new JavaCCParser(new StreamReader(args[^1], Encoding.GetEncoding(Options.GetGrammarEncoding())));
         }
         catch (SecurityException se)
         {
@@ -264,13 +264,13 @@ public class MainParser
             // 2012/05/02 - Moved this here as cannot evaluate output language
             // until the cc file has been processed. Was previously setting the 'lg' variable
             // to a lexer before the configuration override in the cc file had been read.
-            string outputLanguage = Options.getOutputLanguage();
+            string outputLanguage = Options.GetOutputLanguage();
             // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-            bool isJavaOutput = Options.isOutputLanguageJava();
+            bool isJavaOutput = Options.IsOutputLanguageJava();
             bool isCPPOutput = outputLanguage == (Options.OUTPUT_LANGUAGE__CPP);
 
             // 2013/07/22 Java Modern is a
-            bool isJavaModern = isJavaOutput && Options.getJavaTemplateType() == (Options.JAVA_TEMPLATE_TYPE_MODERN);
+            bool isJavaModern = isJavaOutput && Options.GetJavaTemplateType() == (Options.JAVA_TEMPLATE_TYPE_MODERN);
 
             if (isJavaOutput)
             {
@@ -285,9 +285,9 @@ public class MainParser
                 return UnhandledLanguageExit(outputLanguage);
             }
 
-            JavaCCGlobals.CreateOutputDir(Options.getOutputDirectory());
+            JavaCCGlobals.CreateOutputDir(Options.GetOutputDirectory());
 
-            if (Options.getUnicodeInput())
+            if (Options.GetUnicodeInput())
             {
                 NfaState.unicodeWarningGiven = true;
                 Console.WriteLine("Note: UNICODE_INPUT option is specified. " +
@@ -295,7 +295,7 @@ public class MainParser
             }
 
             Semanticize.Start();
-            bool isBuildParser = Options.getBuildParser();
+            bool isBuildParser = Options.GetBuildParser();
 
             // 2012/05/02 -- This is not the best way to add-in GWT support, really the code needs to turn supported languages into enumerations
             // and have the enumerations describe the deltas between the outputs. The current approach means that per-langauge configuration is distributed
@@ -310,7 +310,7 @@ public class MainParser
                 // Must always create the lexer object even if not building a parser.
                 new LexGen().start();
 
-                Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.CuName);
+                Options.SetStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.CuName);
                 OtherFilesGen.Start(isJavaModern, re);
             }
             else if (isCPPOutput)
@@ -323,7 +323,7 @@ public class MainParser
                 {
                     new LexGenCPP().Start();
                 }
-                Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.CuName);
+                Options.SetStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.CuName);
                 OtherFilesGenCPP.start();
             }
             else
@@ -333,7 +333,7 @@ public class MainParser
 
 
 
-            if ((JavaCCErrors.GetErrorCount() == 0) && (isBuildParser || Options.getBuildTokenManager()))
+            if ((JavaCCErrors.GetErrorCount() == 0) && (isBuildParser || Options.GetBuildTokenManager()))
             {
                 if (JavaCCErrors.GetWarningCount() == 0)
                 {

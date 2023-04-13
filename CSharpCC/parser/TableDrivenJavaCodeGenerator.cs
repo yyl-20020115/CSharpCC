@@ -26,7 +26,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         options.Add("defaultLexState", tokenizerData.defaultLexState);
         options.Add("decls", tokenizerData.decls);
         options.Add("superClass", (superClass == null || superClass == ("")) ? "" : "extends " + superClass);
-        options.Add("noDfa", Options.getNoDfa());
+        options.Add("noDfa", Options.GetNoDfa());
         options.Add("generatedStates", tokenizerData.nfa.Count);
         try
         {
@@ -46,8 +46,8 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
     {
         // TODO(sreeni) : Fix this mess.
         codeGenerator.GenCodeLine("\n}");
-        if (!Options.getBuildParser()) return;
-        string fileName = Options.getOutputDirectory() + Path.DirectorySeparatorChar +
+        if (!Options.GetBuildParser()) return;
+        string fileName = Options.GetOutputDirectory() + Path.DirectorySeparatorChar +
                           tokenizerData.parserName + "TokenManager.java";
         codeGenerator.SaveOutput(fileName);
     }
@@ -326,7 +326,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
 
         // Action functions.
 
-        string staticString = Options.getStatic() ? "static " : "";
+        string staticString = Options.GetStatic() ? "static " : "";
         // Token actions.
         codeGenerator.GenCodeLine(
             staticString + "void TokenLexicalActions(Token matchedToken) {");

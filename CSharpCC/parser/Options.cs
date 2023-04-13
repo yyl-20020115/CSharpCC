@@ -253,37 +253,37 @@ public class Options
     /**
      * Convenience method to retrieve integer options.
      */
-    public static int intValue(string option)
+    public static int IntValue(string option)
     {
-        return (optionValues.get(option)).intValue();
+        return optionValues.TryGetValue(option, out var ret) && ret is int i ? i : 0;
     }
 
     /**
      * Convenience method to retrieve bool options.
      */
-    public static bool booleanValue(string option)
+    public static bool BooleanValue(string option)
     {
-        return ((Boolean)optionValues.get(option)).booleanValue();
+        return optionValues.TryGetValue(option, out var b) && b is bool bx ? bx : false;
     }
      
     /**
      * Convenience method to retrieve string options.
      */
-    public static string stringValue(string option)
+    public static string StringValue(string option)
     {
-        return (String)optionValues.get(option);
+        return optionValues.TryGetValue(option,out var s)&& s is string t ?t:string.Empty;
     }
 
 
-    public static object objectValue(string option)
+    public static object ObjectValue(string option)
     {
-        return optionValues.get(option);
+        return optionValues.TryGetValue(option, out var o) ? o : null;
     }
 
 
     public static Dictionary<String, object> getOptions()
     {
-        Dictionary<String, object> ret = new Dictionary<String, object>(optionValues);
+        Dictionary<String, object> ret = new (optionValues);
         return ret;
     }
 
@@ -312,7 +312,7 @@ public class Options
      * @return the string representation of the options, eg
      *         "STATIC=true,CACHE_TOKENS=false"
      */
-    public static string getOptionsString(String[] interestingOptions)
+    public static string GetOptionsString(String[] interestingOptions)
     {
         var sb = new StringBuilder();
 
@@ -321,7 +321,7 @@ public class Options
             string key = interestingOptions[i];
             sb.Append(key);
             sb.Append('=');
-            sb.Append(optionValues.get(key));
+            sb.Append(optionValues.TryGetValue(key,out var v)?v:"");
             if (i != interestingOptions.Length - 1)
             {
                 sb.Append(',');
@@ -333,7 +333,7 @@ public class Options
 
     public static string getTokenMgrErrorClass()
     {
-        return isOutputLanguageJava() ? (isLegacyExceptionHandling() ? "TokenMgrError"
+        return IsOutputLanguageJava() ? (IsLegacyExceptionHandling() ? "TokenMgrError"
                 : "TokenMgrException")
                 : "TokenMgrError";
     }
@@ -346,7 +346,7 @@ public class Options
      *            The command line argument to examine.
      * @return True when the argument looks like an option flag.
      */
-    public static bool isOption(string opt)
+    public static bool IsOption(string opt)
     {
         return opt != null && opt.Length > 1 && opt[0] == '-';
     }
@@ -362,25 +362,18 @@ public class Options
      *            The option's value.
      * @return The upgraded value.
      */
-    public static object upgradeValue(string name, object value)
+    public static object UpgradeValue(string name, object value)
     {
         if (name.Equals("NODE_FACTORY", StringComparison.InvariantCultureIgnoreCase)
                 && value is bool b)
         {
-            if (b)
-            {
-                value = "*";
-            }
-            else
-            {
-                value = "";
-            }
+            value = b ? "*" : (object)"";
         }
 
         return value;
     }
 
-    public static void setInputFileOption(object nameloc, object valueloc,
+    public static void SetInputFileOption(object nameloc, object valueloc,
             string name, object value)
     {
         string nameUpperCase = name.ToUpper();
@@ -390,26 +383,25 @@ public class Options
                     + "\".  Option setting will be ignored.");
             return;
         }
-        object existingValue = optionValues.get(nameUpperCase);
+        
+        value = UpgradeValue(name, value);
 
-        value = upgradeValue(name, value);
-
-        if (existingValue != null)
+        if (optionValues.TryGetValue(nameUpperCase,out var existingValue))
         {
 
-            bool isIndirectProperty = nameUpperCase.equalsIgnoreCase(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING);
+            bool isIndirectProperty = nameUpperCase.Equals(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING, StringComparison.InvariantCultureIgnoreCase);
 
             object o = null;
-            if (value is List)
+            if (value is List<object> list)
             {
-                o = ((List)value)[0];
+                o = list[0];
             }
             else
             {
                 o = value;
             }
-            bool isValidInteger = (o is Integer && ((Integer)value).intValue() <= 0);
-            if (isIndirectProperty || (existingValue.getClass() != object.getClass())
+            bool isValidInteger = o is int i && i <= 0;
+            if (isIndirectProperty || (existingValue.GetType() != typeof(object))
                     || (isValidInteger))
             {
                 JavaCCErrors.Warning(valueloc, "Bad option value \"" + value
@@ -427,7 +419,7 @@ public class Options
 
             if (cmdLineSetting.Contains(nameUpperCase))
             {
-                if (!existingValue == (value))
+                if (existingValue != (value))
                 {
                     JavaCCErrors.Warning(nameloc, "Command line setting of \"" + name + "\" modifies option value in file.");
                 }
@@ -440,14 +432,14 @@ public class Options
 
         // Special case logic block here for setting indirect flags
 
-        if (nameUpperCase.equalsIgnoreCase(USEROPTION__JAVA_TEMPLATE_TYPE))
+        if (nameUpperCase.Equals(USEROPTION__JAVA_TEMPLATE_TYPE, StringComparison.InvariantCultureIgnoreCase))
         {
             string templateType = (String)value;
-            if (!isValidJavaTemplateType(templateType))
+            if (!IsValidJavaTemplateType(templateType))
             {
                 JavaCCErrors.Warning(valueloc, "Bad option value \"" + value
                         + "\" for \"" + name
-                        + "\".  Option setting will be ignored. Valid options : " + getAllValidJavaTemplateTypes());
+                        + "\".  Option setting will be ignored. Valid options : " + GetAllValidJavaTemplateTypes());
                 return;
             }
 
@@ -456,38 +448,38 @@ public class Options
         }
         else
 
-        if (nameUpperCase.equalsIgnoreCase(USEROPTION__OUTPUT_LANGUAGE))
+        if (nameUpperCase.Equals(USEROPTION__OUTPUT_LANGUAGE, StringComparison.InvariantCultureIgnoreCase))
         {
             string outputLanguage = (String)value;
-            if (!isValidOutputLanguage(outputLanguage))
+            if (!IsValidOutputLanguage(outputLanguage))
             {
                 JavaCCErrors.Warning(valueloc, "Bad option value \"" + value
                         + "\" for \"" + name
-                        + "\".  Option setting will be ignored. Valid options : " + getAllValidLanguages());
+                        + "\".  Option setting will be ignored. Valid options : " + GetAllValidLanguages());
                 return;
             }
-            if (isOutputLanguageJava())
+            if (IsOutputLanguageJava())
                 language = Language.java;
-            else if (isOutputLanguageCpp())
+            else if (IsOutputLanguageCpp())
                 language = Language.cpp;
         }
         else
 
-        if (nameUpperCase.equalsIgnoreCase(USEROPTION__CPP_NAMESPACE))
+        if (nameUpperCase.Equals(USEROPTION__CPP_NAMESPACE, StringComparison.InvariantCultureIgnoreCase))
         {
-            processCPPNamespaceOption((String)value);
+            ProcessCPPNamespaceOption((String)value);
         }
     }
 
 
-    private static string getAllValidJavaTemplateTypes()
+    private static string GetAllValidJavaTemplateTypes()
     {
-        return Arrays.toString(supportedJavaTemplateTypes.toArray(new String[supportedJavaTemplateTypes.Count]));
+        return string.Join(',',supportedJavaTemplateTypes.ToArray());
     }
 
-    private static string getAllValidLanguages()
+    private static string GetAllValidLanguages()
     {
-        return Arrays.toString(supportedLanguages.toArray(new String[supportedLanguages.Count]));
+        return string.Join(',',supportedLanguages.ToArray());
     }
 
 
@@ -497,13 +489,13 @@ public class Options
      *
      * @param arg
      */
-    public static void setCmdLineOption(string arg)
+    public static void SetCmdLineOption(string arg)
     {
         string s;
 
         if (arg[0] == '-')
         {
-            s = arg.substring(1);
+            s = arg[1..];
         }
         else
         {
@@ -550,20 +542,19 @@ public class Options
         }
         else
         {
-            name = s.substring(0, index).ToUpper();
-            if (s.substring(index + 1).equalsIgnoreCase("TRUE"))
+            name = s[..index].ToUpper();
+            if (s[(index + 1)..].Equals("TRUE", StringComparison.InvariantCultureIgnoreCase))
             {
                 Val = true;
             }
-            else if (s.substring(index + 1).equalsIgnoreCase("FALSE"))
+            else if (s[(index + 1)..].Equals("FALSE", StringComparison.InvariantCultureIgnoreCase))
             {
                 Val = false;
             }
             else
             {
-                try
+                if(int.TryParse(s[(index + 1)..],out var i))
                 {
-                    int i = Integer.parseInt(s.substring(index + 1));
                     if (i <= 0)
                     {
                         Console.WriteLine("Warning: Bad option value in \""
@@ -572,9 +563,9 @@ public class Options
                     }
                     Val = (i);
                 }
-                catch (NumberFormatException e)
+                else
                 {
-                    Val = s.substring(index + 1);
+                    Val = s[(index + 1)..];
                     if (s.Length > index + 2)
                     {
                         // i.e., there is space for two '"'s in value 
@@ -582,7 +573,7 @@ public class Options
                                 && s[^1] == '"') 
                         {
                             // remove the two '"'s.
-                            Val = s.substring(index + 2, s.Length - 1);
+                            Val = s[(index + 2)..(s.Length - 1)];
                         }
                     }
                 }
@@ -595,8 +586,7 @@ public class Options
                     + "\" will be ignored.");
             return;
         }
-        object valOrig = optionValues.get(name);
-        if (Val.getClass() != valOrig.getClass())
+        if (optionValues.TryGetValue(name,out var valOrig) && Val.GetType() != valOrig.GetType())
         {
             Console.WriteLine("Warning: Bad option value in \"" + arg
                     + "\" will be ignored.");
@@ -609,19 +599,19 @@ public class Options
             return;
         }
 
-        Val = upgradeValue(name, Val);
+        Val = UpgradeValue(name, Val);
 
         optionValues.Add(name, Val);
         cmdLineSetting.Add(name);
-        if (name.equalsIgnoreCase(USEROPTION__CPP_NAMESPACE))
+        if (name.Equals(USEROPTION__CPP_NAMESPACE, StringComparison.InvariantCultureIgnoreCase))
         {
-            processCPPNamespaceOption((String)Val);
+            ProcessCPPNamespaceOption((String)Val);
         }
     }
 
-    public static void normalize()
+    public static void Normalize()
     {
-        if (getDebugLookahead() && !getDebugParser())
+        if (GetDebugLookahead() && !GetDebugParser())
         {
             if (cmdLineSetting.Contains(USEROPTION__DEBUG_PARSER) 
                     || inputFileSetting.Contains(USEROPTION__DEBUG_PARSER))
@@ -636,10 +626,10 @@ public class Options
         // Now set the "GENERATE" options from the supplied (or default) JDK
         // version.
 
-        optionValues.Add(USEROPTION__GENERATE_CHAINED_EXCEPTION, Boolean.valueOf(jdkVersionAtLeast(1.4)));
-        optionValues.Add(USEROPTION__GENERATE_GENERICS, Boolean.valueOf(jdkVersionAtLeast(1.5)));
-        optionValues.Add(USEROPTION__GENERATE_STRING_BUILDER, Boolean.valueOf(jdkVersionAtLeast(1.5)));
-        optionValues.Add(USEROPTION__GENERATE_ANNOTATIONS, Boolean.valueOf(jdkVersionAtLeast(1.5)));
+        optionValues.Add(USEROPTION__GENERATE_CHAINED_EXCEPTION, (JdkVersionAtLeast(1.4)));
+        optionValues.Add(USEROPTION__GENERATE_GENERICS, (JdkVersionAtLeast(1.5)));
+        optionValues.Add(USEROPTION__GENERATE_STRING_BUILDER, (JdkVersionAtLeast(1.5)));
+        optionValues.Add(USEROPTION__GENERATE_ANNOTATIONS, (JdkVersionAtLeast(1.5)));
     }
 
     /**
@@ -647,19 +637,19 @@ public class Options
      *
      * @return The requested lookahead value.
      */
-    public static int getLookahead()
+    public static int GetLookahead()
     {
-        return intValue(USEROPTION__LOOKAHEAD);
+        return IntValue(USEROPTION__LOOKAHEAD);
     }
-
+     
     /**
      * Find the choice ambiguity check value.
      *
      * @return The requested choice ambiguity check value.
      */
-    public static int getChoiceAmbiguityCheck()
+    public static int GetChoiceAmbiguityCheck()
     {
-        return intValue(USEROPTION__CHOICE_AMBIGUITY_CHECK);
+        return IntValue(USEROPTION__CHOICE_AMBIGUITY_CHECK);
     }
 
     /**
@@ -667,9 +657,9 @@ public class Options
      *
      * @return The requested other ambiguity check value.
      */
-    public static int getOtherAmbiguityCheck()
+    public static int GetOtherAmbiguityCheck()
     {
-        return intValue(USEROPTION__OTHER_AMBIGUITY_CHECK);
+        return IntValue(USEROPTION__OTHER_AMBIGUITY_CHECK);
     }
 
     /**
@@ -677,23 +667,23 @@ public class Options
      *
      * @return The requested static value.
      */
-    public static bool getStatic()
+    public static bool GetStatic()
     {
-        return booleanValue(USEROPTION__STATIC);
+        return BooleanValue(USEROPTION__STATIC);
     }
-    public static string getParserCodeGenerator()
+    public static string GetParserCodeGenerator()
     {
-        string retVal = stringValue(USEROPTION__PARSER_CODE_GENERATOR);
+        string retVal = StringValue(USEROPTION__PARSER_CODE_GENERATOR);
         return retVal == ("") ? null : retVal;
     }
-    public static string getTokenManagerCodeGenerator()
+    public static string GetTokenManagerCodeGenerator()
     {
-        string retVal = stringValue(USEROPTION__TOKEN_MANAGER_CODE_GENERATOR);
+        string retVal = StringValue(USEROPTION__TOKEN_MANAGER_CODE_GENERATOR);
         return retVal == ("") ? null : retVal;
     }
-    public static bool getNoDfa()
+    public static bool GetNoDfa()
     {
-        return booleanValue(USEROPTION__NO_DFA);
+        return BooleanValue(USEROPTION__NO_DFA);
     }
 
     /**
@@ -701,9 +691,9 @@ public class Options
      *
      * @return The requested debug parser value.
      */
-    public static bool getDebugParser()
+    public static bool GetDebugParser()
     {
-        return booleanValue(USEROPTION__DEBUG_PARSER);
+        return BooleanValue(USEROPTION__DEBUG_PARSER);
     }
 
     /**
@@ -711,9 +701,9 @@ public class Options
      *
      * @return The requested debug lookahead value.
      */
-    public static bool getDebugLookahead()
+    public static bool GetDebugLookahead()
     {
-        return booleanValue(USEROPTION__DEBUG_LOOKAHEAD);
+        return BooleanValue(USEROPTION__DEBUG_LOOKAHEAD);
     }
 
     /**
@@ -721,9 +711,9 @@ public class Options
      *
      * @return The requested debug tokenmanager value.
      */
-    public static bool getDebugTokenManager()
+    public static bool GetDebugTokenManager()
     {
-        return booleanValue(USEROPTION__DEBUG_TOKEN_MANAGER);
+        return BooleanValue(USEROPTION__DEBUG_TOKEN_MANAGER);
     }
 
     /**
@@ -731,9 +721,9 @@ public class Options
      *
      * @return The requested error reporting value.
      */
-    public static bool getErrorReporting()
+    public static bool GetErrorReporting()
     {
-        return booleanValue(USEROPTION__ERROR_REPORTING);
+        return BooleanValue(USEROPTION__ERROR_REPORTING);
     }
 
     /**
@@ -741,9 +731,9 @@ public class Options
      *
      * @return The requested Java unicode escape value.
      */
-    public static bool getJavaUnicodeEscape()
+    public static bool GetJavaUnicodeEscape()
     {
-        return booleanValue(USEROPTION__JAVA_UNICODE_ESCAPE);
+        return BooleanValue(USEROPTION__JAVA_UNICODE_ESCAPE);
     }
 
     /**
@@ -751,9 +741,9 @@ public class Options
      *
      * @return The requested unicode input value.
      */
-    public static bool getUnicodeInput()
+    public static bool GetUnicodeInput()
     {
-        return booleanValue(USEROPTION__UNICODE_INPUT);
+        return BooleanValue(USEROPTION__UNICODE_INPUT);
     }
 
     /**
@@ -761,9 +751,9 @@ public class Options
      *
      * @return The requested ignore case value.
      */
-    public static bool getIgnoreCase()
+    public static bool GetIgnoreCase()
     {
-        return booleanValue(USEROPTION__IGNORE_CASE);
+        return BooleanValue(USEROPTION__IGNORE_CASE);
     }
 
     /**
@@ -771,9 +761,9 @@ public class Options
      *
      * @return The requested user tokenmanager value.
      */
-    public static bool getUserTokenManager()
+    public static bool GetUserTokenManager()
     {
-        return booleanValue(USEROPTION__USER_TOKEN_MANAGER);
+        return BooleanValue(USEROPTION__USER_TOKEN_MANAGER);
     }
 
     /**
@@ -781,9 +771,9 @@ public class Options
      *
      * @return The requested user charstream value.
      */
-    public static bool getUserCharStream()
+    public static bool GetUserCharStream()
     {
-        return booleanValue(USEROPTION__USER_CHAR_STREAM);
+        return BooleanValue(USEROPTION__USER_CHAR_STREAM);
     }
 
     /**
@@ -791,9 +781,9 @@ public class Options
      *
      * @return The requested build parser value.
      */
-    public static bool getBuildParser()
+    public static bool GetBuildParser()
     {
-        return booleanValue(USEROPTION__BUILD_PARSER);
+        return BooleanValue(USEROPTION__BUILD_PARSER);
     }
 
     /**
@@ -801,9 +791,9 @@ public class Options
      *
      * @return The requested build token manager value.
      */
-    public static bool getBuildTokenManager()
+    public static bool GetBuildTokenManager()
     {
-        return booleanValue(USEROPTION__BUILD_TOKEN_MANAGER);
+        return BooleanValue(USEROPTION__BUILD_TOKEN_MANAGER);
     }
 
     /**
@@ -811,9 +801,9 @@ public class Options
      *
      * @return The requested token manager uses parser value;
      */
-    public static bool getTokenManagerUsesParser()
+    public static bool GetTokenManagerUsesParser()
     {
-        return booleanValue(USEROPTION__TOKEN_MANAGER_USES_PARSER) && !Options.getStatic();
+        return BooleanValue(USEROPTION__TOKEN_MANAGER_USES_PARSER) && !Options.GetStatic();
     }
 
     /**
@@ -821,9 +811,9 @@ public class Options
      *
      * @return The requested sanity check value.
      */
-    public static bool getSanityCheck()
+    public static bool GetSanityCheck()
     {
-        return booleanValue(USEROPTION__SANITY_CHECK);
+        return BooleanValue(USEROPTION__SANITY_CHECK);
     }
 
     /**
@@ -833,7 +823,7 @@ public class Options
      */
     public static bool GetForceLaCheck()
     {
-        return booleanValue(USEROPTION__FORCE_LA_CHECK);
+        return BooleanValue(USEROPTION__FORCE_LA_CHECK);
     }
 
     /**
@@ -842,9 +832,9 @@ public class Options
      * @return The requested common token action value.
      */
 
-    public static bool getCommonTokenAction()
+    public static bool GetCommonTokenAction()
     {
-        return booleanValue(USEROPTION__COMMON_TOKEN_ACTION);
+        return BooleanValue(USEROPTION__COMMON_TOKEN_ACTION);
     }
 
     /**
@@ -852,9 +842,9 @@ public class Options
      *
      * @return The requested cache tokens value.
      */
-    public static bool getCacheTokens()
+    public static bool GetCacheTokens()
     {
-        return booleanValue(USEROPTION__CACHE_TOKENS);
+        return BooleanValue(USEROPTION__CACHE_TOKENS);
     }
 
     /**
@@ -862,9 +852,9 @@ public class Options
      *
      * @return The requested keep line column value.
      */
-    public static bool getKeepLineColumn()
+    public static bool GetKeepLineColumn()
     {
-        return booleanValue(USEROPTION__KEEP_LINE_COLUMN);
+        return BooleanValue(USEROPTION__KEEP_LINE_COLUMN);
     }
 
     /**
@@ -872,9 +862,9 @@ public class Options
      *
      * @return The requested jdk version.
      */
-    public static string getJdkVersion()
+    public static string GetJdkVersion()
     {
-        return stringValue(USEROPTION__JDK_VERSION);
+        return StringValue(USEROPTION__JDK_VERSION);
     }
 
     /**
@@ -883,14 +873,14 @@ public class Options
      *
      * @return
      */
-    public static bool getGenerateChainedException()
+    public static bool GetGenerateChainedException()
     {
-        return booleanValue(USEROPTION__GENERATE_CHAINED_EXCEPTION);
+        return BooleanValue(USEROPTION__GENERATE_CHAINED_EXCEPTION);
     }
 
-    public static bool isGenerateBoilerplateCode()
+    public static bool IsGenerateBoilerplateCode()
     {
-        return booleanValue(USEROPTION__GENERATE_BOILERPLATE);
+        return BooleanValue(USEROPTION__GENERATE_BOILERPLATE);
     }
 
     /**
@@ -904,9 +894,9 @@ public class Options
      * @return true if throws errors (legacy), false if use
      *         {@link Exception} s (better approach)
      */
-    public static bool isLegacyExceptionHandling()
+    public static bool IsLegacyExceptionHandling()
     {
-        bool v = booleanValue(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING);
+        bool v = BooleanValue(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING);
         return v;
     }
 
@@ -915,9 +905,9 @@ public class Options
      *
      * @return
      */
-    public static bool getGenerateGenerics()
+    public static bool GetGenerateGenerics()
     {
-        return booleanValue(USEROPTION__GENERATE_GENERICS);
+        return BooleanValue(USEROPTION__GENERATE_GENERICS);
     }
 
     /**
@@ -925,9 +915,9 @@ public class Options
      *
      * @return
      */
-    public static bool getGenerateStringBuilder()
+    public static bool GetGenerateStringBuilder()
     {
-        return booleanValue(USEROPTION__GENERATE_STRING_BUILDER);
+        return BooleanValue(USEROPTION__GENERATE_STRING_BUILDER);
     }
 
     /**
@@ -935,9 +925,9 @@ public class Options
      *
      * @return
      */
-    public static bool getGenerateAnnotations()
+    public static bool GetGenerateAnnotations()
     {
-        return booleanValue(USEROPTION__GENERATE_ANNOTATIONS);
+        return BooleanValue(USEROPTION__GENERATE_ANNOTATIONS);
     }
 
     /**
@@ -945,9 +935,9 @@ public class Options
      *
      * @return
      */
-    public static bool getSupportClassVisibilityPublic()
+    public static bool GetSupportClassVisibilityPublic()
     {
-        return booleanValue(USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC);
+        return BooleanValue(USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC);
     }
 
     /**
@@ -957,12 +947,11 @@ public class Options
      *            the version to check against. E.g. <code>1.5</code>
      * @return true if the output version is at least the specified version.
      */
-    public static bool jdkVersionAtLeast(double version)
+    public static bool JdkVersionAtLeast(double version)
     {
-        double jdkVersion = Double.parseDouble(getJdkVersion());
-
+        
         // Comparing doubles is safe here, as it is two simple assignments.
-        return jdkVersion >= version;
+        return double.TryParse(GetJdkVersion(),out var jdkVersion) && jdkVersion >= version;
     }
 
     /**
@@ -970,9 +959,9 @@ public class Options
      *
      * @return The required base class for Token.
      */
-    public static string getTokenExtends()
+    public static string GetTokenExtends()
     {
-        return stringValue(USEROPTION__TOKEN_EXTENDS);
+        return StringValue(USEROPTION__TOKEN_EXTENDS);
     }
 
     // public static string getBoilerplatePackage()
@@ -985,9 +974,9 @@ public class Options
      *
      * @return The required factory class for Token.
      */
-    public static string getTokenFactory()
+    public static string GetTokenFactory()
     {
-        return stringValue(USEROPTION__TOKEN_FACTORY);
+        return StringValue(USEROPTION__TOKEN_FACTORY);
     }
 
     /**
@@ -996,15 +985,15 @@ public class Options
      *
      * @return The file encoding (e.g., UTF-8, ISO_8859-1, MacRoman)
      */
-    public static string getGrammarEncoding()
+    public static string GetGrammarEncoding()
     {
-        if (stringValue(USEROPTION__GRAMMAR_ENCODING) == (""))
+        if (StringValue(USEROPTION__GRAMMAR_ENCODING) == (""))
         {
-            return System.getProperties().getProperty("file.encoding");
+            return Encoding.Default.ToString();
         }
         else
         {
-            return stringValue(USEROPTION__GRAMMAR_ENCODING);
+            return StringValue(USEROPTION__GRAMMAR_ENCODING);
         }
     }
 
@@ -1013,21 +1002,21 @@ public class Options
      *
      * @return The requested output directory.
      */
-    public static string getOutputDirectory()
+    public static string GetOutputDirectory()
     {
-        return stringValue(USEROPTION__OUTPUT_DIRECTORY);
+        return StringValue(USEROPTION__OUTPUT_DIRECTORY);
     }
 
-    public static string stringBufOrBuild()
+    public static string StringBufOrBuild()
     {
         // TODO :: CBA -- Require Unification of output language specific
         // processing into a single Enum class
-        if (isOutputLanguageJava() && getGenerateStringBuilder())
+        if (IsOutputLanguageJava() && GetGenerateStringBuilder())
         {
-            return getGenerateStringBuilder() ? "StringBuilder"
+            return GetGenerateStringBuilder() ? "StringBuilder"
                     : "StringBuilder";
         }
-        else if (getOutputLanguage() == (OUTPUT_LANGUAGE__CPP))
+        else if (GetOutputLanguage() == (OUTPUT_LANGUAGE__CPP))
         {
             return "StringBuilder";
         }
@@ -1035,21 +1024,21 @@ public class Options
         {
             throw new Exception(
                     "Output language type not fully implemented : "
-                            + getOutputLanguage());
+                            + GetOutputLanguage());
         }
     }
 
-    private static readonly HashSet<string> supportedJavaTemplateTypes = new HashSet<string>();
+    private static readonly HashSet<string> supportedJavaTemplateTypes = new ();
 
-    private static readonly HashSet<string> supportedLanguages = new HashSet<string>();
+    private static readonly HashSet<string> supportedLanguages = new ();
 
-    public static bool isValidOutputLanguage(string language)
+    public static bool IsValidOutputLanguage(string language)
     {
         return language == null ? false : supportedLanguages.Contains(language.ToLower());
     }
 
 
-    public static bool isValidJavaTemplateType(string type)
+    public static bool IsValidJavaTemplateType(string type)
     {
         return type == null ? false : supportedJavaTemplateTypes.Contains(type.ToLower());
     }
@@ -1057,39 +1046,42 @@ public class Options
     /**
      * @return the output language. default java
      */
-    public static string getOutputLanguage()
+    public static string GetOutputLanguage()
     {
-        return stringValue(USEROPTION__OUTPUT_LANGUAGE);
+        return StringValue(USEROPTION__OUTPUT_LANGUAGE);
     }
 
-    public static string getJavaTemplateType()
+    public static string GetJavaTemplateType()
     {
-        return stringValue(USEROPTION__JAVA_TEMPLATE_TYPE);
+        return StringValue(USEROPTION__JAVA_TEMPLATE_TYPE);
     }
 
-    public static void setStringOption(string optionName, string optionValue)
+    public static void SetStringOption(string optionName, string optionValue)
     {
         optionValues.Add(optionName, optionValue);
-        if (optionName.equalsIgnoreCase(USEROPTION__CPP_NAMESPACE))
+        if (optionName.Equals(USEROPTION__CPP_NAMESPACE, StringComparison.InvariantCultureIgnoreCase))
         {
-            processCPPNamespaceOption(optionValue);
+            ProcessCPPNamespaceOption(optionValue);
         }
     }
 
-    public static void processCPPNamespaceOption(string optionValue)
+    public static void ProcessCPPNamespaceOption(string optionValue)
     {
         string ns = optionValue;
         if (ns.Length > 0)
         {
             // We also need to split it.
-            StringTokenizer st = new StringTokenizer(ns, "::");
-            string expanded_ns = st.nextToken() + " {";
+            var st = ns.Split("::");
+            string expanded_ns = "";
             string ns_close = "}";
-            while (st.hasMoreTokens())
+            if (st.Length > 0)
             {
-                expanded_ns = expanded_ns + "\nnamespace " + st.nextToken()
-                        + " {";
-                ns_close = ns_close + "\n}";
+                expanded_ns = st[0] + " {";
+                for (int i = 1; i < st.Length; i++)
+                {
+                    expanded_ns = expanded_ns + "\nnamespace " + st[i] + " {";
+                    ns_close += "\n}";
+                }
             }
             optionValues.Add(NONUSER_OPTION__NAMESPACE_OPEN, expanded_ns);
             optionValues.Add(NONUSER_OPTION__HAS_NAMESPACE, true);
@@ -1097,57 +1089,57 @@ public class Options
         }
     }
 
-    public static string getLongType()
+    public static string GetLongType()
     {
         // TODO :: CBA -- Require Unification of output language specific
         // processing into a single Enum class
-        if (isOutputLanguageJava())
+        if (IsOutputLanguageJava())
         {
             return "long";
         }
-        else if (getOutputLanguage() == (OUTPUT_LANGUAGE__CPP))
+        else if (GetOutputLanguage() == (OUTPUT_LANGUAGE__CPP))
         {
             return "unsigned long long";
         }
         else
         {
             throw new Exception("Language type not fully supported : "
-                    + getOutputLanguage());
+                    + GetOutputLanguage());
         }
     }
 
-    public static string getBooleanType()
+    public static string GetBooleanType()
     {
         // TODO :: CBA -- Require Unification of output language specific
         // processing into a single Enum class
-        if (isOutputLanguageJava())
+        if (IsOutputLanguageJava())
         {
             return "boolean";
         }
-        else if (getOutputLanguage() == (OUTPUT_LANGUAGE__CPP))
+        else if (GetOutputLanguage() == (OUTPUT_LANGUAGE__CPP))
         {
             return "bool";
         }
         else
         {
             throw new Exception("Language type not fully supported : "
-                    + getOutputLanguage());
+                    + GetOutputLanguage());
         }
     }
 
-    public static bool isOutputLanguageJava()
+    public static bool IsOutputLanguageJava()
     {
-        return getOutputLanguage().equalsIgnoreCase(OUTPUT_LANGUAGE__JAVA);
+        return GetOutputLanguage().Equals(OUTPUT_LANGUAGE__JAVA, StringComparison.InvariantCultureIgnoreCase);
     }
 
-    public static bool isOutputLanguageCpp()
+    public static bool IsOutputLanguageCpp()
     {
-        return getOutputLanguage().equalsIgnoreCase(OUTPUT_LANGUAGE__CPP);
+        return GetOutputLanguage().Equals(OUTPUT_LANGUAGE__CPP, StringComparison.InvariantCultureIgnoreCase);
     }
 
-    public static bool isTokenManagerRequiresParserAccess()
+    public static bool IsTokenManagerRequiresParserAccess()
     {
-        return getTokenManagerUsesParser() && (!getStatic());
+        return GetTokenManagerUsesParser() && (!GetStatic());
     }
 
     /**
@@ -1155,9 +1147,9 @@ public class Options
      *
      * @return The requested recursion limit.
      */
-    public static int getDepthLimit()
+    public static int GetDepthLimit()
     {
-        return intValue(USEROPTION__DEPTH_LIMIT);
+        return IntValue(USEROPTION__DEPTH_LIMIT);
     }
 
     /**
@@ -1165,9 +1157,9 @@ public class Options
      *
      * @return The requested stack usage limit.
      */
-    public static string getStackLimit()
+    public static string GetStackLimit()
     {
-        string limit = stringValue(USEROPTION__CPP_STACK_LIMIT);
+        string limit = StringValue(USEROPTION__CPP_STACK_LIMIT);
         if (limit == ("0"))
         {
             return "";
@@ -1182,7 +1174,7 @@ public class Options
      * Gets all the user options (in order)
      * @return
      */
-    public static HashSet<OptionInfo> getUserOptions()
+    public static HashSet<OptionInfo> GetUserOptions()
     {
         return userOptions;
     }

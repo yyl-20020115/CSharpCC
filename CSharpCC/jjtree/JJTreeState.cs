@@ -41,7 +41,7 @@ public static class JJTreeState
     {
         string s;
 
-        if (JJTreeOptions.getStatic())
+        if (JJTreeOptions.GetStatic())
         {
             s = "static ";
         }
@@ -86,12 +86,12 @@ public static class JJTreeState
     {
         ostr.WriteLine("public class " + NameState() + " {");
 
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("  private java.util.List nodes;");
         else
             ostr.WriteLine("  private java.util.List<Node> nodes;");
 
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("  private java.util.List marks;");
         else
             ostr.WriteLine("  private java.util.List<Integer> marks;");
@@ -103,12 +103,12 @@ public static class JJTreeState
         ostr.WriteLine("");
         ostr.WriteLine("  public " + NameState() + "() {");
 
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("    nodes = new java.util.ArrayList();");
         else
             ostr.WriteLine("    nodes = new java.util.ArrayList<Node>();");
 
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("    marks = new java.util.ArrayList();");
         else
             ostr.WriteLine("    marks = new java.util.ArrayList<Integer>();");
@@ -136,7 +136,7 @@ public static class JJTreeState
         ostr.WriteLine("  /* Returns the root node of the AST.  It only makes sense to call");
         ostr.WriteLine("     this after a successful parse. */");
         ostr.WriteLine("  public Node rootNode() {");
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("    return (Node)nodes.get(0);");
         else
             ostr.WriteLine("    return nodes.get(0);");
@@ -152,12 +152,12 @@ public static class JJTreeState
         ostr.WriteLine("     stack.  */");
         ostr.WriteLine("  public Node popNode() {");
         ostr.WriteLine("    if (--sp < mk) {");
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("      mk = ((Integer)marks.remove(marks.size()-1)).intValue();");
         else
             ostr.WriteLine("      mk = marks.remove(marks.size()-1);");
         ostr.WriteLine("    }");
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("    return (Node)nodes.remove(nodes.size()-1);");
         else
             ostr.WriteLine("    return nodes.remove(nodes.size()-1);");
@@ -165,7 +165,7 @@ public static class JJTreeState
         ostr.WriteLine("");
         ostr.WriteLine("  /* Returns the node currently on the top of the stack. */");
         ostr.WriteLine("  public Node peekNode() {");
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("    return (Node)nodes.get(nodes.size()-1);");
         else
             ostr.WriteLine("    return nodes.get(nodes.size()-1);");
@@ -182,7 +182,7 @@ public static class JJTreeState
         ostr.WriteLine("    while (sp > mk) {");
         ostr.WriteLine("      popNode();");
         ostr.WriteLine("    }");
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("    mk = ((Integer)marks.remove(marks.size()-1)).intValue();");
         else
             ostr.WriteLine("    mk = marks.remove(marks.size()-1);");
@@ -190,7 +190,7 @@ public static class JJTreeState
         ostr.WriteLine("");
         ostr.WriteLine("");
         ostr.WriteLine("  public void openNodeScope(Node n) {");
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("    marks.add(Integer.valueOf(mk));");
         else
             ostr.WriteLine("    marks.add(mk);");
@@ -204,7 +204,7 @@ public static class JJTreeState
         ostr.WriteLine("     made the children of the definite node.  Then the definite node");
         ostr.WriteLine("     is pushed on to the stack. */");
         ostr.WriteLine("  public void closeNodeScope(Node n, int num) {");
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("    mk = ((Integer)marks.remove(marks.size()-1)).intValue();");
         else
             ostr.WriteLine("    mk = marks.remove(marks.size()-1);");
@@ -227,7 +227,7 @@ public static class JJTreeState
         ostr.WriteLine("  public void closeNodeScope(Node n, boolean condition) {");
         ostr.WriteLine("    if (condition) {");
         ostr.WriteLine("      int a = nodeArity();");
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("      mk = ((Integer)marks.remove(marks.size()-1)).intValue();");
         else
             ostr.WriteLine("      mk = marks.remove(marks.size()-1);");
@@ -240,7 +240,7 @@ public static class JJTreeState
         ostr.WriteLine("      pushNode(n);");
         ostr.WriteLine("      node_created = true;");
         ostr.WriteLine("    } else {");
-        if (!JJTreeOptions.getGenerateGenerics())
+        if (!JJTreeOptions.GetGenerateGenerics())
             ostr.WriteLine("      mk = ((Integer)marks.remove(marks.size()-1)).intValue();");
         else
             ostr.WriteLine("      mk = marks.remove(marks.size()-1);");

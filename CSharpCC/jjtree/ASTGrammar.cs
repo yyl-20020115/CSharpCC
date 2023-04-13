@@ -41,13 +41,13 @@ public class ASTGrammar : JJTreeNode
 
     public void Generate(IO io)
     {
-        Console.WriteLine("opt:" + JJTreeOptions.getOutputLanguage());
+        Console.WriteLine("opt:" + JJTreeOptions.GetOutputLanguage());
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        if (JJTreeOptions.isOutputLanguageJava())
+        if (JJTreeOptions.IsOutputLanguageJava())
         {
             new JavaCodeGenerator().Visit(this, io);
         }
-        else if (JJTreeOptions.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
+        else if (JJTreeOptions.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
             new CPPCodeGenerator().Visit(this, io);
             CPPNodeFiles.GenerateTreeClasses();
@@ -55,7 +55,7 @@ public class ASTGrammar : JJTreeNode
         else
         {
             // Catch all to ensure we don't accidentally do nothing
-            throw new Exception("Language type not supported for JJTree : " + JJTreeOptions.getOutputLanguage());
+            throw new Exception("Language type not supported for JJTree : " + JJTreeOptions.GetOutputLanguage());
         }
     }
 

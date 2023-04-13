@@ -53,7 +53,7 @@ public class JJTreeParser : JJTreeParserConstants
         {
             javacc_options();
             // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-            isJavaLanguage = JJTreeOptions.isOutputLanguageJava();
+            isJavaLanguage = JJTreeOptions.IsOutputLanguageJava();
             ASTCompilationUnit jjtn001 = new ASTCompilationUnit(JJTCOMPILATIONUNIT);
             bool jjtc001 = true;
             jjtree.OpenNodeScope(jjtn001);
@@ -293,7 +293,7 @@ public class JJTreeParser : JJTreeParserConstants
         {
             ;
         }
-        JJTreeOptions.normalize();
+        JJTreeOptions.Normalize();
     }
 
     public void option_binding()
@@ -329,7 +329,7 @@ public class JJTreeParser : JJTreeParserConstants
             {
                 case INTEGER_LITERAL:
                     v = IntegerLiteral();
-                    JJTreeOptions.setInputFileOption(o, v, o.image, (v.image));
+                    JJTreeOptions.SetInputFileOption(o, v, o.image, (v.image));
                     jjtn000.Initialize(o.image, v.image);
                     break;
                 case FALSE:
@@ -342,7 +342,7 @@ public class JJTreeParser : JJTreeParserConstants
                 case STRING_LITERAL:
                     v = StringLiteral();
                     String vs = TokenUtils.RemoveEscapesAndQuotes(v, v.image);
-                    JJTreeOptions.setInputFileOption(o, v, o.image, (Object)vs);
+                    JJTreeOptions.SetInputFileOption(o, v, o.image, (Object)vs);
                     jjtn000.Initialize(o.image, vs);
                     break;
                 default:

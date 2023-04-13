@@ -10,12 +10,12 @@ public class JavaCCInterpreter
         JavaCCParser parser = null;
         for (int arg = 0; arg < args.Length - 2; arg++)
         {
-            if (!Options.isOption(args[arg]))
+            if (!Options.IsOption(args[arg]))
             {
                 Console.WriteLine("Argument \"" + args[arg] + "\" must be an option setting.");
                 Environment.Exit(1);
             }
-            Options.setCmdLineOption(args[arg]);
+            Options.SetCmdLineOption(args[arg]);
         }
 
         string input = "";
@@ -92,7 +92,7 @@ public class JavaCCInterpreter
 
             }
             char c = input[curPos];
-            if (Options.getIgnoreCase()) c = char.ToLower(c);
+            if (Options.GetIgnoreCase()) c = char.ToLower(c);
             int key = curLexState << 16 | (int)c;
             
             if (td.literalSequence.TryGetValue(key, out var literals))
@@ -106,7 +106,7 @@ public class JavaCCInterpreter
                     while (index < s.Length && curPos + index < input_size)
                     {
                         c = input[curPos + index];
-                        if (Options.getIgnoreCase()) c = char.ToLower(c);
+                        if (Options.GetIgnoreCase()) c = char.ToLower(c);
                         if (c != s[index]) break;
                         index++;
                     }
@@ -141,7 +141,7 @@ public class JavaCCInterpreter
                 do
                 {
                     c = input[curPos];
-                    if (Options.getIgnoreCase()) c = char.ToLower(c);
+                    if (Options.GetIgnoreCase()) c = char.ToLower(c);
                     foreach (int state in curStates)
                     {
                         if (td.nfa.TryGetValue(state,out var nfaState) && nfaState.characters.Contains(c))

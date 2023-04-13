@@ -19,8 +19,8 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         io.Println("/*@bgen(jjtree) " +
             JavaCCGlobals.GetIdString(JJTreeGlobals.ToolList,
             io.GetOutputFileName()) +
-             (JJTreeOptions.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : " */"));
-        io.Print((JJTreeOptions.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "/*") + "@egen*/");
+             (JJTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : " */"));
+        io.Print((JJTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "/*") + "@egen*/");
 
         return node.childrenAccept(this, io);
     }
@@ -244,18 +244,18 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     {
         if (arg != null)
         {
-            io.Print("/*@bgen(jjtree) " + arg + (JJTreeOptions.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : " */"));
+            io.Print("/*@bgen(jjtree) " + arg + (JJTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : " */"));
         }
         else
         {
-            io.Print("/*@bgen(jjtree)" + (JJTreeOptions.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "*/"));
+            io.Print("/*@bgen(jjtree)" + (JJTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "*/"));
         }
     }
 
 
     private static void CloseJJTreeComment(IO io)
     {
-        io.Print((JJTreeOptions.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "/*") + "@egen*/");
+        io.Print((JJTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "/*") + "@egen*/");
     }
 
 
@@ -296,7 +296,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         CPPNodeFiles.AddType(type);
 
         io.Print(indent + nodeClass + " *" + ns.nodeVar + " = ");
-        string p = JJTreeOptions.getStatic() ? "null" : "this";
+        string p = JJTreeOptions.GetStatic() ? "null" : "this";
         string parserArg = JJTreeOptions.GetNodeUsesParser() ? (p + ", ") : "";
 
         if (JJTreeOptions.GetNodeFactory() == ("*"))

@@ -136,19 +136,19 @@ public class JJTree
 
             string fn = args[args.Length - 1];
 
-            if (JJTreeOptions.isOption(fn))
+            if (JJTreeOptions.IsOption(fn))
             {
                 Print("Last argument \"" + fn + "\" is not a filename");
                 return 1;
             }
             for (int arg = 0; arg < args.Length - 1; arg++)
             {
-                if (!JJTreeOptions.isOption(args[arg]))
+                if (!JJTreeOptions.IsOption(args[arg]))
                 {
                     Print("Argument \"" + args[arg] + "\" must be an option setting.");
                     return 1;
                 }
-                JJTreeOptions.setCmdLineOption(args[arg]);
+                JJTreeOptions.SetCmdLineOption(args[arg]);
             }
 
             JJTreeOptions.Validate();
@@ -189,18 +189,18 @@ public class JJTree
                 root.Generate(io);
                 io.GetOut().Close();
 
-                string outputLanguage = JJTreeOptions.getOutputLanguage();
+                string outputLanguage = JJTreeOptions.GetOutputLanguage();
 
                 // TODO :: Not yet tested this in GWT/Modern mode (disabled by default in 6.1)
 
-                if (JJTreeOptions.isOutputLanguageJava())
+                if (JJTreeOptions.IsOutputLanguageJava())
                 {
                     NodeFiles.generateTreeConstants_java();
                     NodeFiles.generateVisitor_java();
                     NodeFiles.generateDefaultVisitor_java();
                     JJTreeState.GenerateTreeStateJava();
                 }
-                else if (JJTreeOptions.isOutputLanguageCpp())
+                else if (JJTreeOptions.IsOutputLanguageCpp())
                 {
                     CPPNodeFiles.GenerateTreeConstants();
                     CPPNodeFiles.GenerateVisitors();

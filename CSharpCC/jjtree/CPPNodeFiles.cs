@@ -330,10 +330,10 @@ public static class CPPNodeFiles
             optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
             GenerateFile(outputFile, "/templates/cpp/TreeImplHeader.template", optionMap, false);
 
-            bool hasNamespace = JJTreeOptions.stringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0;
+            bool hasNamespace = JJTreeOptions.StringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0;
             if (hasNamespace)
             {
-                outputFile.getPrintWriter().WriteLine("namespace " + JJTreeOptions.stringValue("NAMESPACE_OPEN"));
+                outputFile.getPrintWriter().WriteLine("namespace " + JJTreeOptions.StringValue("NAMESPACE_OPEN"));
             }
 
             foreach (string s in NodesToGenerate)
@@ -344,7 +344,7 @@ public static class CPPNodeFiles
 
             if (hasNamespace)
             {
-                outputFile.getPrintWriter().WriteLine(JJTreeOptions.stringValue("NAMESPACE_CLOSE"));
+                outputFile.getPrintWriter().WriteLine(JJTreeOptions.StringValue("NAMESPACE_CLOSE"));
             }
         }
         catch (IOException e)
@@ -387,10 +387,10 @@ public static class CPPNodeFiles
             ostr.WriteLine("#define " + file.Replace('.', '_').ToUpper());
 
             ostr.WriteLine("\n#include \"JavaCC.h\"");
-            bool hasNamespace = JJTreeOptions.stringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0;
+            bool hasNamespace = JJTreeOptions.StringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0;
             if (hasNamespace)
             {
-                ostr.WriteLine("namespace " + JJTreeOptions.stringValue("NAMESPACE_OPEN"));
+                ostr.WriteLine("namespace " + JJTreeOptions.StringValue("NAMESPACE_OPEN"));
             }
             ostr.WriteLine("enum {");
             for (int i = 0; i < nodeIds.Count; ++i)
@@ -419,7 +419,7 @@ public static class CPPNodeFiles
 
             if (hasNamespace)
             {
-                ostr.WriteLine(JJTreeOptions.stringValue("NAMESPACE_CLOSE"));
+                ostr.WriteLine(JJTreeOptions.StringValue("NAMESPACE_CLOSE"));
             }
 
 
@@ -442,7 +442,7 @@ public static class CPPNodeFiles
     private static string GetVisitMethodName(string className)
     {
         var sb = new StringBuilder("visit");
-        if (JJTreeOptions.booleanValue("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME"))
+        if (JJTreeOptions.BooleanValue("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME"))
         {
             sb.Append(char.ToUpper(className[0]));
             for (int i = 1; i < className.Length; i++)
@@ -456,13 +456,13 @@ public static class CPPNodeFiles
 
     private static string GetVisitorArgumentType()
     {
-        string ret = JJTreeOptions.stringValue("VISITOR_DATA_TYPE");
+        string ret = JJTreeOptions.StringValue("VISITOR_DATA_TYPE");
         return ret == null || ret == ("") || ret == ("Object") ? "void *" : ret;
     }
 
     private static string GetVisitorReturnType()
     {
-        string ret = JJTreeOptions.stringValue("VISITOR_RETURN_TYPE");
+        string ret = JJTreeOptions.StringValue("VISITOR_RETURN_TYPE");
         return ret == null || ret == ("") || ret == ("Object") ? "void " : ret;
     }
 
@@ -486,10 +486,10 @@ public static class CPPNodeFiles
             ostr.WriteLine("\n#include \"JavaCC.h\"");
             ostr.WriteLine("#include \"" + JJTreeGlobals.ParserName + "Tree.h" + "\"");
 
-            bool hasNamespace = JJTreeOptions.stringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0;
+            bool hasNamespace = JJTreeOptions.StringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0;
             if (hasNamespace)
             {
-                ostr.WriteLine("namespace " + JJTreeOptions.stringValue("NAMESPACE_OPEN"));
+                ostr.WriteLine("namespace " + JJTreeOptions.StringValue("NAMESPACE_OPEN"));
             }
 
             GenerateVisitorInterface(ostr);
@@ -497,7 +497,7 @@ public static class CPPNodeFiles
 
             if (hasNamespace)
             {
-                ostr.WriteLine(JJTreeOptions.stringValue("NAMESPACE_CLOSE"));
+                ostr.WriteLine(JJTreeOptions.StringValue("NAMESPACE_CLOSE"));
             }
 
             ostr.WriteLine("#endif");

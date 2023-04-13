@@ -158,7 +158,7 @@ public class IO
             }
             ifn = fp;
 
-            _in = new StreamReader(ifn, Encoding.GetEncoding(JJTreeOptions.getGrammarEncoding()));
+            _in = new StreamReader(ifn, Encoding.GetEncoding(JJTreeOptions.GetGrammarEncoding()));
 
         }
         catch (NullReferenceException ne)

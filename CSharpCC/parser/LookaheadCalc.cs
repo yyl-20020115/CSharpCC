@@ -126,7 +126,7 @@ public class LookaheadCalc : JavaCCGlobals
         MatchInfo m;
         List<MatchInfo> v;
         bool overlapDetected;
-        for (int la = 1; la <= Options.getChoiceAmbiguityCheck(); la++)
+        for (int la = 1; la <= Options.GetChoiceAmbiguityCheck(); la++)
         {
             MatchInfo.laLimit = la;
             LookaheadWalk.considerSemanticLA = !Options.GetForceLaCheck();
@@ -196,7 +196,7 @@ public class LookaheadCalc : JavaCCGlobals
             {
                 continue;
             }
-            if (minLA[i] > Options.getChoiceAmbiguityCheck())
+            if (minLA[i] > Options.GetChoiceAmbiguityCheck())
             {
                 JavaCCErrors.Warning("Choice conflict involving two expansions at");
                 Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).GetLine());
@@ -276,7 +276,7 @@ public class LookaheadCalc : JavaCCGlobals
         List<MatchInfo> v;
         List<MatchInfo> first, follow;
         int la;
-        for (la = 1; la <= Options.getOtherAmbiguityCheck(); la++)
+        for (la = 1; la <= Options.GetOtherAmbiguityCheck(); la++)
         {
             MatchInfo.laLimit = la;
             LookaheadWalk.sizeLimitedMatches = new();
@@ -306,7 +306,7 @@ public class LookaheadCalc : JavaCCGlobals
             }
             m1 = m;
         }
-        if (la > Options.getOtherAmbiguityCheck())
+        if (la > Options.GetOtherAmbiguityCheck())
         {
             JavaCCErrors.Warning("Choice conflict in " + Image(exp) + " construct " +
                     "at line " + exp.GetLine() + ", column " + exp.GetColumn() + ".");

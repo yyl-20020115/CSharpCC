@@ -119,7 +119,7 @@ public class JJTreeOptions : Options
      */
     public static bool GetMulti()
     {
-        return booleanValue("MULTI");
+        return BooleanValue("MULTI");
     }
 
     /**
@@ -129,7 +129,7 @@ public class JJTreeOptions : Options
      */
     public static bool GetNodeDefaultVoid()
     {
-        return booleanValue("NODE_DEFAULT_VOID");
+        return BooleanValue("NODE_DEFAULT_VOID");
     }
 
     /**
@@ -139,7 +139,7 @@ public class JJTreeOptions : Options
      */
     public static bool GetNodeScopeHook()
     {
-        return booleanValue("NODE_SCOPE_HOOK");
+        return BooleanValue("NODE_SCOPE_HOOK");
     }
 
     /**
@@ -149,7 +149,7 @@ public class JJTreeOptions : Options
      */
     public static string GetNodeFactory()
     {
-        return stringValue("NODE_FACTORY");
+        return StringValue("NODE_FACTORY");
     }
 
     /**
@@ -159,7 +159,7 @@ public class JJTreeOptions : Options
      */
     public static bool GetNodeUsesParser()
     {
-        return booleanValue("NODE_USES_PARSER");
+        return BooleanValue("NODE_USES_PARSER");
     }
 
     /**
@@ -169,7 +169,7 @@ public class JJTreeOptions : Options
      */
     public static bool GetBuildNodeFiles()
     {
-        return booleanValue("BUILD_NODE_FILES");
+        return BooleanValue("BUILD_NODE_FILES");
     }
 
     /**
@@ -179,7 +179,7 @@ public class JJTreeOptions : Options
      */
     public static bool GetVisitor()
     {
-        return booleanValue("VISITOR");
+        return BooleanValue("VISITOR");
     }
 
     /**
@@ -189,7 +189,7 @@ public class JJTreeOptions : Options
      */
     public static bool GetTrackTokens()
     {
-        return booleanValue("TRACK_TOKENS");
+        return BooleanValue("TRACK_TOKENS");
     }
 
     /**
@@ -199,7 +199,7 @@ public class JJTreeOptions : Options
      */
     public static string GetNodePrefix()
     {
-        return stringValue("NODE_PREFIX");
+        return StringValue("NODE_PREFIX");
     }
 
     /**
@@ -209,7 +209,7 @@ public class JJTreeOptions : Options
      */
     public static string GetNodeExtends()
     {
-        return stringValue("NODE_EXTENDS");
+        return StringValue("NODE_EXTENDS");
     }
 
     /**
@@ -219,7 +219,7 @@ public class JJTreeOptions : Options
      */
     public static string GetNodeClass()
     {
-        return stringValue("NODE_CLASS");
+        return StringValue("NODE_CLASS");
     }
 
     /**
@@ -229,7 +229,7 @@ public class JJTreeOptions : Options
      */
     public static string GetNodePackage()
     {
-        return stringValue("NODE_PACKAGE");
+        return StringValue("NODE_PACKAGE");
     }
 
     /**
@@ -239,7 +239,7 @@ public class JJTreeOptions : Options
      */
     public static string GetOutputFile()
     {
-        return stringValue("OUTPUT_FILE");
+        return StringValue("OUTPUT_FILE");
     }
 
     /**
@@ -249,7 +249,7 @@ public class JJTreeOptions : Options
      */
     public static string GetVisitorException()
     {
-        return stringValue("VISITOR_EXCEPTION");
+        return StringValue("VISITOR_EXCEPTION");
     }
 
     /**
@@ -259,7 +259,7 @@ public class JJTreeOptions : Options
      */
     public static string GetVisitorDataType()
     {
-        return stringValue("VISITOR_DATA_TYPE");
+        return StringValue("VISITOR_DATA_TYPE");
     }
 
     /**
@@ -269,7 +269,7 @@ public class JJTreeOptions : Options
      */
     public static string GetVisitorReturnType()
     {
-        return stringValue("VISITOR_RETURN_TYPE");
+        return StringValue("VISITOR_RETURN_TYPE");
     }
 
     /**
@@ -281,11 +281,11 @@ public class JJTreeOptions : Options
      */
     public static string GetJJTreeOutputDirectory()
     {
-        string dirName = stringValue("JJTREE_OUTPUT_DIRECTORY");
+        string dirName = StringValue("JJTREE_OUTPUT_DIRECTORY");
         string dir;
         if ("" == (dirName))
         {
-            dir = getOutputDirectory();
+            dir = GetOutputDirectory();
         }
         else
         {

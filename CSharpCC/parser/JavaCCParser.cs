@@ -305,7 +305,7 @@ public class JavaCCParser : JavaCCParserInternals
         {
             ;
         }
-        Options.normalize();
+        Options.Normalize();
     }
 
     public void option_binding()
@@ -353,11 +353,11 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             case STRING_LITERAL:
                 string_val = StringLiteral();
-                Options.setInputFileOption(t, getToken(0), option_name, string_val);
+                Options.SetInputFileOption(t, getToken(0), option_name, string_val);
                 break;
             case LPAREN:
                 string_list = StringList();
-                Options.setInputFileOption(t, getToken(0), option_name, string_list);
+                Options.SetInputFileOption(t, getToken(0), option_name, string_list);
                 break;
             default:
                 jj_la1[3] = jj_gen;
@@ -696,7 +696,7 @@ public class JavaCCParser : JavaCCParserInternals
                 ;
         }
         regexpr_kind(p);
-        if (p.kind != TokenProduction.TOKEN && Options.getUserTokenManager())
+        if (p.kind != TokenProduction.TOKEN && Options.GetUserTokenManager())
         {
             JavaCCErrors.Warning(getToken(0), "Regular expression is being treated as if it were a TOKEN since option USER_TOKEN_MANAGER has been set to true.");
         }
@@ -707,7 +707,7 @@ public class JavaCCParser : JavaCCParserInternals
                 t = jj_consume_token(_IGNORE_CASE);
                 jj_consume_token(RBRACKET);
                 p.ignoreCase = true;
-                if (Options.getUserTokenManager())
+                if (Options.GetUserTokenManager())
                 {
                     JavaCCErrors.Warning(t, "Ignoring \u005c\"IGNORE_CASE\u005c\" specification since option USER_TOKEN_MANAGER has been set to true.");
                 }
@@ -804,7 +804,7 @@ public class JavaCCParser : JavaCCParserInternals
             case LBRACE:
                 t = getToken(1);
                 Block(act.GetActionTokens());
-                if (Options.getUserTokenManager())
+                if (Options.GetUserTokenManager())
                 {
                     JavaCCErrors.Warning(t, "Ignoring action in regular expression specification since option USER_TOKEN_MANAGER has been set to true.");
                 }
@@ -887,7 +887,7 @@ public class JavaCCParser : JavaCCParserInternals
         seq.SetColumn(t.beginColumn);
         la.SetLine(t.beginLine);
         la.SetColumn(t.beginColumn);
-        la.SetAmount(Options.getLookahead());
+        la.SetAmount(Options.GetLookahead());
         la.SetLaExpansion(null);
         la.SetExplicit(false);
         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
@@ -1826,7 +1826,7 @@ public class JavaCCParser : JavaCCParserInternals
             }
             TypeDeclaration();
         }
-        if (Options.isOutputLanguageJava())
+        if (Options.IsOutputLanguageJava())
         {
             InsertionPointErrors(getToken(1));
         }
@@ -5809,7 +5809,7 @@ public class JavaCCParser : JavaCCParserInternals
         // from being dead code.
         // NB: eclipse now detects 'if (true)' as dead code, so use the more complicated
         // 'if ("" != null)'
-        if (inAction && (Options.isLegacyExceptionHandling()))
+        if (inAction && (Options.IsLegacyExceptionHandling()))
         {
             t.image = "{if (\u005c\"\u005c\" != null) return";
             jumpPatched = true;
@@ -5871,7 +5871,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         t = jj_consume_token(SEMICOLON);
         // Add closing brace for above if statement.
-        if (inAction && (Options.isLegacyExceptionHandling()))
+        if (inAction && (Options.IsLegacyExceptionHandling()))
         {
             t.image = ";}";
         }
@@ -10768,7 +10768,7 @@ public class JavaCCParser : JavaCCParserInternals
     }
 
     public class JJCalls
-    { 
+    {  
         public int gen;
         public Token first; 
         public int arg;
