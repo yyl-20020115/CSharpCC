@@ -299,7 +299,7 @@ public class ParseGenCPP : ParseGen
 
         GenerateMethodDefHeader("Token *", cu_name, "jj_consume_token(int kind)", "ParseException");
         GenCodeLine("  {");
-        if (!Options.getStackLimit() == (""))
+        if (Options.getStackLimit() != (""))
         {
             GenCodeLine("    if(kind != -1 && (jj_stack_error || jj_stack_check(false))) {");
             GenCodeLine("      if (!jj_stack_error) {");
@@ -356,13 +356,13 @@ public class ParseGenCPP : ParseGen
             GenCodeLine("    jj_kind = kind;");
         }
         //GenCodeLine("    throw generateParseException();");
-        if (!Options.getStackLimit() == (""))
+        if (Options.getStackLimit() != (""))
         {
             GenCodeLine("    if (!jj_stack_error) {");
         }
         GenCodeLine("    JJString image = kind >= 0 ? tokenImage[kind] : tokenImage[0];");
         GenCodeLine("    errorHandler->handleUnexpectedToken(kind, image.substr(1, image.size() - 2), getToken(1), this);");
-        if (!Options.getStackLimit() == (""))
+        if (Options.getStackLimit() != (""))
         {
             GenCodeLine("    }");
         }
@@ -376,7 +376,7 @@ public class ParseGenCPP : ParseGen
             SwitchToMainFile();
             GenerateMethodDefHeader("bool ", cu_name, "jj_scan_token(int kind)");
             GenCodeLine("{");
-            if (!Options.getStackLimit() == (""))
+            if (Options.getStackLimit() != (""))
             {
                 GenCodeLine("    if(kind != -1 && (jj_stack_error || jj_stack_check(false))) {");
                 GenCodeLine("      if (!jj_stack_error) {");

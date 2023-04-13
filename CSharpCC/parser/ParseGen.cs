@@ -75,7 +75,7 @@ public class ParseGen : CodeGenerator {
 			} else {
 				GenCode(" implements ");
 			}
-			genCode(cu_name + "Constants ");
+			GenCode(cu_name + "Constants ");
 			if (cu_to_insertion_point_2.Count != 0) {
                 JavaCCGlobals.PrintTokenSetup((cu_to_insertion_point_2[0]));
 				for (Iterator<Token> it = cu_to_insertion_point_2.iterator(); it.hasNext();) {
@@ -145,7 +145,7 @@ public class ParseGen : CodeGenerator {
 					GenCode("	   jj_la1_" + i + " = new int[] {");
 					for (Iterator<?> it = maskVals.iterator(); it.hasNext();) {
 						int[] tokenMask = (int[]) (it.next());
-						genCode("0x" + int.toHexString(tokenMask[i]) + ",");
+						GenCode("0x" + int.toHexString(tokenMask[i]) + ",");
 					}
 					GenCodeLine("};");
 					GenCodeLine("	}");

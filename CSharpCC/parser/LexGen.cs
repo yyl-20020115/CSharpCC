@@ -791,7 +791,7 @@ public class LexGen : CodeGenerator
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                genCode("0x" + Long.toHexString(toToken[i]) + "L, ");
+                GenCode("0x" + Long.toHexString(toToken[i]) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -803,7 +803,7 @@ public class LexGen : CodeGenerator
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                genCode("0x" + Long.toHexString(toSkip[i]) + "L, ");
+                GenCode("0x" + Long.toHexString(toSkip[i]) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -815,7 +815,7 @@ public class LexGen : CodeGenerator
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                genCode("0x" + Long.toHexString(toSpecial[i]) + "L, ");
+                GenCode("0x" + Long.toHexString(toSpecial[i]) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -827,7 +827,7 @@ public class LexGen : CodeGenerator
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                genCode("0x" + Long.toHexString(toMore[i]) + "L, ");
+                GenCode("0x" + Long.toHexString(toMore[i]) + "L, ");
             }
             GenCodeLine("\n};");
         }

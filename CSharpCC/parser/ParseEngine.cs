@@ -776,7 +776,7 @@ public class ParseEngine
         {
             codeGenerator.PrintTokenSetup(t); ccol = 1;
             codeGenerator.PrintLeadingComments(t);
-            codeGenerator.genCode("  " + staticOpt() + "final " + (p.getAccessMod() != null ? p.getAccessMod() : "public") + " ");
+            codeGenerator.GenCode("  " + staticOpt() + "final " + (p.getAccessMod() != null ? p.getAccessMod() : "public") + " ");
             cline = t.beginLine; ccol = t.beginColumn;
             codeGenerator.PrintTokenOnly(t);
             for (int i = 1; i < p.getReturnTypeTokens().Count; i++)
@@ -1784,7 +1784,7 @@ public class ParseEngine
                 //          t = (Token)(cp.getReturnTypeTokens()[0]);
                 //          codeGenerator.printTokenSetup(t); ccol = 1;
                 //          codeGenerator.printLeadingComments(t);
-                //          codeGenerator.genCode("  " + staticOpt() + (p.getAccessMod() != null ? p.getAccessMod() + " " : ""));
+                //          codeGenerator.GenCode("  " + staticOpt() + (p.getAccessMod() != null ? p.getAccessMod() + " " : ""));
                 //          cline = t.beginLine; ccol = t.beginColumn;
                 //          codeGenerator.printTokenOnly(t);
                 //          for (int i = 1; i < cp.getReturnTypeTokens().Count; i++) {
@@ -1792,7 +1792,7 @@ public class ParseEngine
                 //            codeGenerator.printToken(t);
                 //          }
                 //          codeGenerator.printTrailingComments(t);
-                //          codeGenerator.genCode(" " + cp.getLhs() + "(");
+                //          codeGenerator.GenCode(" " + cp.getLhs() + "(");
                 //          if (cp.getParameterListTokens().Count != 0) {
                 //            codeGenerator.printTokenSetup((Token)(cp.getParameterListTokens()[0]));
                 //            for (Iterator it = cp.getParameterListTokens().iterator(); it.hasNext();) {
@@ -1801,13 +1801,13 @@ public class ParseEngine
                 //            }
                 //            codeGenerator.printTrailingComments(t);
                 //          }
-                //          codeGenerator.genCode(")");
+                //          codeGenerator.GenCode(")");
                 //          for (Iterator it = cp.getThrowsList().iterator(); it.hasNext();) {
-                //            codeGenerator.genCode(", ");
+                //            codeGenerator.GenCode(", ");
                 //            List name = (List)it.next();
                 //            for (Iterator it2 = name.iterator(); it2.hasNext();) {
                 //              t = (Token)it2.next();
-                //              codeGenerator.genCode(t.image);
+                //              codeGenerator.GenCode(t.image);
                 //            }
                 //          }
                 codeGenerator.GenCodeLine(" {");
@@ -1850,7 +1850,7 @@ public class ParseEngine
                 t = (Token)(jp.getReturnTypeTokens()[0]);
                 codeGenerator.PrintTokenSetup(t); ccol = 1;
                 codeGenerator.PrintLeadingComments(t);
-                codeGenerator.genCode("  " + staticOpt() + (p.getAccessMod() != null ? p.getAccessMod() + " " : ""));
+                codeGenerator.GenCode("  " + staticOpt() + (p.getAccessMod() != null ? p.getAccessMod() + " " : ""));
                 cline = t.beginLine; ccol = t.beginColumn;
                 codeGenerator.PrintTokenOnly(t);
                 for (int i = 1; i < jp.getReturnTypeTokens().Count; i++)

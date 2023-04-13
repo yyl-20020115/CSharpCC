@@ -3202,7 +3202,7 @@ public class NfaState
             {
                 int[] stateSet = statesForState[i][j];
 
-                codeGenerator.genCode("const int stateSet_" + i + "_" + j + "[" +
+                codeGenerator.GenCode("const int stateSet_" + i + "_" + j + "[" +
                            MainParser.LexGenerator.stateSetSize + "] = ");
                 if (stateSet == null)
                 {
@@ -3317,7 +3317,7 @@ public class NfaState
         else
         {
             codeGenerator.SwitchToStaticsFile();
-            codeGenerator.genCode("static const int kindForState[" + MainParser.LexGenerator.stateSetSize + "][" + MainParser.LexGenerator.stateSetSize + "] = ");
+            codeGenerator.GenCode("static const int kindForState[" + MainParser.LexGenerator.stateSetSize + "][" + MainParser.LexGenerator.stateSetSize + "] = ");
         }
 
         if (kinds == null)

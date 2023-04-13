@@ -83,7 +83,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
                 }
                 int kind = kinds[j];
                 codeGenerator.GenCode(", " + kind);
-                codeGenerator.genCode(
+                codeGenerator.GenCode(
                     ", " + tokenizerData.kindToNfaStartState.get(kind));
                 i += 3;
                 j++;
@@ -136,7 +136,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
                 while (k + rep < longs.Length && longs[k + rep] == longs[k]) rep++;
                 if (k > 0) codeGenerator.GenCode(", ");
                 codeGenerator.GenCode(rep + ", ");
-                codeGenerator.genCode("0x" + Long.toHexString(longs[k]) + "L");
+                codeGenerator.GenCode("0x" + Long.toHexString(longs[k]) + "L");
                 k += rep - 1;
             }
             codeGenerator.GenCode("}");
@@ -292,7 +292,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
                 {
                     if (image[j] <= 0xff)
                     {
-                        codeGenerator.genCode(
+                        codeGenerator.GenCode(
                             "\\" + int.toOctalString((int)image[j]));
                     }
                     else
@@ -322,7 +322,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         for (int i = 0; i < newStates.Length; i++)
         {
             if (i > 0) codeGenerator.GenCode(", ");
-            codeGenerator.genCode("0x" + int.toHexString(newStates[i]));
+            codeGenerator.GenCode("0x" + int.toHexString(newStates[i]));
         }
         codeGenerator.GenCodeLine("};");
 
@@ -396,7 +396,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         for (int i = 0; i < longs.Length; i++)
         {
             if (i > 0) codeGenerator.GenCode(", ");
-            codeGenerator.genCode("0x" + Long.toHexString(longs[i]) + "L");
+            codeGenerator.GenCode("0x" + Long.toHexString(longs[i]) + "L");
         }
         codeGenerator.GenCodeLine("};");
     }

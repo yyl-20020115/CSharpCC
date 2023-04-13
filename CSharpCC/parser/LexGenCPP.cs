@@ -587,7 +587,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                genCode("0x" + Long.toHexString(toToken[i]) + "L, ");
+                GenCode("0x" + Long.toHexString(toToken[i]) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -600,7 +600,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                genCode("0x" + Long.toHexString(toSkip[i]) + "L, ");
+                GenCode("0x" + Long.toHexString(toSkip[i]) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -613,7 +613,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                genCode("0x" + Long.toHexString(toSpecial[i]) + "L, ");
+                GenCode("0x" + Long.toHexString(toSpecial[i]) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -621,12 +621,12 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         /*if (hasMore) // Not needed as we just use else
         {
           // Bit vector for MORE
-          genCode("static const " + Options.getLongType() + " jjtoMore[] = {");
+          GenCode("static const " + Options.getLongType() + " jjtoMore[] = {");
           for (i = 0; i < maxOrdinal / 64 + 1; i++)
           {
             if (i % 4 == 0)
-              genCode("\n   ");
-            genCode("0x" + Long.toHexString(toMore[i]) + "L, ");
+              GenCode("\n   ");
+            GenCode("0x" + Long.toHexString(toMore[i]) + "L, ");
           }
           GenCodeLine("\n};");
         }*/

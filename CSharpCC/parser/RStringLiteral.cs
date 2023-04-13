@@ -802,7 +802,7 @@ public class RStringLiteral : RegularExpression
             // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
             if (Options.isOutputLanguageJava())
             {
-                codeGenerator.genCode((Options.getStatic() ? "static " : "") + "private int " +
+                codeGenerator.GenCode((Options.getStatic() ? "static " : "") + "private int " +
                                "jjMoveStringLiteralDfa" + i + MainParser.LexGenerator.lexStateSuffix + _params);
             }
             else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
@@ -843,7 +843,7 @@ public class RStringLiteral : RegularExpression
                     codeGenerator.GenCodeLine(") == 0L)");
                     if (!MainParser.LexGenerator.mixed[MainParser.LexGenerator.lexStateIndex] && NfaState.generatedStates != 0)
                     {
-                        codeGenerator.genCode("      return jjStartNfa" + MainParser.LexGenerator.lexStateSuffix +
+                        codeGenerator.GenCode("      return jjStartNfa" + MainParser.LexGenerator.lexStateSuffix +
                                         "(" + (i - 2) + ", ");
                         for (j = 0; j < maxLongsReqd - 1; j++)
                             if (i <= maxLenForActive[j] + 1)
@@ -937,7 +937,7 @@ public class RStringLiteral : RegularExpression
 
                 if (!MainParser.LexGenerator.mixed[MainParser.LexGenerator.lexStateIndex] && NfaState.generatedStates != 0)
                 {
-                    codeGenerator.genCode("      jjStopStringLiteralDfa" + MainParser.LexGenerator.lexStateSuffix + "(" + (i - 1) + ", ");
+                    codeGenerator.GenCode("      jjStopStringLiteralDfa" + MainParser.LexGenerator.lexStateSuffix + "(" + (i - 1) + ", ");
                     for (k = 0; k < maxLongsReqd - 1; k++)
                     {
                         if (i <= maxLenForActive[k])
@@ -1183,7 +1183,7 @@ public class RStringLiteral : RegularExpression
                     {
                         codeGenerator.GenCode("         return ");
 
-                        codeGenerator.genCode("jjMoveStringLiteralDfa" + (i + 1) +
+                        codeGenerator.GenCode("jjMoveStringLiteralDfa" + (i + 1) +
                                        MainParser.LexGenerator.lexStateSuffix + "(");
                         for (j = 0; j < maxLongsReqd - 1; j++)
                             if ((i + 1) <= maxLenForActive[j])
@@ -1193,7 +1193,7 @@ public class RStringLiteral : RegularExpression
                                 else
                                     atLeastOne = true;
 
-                                codeGenerator.genCode("0x" + Long.toHexString(info.validKinds[j]) + (CodeGenerator.IsJavaLanguage() ? "L" : "L"));
+                                codeGenerator.GenCode("0x" + Long.toHexString(info.validKinds[j]) + (CodeGenerator.IsJavaLanguage() ? "L" : "L"));
                             }
 
                         if ((i + 1) <= maxLenForActive[j])
@@ -1201,7 +1201,7 @@ public class RStringLiteral : RegularExpression
                             if (atLeastOne)
                                 codeGenerator.GenCode(", ");
 
-                            codeGenerator.genCode("0x" + Long.toHexString(info.validKinds[j]) + (CodeGenerator.IsJavaLanguage() ? "L" : "L"));
+                            codeGenerator.GenCode("0x" + Long.toHexString(info.validKinds[j]) + (CodeGenerator.IsJavaLanguage() ? "L" : "L"));
                         }
                         codeGenerator.GenCodeLine(");");
                     }
@@ -1209,7 +1209,7 @@ public class RStringLiteral : RegularExpression
                     {
                         codeGenerator.GenCode("         return ");
 
-                        codeGenerator.genCode("jjMoveStringLiteralDfa" + (i + 1) +
+                        codeGenerator.GenCode("jjMoveStringLiteralDfa" + (i + 1) +
                                        MainParser.LexGenerator.lexStateSuffix + "(");
 
                         for (j = 0; j < maxLongsReqd - 1; j++)
@@ -1221,7 +1221,7 @@ public class RStringLiteral : RegularExpression
                                     atLeastOne = true;
 
                                 if (info.validKinds[j] != 0L)
-                                    codeGenerator.genCode("active" + j + ", 0x" +
+                                    codeGenerator.GenCode("active" + j + ", 0x" +
                                             Long.toHexString(info.validKinds[j]) + (CodeGenerator.IsJavaLanguage() ? "L" : "L"));
                                 else
                                     codeGenerator.GenCode("active" + j + ", 0L");
@@ -1232,7 +1232,7 @@ public class RStringLiteral : RegularExpression
                             if (atLeastOne)
                                 codeGenerator.GenCode(", ");
                             if (info.validKinds[j] != 0L)
-                                codeGenerator.genCode("active" + j + ", 0x" +
+                                codeGenerator.GenCode("active" + j + ", 0x" +
                                            Long.toHexString(info.validKinds[j]) + (CodeGenerator.IsJavaLanguage() ? "L" : "L"));
                             else
                                 codeGenerator.GenCode("active" + j + ", 0L");
@@ -1504,7 +1504,7 @@ public class RStringLiteral : RegularExpression
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
         if (Options.isOutputLanguageJava())
         {
-            codeGenerator.genCode("private" + (Options.getStatic() ? " static" : "") + " final int jjStopStringLiteralDfa" +
+            codeGenerator.GenCode("private" + (Options.getStatic() ? " static" : "") + " final int jjStopStringLiteralDfa" +
                          MainParser.LexGenerator.lexStateSuffix + "(int pos, " + _params);
         }
         else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
@@ -1563,7 +1563,7 @@ public class RStringLiteral : RegularExpression
 
                     condGenerated = true;
 
-                    codeGenerator.genCode("(active" + j + " & 0x" +
+                    codeGenerator.GenCode("(active" + j + " & 0x" +
                         Long.toHexString(actives[j]) + "L) != 0L");
                 }
 
@@ -1653,7 +1653,7 @@ public class RStringLiteral : RegularExpression
 
         if (CodeGenerator.IsJavaLanguage())
         {
-            codeGenerator.genCode("private" + (Options.getStatic() ? " static" : "") + " final int jjStartNfa" +
+            codeGenerator.GenCode("private" + (Options.getStatic() ? " static" : "") + " final int jjStartNfa" +
                        MainParser.LexGenerator.lexStateSuffix + _params);
         }
         else
@@ -1674,7 +1674,7 @@ public class RStringLiteral : RegularExpression
             return;
         }
 
-        codeGenerator.genCode("   return jjMoveNfa" + MainParser.LexGenerator.lexStateSuffix + "(" +
+        codeGenerator.GenCode("   return jjMoveNfa" + MainParser.LexGenerator.lexStateSuffix + "(" +
                   "jjStopStringLiteralDfa" + MainParser.LexGenerator.lexStateSuffix + "(pos, ");
         for (i = 0; i < maxKindsReqd - 1; i++)
             codeGenerator.GenCode("active" + i + ", ");
@@ -1749,10 +1749,10 @@ public class RStringLiteral : RegularExpression
                  if (bits[j]) tokenizerData.addFinalDfaKind(j);
                }
                // Pos
-               codeGenerator.genCode(
+               codeGenerator.GenCode(
                    ", " + afterKind.substring(0, afterKind.IndexOf(", ")));
                // Kind
-               codeGenerator.genCode(", " + kindStr);
+               codeGenerator.GenCode(", " + kindStr);
 
                // State
                if (stateSetString.equals("null;")) {
@@ -1762,7 +1762,7 @@ public class RStringLiteral : RegularExpression
                       ", " + NfaState.AddStartStateSet(stateSetString));
                }
             }
-            codeGenerator.genCode("}");
+            codeGenerator.GenCode("}");
          }
          codeGenerator.GenCodeLine("};");
       }
