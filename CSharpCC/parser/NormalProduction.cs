@@ -48,7 +48,7 @@ public class NormalProduction
     /**
      * The NonTerminal nodes which refer to this production.
      */
-    private List parents = new();
+    private List<NormalProduction> parents = new();
 
     /**
      * The access modifier of this production.
@@ -75,7 +75,7 @@ public class NormalProduction
      * exception in the throws list of this production.  This list does not
      * include ParseException which is always thrown.
      */
-    private List throws_list = new ();
+    private List<string> throws_list = new ();
 
     /**
      * The RHS of this production.  Not used for JavaCodeProduction.
@@ -122,15 +122,15 @@ public class NormalProduction
         return sb;
     }
 
-    protected string getSimpleName()
+    protected string GetSimpleName()
     {
         string name = getClass().getName();
         return name.substring(name.LastIndexOf(".") + 1); // strip the package name
     }
 
-    public StringBuilder dump(int indent, HashSet<> alreadyDumped)
+    public override StringBuilder Dump(int indent, HashSet<> alreadyDumped)
     {
-        StringBuilder sb = dumpPrefix(indent).Append(System.identityHashCode(this)).Append(' ').Append(getSimpleName()).Append(' ').Append(getLhs());
+        StringBuilder sb = dumpPrefix(indent).Append(System.identityHashCode(this)).Append(' ').Append(GetSimpleName()).Append(' ').Append(getLhs());
         if (!alreadyDumped.Contains(this))
         {
             alreadyDumped.Add(this);

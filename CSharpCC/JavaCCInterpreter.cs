@@ -27,7 +27,7 @@ public class JavaCCInterpreter
                 new BufferedInputStream(
                     new FileInputStream(fp))).readFully(buf);
             grammar = new String(buf);
-            File inputFile = new File(args[^1]);
+            string inputFile = (args[^1]);
             buf = new byte[(int)inputFile.Length];
             new DataInputStream(
                 new BufferedInputStream(
@@ -52,7 +52,7 @@ public class JavaCCInterpreter
     {
         try
         {
-            JavaCCParser parser = new JavaCCParser(new StringReader(grammar));
+            var parser = new JavaCCParser(new StringReader(grammar));
             parser.javacc_input();
             Semanticize.start();
             LexGen lg = new LexGen();

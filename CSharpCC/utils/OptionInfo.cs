@@ -11,9 +11,9 @@ namespace org.javacc.utils;
  */
 public class OptionInfo : IComparable<OptionInfo>
 {
-    string _name;
-    OptionType _type;
-    object _default;
+    readonly string _name;
+    readonly OptionType _type;
+    readonly object _default;
 
     public OptionInfo(string name, OptionType type, Object default1)
     {

@@ -15,13 +15,12 @@ namespace org.javacc.parser;
  * contain only ASCII characters (with java-like unicode escape processing).
  */
 
-public
-class JavaCharStream
+public class JavaCharStream
 {
     /** Whether parser is static. */
-    public static readonly bool staticFlag = false;
+    public static readonly bool StaticFlag = false;
 
-    public static int hexval(char c) => c switch
+    public static int Hexval(char c) => c switch
     {
         '0' => 0,
         '1' => 1,
@@ -65,8 +64,8 @@ class JavaCharStream
     protected int inBuf = 0;
     protected int tabSize = 8;
 
-    protected void setTabSize(int i) { tabSize = i; }
-    protected int getTabSize(int i) { return tabSize; }
+    protected void SetTabSize(int i) => tabSize = i;
+    protected int GetTabSize(int i) => tabSize;
 
     protected void ExpandBuff(bool wrapAround)
     {
@@ -138,7 +137,7 @@ class JavaCharStream
             if (bufpos != 0)
             {
                 --bufpos;
-                backup(0);
+                Backup(0);
             }
             else
             {
@@ -174,7 +173,7 @@ class JavaCharStream
         tokenBegin = 0;
         bufpos = -1;
 
-        return readChar();
+        return ReadChar();
     }
 
     protected void AdjustBuffSize()
@@ -238,7 +237,7 @@ class JavaCharStream
     }
 
     /** Read a character. */
-    public char readChar()
+    public char ReadChar()
     {
         if (inBuf > 0)
         {
@@ -280,7 +279,7 @@ class JavaCharStream
                             break;
                         }
 
-                        backup(backSlashCnt);
+                        Backup(backSlashCnt);
                         return '\\';
                     }
                 }
@@ -288,7 +287,7 @@ class JavaCharStream
                 {
                     // We are returning one backslash so we should only backup (count-1)
                     if (backSlashCnt > 1)
-                        backup(backSlashCnt - 1);
+                        Backup(backSlashCnt - 1);
 
                     return '\\';
                 }
@@ -303,10 +302,10 @@ class JavaCharStream
                 while ((c = ReadByte()) == 'u')
                     ++column;
 
-                buffer[bufpos] = c = (char)(hexval(c) << 12 |
-                                            hexval(ReadByte()) << 8 |
-                                            hexval(ReadByte()) << 4 |
-                                            hexval(ReadByte()));
+                buffer[bufpos] = c = (char)(Hexval(c) << 12 |
+                                            Hexval(ReadByte()) << 8 |
+                                            Hexval(ReadByte()) << 4 |
+                                            Hexval(ReadByte()));
 
                 column += 4;
             }
@@ -320,7 +319,7 @@ class JavaCharStream
                 return c;
             else
             {
-                backup(backSlashCnt - 1);
+                Backup(backSlashCnt - 1);
                 return '\\';
             }
         }
@@ -336,7 +335,7 @@ class JavaCharStream
      * @deprecated
      * @see #getEndColumn
      */
-    public int getColumn()
+    public int GetColumn()
     {
         return bufcolumn[bufpos];
     }
@@ -346,37 +345,37 @@ class JavaCharStream
      * @deprecated
      * @see #getEndLine
      */
-    public int getLine()
+    public int GetLine()
     {
         return bufline[bufpos];
     }
 
     /** Get end column. */
-    public int getEndColumn()
+    public int GetEndColumn()
     {
         return bufcolumn[bufpos];
     }
 
     /** Get end line. */
-    public int getEndLine()
+    public int GetEndLine()
     {
         return bufline[bufpos];
     }
 
     /** @return column of token start */
-    public int getBeginColumn()
+    public int GetBeginColumn()
     {
         return bufcolumn[tokenBegin];
     }
 
     /** @return line number of token start */
-    public int getBeginLine()
+    public int GetBeginLine()
     {
         return bufline[tokenBegin];
     }
 
     /** Retreat. */
-    public void backup(int amount)
+    public void Backup(int amount)
     {
 
         inBuf += amount;
@@ -449,7 +448,6 @@ class JavaCharStream
     int startcolumn, int buffersize)
         : this(encoding == null ? new StreamReader(dstream) : new StreamReader(dstream, encoding), startline, startcolumn, buffersize)
     {
-        ;
     }
 
     /** Constructor. */
@@ -457,7 +455,6 @@ class JavaCharStream
     int startcolumn, int buffersize)
         : this(new StreamReader(dstream), startline, startcolumn, 4096)
     {
-        ;
     }
 
     /** Constructor. */
@@ -465,7 +462,6 @@ class JavaCharStream
                           int startcolumn)
         : this(dstream, encoding, startline, startcolumn, 4096)
     {
-        ;
     }
 
     /** Constructor. */
@@ -473,21 +469,18 @@ class JavaCharStream
                           int startcolumn)
         : this(dstream, startline, startcolumn, 4096)
     {
-        ;
     }
 
     /** Constructor. */
     public JavaCharStream(Stream dstream, Encoding encoding)
         : this(dstream, encoding, 1, 1, 4096)
     {
-        ;
     }
 
     /** Constructor. */
     public JavaCharStream(Stream dstream)
         : this(dstream, 1, 1, 4096)
     {
-        ;
     }
 
     /** Reinitialise. */
@@ -528,7 +521,7 @@ class JavaCharStream
     }
 
     /** @return token image as String */
-    public String GetImage()
+    public string GetImage()
     {
         if (bufpos >= tokenBegin)
             return new String(buffer, tokenBegin, bufpos - tokenBegin + 1);
@@ -566,7 +559,7 @@ class JavaCharStream
     /**
      * Method to adjust line and column numbers for the start of a token.
      */
-    public void adjustBeginLineColumn(int newLine, int newCol)
+    public void AdjustBeginLineColumn(int newLine, int newCol)
     {
         int start = tokenBegin;
         int len;

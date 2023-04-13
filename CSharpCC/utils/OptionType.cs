@@ -1,6 +1,5 @@
 namespace org.javacc.utils;
 
-
 /**
  *
  *

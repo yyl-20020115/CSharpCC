@@ -2154,7 +2154,7 @@ public class JavaCCParser : JavaCCParserInternals
             case 139:
             case 140:
             case 141:
-            case 142:
+            case 142: 
             case 143:
             case 144:
             case 150:

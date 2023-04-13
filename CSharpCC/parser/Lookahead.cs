@@ -64,7 +64,7 @@ public class Lookahead : Expansion
      * is found.  Usually, this is the same as the expansion to be
      * parsed.
      */
-    private Expansion la_expansion;
+    private Expansion laExpansion;
 
     /**
      * Is set to true if this is an explicit lookahead specification.
@@ -77,7 +77,7 @@ public class Lookahead : Expansion
         if (alreadyDumped.Contains(this))
             return sb;
         alreadyDumped.Add(this);
-        sb.Append(eol).Append(la_expansion.Dump(indent + 1, alreadyDumped));
+        sb.Append(eol).Append(laExpansion.Dump(indent + 1, alreadyDumped));
         return sb;
     }
 
@@ -110,7 +110,7 @@ public class Lookahead : Expansion
      */
     public void SetLaExpansion(Expansion la_expansion)
     {
-        this.la_expansion = la_expansion;
+        this.laExpansion = la_expansion;
     }
 
     /**
@@ -118,7 +118,7 @@ public class Lookahead : Expansion
      */
     public Expansion GetLaExpansion()
     {
-        return la_expansion;
+        return laExpansion;
     }
 
     /**

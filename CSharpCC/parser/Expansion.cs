@@ -106,7 +106,7 @@ public class Expansion
     public override string ToString() => $"[{GetLine()},{GetColumn()} {this.GetHashCode()} {GetSimpleName()}]";
 
     protected static readonly string eol = Environment.NewLine;// System.getProperty("line.separator", "\n");
-    protected StringBuilder DumpPrefix(int indent)
+    protected static StringBuilder DumpPrefix(int indent)
     {
         var sb = new StringBuilder(128);
         for (int i = 0; i < indent; i++)

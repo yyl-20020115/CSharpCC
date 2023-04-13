@@ -43,7 +43,7 @@ public class MainParser
 {
     protected MainParser() { }
 
-    public static LexGen lg;
+    public static LexGen LexGenerator;
     static void HelpMessage()
     {
         Console.WriteLine("Usage:");
@@ -186,7 +186,7 @@ public class MainParser
     public static int mainProgram(string[] args)
     {
 
-        if (args.Length == 1 && args[args.Length - 1].Equals("-version",StringComparison.InvariantCultureIgnoreCase))
+        if (args.Length == 1 && args[args.Length - 1].Equals("-version", StringComparison.InvariantCultureIgnoreCase))
         {
             Console.WriteLine(Version.VersionNumber);
             return 0;
@@ -240,7 +240,7 @@ public class MainParser
                 Console.WriteLine(args[^1] + " is a directory. Please use a valid file name.");
                 return 1;
             }
-            parser = new JavaCCParser(new BufferedReader(new InputStreamReader(new FileInputStream(args[args.Length - 1]), Options.getGrammarEncoding())));
+            parser = new JavaCCParser(new StreamReader(args[^1], Encoding.GetEncoding(Options.getGrammarEncoding())));
         }
         catch (SecurityException se)
         {
@@ -274,11 +274,11 @@ public class MainParser
 
             if (isJavaOutput)
             {
-                lg = new LexGen();
+                LexGenerator = new LexGen();
             }
             else if (isCPPOutput)
             {
-                lg = new LexGenCPP();
+                LexGenerator = new LexGenCPP();
             }
             else
             {
@@ -304,7 +304,7 @@ public class MainParser
             {
                 if (isBuildParser)
                 {
-                    new ParseGen().start(isJavaModern);
+                    new ParseGen().Start(isJavaModern);
                 }
 
                 // Must always create the lexer object even if not building a parser.

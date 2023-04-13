@@ -56,7 +56,7 @@ public class Semanticize : JavaCCGlobals
 
         if (JavaCCErrors.GetErrorCount() != 0) throw new MetaParseException();
 
-        if (Options.getLookahead() > 1 && !Options.getForceLaCheck() && Options.getSanityCheck())
+        if (Options.getLookahead() > 1 && !Options.GetForceLaCheck() && Options.getSanityCheck())
         {
             JavaCCErrors.Warning("Lookahead adequacy checking not being performed since option LOOKAHEAD " +
                     "is more than 1.  Set option FORCE_LA_CHECK to true to force checking.");
@@ -1043,33 +1043,33 @@ public class Semanticize : JavaCCGlobals
         {
             if (e is Choice)
             {
-                if (Options.getLookahead() == 1 || Options.getForceLaCheck())
+                if (Options.getLookahead() == 1 || Options.GetForceLaCheck())
                 {
-                    LookaheadCalc.choiceCalc((Choice)e);
+                    LookaheadCalc.ChoiceCalc((Choice)e);
                 }
             }
             else if (e is OneOrMore)
             {
                 OneOrMore exp = (OneOrMore)e;
-                if (Options.getForceLaCheck() || (implicitLA(exp.expansion) && Options.getLookahead() == 1))
+                if (Options.GetForceLaCheck() || (implicitLA(exp.expansion) && Options.getLookahead() == 1))
                 {
-                    LookaheadCalc.ebnfCalc(exp, exp.expansion);
+                    LookaheadCalc.EbnfCalc(exp, exp.expansion);
                 }
             }
             else if (e is ZeroOrMore)
             {
                 ZeroOrMore exp = (ZeroOrMore)e;
-                if (Options.getForceLaCheck() || (implicitLA(exp.expansion) && Options.getLookahead() == 1))
+                if (Options.GetForceLaCheck() || (implicitLA(exp.expansion) && Options.getLookahead() == 1))
                 {
-                    LookaheadCalc.ebnfCalc(exp, exp.expansion);
+                    LookaheadCalc.EbnfCalc(exp, exp.expansion);
                 }
             }
             else if (e is ZeroOrOne)
             {
                 ZeroOrOne exp = (ZeroOrOne)e;
-                if (Options.getForceLaCheck() || (implicitLA(exp.expansion) && Options.getLookahead() == 1))
+                if (Options.GetForceLaCheck() || (implicitLA(exp.expansion) && Options.getLookahead() == 1))
                 {
-                    LookaheadCalc.ebnfCalc(exp, exp.expansion);
+                    LookaheadCalc.EbnfCalc(exp, exp.expansion);
                 }
             }
         }

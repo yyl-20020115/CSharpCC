@@ -88,7 +88,7 @@ public class OutputFile
         this.compatibleVersion = compatibleVersion;
         this.options = options;
 
-        if (file.exists())
+        if (File.Exists(file))
         {
             // Generate the checksum of the file, and compare with any value
             // stored

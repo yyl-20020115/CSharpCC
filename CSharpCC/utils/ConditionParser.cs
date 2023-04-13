@@ -56,12 +56,13 @@ public class ConditionParser : ConditionParserConstants
                     break;
                 default:
                     jj_la1[0] = jj_gen;
-                    break label_1;
+                    goto exit_1;// label_1;
             }
             jj_consume_token(SC_OR);
             value = ConditionalAndExpression();
             if (value) { if (true) return true; }
         }
+    exit_1:
         { if (true) return false; }
         throw new Error("Missing return statement in function");
     }
@@ -81,12 +82,13 @@ public class ConditionParser : ConditionParserConstants
                     break;
                 default:
                     jj_la1[1] = jj_gen;
-                    break label_2;
+                    goto exit_2;// label_2;
             }
             jj_consume_token(SC_AND);
             value = UnaryExpressionNotPlusMinus();
             if (!value) { if (true) return false; }
         }
+    exit_2:
         { if (true) return true; }
         throw new Error("Missing return statement in function");
     }
@@ -191,16 +193,17 @@ public class ConditionParser : ConditionParserConstants
         jj_consume_token(IDENTIFIER);
         name = getToken(0).image.Trim();
 
-        Object obj = options.get(name);
-
-        if (obj is bool b)
+        if (options.TryGetValue(name, out var obj) && obj is bool b)
         {
             { if (true) return b; }
         }
         else if (obj is String s2)
         {
             String s = s2.Trim();
-            { if (true) return s.Length > 0 && !s.equalsIgnoreCase("false") && !s.equalsIgnoreCase("no"); }
+            {
+                if (true) return s.Length > 0 && !s.Equals("false", StringComparison.InvariantCultureIgnoreCase)
+                        && !s.Equals("no", StringComparison.InvariantCultureIgnoreCase);
+            }
         }
 
         { if (true) return false; }
@@ -236,7 +239,7 @@ public class ConditionParser : ConditionParserConstants
     /** Constructor with InputStream and supplied encoding */
     public ConditionParser(Stream stream, Encoding encoding)
     {
-        try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (Exception e) { throw new RuntimeException(e); }
+        try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (Exception e) { throw new RuntimeException(e.Message, e); }
         token_source = new ConditionParserTokenManager(jj_input_stream);
         token = new Token();
         jj_ntk = -1;
@@ -252,7 +255,7 @@ public class ConditionParser : ConditionParserConstants
     /** Reinitialise. */
     public void ReInit(Stream stream, Encoding encoding)
     {
-        try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (Exception e) { throw new RuntimeException(e); }
+        try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (Exception e) { throw new RuntimeException(e.Message, e); }
         token_source.ReInit(jj_input_stream);
         token = new Token();
         jj_ntk = -1;

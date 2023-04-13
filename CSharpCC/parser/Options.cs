@@ -831,7 +831,7 @@ public class Options
      *
      * @return The requested force lookahead value.
      */
-    public static bool getForceLaCheck()
+    public static bool GetForceLaCheck()
     {
         return booleanValue(USEROPTION__FORCE_LA_CHECK);
     }

@@ -36,7 +36,7 @@ namespace org.javacc.parser;
  */
 public class ParseGen : CodeGenerator {
 
-	public void start(bool isJavaModernMode) {
+	public void Start(bool isJavaModernMode) {
 
 		Token t = null;
 

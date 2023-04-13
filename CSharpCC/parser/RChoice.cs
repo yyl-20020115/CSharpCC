@@ -146,7 +146,7 @@ public class RChoice:RegularExpression {
         if (!(curRE = (RegularExpression)getChoices()[i]).private_rexp &&
             //curRE is RJustName &&
             curRE.ordinal > 0 && curRE.ordinal < ordinal &&
-            MainParser.lg.lexStates[curRE.ordinal] == MainParser.lg.lexStates[ordinal])
+            MainParser.LexGenerator.lexStates[curRE.ordinal] == MainParser.LexGenerator.lexStates[ordinal])
         {
            if (label != null)
               JavaCCErrors.Warning(this, "Regular Expression choice : " +

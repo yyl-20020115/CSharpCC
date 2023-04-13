@@ -25,6 +25,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+using System.Collections.Generic;
+
 namespace org.javacc.parser;
 
 
@@ -173,7 +175,7 @@ public static class LookaheadWalk
         }
     }
 
-    public static List<MatchInfo> genFollowSet(List<MatchInfo> partialMatches, Expansion exp, long generation)
+    public static List<MatchInfo> GenFollowSet(List<MatchInfo> partialMatches, Expansion exp, long generation)
     {
         if (exp.myGeneration == generation)
         {
@@ -196,7 +198,7 @@ public static class LookaheadWalk
             //    Console.WriteLine("1; gen: " + generation + "; exp: " + exp);
             for (int i = 0; i < parents.Count; i++)
             {
-                List<MatchInfo> v = genFollowSet(partialMatches, (Expansion)parents[i], generation);
+                List<MatchInfo> v = GenFollowSet(partialMatches, (Expansion)parents[i], generation);
                 listAppend(retval, v);
             }
             return retval;
@@ -218,12 +220,12 @@ public static class LookaheadWalk
             if (v1.Count != 0)
             {
                 //Console.WriteLine("2; gen: " + generation + "; exp: " + exp);
-                v1 = genFollowSet(v1, seq, generation);
+                v1 = GenFollowSet(v1, seq, generation);
             }
             if (v2.Count != 0)
             {
                 //Console.WriteLine("3; gen: " + generation + "; exp: " + exp);
-                v2 = genFollowSet(v2, seq, Expansion.nextGenerationIndex++);
+                v2 = GenFollowSet(v2, seq, Expansion.nextGenerationIndex++);
             }
             listAppend(v2, v1);
             return v2;
@@ -247,12 +249,12 @@ public static class LookaheadWalk
             if (v1.Count != 0)
             {
                 //		Console.WriteLine("4; gen: " + generation + "; exp: " + exp);
-                v1 = genFollowSet(v1, (Expansion)exp.parent, generation);
+                v1 = GenFollowSet(v1, (Expansion)exp.parent, generation);
             }
             if (v2.Count != 0)
             {
                 //		Console.WriteLine("5; gen: " + generation + "; exp: " + exp);
-                v2 = genFollowSet(v2, (Expansion)exp.parent, Expansion.nextGenerationIndex++);
+                v2 = GenFollowSet(v2, (Expansion)exp.parent, Expansion.nextGenerationIndex++);
             }
             listAppend(v2, v1);
             return v2;
@@ -260,7 +262,7 @@ public static class LookaheadWalk
         else
         {
             //		Console.WriteLine("6; gen: " + generation + "; exp: " + exp);
-            return genFollowSet(partialMatches, (Expansion)exp.parent, generation);
+            return GenFollowSet(partialMatches, (Expansion)exp.parent, generation);
         }
     }
 

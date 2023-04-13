@@ -38,25 +38,25 @@ public class ParseGenCPP : ParseGen
             string include = (String)o;
             if (include.Length > 0)
             {
-                if (include.charAt(0) == '<')
+                if (include[0] == '<')
                     GenCodeLine("#include " + include);
                 else
                     GenCodeLine("#include \"" + include + "\"");
             }
         }
 
-        genCodeLine("#include \"" + cu_name + "Constants.h\"");
+        GenCodeLine("#include \"" + cu_name + "Constants.h\"");
 
         if (jjtreeGenerated)
         {
-            genCodeLine("#include \"JJT" + cu_name + "State.h\"");
+            GenCodeLine("#include \"JJT" + cu_name + "State.h\"");
         }
 
         GenCodeLine("#include \"ErrorHandler.h\"");
 
         if (jjtreeGenerated)
         {
-            genCodeLine("#include \"" + cu_name + "Tree.h\"");
+            GenCodeLine("#include \"" + cu_name + "Tree.h\"");
         }
 
         if (Options.stringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0)
@@ -127,7 +127,7 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("  bool          jj_semLA;");
 
         GenCodeLine("  int           jj_gen;");
-        genCodeLine("  int           jj_la1[" + (maskindex + 1) + "];");
+        GenCodeLine("  int           jj_la1[" + (maskindex + 1) + "];");
         GenCodeLine("  ErrorHandler *errorHandler = nullptr;");
         GenCodeLine("");
         GenCodeLine("protected: ");

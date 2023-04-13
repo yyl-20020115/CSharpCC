@@ -24,7 +24,7 @@ public class OptionsTest : CSharpCCTestCase
         Assert.AreEqual(false, Options.getDebugParser());
         Assert.AreEqual(false, Options.getDebugTokenManager());
         Assert.AreEqual(true, Options.getErrorReporting());
-        Assert.AreEqual(false, Options.getForceLaCheck());
+        Assert.AreEqual(false, Options.GetForceLaCheck());
         Assert.AreEqual(false, Options.getIgnoreCase());
         Assert.AreEqual(false, Options.getJavaUnicodeEscape());
         Assert.AreEqual(true, Options.getKeepLineColumn());

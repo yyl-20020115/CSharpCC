@@ -33,9 +33,4 @@ namespace org.javacc.parser;
  */
 public class MetaParseException : ParseException
 {
-
-    /**
-	 *
-	 */
-    private const long serialVersionUID = 1L;
 }

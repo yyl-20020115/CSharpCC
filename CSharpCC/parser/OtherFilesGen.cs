@@ -163,7 +163,7 @@ public class OtherFilesGen : JavaCCGlobals
         ostr.WriteLine("");
         if (!Options.getUserTokenManager() && Options.getBuildTokenManager())
         {
-            for (int i = 0; i < MainParser.lg.lexStateName.Length; i++)
+            for (int i = 0; i < MainParser.LexGenerator.lexStateName.Length; i++)
             {
                 ostr.WriteLine("  /** Lexical state. */");
                 ostr.WriteLine("  int " + LexGen.lexStateName[i] + " = " + i + ";");

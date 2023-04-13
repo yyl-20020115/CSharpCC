@@ -119,7 +119,7 @@ public class OtherFilesGenCPP : JavaCCGlobals
 
         if (!Options.getUserTokenManager() && Options.getBuildTokenManager())
         {
-            for (int i = 0; i < MainParser.lg.lexStateName.Length; i++)
+            for (int i = 0; i < MainParser.LexGenerator.lexStateName.Length; i++)
             {
                 ostr.WriteLine("  /** Lexical state. */");
                 ostr.WriteLine(constPrefix + "  int " + LexGen.lexStateName[i] + " = " + i + ";");
@@ -180,12 +180,12 @@ public class OtherFilesGenCPP : JavaCCGlobals
     // Used by the CPP code generatror
     public static void printCharArray(TextWriter ostr, string s)
     {
-        ostr.print("{");
+        ostr.Write("{");
         for (int i = 0; i < s.Length; i++)
         {
-            ostr.print("0x" + int.toHexString((int)s[i]) + ", ");
+            ostr.Write("0x" + int.toHexString((int)s[i]) + ", ");
         }
-        ostr.print("0}");
+        ostr.Write("0}");
     }
 
     static private TextWriter ostr;

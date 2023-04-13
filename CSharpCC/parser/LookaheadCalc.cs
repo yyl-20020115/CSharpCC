@@ -28,238 +28,300 @@
 namespace org.javacc.parser;
 
 
-public class LookaheadCalc:JavaCCGlobals {
+public class LookaheadCalc : JavaCCGlobals
+{
 
-  static MatchInfo overlap(List v1, List v2) {
-    MatchInfo m1, m2, m3;
-    int size;
-    bool diff;
-    for (int i = 0; i < v1.Count; i++) {
-      m1 = (MatchInfo)v1[i];
-      for (int j = 0; j < v2.Count; j++) {
-        m2 = (MatchInfo)v2[j];
-        size = m1.firstFreeLoc; m3 = m1;
-        if (size > m2.firstFreeLoc) {
-          size = m2.firstFreeLoc; m3 = m2;
+    static MatchInfo Overlap(List<MatchInfo> v1, List<MatchInfo> v2)
+    {
+        MatchInfo m1, m2, m3;
+        int size;
+        bool diff;
+        for (int i = 0; i < v1.Count; i++)
+        {
+            m1 = v1[i];
+            for (int j = 0; j < v2.Count; j++)
+            {
+                m2 = v2[j];
+                size = m1.firstFreeLoc; m3 = m1;
+                if (size > m2.firstFreeLoc)
+                {
+                    size = m2.firstFreeLoc; m3 = m2;
+                }
+                if (size == 0) return null;
+                // we wish to ignore empty expansions and the JAVACODE stuff here.
+                diff = false;
+                for (int k = 0; k < size; k++)
+                {
+                    if (m1.match[k] != m2.match[k])
+                    {
+                        diff = true;
+                        break;
+                    }
+                }
+                if (!diff) return m3;
+            }
         }
-        if (size == 0) return null;
-        // we wish to ignore empty expansions and the JAVACODE stuff here.
-        diff = false;
-        for (int k = 0; k < size; k++) {
-          if (m1.match[k] != m2.match[k]) {
-            diff = true;
-            break;
-          }
+        return null;
+    }
+
+    static bool JavaCodeCheck(List<MatchInfo> v)
+    {
+        for (int i = 0; i < v.Count; i++)
+        {
+            if (v[i].firstFreeLoc == 0)
+            {
+                return true;
+            }
         }
-        if (!diff) return m3;
-      }
+        return false;
     }
-    return null;
-  }
 
-  static bool javaCodeCheck(List v) {
-    for (int i = 0; i < v.Count; i++) {
-      if (((MatchInfo)v[i]).firstFreeLoc == 0) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  static string image(MatchInfo m) {
-    string ret = "";
-    for (int i = 0; i < m.firstFreeLoc; i++) {
-      if (m.match[i] == 0) {
-        ret += " <EOF>";
-      } else {
-        RegularExpression re = (RegularExpression)rexps_of_tokens.get((m.match[i]));
-        if (re is RStringLiteral) {
-          ret += " \"" + add_escapes(((RStringLiteral)re).image) + "\"";
-        } else if (re.label != null && !re.label==("")) {
-          ret += " <" + re.label + ">";
-        } else {
-          ret += " <token of kind " + i + ">";
+    static string Image(MatchInfo m)
+    {
+        string ret = "";
+        for (int i = 0; i < m.firstFreeLoc; i++)
+        {
+            if (m.match[i] == 0)
+            {
+                ret += " <EOF>";
+            }
+            else
+            {
+                if (rexps_of_tokens.TryGetValue(m.match[i], out var re) 
+                    && re is RStringLiteral rs)
+                {
+                    ret += " \"" + add_escapes(rs.image) + "\"";
+                }
+                else if (!string.IsNullOrEmpty(re?.label))
+                {
+                    ret += " <" + re.label + ">";
+                }
+                else
+                {
+                    ret += " <token of kind " + i + ">";
+                }
+            }
         }
-      }
-    }
-    if (m.firstFreeLoc == 0) {
-      return "";
-    } else {
-      return ret[1..];
-    }
-  }
-
-  public static void choiceCalc(Choice ch) {
-    int first = firstChoice(ch);
-    // dbl[i] and dbr[i] are lists of size limited matches for choice i
-    // of ch.  dbl ignores matches with semantic lookaheads (when force_la_check
-    // is false), while dbr ignores semantic lookahead.
-    List[] dbl = new List[ch.GetChoices().Count];
-    List[] dbr = new List[ch.GetChoices().Count];
-    int[] minLA = new int[ch.GetChoices().Count-1];
-    MatchInfo[] overlapInfo = new MatchInfo[ch.GetChoices().Count-1];
-    int[] other = new int[ch.GetChoices().Count-1];
-    MatchInfo m;
-    List<MatchInfo> v;
-    bool overlapDetected;
-    for (int la = 1; la <= Options.getChoiceAmbiguityCheck(); la++) {
-      MatchInfo.laLimit = la;
-      LookaheadWalk.considerSemanticLA = !Options.getForceLaCheck();
-      for (int i = first; i < ch.GetChoices().Count-1; i++) {
-        LookaheadWalk.sizeLimitedMatches = new ();
-        m = new MatchInfo();
-        m.firstFreeLoc = 0;
-        v = new ();
-        v.Add(m);
-        LookaheadWalk.genFirstSet(v, (Expansion)ch.GetChoices()[i]);
-        dbl[i] = LookaheadWalk.sizeLimitedMatches;
-      }
-      LookaheadWalk.considerSemanticLA = false;
-      for (int i = first+1; i < ch.GetChoices().Count; i++) {
-        LookaheadWalk.sizeLimitedMatches = new ArrayList<MatchInfo>();
-        m = new MatchInfo();
-        m.firstFreeLoc = 0;
-        v = new ArrayList<MatchInfo>();
-        v.Add(m);
-        LookaheadWalk.genFirstSet(v, (Expansion)ch.GetChoices()[i]);
-        dbr[i] = LookaheadWalk.sizeLimitedMatches;
-      }
-      if (la == 1) {
-        for (int i = first; i < ch.GetChoices().Count-1; i++) {
-          Expansion exp = (Expansion)ch.GetChoices()[i];
-          if (Semanticize.emptyExpansionExists(exp)) {
-            JavaCCErrors.Warning(exp, "This choice can expand to the empty token sequence " +
-                    "and will therefore always be taken in favor of the choices appearing later.");
-            break;
-          } else if (javaCodeCheck(dbl[i])) {
-            JavaCCErrors.Warning(exp, "JAVACODE non-terminal will force this choice to be taken " +
-                    "in favor of the choices appearing later.");
-            break;
-          }
+        if (m.firstFreeLoc == 0)
+        {
+            return "";
         }
-      }
-      overlapDetected = false;
-      for (int i = first; i < ch.GetChoices().Count-1; i++) {
-        for (int j = i+1; j < ch.GetChoices().Count; j++) {
-          if ((m = overlap(dbl[i], dbr[j])) != null) {
-            minLA[i] = la+1;
-            overlapInfo[i] = m;
-            other[i] = j;
-            overlapDetected = true;
-            break;
-          }
+        else
+        {
+            return ret[1..];
         }
-      }
-      if (!overlapDetected) {
-        break;
-      }
     }
-    for (int i = first; i < ch.GetChoices().Count-1; i++) {
-      if (explicitLA((Expansion)ch.GetChoices()[i]) && !Options.getForceLaCheck()) {
-        continue;
-      }
-      if (minLA[i] > Options.getChoiceAmbiguityCheck()) {
-        JavaCCErrors.Warning("Choice conflict involving two expansions at");
-        Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).GetLine());
-        Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).GetColumn());
-        Console.Error.Write(" and line " + ((Expansion)ch.GetChoices().get(other[i])).GetLine());
-        Console.Error.Write(", column " + ((Expansion)ch.GetChoices().get(other[i])).GetColumn());
-        Console.Error.WriteLine(" respectively.");
-        Console.Error.WriteLine("         A common prefix is: " + image(overlapInfo[i]));
-        Console.Error.WriteLine("         Consider using a lookahead of " + minLA[i] + " or more for earlier expansion.");
-      } else if (minLA[i] > 1) {
-        JavaCCErrors.Warning("Choice conflict involving two expansions at");
-        Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).GetLine());
-        Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).GetColumn());
-        Console.Error.Write(" and line " + ((Expansion)ch.GetChoices().get(other[i])).GetLine());
-        Console.Error.Write(", column " + ((Expansion)ch.GetChoices().get(other[i])).GetColumn());
-        Console.Error.WriteLine(" respectively.");
-        Console.Error.WriteLine("         A common prefix is: " + image(overlapInfo[i]));
-        Console.Error.WriteLine("         Consider using a lookahead of " + minLA[i] + " for earlier expansion.");
-      }
-    }
-  }
 
-  static bool explicitLA(Expansion exp) {
-    if (!(exp is Sequence)) {
-      return false;
-    }
-    Sequence seq = (Sequence)exp;
-    Object obj = seq.units[0];
-    if (!(obj is Lookahead)) {
-      return false;
-    }
-    Lookahead la = (Lookahead)obj;
-    return la.IsExplicit();
-  }
-
-  static int firstChoice(Choice ch) {
-    if (Options.getForceLaCheck()) {
-      return 0;
-    }
-    for (int i = 0; i < ch.GetChoices().Count; i++) {
-      if (!explicitLA((Expansion)ch.GetChoices()[i])) {
-        return i;
-      }
-    }
-    return ch.GetChoices().Count;
-  }
-
-  private static string image(Expansion exp) {
-    if (exp is OneOrMore) {
-      return "(...)+";
-    } else if (exp is ZeroOrMore) {
-      return "(...)*";
-    } else /* if (exp is ZeroOrOne) */ {
-      return "[...]";
-    }
-  }
-
-  public static void ebnfCalc(Expansion exp, Expansion nested) {
-    // exp is one of OneOrMore, ZeroOrMore, ZeroOrOne
-    MatchInfo m, m1 = null;
-    List<MatchInfo> v;
-    List<MatchInfo> first, follow;
-    int la;
-    for (la = 1; la <= Options.getOtherAmbiguityCheck(); la++) {
-      MatchInfo.laLimit = la;
-      LookaheadWalk.sizeLimitedMatches = new ArrayList<MatchInfo>();
-      m = new MatchInfo();
-      m.firstFreeLoc = 0;
-      v = new ArrayList<MatchInfo>();
-      v.Add(m);
-      LookaheadWalk.considerSemanticLA = !Options.getForceLaCheck();
-      LookaheadWalk.genFirstSet(v, nested);
-      first = LookaheadWalk.sizeLimitedMatches;
-      LookaheadWalk.sizeLimitedMatches = new ArrayList<MatchInfo>();
-      LookaheadWalk.considerSemanticLA = false;
-      LookaheadWalk.genFollowSet(v, exp, Expansion.nextGenerationIndex++);
-      follow = LookaheadWalk.sizeLimitedMatches;
-      if (la == 1) {
-        if (javaCodeCheck(first)) {
-          JavaCCErrors.Warning(nested, "JAVACODE non-terminal within " + image(exp) +
-                  " construct will force this construct to be entered in favor of " +
-                  "expansions occurring after construct.");
+    public static void ChoiceCalc(Choice ch)
+    {
+        int first = FirstChoice(ch);
+        // dbl[i] and dbr[i] are lists of size limited matches for choice i
+        // of ch.  dbl ignores matches with semantic lookaheads (when force_la_check
+        // is false), while dbr ignores semantic lookahead.
+        List<MatchInfo>[] dbl = new List<MatchInfo>[ch.GetChoices().Count];
+        List<MatchInfo>[] dbr = new List<MatchInfo>[ch.GetChoices().Count];
+        int[] minLA = new int[ch.GetChoices().Count - 1];
+        MatchInfo[] overlapInfo = new MatchInfo[ch.GetChoices().Count - 1];
+        int[] other = new int[ch.GetChoices().Count - 1];
+        MatchInfo m;
+        List<MatchInfo> v;
+        bool overlapDetected;
+        for (int la = 1; la <= Options.getChoiceAmbiguityCheck(); la++)
+        {
+            MatchInfo.laLimit = la;
+            LookaheadWalk.considerSemanticLA = !Options.GetForceLaCheck();
+            for (int i = first; i < ch.GetChoices().Count - 1; i++)
+            {
+                LookaheadWalk.sizeLimitedMatches = new();
+                m = new MatchInfo();
+                m.firstFreeLoc = 0;
+                v = new();
+                v.Add(m);
+                LookaheadWalk.genFirstSet(v, (Expansion)ch.GetChoices()[i]);
+                dbl[i] = LookaheadWalk.sizeLimitedMatches;
+            }
+            LookaheadWalk.considerSemanticLA = false;
+            for (int i = first + 1; i < ch.GetChoices().Count; i++)
+            {
+                LookaheadWalk.sizeLimitedMatches = new();
+                m = new MatchInfo();
+                m.firstFreeLoc = 0;
+                v = new();
+                v.Add(m);
+                LookaheadWalk.genFirstSet(v, (Expansion)ch.GetChoices()[i]);
+                dbr[i] = LookaheadWalk.sizeLimitedMatches;
+            }
+            if (la == 1)
+            {
+                for (int i = first; i < ch.GetChoices().Count - 1; i++)
+                {
+                    Expansion exp = (Expansion)ch.GetChoices()[i];
+                    if (Semanticize.emptyExpansionExists(exp))
+                    {
+                        JavaCCErrors.Warning(exp, "This choice can expand to the empty token sequence " +
+                                "and will therefore always be taken in favor of the choices appearing later.");
+                        break;
+                    }
+                    else if (JavaCodeCheck(dbl[i]))
+                    {
+                        JavaCCErrors.Warning(exp, "JAVACODE non-terminal will force this choice to be taken " +
+                                "in favor of the choices appearing later.");
+                        break;
+                    }
+                }
+            }
+            overlapDetected = false;
+            for (int i = first; i < ch.GetChoices().Count - 1; i++)
+            {
+                for (int j = i + 1; j < ch.GetChoices().Count; j++)
+                {
+                    if ((m = Overlap(dbl[i], dbr[j])) != null)
+                    {
+                        minLA[i] = la + 1;
+                        overlapInfo[i] = m;
+                        other[i] = j;
+                        overlapDetected = true;
+                        break;
+                    }
+                }
+            }
+            if (!overlapDetected)
+            {
+                break;
+            }
         }
-      }
-      if ((m = overlap(first, follow)) == null) {
-        break;
-      }
-      m1 = m;
+        for (int i = first; i < ch.GetChoices().Count - 1; i++)
+        {
+            if (ExplicitLA((Expansion)ch.GetChoices()[i]) && !Options.GetForceLaCheck())
+            {
+                continue;
+            }
+            if (minLA[i] > Options.getChoiceAmbiguityCheck())
+            {
+                JavaCCErrors.Warning("Choice conflict involving two expansions at");
+                Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).GetLine());
+                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).GetColumn());
+                Console.Error.Write(" and line " + ((Expansion)ch.GetChoices()[(other[i])]).GetLine());
+                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[(other[i])]).GetColumn());
+                Console.Error.WriteLine(" respectively.");
+                Console.Error.WriteLine("         A common prefix is: " + Image(overlapInfo[i]));
+                Console.Error.WriteLine("         Consider using a lookahead of " + minLA[i] + " or more for earlier expansion.");
+            }
+            else if (minLA[i] > 1)
+            {
+                JavaCCErrors.Warning("Choice conflict involving two expansions at");
+                Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).GetLine());
+                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).GetColumn());
+                Console.Error.Write(" and line " + ((Expansion)ch.GetChoices()[(other[i])]).GetLine());
+                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[(other[i])]).GetColumn());
+                Console.Error.WriteLine(" respectively.");
+                Console.Error.WriteLine("         A common prefix is: " + Image(overlapInfo[i]));
+                Console.Error.WriteLine("         Consider using a lookahead of " + minLA[i] + " for earlier expansion.");
+            }
+        }
     }
-    if (la > Options.getOtherAmbiguityCheck()) {
-      JavaCCErrors.Warning("Choice conflict in " + image(exp) + " construct " +
-              "at line " + exp.GetLine() + ", column " + exp.GetColumn() + ".");
-      Console.Error.WriteLine("         Expansion nested within construct and expansion following construct");
-      Console.Error.WriteLine("         have common prefixes, one of which is: " + image(m1));
-      Console.Error.WriteLine("         Consider using a lookahead of " + la + " or more for nested expansion.");
-    } else if (la > 1) {
-      JavaCCErrors.Warning("Choice conflict in " + image(exp) + " construct " +
-              "at line " + exp.GetLine() + ", column " + exp.GetColumn() + ".");
-      Console.Error.WriteLine("         Expansion nested within construct and expansion following construct");
-      Console.Error.WriteLine("         have common prefixes, one of which is: " + image(m1));
-      Console.Error.WriteLine("         Consider using a lookahead of " + la + " for nested expansion.");
+
+    static bool ExplicitLA(Expansion exp)
+    {
+        if (exp is not Sequence)
+        {
+            return false;
+        }
+        Sequence seq = (Sequence)exp;
+        Object obj = seq.units[0];
+        if (obj is not Lookahead)
+        {
+            return false;
+        }
+        Lookahead la = (Lookahead)obj;
+        return la.IsExplicit();
     }
-  }
+
+    static int FirstChoice(Choice ch)
+    {
+        if (!Options.GetForceLaCheck())
+        {
+            for (int i = 0; i < ch.GetChoices().Count; i++)
+            {
+                if (!ExplicitLA((Expansion)ch.GetChoices()[i]))
+                {
+                    return i;
+                }
+            }
+            return ch.GetChoices().Count;
+        }
+        return 0;
+    }
+
+    private static string Image(Expansion exp)
+    {
+        if (exp is OneOrMore)
+        {
+            return "(...)+";
+        }
+        else if (exp is ZeroOrMore)
+        {
+            return "(...)*";
+        }
+        else /* if (exp is ZeroOrOne) */
+        {
+            return "[...]";
+        }
+    }
+
+    public static void EbnfCalc(Expansion exp, Expansion nested)
+    {
+        // exp is one of OneOrMore, ZeroOrMore, ZeroOrOne
+        MatchInfo m, m1 = null;
+        List<MatchInfo> v;
+        List<MatchInfo> first, follow;
+        int la;
+        for (la = 1; la <= Options.getOtherAmbiguityCheck(); la++)
+        {
+            MatchInfo.laLimit = la;
+            LookaheadWalk.sizeLimitedMatches = new();
+            m = new MatchInfo();
+            m.firstFreeLoc = 0;
+            v = new();
+            v.Add(m);
+            LookaheadWalk.considerSemanticLA = !Options.GetForceLaCheck();
+            LookaheadWalk.genFirstSet(v, nested);
+            first = LookaheadWalk.sizeLimitedMatches;
+            LookaheadWalk.sizeLimitedMatches = new();
+            LookaheadWalk.considerSemanticLA = false;
+            LookaheadWalk.GenFollowSet(v, exp, Expansion.nextGenerationIndex++);
+            follow = LookaheadWalk.sizeLimitedMatches;
+            if (la == 1)
+            {
+                if (JavaCodeCheck(first))
+                {
+                    JavaCCErrors.Warning(nested, "JAVACODE non-terminal within " + Image(exp) +
+                            " construct will force this construct to be entered in favor of " +
+                            "expansions occurring after construct.");
+                }
+            }
+            if ((m = Overlap(first, follow)) == null)
+            {
+                break;
+            }
+            m1 = m;
+        }
+        if (la > Options.getOtherAmbiguityCheck())
+        {
+            JavaCCErrors.Warning("Choice conflict in " + Image(exp) + " construct " +
+                    "at line " + exp.GetLine() + ", column " + exp.GetColumn() + ".");
+            Console.Error.WriteLine("         Expansion nested within construct and expansion following construct");
+            Console.Error.WriteLine("         have common prefixes, one of which is: " + Image(m1));
+            Console.Error.WriteLine("         Consider using a lookahead of " + la + " or more for nested expansion.");
+        }
+        else if (la > 1)
+        {
+            JavaCCErrors.Warning("Choice conflict in " + Image(exp) + " construct " +
+                    "at line " + exp.GetLine() + ", column " + exp.GetColumn() + ".");
+            Console.Error.WriteLine("         Expansion nested within construct and expansion following construct");
+            Console.Error.WriteLine("         have common prefixes, one of which is: " + Image(m1));
+            Console.Error.WriteLine("         Consider using a lookahead of " + la + " for nested expansion.");
+        }
+    }
 
 }

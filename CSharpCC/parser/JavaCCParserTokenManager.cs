@@ -18,7 +18,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     int size = 10;
 
     void saveBeginLineCol(int l, int c)
-    {
+    { 
         if (depth == size)
         {
             size += 5;
@@ -37,7 +37,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     void restoreBeginLineCol()
     {
         depth--;
-        input_stream.adjustBeginLineColumn(beginLine[depth], beginCol[depth]);
+        input_stream.AdjustBeginLineColumn(beginLine[depth], beginCol[depth]);
     }
 
     /** Debug output. */
@@ -352,7 +352,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     }
     private int jjMoveStringLiteralDfa1_0(long active0, long active1, long active2)
     {
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(0, active0, active1, active2);
@@ -499,7 +499,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(0, old0, old1, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(1, active0, active1, active2);
@@ -604,7 +604,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(1, old0, old1, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(2, active0, active1, active2);
@@ -703,7 +703,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(2, old0, old1, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(3, active0, active1, active2);
@@ -799,7 +799,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(3, old0, old1, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(4, active0, active1, active2);
@@ -876,7 +876,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(4, old0, old1, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(5, active0, active1, active2);
@@ -943,7 +943,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(5, old0, old1, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(6, active0, active1, active2);
@@ -1002,7 +1002,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(6, old0, old1, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(7, active0, active1, active2);
@@ -1055,7 +1055,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(7, old0, old1, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(8, active0, active1, active2);
@@ -1098,7 +1098,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(8, old0, old1, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(9, active0, active1, active2);
@@ -1131,7 +1131,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(9, old0, old1, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(10, active0, active1, active2);
@@ -1162,7 +1162,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(10, old0, old1, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(11, active0, 0L, active2);
@@ -1189,7 +1189,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(11, old0, 0L, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(12, active0, 0L, active2);
@@ -1222,7 +1222,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(12, old0, 0L, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(13, active0, 0L, active2);
@@ -1245,7 +1245,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         if (((active0 &= old0) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(13, old0, 0L, old2);
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             jjStopStringLiteralDfa_0(14, 0L, 0L, active2);
@@ -1270,7 +1270,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         jjmatchedKind = kind;
         jjmatchedPos = pos;
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e) { return pos + 1; }
         return jjMoveNfa_0(state, pos + 1);
     }
@@ -2007,7 +2007,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
             ++curPos;
             if ((i = jjnewStateCnt) == (startsAt = 85 - (jjnewStateCnt = startsAt)))
                 return curPos;
-            try { curChar = input_stream.readChar(); }
+            try { curChar = input_stream.ReadChar(); }
             catch (IOException e) { return curPos; }
         }
     }
@@ -2023,7 +2023,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     }
     private int jjMoveStringLiteralDfa1_4(long active0)
     {
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             return 1;
@@ -2117,7 +2117,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
             ++curPos;
             if ((i = jjnewStateCnt) == (startsAt = 3 - (jjnewStateCnt = startsAt)))
                 return curPos;
-            try { curChar = input_stream.readChar(); }
+            try { curChar = input_stream.ReadChar(); }
             catch (IOException e) { return curPos; }
         }
     }
@@ -2137,7 +2137,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     }
     private int jjMoveStringLiteralDfa1_3(long active0)
     {
-        try { curChar = input_stream.readChar(); }
+        try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
         {
             return 1;
@@ -2420,7 +2420,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
     /** Constructor. */
     public JavaCCParserTokenManager(JavaCharStream stream)
     {
-        if (JavaCharStream.staticFlag)
+        if (JavaCharStream.StaticFlag)
             throw new Error("ERROR: Cannot use a static CharStream class with a non-static lexical analyzer.");
         input_stream = stream;
     }
@@ -2474,10 +2474,10 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
         int endColumn;
         String im = jjstrLiteralImages[jjmatchedKind];
         curTokenImage = (im == null) ? input_stream.GetImage() : im;
-        beginLine = input_stream.getBeginLine();
-        beginColumn = input_stream.getBeginColumn();
-        endLine = input_stream.getEndLine();
-        endColumn = input_stream.getEndColumn();
+        beginLine = input_stream.GetBeginLine();
+        beginColumn = input_stream.GetBeginColumn();
+        endLine = input_stream.GetEndLine();
+        endColumn = input_stream.GetEndColumn();
         t = Token.newToken(jjmatchedKind, curTokenImage);
 
         t.beginLine = beginLine;
@@ -2527,7 +2527,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
                     case 0:
                         try
                         {
-                            input_stream.backup(0);
+                            input_stream.Backup(0);
                             while (curChar <= 32 && (0x100003600L & (1L << curChar)) != 0L)
                                 curChar = input_stream.BeginToken();
                         }
@@ -2580,7 +2580,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
                 if (jjmatchedKind != 0x7fffffff)
                 {
                     if (jjmatchedPos + 1 < curPos)
-                        input_stream.backup(curPos - jjmatchedPos - 1);
+                        input_stream.Backup(curPos - jjmatchedPos - 1);
                     if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
                     {
                         matchedToken = jjFillToken();
@@ -2617,16 +2617,16 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
                     jjmatchedKind = 0x7fffffff;
                     try
                     {
-                        curChar = input_stream.readChar();
+                        curChar = input_stream.ReadChar();
                         continue;
                     }
                     catch (IOException e1) { }
                 }
-                int error_line = input_stream.getEndLine();
-                int error_column = input_stream.getEndColumn();
+                int error_line = input_stream.GetEndLine();
+                int error_column = input_stream.GetEndColumn();
                 String error_after = null;
                 bool EOFSeen = false;
-                try { input_stream.readChar(); input_stream.backup(1); }
+                try { input_stream.ReadChar(); input_stream.Backup(1); }
                 catch (IOException e1)
                 {
                     EOFSeen = true;
@@ -2641,7 +2641,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
                 }
                 if (!EOFSeen)
                 {
-                    input_stream.backup(1);
+                    input_stream.Backup(1);
                     error_after = curPos <= 1 ? "" : input_stream.GetImage();
                 }
                 throw new TokenMgrError(EOFSeen, curLexState, error_line, error_column, error_after, curChar, TokenMgrError.LEXICAL_ERROR);
@@ -2655,7 +2655,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
         {
             case 19:
                 image.Append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                restoreBeginLineCol(); input_stream.backup(1);
+                restoreBeginLineCol(); input_stream.Backup(1);
                 break;
             default:
                 break;
@@ -2669,13 +2669,13 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
             case 21:
                 image.Append(input_stream.GetSuffix(jjimageLen));
                 jjimageLen = 0;
-                input_stream.backup(1);
+                input_stream.Backup(1);
                 break;
             case 23:
                 image.Append(input_stream.GetSuffix(jjimageLen));
                 jjimageLen = 0;
-                saveBeginLineCol(input_stream.getBeginLine(),
-                                 input_stream.getBeginColumn());
+                saveBeginLineCol(input_stream.GetBeginLine(),
+                                 input_stream.GetBeginColumn());
                 break;
             default:
                 break;
@@ -2690,7 +2690,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
                 lengthOfMatch = jjstrLiteralImages[135].Length;
                 matchedToken.kind = GT;
                 ((Token.GTToken)matchedToken).realKind = RUNSIGNEDSHIFT;
-                input_stream.backup(2);
+                input_stream.Backup(2);
                 matchedToken.image = ">";
                 break;
             case 136:
@@ -2698,7 +2698,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
                 lengthOfMatch = jjstrLiteralImages[136].Length;
                 matchedToken.kind = GT;
                 ((Token.GTToken)matchedToken).realKind = RSIGNEDSHIFT;
-                input_stream.backup(1);
+                input_stream.Backup(1);
                 matchedToken.image = ">";
                 break;
             default:
