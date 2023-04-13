@@ -183,14 +183,14 @@ public class JavaCCGlobals : JavaCCParserConstants
      * This third level hashtable contains the actual string of the simple token
      * and maps it to its RegularExpression.
      */
-    static public Dictionary<string, Dictionary<string, Dictionary<string, RegularExpression>>> simple_tokens_table = new();
+    public static Dictionary<string, Dictionary<string, Dictionary<string, RegularExpression>>> simple_tokens_table = new();
 
     /**
      * maskindex, jj2index, maskVals are variables that are shared between
      * ParseEngine and ParseGen.
      */
-    static protected int maskindex = 0;
-    static protected int jj2index = 0;
+    public static int maskindex = 0;
+    public static int jj2index = 0;
     public static bool lookaheadNeeded;
     public static List<int[]> maskVals = new();
 
@@ -453,7 +453,7 @@ public class JavaCCGlobals : JavaCCParserConstants
         }
     }
 
-    static protected int cline, ccol;
+    public static int cline, ccol;
 
     public static void PrintTokenSetup(Token t)
     {

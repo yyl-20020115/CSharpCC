@@ -31,13 +31,13 @@
 using System.Text;
 
 namespace org.javacc.parser;
- 
+
 public class ParseEngine
 {
     private int gensymindex = 0;
     private int indentamt;
     private bool jj2LA;
-    private CodeGenerator codeGenerator;
+    private CodeGenerator _CodeGenerator;
     private readonly bool isJavaDialect = Options.IsOutputLanguageJava();
 
     /**
@@ -59,9 +59,9 @@ public class ParseEngine
      * This optimization and the hashtable makes it look like we do not need
      * the flag "phase3done" any more.  But this has not been removed yet.
      */
-    private List<Phase3Data> phase2list = new ();
-    private List<Phase3Data> phase3list = new ();
-    private Dictionary<Expansion,Phase3Data> phase3table = new (); 
+    private List<Lookahead> phase2list = new();
+    private List<Phase3Data> phase3list = new();
+    private Dictionary<Expansion, Phase3Data> phase3table = new();
 
     /**
      * The phase 1 routines generates their output into String's and dumps
@@ -79,7 +79,7 @@ public class ParseEngine
     private bool JavaCodeCheck(Expansion exp)
     {
         if (exp is RegularExpression)
-        { 
+        {
             return false;
         }
         else if (exp is NonTerminal terminal)
@@ -242,7 +242,7 @@ public class ParseEngine
         for (int i = 0; i < conds.Length; i++)
         {
             Console.Error.WriteLine("Lookahead: " + i);
-            Console.Error.WriteLine(conds[i].Dump(0, new ()));
+            Console.Error.WriteLine(conds[i].Dump(0, new()));
             Console.Error.WriteLine();
         }
     }
@@ -270,11 +270,11 @@ public class ParseEngine
         // The state variables.
         int state = NOOPENSTM;
         int indentAmt = 0;
-        bool[] casedValues = new bool[tokenCount];
+        bool[] casedValues = new bool[JavaCCGlobals.tokenCount];
         string retval = "";
         Lookahead la;
         Token t = null;
-        int tokenMaskSize = (tokenCount - 1) / 32 + 1;
+        int tokenMaskSize = (JavaCCGlobals.tokenCount - 1) / 32 + 1;
         int[] tokenMask = null;
 
         // Iterate over all the conditions.
@@ -323,20 +323,20 @@ public class ParseEngine
                             retval += "\u0002\n" + "default:" + "\u0001";
                             if (Options.GetErrorReporting())
                             {
-                                retval += "\njj_la1[" + maskindex + "] = jj_gen;";
-                                maskindex++;
+                                retval += "\njj_la1[" + JavaCCGlobals.maskindex + "] = jj_gen;";
+                                JavaCCGlobals.maskindex++;
                             }
-                            maskVals.Add(tokenMask);
+                            JavaCCGlobals.maskVals.Add(tokenMask);
                             retval += "\n" + "if (";
                             indentAmt++;
-                        break;
+                            break;
                     }
                     JavaCCGlobals.PrintTokenSetup((la.GetActionTokens()[0]));
-                    foreach(var t2 in la.GetActionTokens())
+                    foreach (var t2 in la.GetActionTokens())
                     {
-                        retval += codeGenerator.GetStringToPrint(t=t2);
+                        retval += _CodeGenerator.GetStringToPrint(t = t2);
                     }
-                    retval += codeGenerator.GetTrailingComments(t);
+                    retval += _CodeGenerator.GetTrailingComments(t);
                     retval += ") {\u0001" + actions[index];
                     state = OPENIF;
                 }
@@ -347,8 +347,8 @@ public class ParseEngine
                 // Special optimal processing when the lookahead is exactly 1, and there
                 // is no semantic lookahead.
 
-                firstSet ??= new bool[tokenCount];
-                for (int i = 0; i < tokenCount; i++)
+                firstSet ??= new bool[JavaCCGlobals.tokenCount];
+                for (int i = 0; i < JavaCCGlobals.tokenCount; i++)
                 {
                     firstSet[i] = false;
                 }
@@ -387,7 +387,7 @@ public class ParseEngine
                             {
                                 retval += "(jj_ntk==-1)?jj_ntk_f():jj_ntk) {\u0001";
                             }
-                            for (int i = 0; i < tokenCount; i++)
+                            for (int i = 0; i < JavaCCGlobals.tokenCount; i++)
                             {
                                 casedValues[i] = false;
                             }
@@ -400,7 +400,7 @@ public class ParseEngine
                             break;
                             // Don't need to do anything if state is OPENSWITCH.
                     }
-                    for (int i = 0; i < tokenCount; i++)
+                    for (int i = 0; i < JavaCCGlobals.tokenCount; i++)
                     {
                         if (firstSet[i])
                         {
@@ -412,7 +412,7 @@ public class ParseEngine
                                 int j2 = i % 32;
                                 tokenMask[j1] |= 1 << j2;
                                 //string s = (String)(names_of_tokens.get((i)));
-                                if (names_of_tokens.TryGetValue(i,out var s))
+                                if (JavaCCGlobals.names_of_tokens.TryGetValue(i, out var s))
                                 {
                                     retval += i;
                                 }
@@ -458,18 +458,18 @@ public class ParseEngine
                         retval += "\u0002\n" + "default:" + "\u0001";
                         if (Options.GetErrorReporting())
                         {
-                            retval += "\njj_la1[" + maskindex + "] = jj_gen;";
-                            maskindex++;
+                            retval += "\njj_la1[" + JavaCCGlobals.maskindex + "] = jj_gen;";
+                            JavaCCGlobals.maskindex++;
                         }
-                        maskVals.Add(tokenMask);
+                        JavaCCGlobals.maskVals.Add(tokenMask);
                         retval += "\n" + "if (";
                         indentAmt++;
-                    break;
+                        break;
                 }
-                jj2index++;
+                JavaCCGlobals.jj2index++;
                 // At this point, la.la_expansion.internal_name must be "".
-                la.GetLaExpansion().internal_name = "_" + jj2index;
-                la.GetLaExpansion().internal_index = jj2index;
+                la.GetLaExpansion().internal_name = "_" + JavaCCGlobals.jj2index;
+                la.GetLaExpansion().internal_index = JavaCCGlobals.jj2index;
                 phase2list.Add(la);
                 retval += "jj_2" + la.GetLaExpansion().internal_name + "(" + la.GetAmount() + ")";
                 if (la.GetActionTokens().Count != 0)
@@ -477,13 +477,12 @@ public class ParseEngine
                     // In addition, there is also a semantic lookahead.  So concatenate
                     // the semantic check with the syntactic one.
                     retval += " && (";
-                    JavaCCGlobals.PrintTokenSetup((Token)(la.GetActionTokens()[0]));
-                    for (Iterator it = la.GetActionTokens().iterator(); it.hasNext();)
+                    JavaCCGlobals.PrintTokenSetup(la.GetActionTokens()[0]);
+                    foreach (var t2 in la.GetActionTokens())
                     {
-                        t = (Token)it.next();
-                        retval += codeGenerator.GetStringToPrint(t);
+                        retval += _CodeGenerator.GetStringToPrint(t = t2);
                     }
-                    retval += codeGenerator.GetTrailingComments(t);
+                    retval += _CodeGenerator.GetTrailingComments(t);
                     retval += ")";
                 }
                 retval += ") {\u0001" + actions[index];
@@ -509,9 +508,9 @@ public class ParseEngine
                 retval += "\u0002\n" + "default:" + "\u0001";
                 if (Options.GetErrorReporting())
                 {
-                    retval += "\njj_la1[" + maskindex + "] = jj_gen;";
-                    maskVals.Add(tokenMask);
-                    maskindex++;
+                    retval += "\njj_la1[" + JavaCCGlobals.maskindex + "] = jj_gen;";
+                    JavaCCGlobals.maskVals.Add(tokenMask);
+                    JavaCCGlobals.maskindex++;
                 }
                 retval += actions[index];
                 break;
@@ -547,7 +546,7 @@ public class ParseEngine
                 }
                 else
                 {
-                    codeGenerator.GenCodeLine("");
+                    _CodeGenerator.GenCodeLine("");
                 }
             }
             else if (ch == '\u0001')
@@ -568,7 +567,7 @@ public class ParseEngine
             }
             else
             {
-                codeGenerator.GenCode(ch);
+                _CodeGenerator.GenCode(ch);
             }
         }
     }
@@ -595,7 +594,7 @@ public class ParseEngine
         for (int i = 0; i < p.GetReturnTypeTokens().Count; i++)
         {
             t = (Token)(p.GetReturnTypeTokens()[i]);
-            string s = codeGenerator.GetStringToPrint(t);
+            string s = _CodeGenerator.GetStringToPrint(t);
             sig.Append(t.ToString());
             sig.Append(' ');
             if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
@@ -604,26 +603,25 @@ public class ParseEngine
 
         string comment2 = "";
         if (t != null)
-            comment2 = codeGenerator.GetTrailingComments(t);
+            comment2 = _CodeGenerator.GetTrailingComments(t);
         ret = sig.ToString();
 
-        sig.Capacity=0;
+        sig.Capacity = 0;
         sig.Append('(');
         if (p.GetParameterListTokens().Count != 0)
         {
             JavaCCGlobals.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
-            foreach(var t2 in p.GetParameterListTokens())
+            foreach (var t2 in p.GetParameterListTokens())
             {
-                t = (Token)it.next();
-                sig.Append(codeGenerator.GetStringToPrint(t=));
+                sig.Append(_CodeGenerator.GetStringToPrint(t = t2));
             }
-            sig.Append(codeGenerator.GetTrailingComments(t));
+            sig.Append(_CodeGenerator.GetTrailingComments(t));
         }
         sig.Append(')');
         _params = sig.ToString();
 
         // For now, just ignore comments
-        codeGenerator.GenerateMethodDefHeader(ret, CuName, p.GetLhs() + _params, sig.ToString());
+        _CodeGenerator.GenerateMethodDefHeader(ret, JavaCCGlobals.CuName, p.GetLhs() + _params, sig.ToString());
 
         return "";
     }
@@ -638,42 +636,33 @@ public class ParseEngine
         bool void_ret = false;
         bool ptr_ret = false;
 
-        JavaCCGlobals.PrintTokenSetup(t); ccol = 1;
-        string comment1 = codeGenerator.GetLeadingComments(t);
-        cline = t.beginLine;
-        ccol = t.beginColumn;
-        sig.Append(t.image); 
-        if (t.kind == JavaCCParserConstants.VOID) void_ret = true; 
-        if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
-         
         for (int i = 1; i < p.GetReturnTypeTokens().Count; i++)
         {
             t = (Token)(p.GetReturnTypeTokens()[i]);
-            sig.Append(codeGenerator.GetStringToPrint(t));
+            sig.Append(_CodeGenerator.GetStringToPrint(t));
             if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
             if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
         }
 
-        string comment2 = codeGenerator.GetTrailingComments(t);
+        string comment2 = _CodeGenerator.GetTrailingComments(t);
         ret = sig.ToString();
 
-        sig.Capacity=0;
+        sig.Capacity = 0;
         sig.Append('(');
         if (p.GetParameterListTokens().Count != 0)
         {
-            codeGenerator.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
-            for (Iterator it = p.GetParameterListTokens().iterator(); it.hasNext();)
+            CodeGenerator.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
+            foreach (var t2 in p.GetParameterListTokens())
             {
-                t = (Token)it.next();
-                sig.Append(codeGenerator.GetStringToPrint(t));
+                sig.Append(_CodeGenerator.GetStringToPrint(t = t2));
             }
-            sig.Append(codeGenerator.GetTrailingComments(t));
+            sig.Append(_CodeGenerator.GetTrailingComments(t));
         }
         sig.Append(')');
         _params = sig.ToString();
 
         // For now, just ignore comments
-        codeGenerator.GenerateMethodDefHeader(ret, cu_name, p.GetLhs() + _params, sig.ToString());
+        _CodeGenerator.GenerateMethodDefHeader(ret, JavaCCGlobals.CuName, p.GetLhs() + _params, sig.ToString());
 
         // Generate a default value for error return.
         string default_return;
@@ -698,49 +687,49 @@ public class ParseEngine
         {
             if (isJavaDialect)
             {
-                codeGenerator.GenCodeLine("if(++jj_depth > " + Options.GetDepthLimit() + ") {");
-                codeGenerator.GenCodeLine("  jj_consume_token(-1);");
-                codeGenerator.GenCodeLine("  throw new ParseException();");
-                codeGenerator.GenCodeLine("}");
-                codeGenerator.GenCodeLine("try {");
+                _CodeGenerator.GenCodeLine("if(++jj_depth > " + Options.GetDepthLimit() + ") {");
+                _CodeGenerator.GenCodeLine("  jj_consume_token(-1);");
+                _CodeGenerator.GenCodeLine("  throw new ParseException();");
+                _CodeGenerator.GenCodeLine("}");
+                _CodeGenerator.GenCodeLine("try {");
             }
             else
             {
                 if (!voidReturn)
                 {
-                    codeGenerator.GenCodeLine("if(jj_depth_error){ return __ERROR_RET__; }");
+                    _CodeGenerator.GenCodeLine("if(jj_depth_error){ return __ERROR_RET__; }");
                 }
                 else
                 {
-                    codeGenerator.GenCodeLine("if(jj_depth_error){ return; }");
+                    _CodeGenerator.GenCodeLine("if(jj_depth_error){ return; }");
                 }
-                codeGenerator.GenCodeLine("__jj_depth_inc __jj_depth_counter(this);");
-                codeGenerator.GenCodeLine("if(jj_depth > " + Options.GetDepthLimit() + ") {");
-                codeGenerator.GenCodeLine("  jj_depth_error = true;");
-                codeGenerator.GenCodeLine("  jj_consume_token(-1);");
-                codeGenerator.GenCodeLine("  errorHandler->handleParseError(token, getToken(1), __FUNCTION__, this), hasError = true;");
+                _CodeGenerator.GenCodeLine("__jj_depth_inc __jj_depth_counter(this);");
+                _CodeGenerator.GenCodeLine("if(jj_depth > " + Options.GetDepthLimit() + ") {");
+                _CodeGenerator.GenCodeLine("  jj_depth_error = true;");
+                _CodeGenerator.GenCodeLine("  jj_consume_token(-1);");
+                _CodeGenerator.GenCodeLine("  errorHandler->handleParseError(token, getToken(1), __FUNCTION__, this), hasError = true;");
                 if (!voidReturn)
                 {
-                    codeGenerator.GenCodeLine("  return __ERROR_RET__;");  // Non-recoverable error
+                    _CodeGenerator.GenCodeLine("  return __ERROR_RET__;");  // Non-recoverable error
                 }
                 else
                 {
-                    codeGenerator.GenCodeLine("  return;");  // Non-recoverable error
+                    _CodeGenerator.GenCodeLine("  return;");  // Non-recoverable error
                 }
-                codeGenerator.GenCodeLine("}");
+                _CodeGenerator.GenCodeLine("}");
             }
         }
     }
 
-    void genStackCheckEnd()
+    private void genStackCheckEnd()
     {
         if (Options.GetDepthLimit() > 0)
         {
             if (isJavaDialect)
             {
-                codeGenerator.GenCodeLine(" } finally {");
-                codeGenerator.GenCodeLine("   --jj_depth;");
-                codeGenerator.GenCodeLine(" }");
+                _CodeGenerator.GenCodeLine(" } finally {");
+                _CodeGenerator.GenCodeLine("   --jj_depth;");
+                _CodeGenerator.GenCodeLine(" }");
             }
         }
     }
@@ -757,39 +746,39 @@ public class ParseEngine
         string error_ret = null;
         if (isJavaDialect)
         {
-            codeGenerator.PrintTokenSetup(t); ccol = 1;
-            codeGenerator.PrintLeadingComments(t);
-            codeGenerator.GenCode("  " + staticOpt() + "final " + (p.GetAccessMod() ?? "public") + " ");
-            cline = t.beginLine; ccol = t.beginColumn;
-            codeGenerator.PrintTokenOnly(t);
+            CodeGenerator.PrintTokenSetup(t);
+            JavaCCGlobals.ccol = 1;
+            _CodeGenerator.PrintLeadingComments(t);
+            _CodeGenerator.GenCode("  " + JavaCCGlobals.StaticOpt() + "final " + (p.GetAccessMod() ?? "public") + " ");
+            JavaCCGlobals.cline = t.beginLine;
+            JavaCCGlobals.ccol = t.beginColumn;
+            _CodeGenerator.PrintTokenOnly(t);
             for (int i = 1; i < p.GetReturnTypeTokens().Count; i++)
             {
-                t = (Token)(p.GetReturnTypeTokens()[i]);
-                codeGenerator.PrintToken(t);
+                t = p.GetReturnTypeTokens()[i];
+                _CodeGenerator.PrintToken(t);
             }
-            codeGenerator.PrintTrailingComments(t);
-            codeGenerator.GenCode(" " + p.GetLhs() + "(");
+            _CodeGenerator.PrintTrailingComments(t);
+            _CodeGenerator.GenCode(" " + p.GetLhs() + "(");
             if (p.GetParameterListTokens().Count != 0)
             {
-                JavaCCGlobals.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
-                for (Iterator it = p.GetParameterListTokens().iterator(); it.hasNext();)
+                JavaCCGlobals.PrintTokenSetup((p.GetParameterListTokens()[0]));
+                foreach (var t2 in p.GetParameterListTokens())
                 {
-                    t = (Token)it.next();
-                    codeGenerator.PrintToken(t);
+                    _CodeGenerator.PrintToken(t = t2);
                 }
-                codeGenerator.PrintTrailingComments(t);
+                _CodeGenerator.PrintTrailingComments(t);
             }
-            codeGenerator.GenCode(")");
-            codeGenerator.GenCode(" throws ParseException");
+            _CodeGenerator.GenCode(")");
+            _CodeGenerator.GenCode(" throws ParseException");
 
-            for (Iterator it = p.getThrowsList().iterator(); it.hasNext();)
+            foreach(var name in p.GetThrowsList())
             {
-                codeGenerator.GenCode(", ");
-                List name = (List)it.next();
-                for (Iterator it2 = name.iterator(); it2.hasNext();)
+                _CodeGenerator.GenCode(", ");
+                foreach(var t2 in name)
                 {
-                    t = (Token)it2.next();
-                    codeGenerator.GenCode(t.image);
+                    t = t2;
+                    _CodeGenerator.GenCode(t.image);
                 }
             }
         }
@@ -798,12 +787,12 @@ public class ParseEngine
             error_ret = generateCPPMethodheader(p, t);
         }
 
-        codeGenerator.GenCode(" {");
+        _CodeGenerator.GenCode(" {");
 
         if ((Options.BooleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR) && error_ret != null)
             || (Options.GetDepthLimit() > 0 && !voidReturn && !isJavaDialect))
         {
-            codeGenerator.GenCode(error_ret);
+            _CodeGenerator.GenCode(error_ret);
         }
         else
         {
@@ -815,85 +804,85 @@ public class ParseEngine
         indentamt = 4;
         if (Options.GetDebugParser())
         {
-            codeGenerator.GenCodeLine("");
+            _CodeGenerator.GenCodeLine("");
             if (isJavaDialect)
             {
-                codeGenerator.GenCodeLine("    trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\");");
+                _CodeGenerator.GenCodeLine("    trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\");");
             }
             else
             {
-                codeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\"); });");
-                codeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\"); });");
+                _CodeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\"); });");
+                _CodeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\"); });");
             }
-            codeGenerator.GenCodeLine("    try {");
+            _CodeGenerator.GenCodeLine("    try {");
             indentamt = 6;
         }
 
         if (!Options.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) &&
             p.GetDeclarationTokens().Count != 0)
         {
-            JavaCCGlobals.PrintTokenSetup((Token)(p.GetDeclarationTokens()[0])); cline--;
-            for (Iterator it = p.GetDeclarationTokens().iterator(); it.hasNext();)
+            JavaCCGlobals.PrintTokenSetup((p.GetDeclarationTokens()[0])); 
+            JavaCCGlobals.cline--;
+            foreach(var t2 in p.GetDeclarationTokens())
             {
-                t = (Token)it.next();
-                codeGenerator.PrintToken(t);
+                _CodeGenerator.PrintToken(t  = t2);
             }
-            codeGenerator.PrintTrailingComments(t);
+            _CodeGenerator.PrintTrailingComments(t);
         }
 
         string code = phase1ExpansionGen(p.GetExpansion());
         DumpFormattedString(code);
-        codeGenerator.GenCodeLine("");
+        _CodeGenerator.GenCodeLine("");
 
         if (p.IsJumpPatched() && !voidReturn)
         {
             if (isJavaDialect)
             {
                 // This line is required for Java!
-                codeGenerator.GenCodeLine("    throw new " + (Options.IsLegacyExceptionHandling() ? "Error" : "RuntimeException") + "(\"Missing return statement in function\");");
+                _CodeGenerator.GenCodeLine("    throw new " + (Options.IsLegacyExceptionHandling() ? "Error" : "RuntimeException") + "(\"Missing return statement in function\");");
             }
             else
             {
-                codeGenerator.GenCodeLine("    throw \"Missing return statement in function\";");
+                _CodeGenerator.GenCodeLine("    throw \"Missing return statement in function\";");
             }
         }
         if (Options.GetDebugParser())
         {
             if (isJavaDialect)
             {
-                codeGenerator.GenCodeLine("    } finally {");
-                codeGenerator.GenCodeLine("      trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\");");
+                _CodeGenerator.GenCodeLine("    } finally {");
+                _CodeGenerator.GenCodeLine("      trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\");");
             }
             else
             {
-                codeGenerator.GenCodeLine("    } catch(...) { }");
+                _CodeGenerator.GenCodeLine("    } catch(...) { }");
             }
             if (isJavaDialect)
             {
-                codeGenerator.GenCodeLine("    }");
+                _CodeGenerator.GenCodeLine("    }");
             }
         }
         if (!isJavaDialect && !voidReturn)
         {
-            codeGenerator.GenCodeLine("assert(false);");
+            _CodeGenerator.GenCodeLine("assert(false);");
         }
 
 
         if (error_ret != null)
         {
-            codeGenerator.GenCodeLine("\n#undef __ERROR_RET__\n");
+            _CodeGenerator.GenCodeLine("\n#undef __ERROR_RET__\n");
         }
         genStackCheckEnd();
-        codeGenerator.GenCodeLine("}");
-        codeGenerator.GenCodeLine("");
+        _CodeGenerator.GenCodeLine("}");
+        _CodeGenerator.GenCodeLine("");
     }
 
     void phase1NewLine()
     {
-        codeGenerator.GenCodeLine("");
+        _CodeGenerator.GenCodeLine("");
         for (int i = 0; i < indentamt; i++)
         {
-            codeGenerator.GenCode(" ");
+            _CodeGenerator.GenCode(" ");
         }
     }
 
@@ -903,27 +892,24 @@ public class ParseEngine
         Token t = null;
         Lookahead[] conds;
         String[] actions;
-        if (e is RegularExpression)
+        if (e is RegularExpression e_nrw)
         {
-            RegularExpression e_nrw = (RegularExpression)e;
             retval += "\n";
             if (e_nrw.lhsTokens.Count != 0)
             {
                 JavaCCGlobals.PrintTokenSetup((Token)(e_nrw.lhsTokens[0]));
-                for (Iterator it = e_nrw.lhsTokens.iterator(); it.hasNext();)
+                foreach(var t2 in e_nrw.lhsTokens)
                 {
-                    t = (Token)it.next();
-                    retval += codeGenerator.GetStringToPrint(t);
+                    retval += _CodeGenerator.GetStringToPrint(t=t2);
                 }
-                retval += codeGenerator.GetTrailingComments(t);
+                retval += _CodeGenerator.GetTrailingComments(t);
                 retval += " = ";
             }
             string tail = e_nrw.rhsToken == null ? ");" :
                       (isJavaDialect ? ")." : ")->") + e_nrw.rhsToken.image + ";";
             if (e_nrw.label == (""))
             {
-                object label = names_of_tokens.get((e_nrw.ordinal));
-                if (label != null)
+                if (JavaCCGlobals.names_of_tokens.TryGetValue(e_nrw.ordinal,out var label))
                 {
                     retval += "jj_consume_token(" + (String)label + tail;
                 }
@@ -943,31 +929,28 @@ public class ParseEngine
             }
 
         }
-        else if (e is NonTerminal)
+        else if (e is NonTerminal e_nrw6)
         {
-            NonTerminal e_nrw = (NonTerminal)e;
             retval += "\n";
-            if (e_nrw.GetLhsTokens().Count != 0)
+            if (e_nrw6.GetLhsTokens().Count != 0)
             {
-                JavaCCGlobals.PrintTokenSetup((Token)(e_nrw.GetLhsTokens()[0]));
-                for (Iterator it = e_nrw.GetLhsTokens().iterator(); it.hasNext();)
+                JavaCCGlobals.PrintTokenSetup(e_nrw6.GetLhsTokens()[0]);
+                foreach(var t2 in e_nrw6.GetLhsTokens())
                 {
-                    t = (Token)it.next();
-                    retval += codeGenerator.GetStringToPrint(t);
+                    retval += _CodeGenerator.GetStringToPrint(t = t2);
                 }
-                retval += codeGenerator.GetTrailingComments(t);
+                retval += _CodeGenerator.GetTrailingComments(t);
                 retval += " = ";
             }
-            retval += e_nrw.GetName() + "(";
-            if (e_nrw.GetArgumentTokens().Count != 0)
+            retval += e_nrw6.GetName() + "(";
+            if (e_nrw6.GetArgumentTokens().Count != 0)
             {
-                JavaCCGlobals.PrintTokenSetup((Token)(e_nrw.GetArgumentTokens()[0]));
-                for (Iterator it = e_nrw.GetArgumentTokens().iterator(); it.hasNext();)
+                JavaCCGlobals.PrintTokenSetup(e_nrw6.GetArgumentTokens()[0]);
+                foreach(var t2 in e_nrw6.GetArgumentTokens())
                 {
-                    t = (Token)it.next();
-                    retval += codeGenerator.GetStringToPrint(t);
+                    retval += _CodeGenerator.GetStringToPrint(t = t2);
                 }
-                retval += codeGenerator.GetTrailingComments(t);
+                retval += _CodeGenerator.GetTrailingComments(t);
             }
             retval += ");";
             if (!isJavaDialect && Options.BooleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR))
@@ -975,29 +958,27 @@ public class ParseEngine
                 retval += "\n    { if (hasError) { return __ERROR_RET__; } }\n";
             }
         }
-        else if (e is Action)
+        else if (e is Action e_nrw7)
         {
-            Action e_nrw = (Action)e;
             retval += "\u0003\n";
             if (!Options.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) &&
-                e_nrw.GetActionTokens().Count != 0)
+                e_nrw7.GetActionTokens().Count != 0)
             {
-                JavaCCGlobals.PrintTokenSetup((Token)(e_nrw.GetActionTokens()[0])); ccol = 1;
-                for (Iterator it = e_nrw.GetActionTokens().iterator(); it.hasNext();)
+                JavaCCGlobals.PrintTokenSetup((e_nrw7.GetActionTokens()[0]));
+                JavaCCGlobals.ccol = 1;
+                foreach(var t2 in e_nrw7.GetActionTokens())
                 {
-                    t = (Token)it.next();
-                    retval += codeGenerator.GetStringToPrint(t);
+                    retval += _CodeGenerator.GetStringToPrint(t = t2);
                 }
-                retval += codeGenerator.GetTrailingComments(t);
+                retval += _CodeGenerator.GetTrailingComments(t);
             }
             retval += "\u0004";
         }
-        else if (e is Choice)
+        else if (e is Choice e_nrw8)
         {
-            Choice e_nrw = (Choice)e;
-            conds = new Lookahead[e_nrw.GetChoices().Count];
-            actions = new String[e_nrw.GetChoices().Count + 1];
-            actions[e_nrw.GetChoices().Count] = "\n" + "jj_consume_token(-1);\n" +
+            conds = new Lookahead[e_nrw8.GetChoices().Count];
+            actions = new String[e_nrw8.GetChoices().Count + 1];
+            actions[e_nrw8.GetChoices().Count] = "\n" + "jj_consume_token(-1);\n" +
                       (isJavaDialect ? "throw new ParseException();"
                                       : ("errorHandler->handleParseError(token, getToken(1), __FUNCTION__, this), hasError = true;" +
                        (Options.BooleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR) ? "return __ERROR_RET__;\n" : "")));
@@ -1006,20 +987,19 @@ public class ParseEngine
             // evaluation of jj_consume_token(-1) causes ParseException to be
             // thrown first.
             Sequence nestedSeq;
-            for (int i = 0; i < e_nrw.GetChoices().Count; i++)
+            for (int i = 0; i < e_nrw8.GetChoices().Count; i++)
             {
-                nestedSeq = (Sequence)(e_nrw.GetChoices()[i]);
+                nestedSeq = (Sequence)(e_nrw8.GetChoices()[i]);
                 actions[i] = phase1ExpansionGen(nestedSeq);
                 conds[i] = (Lookahead)(nestedSeq.units[0]);
             }
             retval = BuildLookaheadChecker(conds, actions);
         }
-        else if (e is Sequence)
+        else if (e is Sequence e_nrw9)
         {
-            Sequence e_nrw = (Sequence)e;
             // We skip the first element in the following iteration since it is the
             // Lookahead object.
-            for (int i = 1; i < e_nrw.units.Count; i++)
+            for (int i = 1; i < e_nrw9.units.Count; i++)
             {
                 // For C++, since we are not using exceptions, we will protect all the
                 // expansion choices with if (!error)
@@ -1027,26 +1007,25 @@ public class ParseEngine
                 if (!JavaCCGlobals.JjtreeGenerated && !isJavaDialect)
                 {
                     // for the last one, if it's an action, we will not protect it.
-                    Expansion elem = (Expansion)e_nrw.units[i];
-                    if (!(elem is Action) ||
-                        !(e.parent is BNFProduction) ||
-                        i != e_nrw.units.Count - 1)
+                    Expansion elem = (Expansion)e_nrw9.units[i];
+                    if (elem is not Action ||
+                        e.parent is not BNFProduction ||
+                        i != e_nrw9.units.Count - 1)
                     {
                         wrap_in_block = true;
                         retval += "\nif (" + (isJavaDialect ? "true" : "!hasError") + ") {";
                     }
                 }
-                retval += phase1ExpansionGen((Expansion)(e_nrw.units[i]));
+                retval += phase1ExpansionGen((Expansion)(e_nrw9.units[i]));
                 if (wrap_in_block)
                 {
                     retval += "\n}";
                 }
             }
         }
-        else if (e is OneOrMore)
+        else if (e is OneOrMore e_nrw12)
         {
-            OneOrMore e_nrw = (OneOrMore)e;
-            Expansion nested_e = e_nrw.expansion;
+            Expansion nested_e = e_nrw12.expansion;
             Lookahead la;
             if (nested_e is Sequence)
             {
@@ -1068,7 +1047,7 @@ public class ParseEngine
             retval += phase1ExpansionGen(nested_e);
             conds = new Lookahead[1];
             conds[0] = la;
-            actions = new String[2];
+            actions = new string[2];
             actions[0] = "\n;";
 
             if (isJavaDialect)
@@ -1087,10 +1066,9 @@ public class ParseEngine
                 retval += "\nend_label_" + labelIndex + ": ;";
             }
         }
-        else if (e is ZeroOrMore)
+        else if (e is ZeroOrMore e_nrw13)
         {
-            ZeroOrMore e_nrw = (ZeroOrMore)e;
-            Expansion nested_e = e_nrw.expansion;
+            Expansion nested_e = e_nrw13.expansion;
             Lookahead la;
             if (nested_e is Sequence)
             {
@@ -1129,14 +1107,13 @@ public class ParseEngine
                 retval += "\nend_label_" + labelIndex + ": ;";
             }
         }
-        else if (e is ZeroOrOne)
+        else if (e is ZeroOrOne e_nrw14)
         {
-            ZeroOrOne e_nrw = (ZeroOrOne)e;
-            Expansion nested_e = e_nrw.expansion;
+            Expansion nested_e = e_nrw14.expansion;
             Lookahead la;
-            if (nested_e is Sequence)
+            if (nested_e is Sequence sequence)
             {
-                la = (Lookahead)(((Sequence)nested_e).units[0]);
+                la = (Lookahead)(sequence.units[0]);
             }
             else
             {
@@ -1151,48 +1128,49 @@ public class ParseEngine
             actions[1] = "\n;";
             retval += BuildLookaheadChecker(conds, actions);
         }
-        else if (e is TryBlock e_nrw)
+        else if (e is TryBlock e_nrw15)
         {
-            Expansion nested_e = e_nrw.exp;
-            List list;
+            Expansion nested_e = e_nrw15.exp;
+            List<Token> list;
             retval += "\n";
             retval += "try {\u0001";
             retval += phase1ExpansionGen(nested_e);
             retval += "\u0002\n" + "}";
-            for (int i = 0; i < e_nrw.catchblks.Count; i++)
+            for (int i = 0; i < e_nrw15.catchblks.Count; i++)
             {
                 retval += " catch (";
-                list = (List)(e_nrw.types[i]);
+                list = (e_nrw15.types[i]);
                 if (list.Count != 0)
                 {
                     JavaCCGlobals.PrintTokenSetup((Token)(list[0]));
                     for (Iterator it = list.iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
-                        retval += codeGenerator.GetStringToPrint(t);
+                        retval += _CodeGenerator.GetStringToPrint(t);
                     }
-                    retval += codeGenerator.GetTrailingComments(t);
+                    retval += _CodeGenerator.GetTrailingComments(t);
                 }
                 retval += " ";
-                t = (Token)(e_nrw.ids[i]);
+                t = (e_nrw15.ids[i]);
                 JavaCCGlobals.PrintTokenSetup(t);
-                retval += codeGenerator.GetStringToPrint(t);
-                retval += codeGenerator.GetTrailingComments(t);
+                retval += _CodeGenerator.GetStringToPrint(t);
+                retval += _CodeGenerator.GetTrailingComments(t);
                 retval += ") {\u0003\n";
-                list = (List)(e_nrw.catchblks[i]);
+                list = (e_nrw15.catchblks[i]);
                 if (list.Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup((Token)(list[0])); ccol = 1;
+                    JavaCCGlobals.PrintTokenSetup((list[0]));
+                    JavaCCGlobals.ccol = 1;
                     for (Iterator it = list.iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
-                        retval += codeGenerator.GetStringToPrint(t);
+                        retval += _CodeGenerator.GetStringToPrint(t);
                     }
-                    retval += codeGenerator.GetTrailingComments(t);
+                    retval += _CodeGenerator.GetTrailingComments(t);
                 }
                 retval += "\u0004\n" + "}";
             }
-            if (e_nrw.finallyblk != null)
+            if (e_nrw15.finallyblk != null)
             {
                 if (isJavaDialect)
                 {
@@ -1203,15 +1181,16 @@ public class ParseEngine
                     retval += " finally {\u0003\n";
                 }
 
-                if (e_nrw.finallyblk.Count != 0)
+                if (e_nrw15.finallyblk.Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup((Token)(e_nrw.finallyblk[0])); ccol = 1;
-                    for (Iterator it = e_nrw.finallyblk.iterator(); it.hasNext();)
+                    JavaCCGlobals.PrintTokenSetup((Token)(e_nrw15.finallyblk[0])); 
+                    JavaCCGlobals.ccol = 1;
+                    for (Iterator it = e_nrw15.finallyblk.iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
-                        retval += codeGenerator.GetStringToPrint(t);
+                        retval += _CodeGenerator.GetStringToPrint(t);
                     }
-                    retval += codeGenerator.GetTrailingComments(t);
+                    retval += _CodeGenerator.GetTrailingComments(t);
                 }
                 retval += "\u0004\n" + "}";
             }
@@ -1224,14 +1203,14 @@ public class ParseEngine
         Expansion e = la.GetLaExpansion();
         if (isJavaDialect)
         {
-            codeGenerator.GenCodeLine("  " + staticOpt() + "private " + Options.GetBooleanType() + " jj_2" + e.internal_name + "(int xla)");
+            _CodeGenerator.GenCodeLine("  " + JavaCCGlobals.StaticOpt() + "private " + Options.GetBooleanType() + " jj_2" + e.internal_name + "(int xla)");
         }
         else
         {
-            codeGenerator.GenCodeLine(" inline bool ", "jj_2" + e.internal_name + "(int xla)");
+            _CodeGenerator.GenCodeLine(" inline bool ", "jj_2" + e.internal_name + "(int xla)");
         }
-        codeGenerator.GenCodeLine(" {");
-        codeGenerator.GenCodeLine("    jj_la = xla; jj_lastpos = jj_scanpos = token;");
+        _CodeGenerator.GenCodeLine(" {");
+        _CodeGenerator.GenCodeLine("    jj_la = xla; jj_lastpos = jj_scanpos = token;");
 
         string ret_suffix = "";
         if (Options.GetDepthLimit() > 0)
@@ -1241,20 +1220,20 @@ public class ParseEngine
 
         if (isJavaDialect)
         {
-            codeGenerator.GenCodeLine("    try { return (!jj_3" + e.internal_name + "()" + ret_suffix + "); }");
-            codeGenerator.GenCodeLine("    catch(LookaheadSuccess ls) { return true; }");
+            _CodeGenerator.GenCodeLine("    try { return (!jj_3" + e.internal_name + "()" + ret_suffix + "); }");
+            _CodeGenerator.GenCodeLine("    catch(LookaheadSuccess ls) { return true; }");
         }
         else
         {
-            codeGenerator.GenCodeLine("    jj_done = false;");
-            codeGenerator.GenCodeLine("    return (!jj_3" + e.internal_name + "() || jj_done)" + ret_suffix + ";");
+            _CodeGenerator.GenCodeLine("    jj_done = false;");
+            _CodeGenerator.GenCodeLine("    return (!jj_3" + e.internal_name + "() || jj_done)" + ret_suffix + ";");
         }
         if (Options.GetErrorReporting())
         {
-            codeGenerator.GenCodeLine((isJavaDialect ? "    finally " : " ") + "{ jj_save(" + (int.parseInt(e.internal_name.substring(1)) - 1) + ", xla); }");
+            _CodeGenerator.GenCodeLine((isJavaDialect ? "    finally " : " ") + "{ jj_save(" + (int.parseInt(e.internal_name[1..]) - 1) + ", xla); }");
         }
-        codeGenerator.GenCodeLine("  }");
-        codeGenerator.GenCodeLine("");
+        _CodeGenerator.GenCodeLine("  }");
+        _CodeGenerator.GenCodeLine("");
         var p3d = new Phase3Data(e, la.GetAmount());
         phase3list.Add(p3d);
         phase3table.Add(e, p3d);
@@ -1326,7 +1305,7 @@ public class ParseEngine
             e.internal_name = "R_" + e.GetProductionName() + "_" + e.GetLine() + "_" + e.GetColumn() + "_" + gensymindex;
             e.internal_index = gensymindex;
         }
-        if (!phase3table.TryGetValue(e,out var p3d) || p3d.count < inf.count)
+        if (!phase3table.TryGetValue(e, out var p3d) || p3d.count < inf.count)
         {
             p3d = new Phase3Data(e, inf.count);
             phase3list.Add(p3d);
@@ -1426,32 +1405,32 @@ public class ParseEngine
         {
             if (isJavaDialect)
             {
-                codeGenerator.GenCodeLine("  " + staticOpt() + "private " + Options.GetBooleanType() + " jj_3" + e.internal_name + "()");
+                _CodeGenerator.GenCodeLine("  " + JavaCCGlobals.StaticOpt() + "private " + Options.GetBooleanType() + " jj_3" + e.internal_name + "()");
             }
             else
             {
-                codeGenerator.GenCodeLine(" inline bool ", "jj_3" + e.internal_name + "()");
+                _CodeGenerator.GenCodeLine(" inline bool ", "jj_3" + e.internal_name + "()");
             }
 
-            codeGenerator.GenCodeLine(" {");
+            _CodeGenerator.GenCodeLine(" {");
             if (!isJavaDialect)
             {
-                codeGenerator.GenCodeLine("    if (jj_done) return true;");
+                _CodeGenerator.GenCodeLine("    if (jj_done) return true;");
                 if (Options.GetDepthLimit() > 0)
                 {
-                    codeGenerator.GenCodeLine("#define __ERROR_RET__ true");
+                    _CodeGenerator.GenCodeLine("#define __ERROR_RET__ true");
                 }
             }
             genStackCheck(false);
             xsp_declared = false;
             if (Options.GetDebugLookahead() && e.parent is NormalProduction)
             {
-                codeGenerator.GenCode("    ");
+                _CodeGenerator.GenCode("    ");
                 if (Options.GetErrorReporting())
                 {
-                    codeGenerator.GenCode("if (!jj_rescan) ");
+                    _CodeGenerator.GenCode("if (!jj_rescan) ");
                 }
-                codeGenerator.GenCodeLine("trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(((NormalProduction)e.parent).GetLhs()) + "(LOOKING AHEAD...)\");");
+                _CodeGenerator.GenCodeLine("trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(((NormalProduction)e.parent).GetLhs()) + "(LOOKING AHEAD...)\");");
                 jj3_expansion = e;
             }
             else
@@ -1464,19 +1443,18 @@ public class ParseEngine
             RegularExpression e_nrw = (RegularExpression)e;
             if (e_nrw.label == "")
             {
-                object label = names_of_tokens.get((e_nrw.ordinal));
-                if (label != null)
+                if (JavaCCGlobals.names_of_tokens.TryGetValue(e_nrw.ordinal,out var label))
                 {
-                    codeGenerator.GenCodeLine("    if (jj_scan_token(" + (String)label + ")) " + genReturn(true));
+                    _CodeGenerator.GenCodeLine("    if (jj_scan_token(" + (String)label + ")) " + genReturn(true));
                 }
                 else
                 {
-                    codeGenerator.GenCodeLine("    if (jj_scan_token(" + e_nrw.ordinal + ")) " + genReturn(true));
+                    _CodeGenerator.GenCodeLine("    if (jj_scan_token(" + e_nrw.ordinal + ")) " + genReturn(true));
                 }
             }
             else
             {
-                codeGenerator.GenCodeLine("    if (jj_scan_token(" + e_nrw.label + ")) " + genReturn(true));
+                _CodeGenerator.GenCodeLine("    if (jj_scan_token(" + e_nrw.label + ")) " + genReturn(true));
             }
             //codeGenerator.GenCodeLine("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
         }
@@ -1490,13 +1468,13 @@ public class ParseEngine
             NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.GetName()));
             if (ntprod is CodeProduction)
             {
-                codeGenerator.GenCodeLine("    if (true) { jj_la = 0; jj_scanpos = jj_lastpos; " + genReturn(false) + "}");
+                _CodeGenerator.GenCodeLine("    if (true) { jj_la = 0; jj_scanpos = jj_lastpos; " + genReturn(false) + "}");
             }
             else
             {
                 Expansion ntexp = ntprod.GetExpansion();
                 //codeGenerator.GenCodeLine("    if (jj_3" + ntexp.internal_name + "()) " + genReturn(true));
-                codeGenerator.GenCodeLine("    if (" + genjj_3Call(ntexp) + ") " + genReturn(true));
+                _CodeGenerator.GenCodeLine("    if (" + genjj_3Call(ntexp) + ") " + genReturn(true));
                 //codeGenerator.GenCodeLine("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
             }
         }
@@ -1509,9 +1487,9 @@ public class ParseEngine
                 if (!xsp_declared)
                 {
                     xsp_declared = true;
-                    codeGenerator.GenCodeLine("    " + getTypeForToken() + " xsp;");
+                    _CodeGenerator.GenCodeLine("    " + getTypeForToken() + " xsp;");
                 }
-                codeGenerator.GenCodeLine("    xsp = jj_scanpos;");
+                _CodeGenerator.GenCodeLine("    xsp = jj_scanpos;");
             }
             for (int i = 0; i < e_nrw.GetChoices().Count; i++)
             {
@@ -1521,40 +1499,40 @@ public class ParseEngine
                 {
                     // We have semantic lookahead that must be evaluated.
                     lookaheadNeeded = true;
-                    codeGenerator.GenCodeLine("    jj_lookingAhead = true;");
-                    codeGenerator.GenCode("    jj_semLA = ");
+                    _CodeGenerator.GenCodeLine("    jj_lookingAhead = true;");
+                    _CodeGenerator.GenCode("    jj_semLA = ");
                     JavaCCGlobals.PrintTokenSetup((Token)(la.GetActionTokens()[0]));
                     for (Iterator it = la.GetActionTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
-                        codeGenerator.PrintToken(t);
+                        _CodeGenerator.PrintToken(t);
                     }
-                    codeGenerator.PrintTrailingComments(t);
-                    codeGenerator.GenCodeLine(";");
-                    codeGenerator.GenCodeLine("    jj_lookingAhead = false;");
+                    _CodeGenerator.PrintTrailingComments(t);
+                    _CodeGenerator.GenCodeLine(";");
+                    _CodeGenerator.GenCodeLine("    jj_lookingAhead = false;");
                 }
-                codeGenerator.GenCode("    if (");
+                _CodeGenerator.GenCode("    if (");
                 if (la.GetActionTokens().Count != 0)
                 {
-                    codeGenerator.GenCode("!jj_semLA || ");
+                    _CodeGenerator.GenCode("!jj_semLA || ");
                 }
                 if (i != e_nrw.GetChoices().Count - 1)
                 {
                     //codeGenerator.GenCodeLine("jj_3" + nested_seq.internal_name + "()) {");
-                    codeGenerator.GenCodeLine(genjj_3Call(nested_seq) + ") {");
-                    codeGenerator.GenCodeLine("    jj_scanpos = xsp;");
+                    _CodeGenerator.GenCodeLine(genjj_3Call(nested_seq) + ") {");
+                    _CodeGenerator.GenCodeLine("    jj_scanpos = xsp;");
                 }
                 else
                 {
                     //codeGenerator.GenCodeLine("jj_3" + nested_seq.internal_name + "()) " + genReturn(true));
-                    codeGenerator.GenCodeLine(genjj_3Call(nested_seq) + ") " + genReturn(true));
+                    _CodeGenerator.GenCodeLine(genjj_3Call(nested_seq) + ") " + genReturn(true));
                     //codeGenerator.GenCodeLine("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
                 }
             }
             for (int i = 1; i < e_nrw.GetChoices().Count; i++)
             {
                 //codeGenerator.GenCodeLine("    } else if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
-                codeGenerator.GenCodeLine("    }");
+                _CodeGenerator.GenCodeLine("    }");
             }
         }
         else if (e is Sequence)
@@ -1585,60 +1563,60 @@ public class ParseEngine
             if (!xsp_declared)
             {
                 xsp_declared = true;
-                codeGenerator.GenCodeLine("    " + getTypeForToken() + " xsp;");
+                _CodeGenerator.GenCodeLine("    " + getTypeForToken() + " xsp;");
             }
             OneOrMore e_nrw = (OneOrMore)e;
             Expansion nested_e = e_nrw.expansion;
             //codeGenerator.GenCodeLine("    if (jj_3" + nested_e.internal_name + "()) " + genReturn(true));
-            codeGenerator.GenCodeLine("    if (" + genjj_3Call(nested_e) + ") " + genReturn(true));
+            _CodeGenerator.GenCodeLine("    if (" + genjj_3Call(nested_e) + ") " + genReturn(true));
             //codeGenerator.GenCodeLine("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
-            codeGenerator.GenCodeLine("    while (true) {");
-            codeGenerator.GenCodeLine("      xsp = jj_scanpos;");
+            _CodeGenerator.GenCodeLine("    while (true) {");
+            _CodeGenerator.GenCodeLine("      xsp = jj_scanpos;");
             //codeGenerator.GenCodeLine("      if (jj_3" + nested_e.internal_name + "()) { jj_scanpos = xsp; break; }");
-            codeGenerator.GenCodeLine("      if (" + genjj_3Call(nested_e) + ") { jj_scanpos = xsp; break; }");
+            _CodeGenerator.GenCodeLine("      if (" + genjj_3Call(nested_e) + ") { jj_scanpos = xsp; break; }");
             //codeGenerator.GenCodeLine("      if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
-            codeGenerator.GenCodeLine("    }");
+            _CodeGenerator.GenCodeLine("    }");
         }
         else if (e is ZeroOrMore)
         {
             if (!xsp_declared)
             {
                 xsp_declared = true;
-                codeGenerator.GenCodeLine("    " + getTypeForToken() + " xsp;");
+                _CodeGenerator.GenCodeLine("    " + getTypeForToken() + " xsp;");
             }
             ZeroOrMore e_nrw = (ZeroOrMore)e;
             Expansion nested_e = e_nrw.expansion;
-            codeGenerator.GenCodeLine("    while (true) {");
-            codeGenerator.GenCodeLine("      xsp = jj_scanpos;");
+            _CodeGenerator.GenCodeLine("    while (true) {");
+            _CodeGenerator.GenCodeLine("      xsp = jj_scanpos;");
             //codeGenerator.GenCodeLine("      if (jj_3" + nested_e.internal_name + "()) { jj_scanpos = xsp; break; }");
-            codeGenerator.GenCodeLine("      if (" + genjj_3Call(nested_e) + ") { jj_scanpos = xsp; break; }");
+            _CodeGenerator.GenCodeLine("      if (" + genjj_3Call(nested_e) + ") { jj_scanpos = xsp; break; }");
             //codeGenerator.GenCodeLine("      if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
-            codeGenerator.GenCodeLine("    }");
+            _CodeGenerator.GenCodeLine("    }");
         }
         else if (e is ZeroOrOne)
         {
             if (!xsp_declared)
             {
                 xsp_declared = true;
-                codeGenerator.GenCodeLine("    " + getTypeForToken() + " xsp;");
+                _CodeGenerator.GenCodeLine("    " + getTypeForToken() + " xsp;");
             }
             ZeroOrOne e_nrw = (ZeroOrOne)e;
             Expansion nested_e = e_nrw.expansion;
-            codeGenerator.GenCodeLine("    xsp = jj_scanpos;");
+            _CodeGenerator.GenCodeLine("    xsp = jj_scanpos;");
             //codeGenerator.GenCodeLine("    if (jj_3" + nested_e.internal_name + "()) jj_scanpos = xsp;");
-            codeGenerator.GenCodeLine("    if (" + genjj_3Call(nested_e) + ") jj_scanpos = xsp;");
+            _CodeGenerator.GenCodeLine("    if (" + genjj_3Call(nested_e) + ") jj_scanpos = xsp;");
             //codeGenerator.GenCodeLine("    else if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
         }
         if (!recursive_call)
         {
-            codeGenerator.GenCodeLine("    " + genReturn(false));
+            _CodeGenerator.GenCodeLine("    " + genReturn(false));
             genStackCheckEnd();
             if (!isJavaDialect && Options.GetDepthLimit() > 0)
             {
-                codeGenerator.GenCodeLine("#undef __ERROR_RET__");
+                _CodeGenerator.GenCodeLine("#undef __ERROR_RET__");
             }
-            codeGenerator.GenCodeLine("  }");
-            codeGenerator.GenCodeLine("");
+            _CodeGenerator.GenCodeLine("  }");
+            _CodeGenerator.GenCodeLine("");
         }
     }
 
@@ -1663,10 +1641,9 @@ public class ParseEngine
         {
             retval = 1;
         }
-        else if (e is NonTerminal)
+        else if (e is NonTerminal e_nrw6)
         {
-            NonTerminal e_nrw = (NonTerminal)e;
-            NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.GetName()));
+            NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw6.GetName()));
             if (ntprod is CodeProduction)
             {
                 retval = int.MaxValue;
@@ -1686,21 +1663,20 @@ public class ParseEngine
             Choice e_nrw = (Choice)e;
             for (int i = 0; min > 1 && i < e_nrw.GetChoices().Count; i++)
             {
-                nested_e = (Expansion)(e_nrw.GetChoices()[i]);
+                nested_e = e_nrw.GetChoices()[i];
                 int min1 = minimumSize(nested_e, min);
                 if (min > min1) min = min1;
             }
             retval = min;
         }
-        else if (e is Sequence)
+        else if (e is Sequence e_nrw11)
         {
             int min = 0;
-            Sequence e_nrw = (Sequence)e;
             // We skip the first element in the following iteration since it is the
             // Lookahead object.
-            for (int i = 1; i < e_nrw.units.Count; i++)
+            for (int i = 1; i < e_nrw11.units.Count; i++)
             {
-                Expansion eseq = (Expansion)(e_nrw.units[i]);
+                Expansion eseq = e_nrw11.units[i];
                 int mineseq = minimumSize(eseq);
                 if (min == int.MaxValue || mineseq == int.MaxValue)
                 {
@@ -1715,15 +1691,13 @@ public class ParseEngine
             }
             retval = min;
         }
-        else if (e is TryBlock)
+        else if (e is TryBlock e_nrw7)
         {
-            TryBlock e_nrw = (TryBlock)e;
-            retval = minimumSize(e_nrw.exp);
+            retval = minimumSize(e_nrw7.exp);
         }
-        else if (e is OneOrMore)
+        else if (e is OneOrMore e_nrw8)
         {
-            OneOrMore e_nrw = (OneOrMore)e;
-            retval = minimumSize(e_nrw.expansion);
+            retval = minimumSize(e_nrw8.expansion);
         }
         else if (e is ZeroOrMore)
         {
@@ -1747,19 +1721,13 @@ public class ParseEngine
 
     public void build(CodeGenerator codeGenerator)
     {
-        NormalProduction p;
-        JavaCodeProduction jp;
-        CppCodeProduction cp;
         Token t = null;
 
-        this.codeGenerator = codeGenerator;
-        for (Iterator prodIterator = bnfproductions.iterator(); prodIterator.hasNext();)
+        this._CodeGenerator = codeGenerator;
+        foreach(var p in JavaCCGlobals.bnfproductions)
         {
-            p = (NormalProduction)prodIterator.next();
-            if (p is CppCodeProduction)
+            if (p is CppCodeProduction cp)
             {
-                cp = (CppCodeProduction)p;
-
                 GenerateCPPMethodheader(cp);
                 //          t = (Token)(cp.getReturnTypeTokens()[0]);
                 //          codeGenerator.printTokenSetup(t); ccol = 1;
@@ -1807,8 +1775,9 @@ public class ParseEngine
                 }
                 if (cp.GetCodeTokens().Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup(cp.GetCodeTokens()[0]); cline--;
-                    codeGenerator.PrintTokenList(cp.GetCodeTokens()); 
+                    JavaCCGlobals.PrintTokenSetup(cp.GetCodeTokens()[0]); 
+                    JavaCCGlobals.cline--;
+                    codeGenerator.PrintTokenList(cp.GetCodeTokens());
                 }
                 codeGenerator.GenCodeLine("");
                 if (Options.GetDebugParser())
@@ -1819,19 +1788,20 @@ public class ParseEngine
                 codeGenerator.GenCodeLine("");
             }
             else
-            if (p is JavaCodeProduction)
+            if (p is JavaCodeProduction jp)
             {
                 if (!isJavaDialect)
                 {
                     JavaCCErrors.SemanticError("Cannot use JAVACODE productions with C++ output (yet).");
                     continue;
                 }
-                jp = (JavaCodeProduction)p;
                 t = jp.GetReturnTypeTokens()[0];
-                JavaCCGlobals.PrintTokenSetup(t); ccol = 1;
+                JavaCCGlobals.PrintTokenSetup(t);
+                JavaCCGlobals.ccol = 1;
                 codeGenerator.PrintLeadingComments(t);
-                codeGenerator.GenCode("  " + staticOpt() + (p.GetAccessMod() != null ? p.GetAccessMod() + " " : ""));
-                cline = t.beginLine; ccol = t.beginColumn;
+                codeGenerator.GenCode("  " + JavaCCGlobals.StaticOpt() + (p.GetAccessMod() != null ? p.GetAccessMod() + " " : ""));
+                JavaCCGlobals.cline = t.beginLine; 
+                JavaCCGlobals.ccol = t.beginColumn;
                 codeGenerator.PrintTokenOnly(t);
                 for (int i = 1; i < jp.GetReturnTypeTokens().Count; i++)
                 {
@@ -1842,11 +1812,10 @@ public class ParseEngine
                 codeGenerator.GenCode(" " + jp.GetLhs() + "(");
                 if (jp.GetParameterListTokens().Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup((Token)(jp.GetParameterListTokens()[0]));
-                    for (Iterator it = jp.GetParameterListTokens().iterator(); it.hasNext();)
+                    JavaCCGlobals.PrintTokenSetup((jp.GetParameterListTokens()[0]));
+                    foreach(var t2 in jp.GetParameterListTokens())
                     {
-                        t = (Token)it.next();
-                        codeGenerator.PrintToken(t);
+                        codeGenerator.PrintToken(t=t2);
                     }
                     codeGenerator.PrintTrailingComments(t);
                 }
@@ -1855,13 +1824,12 @@ public class ParseEngine
                 {
                     codeGenerator.GenCode(" throws ParseException");
                 }
-                for (Iterator it = jp.getThrowsList().iterator(); it.hasNext();)
+                foreach(var name in jp.GetThrowsList())
                 {
                     codeGenerator.GenCode(", ");
-                    List name = (List)it.next();
-                    for (Iterator it2 = name.iterator(); it2.hasNext();)
+                    foreach(var t2 in name)
                     {
-                        t = (Token)it2.next();
+                        t = t2;
                         codeGenerator.GenCode(t.image);
                     }
                 }
@@ -1874,7 +1842,8 @@ public class ParseEngine
                 }
                 if (jp.GetCodeTokens().Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup((Token)(jp.GetCodeTokens()[0])); cline--;
+                    JavaCCGlobals.PrintTokenSetup((jp.GetCodeTokens()[0]));
+                    JavaCCGlobals.cline--;
                     codeGenerator.PrintTokenList(jp.GetCodeTokens());
                 }
                 codeGenerator.GenCodeLine("");
@@ -1896,7 +1865,7 @@ public class ParseEngine
         codeGenerator.SwitchToIncludeFile();
         for (int phase2index = 0; phase2index < phase2list.Count; phase2index++)
         {
-            buildPhase2Routine((Lookahead)(phase2list.get(phase2index)));
+            buildPhase2Routine((Lookahead)(phase2list[phase2index]));
         }
 
         int phase3index = 0;
@@ -1905,13 +1874,13 @@ public class ParseEngine
         {
             for (; phase3index < phase3list.Count; phase3index++)
             {
-                setupPhase3Builds((Phase3Data)(phase3list.get(phase3index)));
+                setupPhase3Builds((Phase3Data)(phase3list[phase3index]));
             }
         }
 
-        for (Enumeration enumeration = phase3table.elements(); enumeration.hasMoreElements();)
+        foreach(var phase3 in phase3table.Values)
         {
-            buildPhase3Routine((Phase3Data)(enumeration.nextElement()), false);
+            buildPhase3Routine(phase3, false);
         }
         // for (Enumeration enumeration = phase3table.elements(); enumeration.hasMoreElements();) {
         // Phase3Data inf = (Phase3Data)(enumeration.nextElement());
@@ -1928,9 +1897,9 @@ public class ParseEngine
         gensymindex = 0;
         indentamt = 0;
         jj2LA = false;
-        phase2list = new ();
-        phase3list = new ();
-        phase3table = new ();
+        phase2list = new();
+        phase3list = new();
+        phase3table = new();
         firstSet = null;
         xsp_declared = false;
         jj3_expansion = null;
@@ -1947,8 +1916,9 @@ public class ParseEngine
         }
         else if (e is NonTerminal e_nrw2)
         {
-            NormalProduction ntprod =
-                (NormalProduction)(production_table.get(e_nrw2.GetName()));
+            if (!JavaCCGlobals.production_table.TryGetValue(e_nrw2.GetName(), out var ntprod))
+                return;
+
             if (ntprod is CodeProduction)
             {
                 // javacode, true - always (warn?)
@@ -1962,14 +1932,14 @@ public class ParseEngine
                 //buildPhase3Table(new Phase3Data(ntexp, inf.count));
             }
         }
-        else if (e is Choice e_nrw)
+        else if (e is Choice e_nrw4)
         {
             Sequence nested_seq;
             Console.Error.Write("CHOICE, ");
-            for (int i = 0; i < e_nrw.GetChoices().Count; i++)
+            for (int i = 0; i < e_nrw4.GetChoices().Count; i++)
             {
                 if (i > 0) Console.Error.Write("\n|");
-                nested_seq = (Sequence)(e_nrw.GetChoices()[i]);
+                nested_seq = (Sequence)(e_nrw4.GetChoices()[i]);
                 Lookahead la = (Lookahead)(nested_seq.units[0]);
                 if (la.GetActionTokens().Count != 0)
                 {
@@ -1982,17 +1952,16 @@ public class ParseEngine
             }
             Console.Error.WriteLine();
         }
-        else if (e is Sequence)
+        else if (e is Sequence e_nrw5)
         {
-            Sequence e_nrw = (Sequence)e;
             int cnt = inf.count;
-            if (e_nrw.units.Count > 2)
+            if (e_nrw5.units.Count > 2)
             {
                 Console.Error.WriteLine("SEQ, " + cnt);
-                for (int i = 1; i < e_nrw.units.Count; i++)
+                for (int i = 1; i < e_nrw5.units.Count; i++)
                 {
                     Console.Error.Write("   ");
-                    Expansion eseq = (Expansion)(e_nrw.units[i]);
+                    Expansion eseq = (Expansion)(e_nrw5.units[i]);
                     buildPhase3Table(new Phase3Data(eseq, cnt));
                     cnt -= minimumSize(eseq);
                     if (cnt <= 0) break;
@@ -2000,13 +1969,13 @@ public class ParseEngine
             }
             else
             {
-                var tmp = e_nrw.units[1];
-                while (tmp is NonTerminal)
+                var tmp = e_nrw5.units[1];
+                while (tmp is NonTerminal tx)
                 {
-                    NormalProduction ntprod =
-                        (NormalProduction)(
-                            production_table.get(((NonTerminal)tmp).GetName()));
-                    if ( ntprod is CodeProduction) break;
+                    if (!JavaCCGlobals.production_table.TryGetValue(tx.GetName(), out var ntprod))
+                        break;
+
+                    if (ntprod is CodeProduction) break;
                     tmp = ntprod.GetExpansion();
                 }
                 buildPhase3Table(new Phase3Data(tmp, cnt));
@@ -2017,14 +1986,14 @@ public class ParseEngine
         {
             buildPhase3Table(new Phase3Data(e_nrw6.exp, inf.count));
         }
-        else if (e is OneOrMore e_nrw5)
+        else if (e is OneOrMore e_nrw15)
         {
-            Console.Error.WriteLine("SEQ PROD " + e_nrw5.expansion.internal_index);
-            Console.Error.WriteLine("ZEROORMORE " + e_nrw5.expansion.internal_index);
+            Console.Error.WriteLine("SEQ PROD " + e_nrw15.expansion.internal_index);
+            Console.Error.WriteLine("ZEROORMORE " + e_nrw15.expansion.internal_index);
         }
-        else if (e is ZeroOrMore e_nrw4)
+        else if (e is ZeroOrMore e_nrw14)
         {
-            Console.Error.Write("ZEROORMORE, " + e_nrw4.expansion.internal_index);
+            Console.Error.Write("ZEROORMORE, " + e_nrw14.expansion.internal_index);
         }
         else if (e is ZeroOrOne e_nrw3)
         {

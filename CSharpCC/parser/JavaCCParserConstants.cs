@@ -289,7 +289,7 @@ public class JavaCCParserConstants
     public const int IN_MULTI_LINE_COMMENT = 4;
 
     /** Literal token values. */
-    static readonly string[] tokenImage = {
+    public static readonly string[] tokenImage = {
     "<EOF>",
     "\"LOOKAHEAD\"",
     "\"IGNORE_CASE\"",

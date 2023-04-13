@@ -76,7 +76,7 @@ public class NormalProduction
      * exception in the throws list of this production.  This list does not
      * include ParseException which is always thrown.
      */
-    private List<string> throws_list = new();
+    private List<List<Token>> throws_list = new();
 
     /**
      * The RHS of this production.  Not used for JavaCodeProduction.
@@ -243,7 +243,7 @@ public class NormalProduction
     /**
      * @param throws_list the throws_list to set
      */
-    public void SetThrowsList(List<string> throws_list)
+    public void SetThrowsList(List<List<Token>> throws_list)
     {
         this.throws_list = throws_list;
     }
@@ -251,7 +251,7 @@ public class NormalProduction
     /**
      * @return the throws_list
      */
-    public List<string> getThrowsList()
+    public List<List<Token>> GetThrowsList()
     {
         return throws_list;
     }

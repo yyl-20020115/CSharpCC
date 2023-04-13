@@ -457,7 +457,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_consume_token(THROWS);
                 excName = new ();
                 Name(excName);
-                p.getThrowsList().Add(excName);
+                p.GetThrowsList().Add(excName);
             label_4:
                 while (true)
                 {
@@ -473,7 +473,7 @@ public class JavaCCParser : JavaCCParserInternals
                     excName = new ();
                     jj_consume_token(COMMA);
                     Name(excName);
-                    p.getThrowsList().Add(excName);
+                    p.GetThrowsList().Add(excName);
                 }
                 break;
             default:
@@ -507,7 +507,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_consume_token(THROWS);
                 excName = new ();
                 Name(excName);
-                p.getThrowsList().Add(excName);
+                p.GetThrowsList().Add(excName);
             label_5:
                 while (true)
                 {
@@ -523,7 +523,7 @@ public class JavaCCParser : JavaCCParserInternals
                     excName = new ();
                     jj_consume_token(COMMA);
                     Name(excName);
-                    p.getThrowsList().Add(excName);
+                    p.GetThrowsList().Add(excName);
                 }
                 break;
             default:
@@ -558,7 +558,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_consume_token(THROWS);
                 excName = new ();
                 Name(excName);
-                p.getThrowsList().Add(excName);
+                p.GetThrowsList().Add(excName);
             label_6:
                 while (true)
                 {
@@ -574,7 +574,7 @@ public class JavaCCParser : JavaCCParserInternals
                     excName = new ();
                     jj_consume_token(COMMA);
                     Name(excName);
-                    p.getThrowsList().Add(excName);
+                    p.GetThrowsList().Add(excName);
                 }
                 break;
             default:
@@ -10579,7 +10579,8 @@ public class JavaCCParser : JavaCCParserInternals
             {
                 jj_expentry[i] = jj_lasttokens[i];
             }
-        jj_entries_loop: for (Iterator it = jj_expentries.iterator(); it.hasNext();)
+        jj_entries_loop: 
+            for (Iterator it = jj_expentries.iterator(); it.hasNext();)
             {
                 int[] oldentry = (int[])(it.next());
                 if (oldentry.Length == jj_expentry.Length)
