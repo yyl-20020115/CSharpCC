@@ -1272,7 +1272,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
         jjmatchedPos = pos;
         try { curChar = input_stream.ReadChar(); }
         catch (IOException e) { return pos + 1; }
-        return jjMoveNfa_0(state, pos + 1);
+        return jjMoveNfa_0((uint)state, pos + 1);
     }
     static ulong[] jjbitVec0 = {
    0xfffffffffffffffeL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL

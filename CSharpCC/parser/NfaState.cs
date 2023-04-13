@@ -1038,7 +1038,6 @@ public class NfaState
                         "0x" + Long.toHexString(loBytes[i][1]) + "L, " +
                         "0x" + Long.toHexString(loBytes[i][2]) + "L, " +
                         "0x" + Long.toHexString(loBytes[i][3]) + "L\n};";
-
                 if ((ind = (int)lohiByteTab.get(tmp)) == null)
                 {
                     allBitVectors.Add(tmp);

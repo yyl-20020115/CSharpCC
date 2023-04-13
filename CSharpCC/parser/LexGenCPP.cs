@@ -224,7 +224,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         actions = new Action[maxOrdinal];
         actions[0] = actForEof;
         hasTokenActions = actForEof != null;
-        initStates = new ();
+        initStates = new (); 
         canMatchAnyChar = new int[maxLexStates];
         canLoop = new bool[maxLexStates];
         stateHasActions = new bool[maxLexStates];

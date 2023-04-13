@@ -50,7 +50,7 @@ public class LexGen : CodeGenerator
     public static string tokMgrClassName;
 
     // Dictionary of vectors
-    public static Dictionary allTpsForState = new();
+    public static Dictionary<string, List<TokenProduction>> allTpsForState = new();
     public static int lexStateIndex = 0;
     public static int[] kinds;
     public static int maxOrdinal = 1;
@@ -1550,7 +1550,7 @@ public class LexGen : CodeGenerator
     public static void reInit()
     {
         actions = null;
-        allTpsForState = new Dictionary();
+        allTpsForState = new ();
         canLoop = null;
         canMatchAnyChar = null;
         canReachOnMore = null;

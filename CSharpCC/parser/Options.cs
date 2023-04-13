@@ -217,7 +217,6 @@ public class Options
         supportedJavaTemplateTypes.Add(JAVA_TEMPLATE_TYPE_MODERN);
         supportedLanguages.Add(OUTPUT_LANGUAGE__JAVA);
         supportedLanguages.Add(OUTPUT_LANGUAGE__CPP);
-
     }
 
     /**

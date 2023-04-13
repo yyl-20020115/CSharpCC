@@ -28,8 +28,6 @@ using System.Text;
 
 namespace org.javacc.parser;
 
-
-
 /**
  * This class handles the creation and maintenance of the boiler-plate classes,
  * such as Token.java, JavaCharStream.java etc. 

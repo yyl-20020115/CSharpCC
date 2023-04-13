@@ -48,7 +48,7 @@ public class Semanticize : JavaCCGlobals
             list.remove(itemList[i]);
         }
         removeList.Clear();
-        itemList.Clear(); 
+        itemList.Clear();  
     }
 
     static public void Start()
