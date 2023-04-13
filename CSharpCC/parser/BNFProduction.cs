@@ -38,37 +38,28 @@ public class BNFProduction : NormalProduction
     /**
      * The declarations of this production.
      */
-    private List<Token> declaration_tokens = new();
+    private List<Token> DeclarationTokens = new();
 
     /**
      * This flag keeps track of whether or not return and throw
      * statements have been patched within this production's actions to
      * include a preceding "if (true)".
      */
-    private bool jumpPatched;
+    private bool JumpPatched;
 
     /**
      * @return the declaration_tokens
      */
-    public List<Token> getDeclarationTokens()
-    {
-        return declaration_tokens;
-    }
+    public List<Token> GetDeclarationTokens() => DeclarationTokens;
 
     /**
      * @param jumpPatched the jumpPatched to set
      */
-    public void setJumpPatched(bool jumpPatched)
-    {
-        this.jumpPatched = jumpPatched;
-    }
+    public void SetJumpPatched(bool JumpPatched) => this.JumpPatched = JumpPatched;
 
     /**
      * @return the jumpPatched
      */
-    public bool isJumpPatched()
-    {
-        return jumpPatched;
-    }
+    public bool IsJumpPatched() => JumpPatched;
 
 }

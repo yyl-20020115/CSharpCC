@@ -32,18 +32,17 @@ namespace org.javacc.parser;
  * Describes a CODE productions.
  */
 
-public abstract class CodeProduction:NormalProduction {
+public abstract class CodeProduction : NormalProduction
+{
 
-  /**
-   * The tokens that implement this JAVACODE/CPPCODE production.
-   */
-  private List<Token> code_tokens = new ();
+    /**
+     * The tokens that implement this JAVACODE/CPPCODE production.
+     */
+    private readonly List<Token> CodeTokens = new();
 
-  /**
-   * @return the code_tokens
-   */
-  public List<Token> getCodeTokens() {
-    return code_tokens;
-  }
+    /**
+     * @return the code_tokens
+     */
+    public List<Token> GetCodeTokens() => CodeTokens;
 
 }

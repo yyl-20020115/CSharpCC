@@ -49,21 +49,21 @@ public class Choice : Expansion
 
     public Choice(Token token)
     {
-        this.setLine(token.beginLine);
-        this.setColumn(token.beginColumn);
+        this.SetLine(token.beginLine);
+        this.SetColumn(token.beginColumn);
     }
 
     public Choice(Expansion expansion)
     {
-        this.setLine(expansion.getLine());
-        this.setColumn(expansion.getColumn());
-        this.getChoices().Add(expansion);
+        this.SetLine(expansion.GetLine());
+        this.SetColumn(expansion.GetColumn());
+        this.GetChoices().Add(expansion);
     }
 
     /**
      * @param choices the choices to set
      */
-    public void setChoices(List<Expansion> choices)
+    public void SetChoices(List<Expansion> choices)
     {
         this.choices = choices;
     }
@@ -71,20 +71,20 @@ public class Choice : Expansion
     /**
      * @return the choices
      */
-    public List<Expansion> getChoices()
+    public List<Expansion> GetChoices()
     {
         return choices;
     }
 
-    public override StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
+    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        var sb = base.dump(indent, alreadyDumped);
+        var sb = base.Dump(indent, alreadyDumped);
         if (alreadyDumped.Contains(this))
             return sb;
         alreadyDumped.Add(this);
-        foreach(Expansion next in getChoices())
+        foreach(Expansion next in GetChoices())
         {
-            sb.Append(eol).Append(next.dump(indent + 1, alreadyDumped));
+            sb.Append(eol).Append(next.Dump(indent + 1, alreadyDumped));
         }
         return sb;
     }

@@ -157,7 +157,7 @@ public class Options
             new OptionInfo(USEROPTION__PARSER_CODE_GENERATOR, OptionType.STRING, ""),
             new OptionInfo(USEROPTION__TOKEN_MANAGER_CODE_GENERATOR, OptionType.STRING, ""),
             new OptionInfo(USEROPTION__NO_DFA, OptionType.BOOLEAN, false),
-            new OptionInfo(USEROPTION__DEBUG_PARSER, OptionType.BOOLEAN, Boolean.FALSE),
+            new OptionInfo(USEROPTION__DEBUG_PARSER, OptionType.BOOLEAN, false),
 
             new OptionInfo(USEROPTION__DEBUG_LOOKAHEAD, OptionType.BOOLEAN, false),
             new OptionInfo(USEROPTION__DEBUG_TOKEN_MANAGER, OptionType.BOOLEAN, false),
@@ -239,7 +239,7 @@ public class Options
 
         foreach (OptionInfo t in userOptions)
         {
-            optionValues.Add(t, t.getDefault());
+            optionValues.Add(t, t.GetDefault());
         }
 
         {
@@ -364,10 +364,10 @@ public class Options
      */
     public static object upgradeValue(string name, object value)
     {
-        if (name.equalsIgnoreCase("NODE_FACTORY")
-                && value is bool)
+        if (name.Equals("NODE_FACTORY", StringComparison.InvariantCultureIgnoreCase)
+                && value is bool b)
         {
-            if (((Boolean)value).booleanValue())
+            if (b)
             {
                 value = "*";
             }

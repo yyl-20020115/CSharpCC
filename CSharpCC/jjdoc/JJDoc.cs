@@ -171,7 +171,7 @@ public class JJDoc : JJDocGlobals
                 {
                     bool first = true;
                     Choice c = (Choice)np.getExpansion();
-                    foreach (Expansion e in c.getChoices())
+                    foreach (Expansion e in c.GetChoices())
                     {
                         gen.ExpansionStart(e, first);
                         EmitExpansionTree(e, gen);
@@ -253,7 +253,7 @@ public class JJDoc : JJDocGlobals
     private static void EmitExpansionChoice(Choice c, Generator gen)
     {
         var first = true;
-        foreach (Expansion e in c.getChoices())
+        foreach (Expansion e in c.GetChoices())
         {
             if (!first)
             {
@@ -392,10 +392,10 @@ public class JJDoc : JJDocGlobals
                 else if (o is CharacterRange range)
                 {
                     returnString += "\"";
-                    char[] s = { range.getLeft() };
+                    char[] s = { range.GetLeft() };
                     returnString += add_escapes(new String(s));
                     returnString += "\"-\"";
-                    s[0] = range.getRight();
+                    s[0] = range.GetRight();
                     returnString += add_escapes(new String(s));
                     returnString += "\"";
                 }

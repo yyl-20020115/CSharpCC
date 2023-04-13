@@ -15,14 +15,6 @@ namespace org.javacc.utils;
  */
 public class ParseException : Exception
 {
-
-    /**
-     * The version identifier for this Serializable class.
-     * Increment only if the <i>serialized</i> form of the
-     * class changes.
-     */
-    private const long serialVersionUID = 1L;
-
     /**
      * This constructor is used by the method "generateParseException"
      * in the generated parser.  Calling this constructor generates
@@ -33,7 +25,7 @@ public class ParseException : Exception
                           int[][] expectedTokenSequencesVal,
                           String[] tokenImageVal
                          )
-          : base(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal))
+          : base(Initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal))
     {
         currentToken = currentTokenVal;
         expectedTokenSequences = expectedTokenSequencesVal;
@@ -90,7 +82,7 @@ public class ParseException : Exception
      * from the parser) the correct error message
      * gets displayed.
      */
-    private static string initialise(Token currentToken,
+    private static string Initialise(Token currentToken,
                              int[][] expectedTokenSequences,
                              string[] tokenImage)
     {
@@ -125,7 +117,7 @@ public class ParseException : Exception
             }
             retval += " " + tokenImage[tok.kind];
             retval += " \"";
-            retval += add_escapes(tok.image);
+            retval += AddEscapes(tok.image);
             retval += " \"";
             tok = tok.next;
         }
@@ -153,7 +145,7 @@ public class ParseException : Exception
      * when these raw version cannot be used as part of an ASCII
      * string literal.
      */
-    static String add_escapes(String str)
+    private static string AddEscapes(string str)
     {
         var retval = new StringBuilder();
         char ch;

@@ -13,7 +13,7 @@ public class OptionInfo : IComparable<OptionInfo>
 {
     string _name;
     OptionType _type;
-    Object _default;
+    object _default;
 
     public OptionInfo(string name, OptionType type, Object default1)
     {
@@ -22,17 +22,17 @@ public class OptionInfo : IComparable<OptionInfo>
         _default = default1;
     }
 
-    public string getName()
+    public string GetName()
     {
         return _name;
     }
 
-    public OptionType getType()
+    public OptionType GetOptionType()
     {
         return _type;
     }
 
-    public object getDefault()
+    public object GetDefault()
     {
         return _default;
     }

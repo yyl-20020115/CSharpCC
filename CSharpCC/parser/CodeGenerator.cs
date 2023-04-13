@@ -7,49 +7,47 @@ using System.Text;
 namespace org.javacc.parser;
 
 
-
-
 public class CodeGenerator : JavaCCParserConstants
 {
-    protected StringBuilder mainBuffer = new StringBuilder();
-    protected StringBuilder includeBuffer = new StringBuilder();
-    protected StringBuilder staticsBuffer = new StringBuilder();
-    protected StringBuilder outputBuffer = mainBuffer;
+    protected StringBuilder mainBuffer = new ();
+    protected StringBuilder includeBuffer = new ();
+    protected StringBuilder staticsBuffer = new ();
+    protected StringBuilder outputBuffer=> mainBuffer;
 
-    public void genStringLiteralArrayCPP(string varName, String[] arr)
+    public void GenStringLiteralArrayCPP(string varName, String[] arr)
     {
         // First generate char array vars
         for (int i = 0; i < arr.Length; i++)
         {
-            genCodeLine("static const JJChar " + varName + "_arr_" + i + "[] = ");
-            genStringLiteralInCPP(arr[i]);
-            genCodeLine(";");
+            GenCodeLine("static const JJChar " + varName + "_arr_" + i + "[] = ");
+            GenStringLiteralInCPP(arr[i]);
+            GenCodeLine(";");
         }
 
-        genCodeLine("static const JJString " + varName + "[] = {");
+        GenCodeLine("static const JJString " + varName + "[] = {");
         for (int i = 0; i < arr.Length; i++)
         {
-            genCodeLine(varName + "_arr_" + i + ", ");
+            GenCodeLine(varName + "_arr_" + i + ", ");
         }
-        genCodeLine("};");
+        GenCodeLine("};");
     }
-    public void genStringLiteralInCPP(string s)
+    public void GenStringLiteralInCPP(string s)
     {
         // string literals in CPP become char arrays
-        outputBuffer.Append("{");
+        outputBuffer.Append('{');
         for (int i = 0; i < s.Length; i++)
         {
             outputBuffer.Append("0x" + int.toHexString((int)s[i]) + ", ");
         }
         outputBuffer.Append("0}");
     }
-    public void genCodeLine(params object[] code)
+    public void GenCodeLine(params object[] code)
     {
-        genCode(code);
-        genCode("\n");
+        GenCode(code);
+        GenCode("\n");
     }
 
-    public void genCode(params object[] code)
+    public void GenCode(params object[] code)
     {
         foreach (object s in code)
         {
@@ -57,12 +55,12 @@ public class CodeGenerator : JavaCCParserConstants
         }
     }
 
-    public void saveOutput(string fileName)
+    public void SaveOutput(string fileName)
     {
         if (!isJavaLanguage())
         {
             string incfilePath = fileName.Replace(".cc", ".h");
-            string incfileName = new File(incfilePath);
+            string incfileName = (incfilePath);
             includeBuffer.Insert(0, "#define " + incfileName.Replace('.', '_').ToUpper() + "\n");
             includeBuffer.Insert(0, "#ifndef " + incfileName.Replace('.', '_').ToUpper() + "\n");
 
@@ -183,7 +181,7 @@ public class CodeGenerator : JavaCCParserConstants
 
     public void printTokenOnly(Token t)
     {
-        genCode(getStringForTokenOnly(t));
+        GenCode(getStringForTokenOnly(t));
     }
 
     protected string getStringForTokenOnly(Token t)
@@ -218,7 +216,7 @@ public class CodeGenerator : JavaCCParserConstants
 
     public void printToken(Token t)
     {
-        genCode(getStringToPrint(t));
+        GenCode(getStringToPrint(t));
     }
 
     public string getStringToPrint(Token t)
@@ -240,10 +238,10 @@ public class CodeGenerator : JavaCCParserConstants
 
     public void printLeadingComments(Token t)
     {
-        genCode(getLeadingComments(t));
+        GenCode(getLeadingComments(t));
     }
 
-    protected string getLeadingComments(Token t)
+    public string getLeadingComments(Token t)
     {
         string retval = "";
         if (t.specialToken == null) return retval;
@@ -289,11 +287,11 @@ public class CodeGenerator : JavaCCParserConstants
     {
         if (Options.isOutputLanguageJava())
         {
-            genCode("@" + ann);
+            GenCode("@" + ann);
         }
         else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         { // For now, it's only C++ for now
-            genCode("/*" + ann + "*/");
+            GenCode("/*" + ann + "*/");
         }
         else
         {
@@ -309,13 +307,13 @@ public class CodeGenerator : JavaCCParserConstants
         string origMod = mod.ToLower(Locale.ENGLISH);
         if (isJavaLanguage())
         {
-            genCode(mod);
+            GenCode(mod);
         }
         else
         { // For now, it's only C++ for now
             if (origMod == ("public") || origMod == ("private"))
             {
-                genCode(origMod + ": ");
+                GenCode(origMod + ": ");
             }
             // we don't care about other mods for now.
         }
@@ -332,33 +330,33 @@ public class CodeGenerator : JavaCCParserConstants
         {
             genModifier(mod);
         }
-        genCode("class " + name);
+        GenCode("class " + name);
         if (_isJavaLanguage)
         {
             if (superClasses.Length == 1 && superClasses[0] != null)
             {
-                genCode(" extends " + superClasses[0]);
+                GenCode(" extends " + superClasses[0]);
             }
             if (superInterfaces.Length != 0)
             {
-                genCode(" implements ");
+                GenCode(" implements ");
             }
         }
         else
         {
             if (superClasses.Length > 0 || superInterfaces.Length > 0)
             {
-                genCode(" : ");
+                GenCode(" : ");
             }
 
             genCommaSeperatedString(superClasses);
         }
 
         genCommaSeperatedString(superInterfaces);
-        genCodeLine(" {");
+        GenCodeLine(" {");
         if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
-            genCodeLine("public:");
+            GenCodeLine("public:");
         }
     }
 
@@ -368,10 +366,10 @@ public class CodeGenerator : JavaCCParserConstants
         {
             if (i > 0)
             {
-                genCode(", ");
+                GenCode(", ");
             }
 
-            genCode(strings[i]);
+            GenCode(strings[i]);
         }
     }
 
@@ -412,12 +410,12 @@ public class CodeGenerator : JavaCCParserConstants
         // for C++, we generate the signature in the header file and body in main file
         if (isJavaLanguage())
         {
-            genCode(qualifiedModsAndRetType + " " + nameAndParams);
+            GenCode(qualifiedModsAndRetType + " " + nameAndParams);
             if (exceptions != null)
             {
-                genCode(" throws " + exceptions);
+                GenCode(" throws " + exceptions);
             }
-            genCodeLine("");
+            GenCodeLine("");
         }
         else
         {
@@ -491,8 +489,8 @@ public class CodeGenerator : JavaCCParserConstants
 
         OutputFileGenerator gen = new OutputFileGenerator(name, options);
         StringWriter sw = new StringWriter();
-        gen.generate(new TextWriter(sw));
+        gen.Generate(new TextWriter(sw));
         sw.Close();
-        genCode(sw.ToString());
+        GenCode(sw.ToString());
     }
 }

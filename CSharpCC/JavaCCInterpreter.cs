@@ -44,11 +44,11 @@ public class JavaCCInterpreter
             Environment.Exit(1);
         }
         long l = System.currentTimeMillis();
-        new JavaCCInterpreter().runTokenizer(grammar, input);
+        new JavaCCInterpreter().RunTokenizer(grammar, input);
         Console.Error.WriteLine("Tokenized in: " + (System.currentTimeMillis() - l));
     }
 
-    public void runTokenizer(string grammar, string input)
+    public void RunTokenizer(string grammar, string input)
     {
         try
         {
@@ -56,12 +56,12 @@ public class JavaCCInterpreter
             parser.javacc_input();
             Semanticize.start();
             LexGen lg = new LexGen();
-            lg.generateDataOnly = true;
+            lg.GenerateDataOnly = true;
             lg.start();
             TokenizerData td = LexGen.tokenizerData;
             if (JavaCCErrors.get_error_count() == 0)
             {
-                tokenize(td, input);
+                Tokenize(td, input);
             }
         }
         catch (MetaParseException e)
@@ -81,7 +81,7 @@ public class JavaCCInterpreter
         }
     }
 
-    public static void tokenize(TokenizerData td, string input)
+    public static void Tokenize(TokenizerData td, string input)
     {
         // First match the string literals.
         int input_size = input.Length;

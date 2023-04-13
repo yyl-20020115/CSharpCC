@@ -42,15 +42,15 @@ public class Action : Expansion
      * Contains the list of tokens that make up the action.  This
      * list does not include the surrounding braces.
      */
-    private List<Token> action_tokens = new ();
+    private readonly List<Token> ActionTokens = new ();
 
-    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
+    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        StringBuilder sb = base.dump(indent, alreadyDumped);
+        var sb = base.Dump(indent, alreadyDumped);
         alreadyDumped.Add(this);
-        if (getActionTokens().Count > 0)
+        if (GetActionTokens().Count > 0)
         {
-            sb.Append(' ').Append(getActionTokens()[0]);
+            sb.Append(' ').Append(GetActionTokens()[0]);
         }
         return sb;
     }
@@ -58,8 +58,5 @@ public class Action : Expansion
     /**
      * @return the action_tokens
      */
-    public List<Token> getActionTokens()
-    {
-        return action_tokens;
-    }
+    public List<Token> GetActionTokens() => ActionTokens;
 }

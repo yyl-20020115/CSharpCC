@@ -45,18 +45,18 @@ public class ZeroOrMore:Expansion {
     public ZeroOrMore() {}
 
     public ZeroOrMore(Token token, Expansion expansion) {
-        this.setLine(token.beginLine);
-        this.setColumn(token.beginColumn);
+        this.SetLine(token.beginLine);
+        this.SetColumn(token.beginColumn);
         this.expansion = expansion;
         this.expansion.parent = this;
     }
 
-    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped) {
-      StringBuilder sb = base.dump(indent, alreadyDumped);
+    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped) {
+      StringBuilder sb = base.Dump(indent, alreadyDumped);
       if (alreadyDumped.Contains(this))
         return sb;
       alreadyDumped.Add(this);
-      sb.Append(eol).Append(expansion.dump(indent + 1, alreadyDumped));
+      sb.Append(eol).Append(expansion.Dump(indent + 1, alreadyDumped));
       return sb;
     }
 }

@@ -43,13 +43,13 @@ public class OtherFilesGenCPP: JavaCCGlobals {
     Token t = null;
     if (JavaCCErrors.get_error_count() != 0) throw new MetaParseException();
 
-    CPPFiles.gen_JavaCCDefs();
-    CPPFiles.gen_CharStream();
-    CPPFiles.gen_Token();  // TODO(theov): issued twice??
-    CPPFiles.gen_TokenManager();
-    CPPFiles.gen_TokenMgrError();
-    CPPFiles.gen_ParseException();
-    CPPFiles.gen_ErrorHandler();
+    CPPFiles.GenJavaCCDefs();
+    CPPFiles.GenCharStream();
+    CPPFiles.GenToken();  // TODO(theov): issued twice??
+    CPPFiles.GenTokenManager();
+    CPPFiles.GenTokenMgrError();
+    CPPFiles.GenParseException();
+    CPPFiles.GenErrorHandler();
 
     try {
       ostr = new TextWriter(

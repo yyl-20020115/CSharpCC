@@ -7,7 +7,7 @@ namespace org.javacc.utils;
  * @author Chris Ainsley
  *
  */
-public enum OptionType
+public enum OptionType :int
 {
     BOOLEAN,
     INTEGER,

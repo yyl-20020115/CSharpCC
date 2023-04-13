@@ -49,8 +49,8 @@ public class RJustName:RegularExpression {
     public RJustName() {}
 
     public RJustName(Token token, string image) {
-        this.setLine(token.beginLine);
-        this.setColumn(token.beginColumn);
+        this.SetLine(token.beginLine);
+        this.SetColumn(token.beginColumn);
         this.label = image;
     }
 

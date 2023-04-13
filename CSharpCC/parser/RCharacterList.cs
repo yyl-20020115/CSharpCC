@@ -190,8 +190,8 @@ public class RCharacterList : RegularExpression
             }
             else
             {
-                char l = ((CharacterRange)descriptors[i]).getLeft();
-                char r = ((CharacterRange)descriptors[i]).getRight();
+                char l = ((CharacterRange)descriptors[i]).GetLeft();
+                char r = ((CharacterRange)descriptors[i]).GetRight();
                 int j = 0;
 
                 /* Add ranges for which lower case is different. */
@@ -382,10 +382,10 @@ public class RCharacterList : RegularExpression
             {
                 CharacterRange cr = (CharacterRange)descriptors[i];
 
-                if (cr.getLeft() == cr.getRight())
-                    startState.AddChar(cr.getLeft());
+                if (cr.GetLeft() == cr.GetRight())
+                    startState.AddChar(cr.GetLeft());
                 else
-                    startState.AddRange(cr.getLeft(), cr.getRight());
+                    startState.AddRange(cr.GetLeft(), cr.GetRight());
             }
         }
 
@@ -396,17 +396,17 @@ public class RCharacterList : RegularExpression
 
     static bool Overlaps(CharacterRange r1, CharacterRange r2)
     {
-        return (r1.getLeft() <= r2.getRight() && r1.getRight() > r2.getRight());
+        return (r1.GetLeft() <= r2.GetRight() && r1.GetRight() > r2.GetRight());
     }
 
     static bool SubRange(CharacterRange r1, CharacterRange r2)
     {
-        return (r1.getLeft() >= r2.getLeft() && r1.getRight() <= r2.getRight());
+        return (r1.GetLeft() >= r2.GetLeft() && r1.GetRight() <= r2.GetRight());
     }
 
     static bool InRange(char c, CharacterRange range)
     {
-        return (c >= range.getLeft() && c <= range.getRight());
+        return (c >= range.GetLeft() && c <= range.GetRight());
     }
 
     void SortDescriptors()
@@ -437,7 +437,7 @@ public class RCharacterList : RegularExpression
                     }
                     else
                     {
-                        char l = ((CharacterRange)newDesc[j]).getLeft();
+                        char l = ((CharacterRange)newDesc[j]).GetLeft();
 
                         if (InRange(s.ch, (CharacterRange)newDesc[j]))
                             goto OuterExit;
@@ -462,7 +462,7 @@ public class RCharacterList : RegularExpression
                             newDesc.remove(j--);
                             cnt--;
                         }
-                        else if (((SingleCharacter)newDesc[j]).ch > range.getRight())
+                        else if (((SingleCharacter)newDesc[j]).ch > range.GetRight())
                             break;
                     }
                     else
@@ -478,16 +478,16 @@ public class RCharacterList : RegularExpression
                         }
                         else if (Overlaps(range, (CharacterRange)newDesc[j]))
                         {
-                            range.setLeft((char)(((CharacterRange)newDesc[j]).getRight() + 1));
+                            range.SetLeft((char)(((CharacterRange)newDesc[j]).GetRight() + 1));
                         }
                         else if (Overlaps((CharacterRange)newDesc[j], range))
                         {
                             CharacterRange tmp = range;
-                            ((CharacterRange)newDesc[j]).setLeft((char)(range.getRight() + 1));
+                            ((CharacterRange)newDesc[j]).SetLeft((char)(range.GetRight() + 1));
                             range = (CharacterRange)newDesc[j];
                             newDesc.set(j, tmp);
                         }
-                        else if (((CharacterRange)newDesc[j]).getLeft() > range.getRight())
+                        else if (((CharacterRange)newDesc[j]).GetLeft() > range.GetRight())
                             break;
                     }
                 }
@@ -547,8 +547,8 @@ public class RCharacterList : RegularExpression
             }
             else
             {
-                char l = ((CharacterRange)descriptors[i]).getLeft();
-                char r = ((CharacterRange)descriptors[i]).getRight();
+                char l = ((CharacterRange)descriptors[i]).GetLeft();
+                char r = ((CharacterRange)descriptors[i]).GetRight();
 
                 if (l >= 0 && l <= lastRemoved + 1)
                 {

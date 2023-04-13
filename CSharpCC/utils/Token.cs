@@ -69,10 +69,7 @@ public class Token
      * Any subclass of Token that actually wants to return a non-null value can
      * override this method as appropriate.
      */
-    public Object getValue()
-    {
-        return null;
-    }
+    public Object GetValue() => null;
 
     /**
      * No-argument constructor
@@ -99,10 +96,7 @@ public class Token
     /**
      * Returns the image.
      */
-    public override string ToString()
-    {
-        return image;
-    }
+    public override string ToString() => image;
 
     /**
      * Returns a new Token object, by default. However, if you want, you
@@ -116,18 +110,12 @@ public class Token
      * to the following switch statement. Then you can cast matchedToken
      * variable to the appropriate type and use sit in your lexical actions.
      */
-    public static Token newToken(int ofKind, string image)
+    public static Token NewToken(int ofKind, string? image) => ofKind switch
     {
-        switch (ofKind)
-        {
-            default: return new Token(ofKind, image);
-        }
-    }
+        _ => new Token(ofKind, image),
+    };
 
-    public static Token newToken(int ofKind)
-    {
-        return newToken(ofKind, null);
-    }
+    public static Token NewToken(int ofKind) => NewToken(ofKind, null);
 
 }
 /* JavaCC - OriginalChecksum=4fe876097f2a89ed1e131660e9b64300 (do not edit this line) */

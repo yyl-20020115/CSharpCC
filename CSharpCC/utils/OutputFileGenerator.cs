@@ -62,7 +62,7 @@ public class OutputFileGenerator
      * @param out
      * @throws IOException
      */
-    public void generate(TextWriter _out)
+    public void Generate(TextWriter _out)
     {
         InputStream _is = getClass().getResourceAsStream(templateName);
         if (_is == null)
@@ -71,7 +71,7 @@ public class OutputFileGenerator
         process(_in, _out, false);
     }
 
-    private string peekLine(TextReader _in)
+    private string PeekLine(TextReader _in)
     {
         if (currentLine == null)
             currentLine = _in.ReadLine();
@@ -79,7 +79,7 @@ public class OutputFileGenerator
         return currentLine;
     }
 
-    private string getLine(TextReader _in)
+    private string GetLine(TextReader _in)
     {
         string line = currentLine;
         currentLine = null;
@@ -90,7 +90,7 @@ public class OutputFileGenerator
         return line;
     }
 
-    private bool evaluate(string condition)
+    private bool Evaluate(string condition)
     {
         condition = condition.Trim();
 
@@ -104,7 +104,7 @@ public class OutputFileGenerator
         }
     }
 
-    private string substitute(string text)
+    private string Substitute(string text)
     {
         int startPos;
 
@@ -141,12 +141,12 @@ public class OutputFileGenerator
 
             if (ch == ':' && i < variableExpression.Length - 1 && variableExpression[i + 1] == '-')
             {
-                value = substituteWithDefault(variableExpression[..i], variableExpression[(i + 2)..]);
+                value = SubstituteWithDefault(variableExpression[..i], variableExpression[(i + 2)..]);
                 break;
             }
             else if (ch == '?')
             {
-                value = substituteWithConditional(variableExpression[..i], variableExpression[(i + 1)..]);
+                value = SubstituteWithConditional(variableExpression[..i], variableExpression[(i + 1)..]);
                 break;
             }
             else if (ch != '_' && !char.isJavaIdentifierPart(ch))
@@ -157,7 +157,7 @@ public class OutputFileGenerator
 
         if (value == null)
         {
-            value = substituteWithDefault(variableExpression, "");
+            value = SubstituteWithDefault(variableExpression, "");
         }
 
         return text[..startPos] + value + text[endPos..];
@@ -169,7 +169,7 @@ public class OutputFileGenerator
      * @return
      * @throws IOException
      */
-    private string substituteWithConditional(string variableName, string values)
+    private string SubstituteWithConditional(string variableName, string values)
     {
         // Split values into true and false values.
 
@@ -177,10 +177,10 @@ public class OutputFileGenerator
         if (pos == -1)
             throw new IOException("No ':' separator in " + values);
 
-        if (evaluate(variableName))
-            return substitute(values[..pos]);
+        if (Evaluate(variableName))
+            return Substitute(values[..pos]);
         else
-            return substitute(values[(pos + 1)..]);
+            return Substitute(values[(pos + 1)..]);
     }
 
     /**
@@ -188,20 +188,20 @@ public class OutputFileGenerator
      * @param defaultValue
      * @return
      */
-    private string substituteWithDefault(string variableName, string defaultValue)
+    private string SubstituteWithDefault(string variableName, string defaultValue)
     {
         Object obj = options.get(variableName.Trim());
         if (obj == null || obj.ToString().Length == 0)
-            return substitute(defaultValue);
+            return Substitute(defaultValue);
 
         return obj.ToString();
     }
 
-    private void write(TextWriter _out, string text)
+    private void Write(TextWriter _out, string text)
     {
         while (text.IndexOf("${") != -1)
         {
-            text = substitute(text);
+            text = Substitute(text);
         }
 
         if (Options.isOutputLanguageJava() && Options.getGenerateStringBuilder())
@@ -217,54 +217,54 @@ public class OutputFileGenerator
         _out.WriteLine(text);
     }
 
-    private void process(TextReader _in, TextWriter _out, bool ignoring)
+    private void Process(TextReader _in, TextWriter _out, bool ignoring)
     {
         //    _out.WriteLine("*** process ignore=" + ignoring + " : " + peekLine(in));
-        while (peekLine(_in) != null)
+        while (PeekLine(_in) != null)
         {
-            if (peekLine(_in).Trim().StartsWith("#if"))
+            if (PeekLine(_in).Trim().StartsWith("#if"))
             {
-                processIf(_in, _out, ignoring);
+                ProcessIf(_in, _out, ignoring);
             }
-            else if (peekLine(_in).Trim().StartsWith("#"))
+            else if (PeekLine(_in).Trim().StartsWith("#"))
             {
                 break;
             }
             else
             {
-                string line = getLine(_in);
-                if (!ignoring) write(_out, line);
+                string line = GetLine(_in);
+                if (!ignoring) Write(_out, line);
             }
         }
 
         _out.Flush();
     }
 
-    private void processIf(TextReader _in, TextWriter _out, bool ignoring)
+    private void ProcessIf(TextReader _in, TextWriter _out, bool ignoring)
     {
-        string line = getLine(_in).Trim();
+        string line = GetLine(_in).Trim();
         //assert line.Trim().StartsWith("#if");
         bool foundTrueCondition = false;
 
-        bool condition = evaluate(line[3..].Trim());
+        bool condition = Evaluate(line[3..].Trim());
         while (true)
         {
-            process(_in, _out, ignoring || foundTrueCondition || !condition);
+            Process(_in, _out, ignoring || foundTrueCondition || !condition);
             foundTrueCondition |= condition;
 
-            if (peekLine(_in) == null || !peekLine(_in).Trim().StartsWith("#elif"))
+            if (PeekLine(_in) == null || !PeekLine(_in).Trim().StartsWith("#elif"))
                 break;
 
-            condition = evaluate(getLine(_in).Trim()[5..].Trim());
+            condition = Evaluate(GetLine(_in).Trim()[5..].Trim());
         }
 
-        if (peekLine(_in) != null && peekLine(_in).Trim().StartsWith("#else"))
+        if (PeekLine(_in) != null && PeekLine(_in).Trim().StartsWith("#else"))
         {
-            getLine(_in);   // Discard the #else line
-            process(_in, _out, ignoring || foundTrueCondition);
+            GetLine(_in);   // Discard the #else line
+            Process(_in, _out, ignoring || foundTrueCondition);
         }
 
-        line = getLine(_in);
+        line = GetLine(_in);
 
         if (line == null)
             throw new IOException("Missing \"#fi\"");
@@ -281,15 +281,15 @@ public class OutputFileGenerator
         map.Add("trueArg", true);
         map.Add("stringValue", "someString");
 
-        new OutputFileGenerator(args[0], map).generate(new StreamWriter(args[1]));
+        new OutputFileGenerator(args[0], map).Generate(new StreamWriter(args[1]));
     }
 
-    public static void generateFromTemplate(
+    public static void GenerateFromTemplate(
         string template, Dictionary<String, Object> options,
         string outputFileName)
     {
         OutputFileGenerator gen = new OutputFileGenerator(template, options);
-        gen.generate(new StringWriter());
+        gen.Generate(new StringWriter());
         TextWriter fw = null;
         try
         {
@@ -299,10 +299,7 @@ public class OutputFileGenerator
         }
         finally
         {
-            if (fw != null)
-            {
-                fw.Close();
-            }
+            fw?.Close();
         }
     }
 }

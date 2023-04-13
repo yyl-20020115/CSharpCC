@@ -40,21 +40,21 @@ public class ExpansionTest: CSharpCCTestCase
         t.beginColumn = 2;
         t.beginLine = 3;
         e = new Expansion();
-        e.setColumn(5);
-        e.setLine(6);
+        e.SetColumn(5);
+        e.SetLine(6);
     }
     public void testZeroOrOneConstructor() {
         ZeroOrOne zoo = new ZeroOrOne(t, e);
-        Assert.AreEqual(t.beginColumn, zoo.getColumn());
-        Assert.AreEqual(t.beginLine, zoo.getLine());
+        Assert.AreEqual(t.beginColumn, zoo.GetColumn());
+        Assert.AreEqual(t.beginLine, zoo.GetLine());
         Assert.AreEqual(e, zoo.expansion);
         Assert.AreSame(e.parent, zoo);
     }
 
     public void testZeroOrMoreConstructor() {
         ZeroOrMore zom = new ZeroOrMore(t, e);
-        Assert.AreEqual(t.beginColumn, zom.getColumn());
-        Assert.AreEqual(t.beginLine, zom.getLine());
+        Assert.AreEqual(t.beginColumn, zom.GetColumn());
+        Assert.AreEqual(t.beginLine, zom.GetLine());
         Assert.AreEqual(e, zom.expansion);
         Assert.AreEqual(e.parent, zom);
     }
@@ -62,24 +62,24 @@ public class ExpansionTest: CSharpCCTestCase
     public void testRZeroOrMoreConstructor() {
         RegularExpression r = new RChoice();
         RZeroOrMore rzom = new RZeroOrMore(t, r);
-        Assert.AreEqual(t.beginColumn, rzom.getColumn());
-        Assert.AreEqual(t.beginLine, rzom.getLine());
+        Assert.AreEqual(t.beginColumn, rzom.GetColumn());
+        Assert.AreEqual(t.beginLine, rzom.GetLine());
         Assert.AreEqual(r, rzom.regexpr);
     }
 
     public void testROneOrMoreConstructor() {
         RegularExpression r = new RChoice();
         ROneOrMore room = new ROneOrMore(t, r);
-        Assert.AreEqual(t.beginColumn, room.getColumn());
-        Assert.AreEqual(t.beginLine, room.getLine());
+        Assert.AreEqual(t.beginColumn, room.GetColumn());
+        Assert.AreEqual(t.beginLine, room.GetLine());
         Assert.AreEqual(r, room.regexpr);
     }
 
     public void testOneOrMoreConstructor() {
         Expansion rce = new RChoice();
         OneOrMore oom = new OneOrMore(t, rce);
-        Assert.AreEqual(t.beginColumn, oom.getColumn());
-        Assert.AreEqual(t.beginLine, oom.getLine());
+        Assert.AreEqual(t.beginColumn, oom.GetColumn());
+        Assert.AreEqual(t.beginLine, oom.GetLine());
         Assert.AreEqual(rce, oom.expansion);
         Assert.AreEqual(rce.parent, oom);
     }
@@ -87,33 +87,33 @@ public class ExpansionTest: CSharpCCTestCase
 
     public void testRStringLiteralConstructor() {
         RStringLiteral r = new RStringLiteral(t, "hey");
-        Assert.AreEqual(t.beginColumn, r.getColumn());
-        Assert.AreEqual(t.beginLine, r.getLine());
+        Assert.AreEqual(t.beginColumn, r.GetColumn());
+        Assert.AreEqual(t.beginLine, r.GetLine());
         Assert.AreEqual("hey", r.image);
     }
 
     public void testChoiceConstructor() {
         Choice c = new Choice(t);
-        Assert.AreEqual(t.beginColumn, c.getColumn());
-        Assert.AreEqual(t.beginLine, c.getLine());
+        Assert.AreEqual(t.beginColumn, c.GetColumn());
+        Assert.AreEqual(t.beginLine, c.GetLine());
         c = new Choice(e);
-        Assert.AreEqual(e.getColumn(), c.getColumn());
-        Assert.AreEqual(e.getLine(), c.getLine());
-        Assert.AreSame(e, c.getChoices()[0]);
+        Assert.AreEqual(e.GetColumn(), c.GetColumn());
+        Assert.AreEqual(e.GetLine(), c.GetLine());
+        Assert.AreSame(e, c.GetChoices()[0]);
     }
 
     public void testRJustNameConstructor() {
         RJustName r = new RJustName(t, "hey");
-        Assert.AreEqual(t.beginColumn, r.getColumn());
-        Assert.AreEqual(t.beginLine, r.getLine());
+        Assert.AreEqual(t.beginColumn, r.GetColumn());
+        Assert.AreEqual(t.beginLine, r.GetLine());
         Assert.AreEqual("hey", r.label);
     }
 
     public void testSequenceConstructor() {
         Lookahead la = new Lookahead();
         Sequence s = new Sequence(t, la);
-        Assert.AreEqual(t.beginColumn, s.getColumn());
-        Assert.AreEqual(t.beginLine, s.getLine());
+        Assert.AreEqual(t.beginColumn, s.GetColumn());
+        Assert.AreEqual(t.beginLine, s.GetLine());
         Assert.AreSame(la, s.units[0]);
     }
 }

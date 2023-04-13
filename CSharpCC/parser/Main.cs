@@ -83,18 +83,18 @@ public class Main
 
         foreach (OptionInfo i in options)
         {
-            int length = i.getName().Length;
+            int length = i.GetName().Length;
 
-            if (i.getType() == OptionType.INTEGER)
+            if (i.GetOptionType() == OptionType.INTEGER)
             {
                 maxLengthInt = length > maxLengthInt ? length : maxLengthInt;
             }
-            else if (i.getType() == OptionType.BOOLEAN)
+            else if (i.GetOptionType() == OptionType.BOOLEAN)
             {
                 maxLengthBool = length > maxLengthBool ? length : maxLengthBool;
 
             }
-            else if (i.getType() == OptionType.STRING)
+            else if (i.GetOptionType() == OptionType.STRING)
             {
                 maxLengthString = length > maxLengthString ? length : maxLengthString;
 
@@ -142,10 +142,10 @@ public class Main
 
     private static void printOptionInfo(OptionType filter, OptionInfo optionInfo, int padLength)
     {
-        if (optionInfo.getType() == filter)
+        if (optionInfo.GetOptionType() == filter)
         {
-            object default1 = optionInfo.getDefault();
-            Console.WriteLine("    " + padRight(optionInfo.getName(), padLength + 1) + (default1 == null ? "" : ("(default : " + (default1.ToString().Length == 0 ? "<<empty>>" : default1) + ")")));
+            object default1 = optionInfo.GetDefault();
+            Console.WriteLine("    " + padRight(optionInfo.GetName(), padLength + 1) + (default1 == null ? "" : ("(default : " + (default1.ToString().Length == 0 ? "<<empty>>" : default1) + ")")));
         }
     }
 
@@ -381,7 +381,7 @@ public class Main
 
     public static void reInitAll()
     {
-        org.javacc.parser.Expansion.reInit();
+        org.javacc.parser.Expansion.ReInit();
         org.javacc.parser.JavaCCErrors.reInit();
         org.javacc.parser.JavaCCGlobals.reInit();
         Options.Init();

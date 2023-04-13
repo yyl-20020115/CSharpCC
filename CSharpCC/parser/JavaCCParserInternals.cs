@@ -360,16 +360,16 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
             return;
         }
         TryBlock tblk = new TryBlock();
-        tblk.setLine(tryLoc.beginLine);
-        tblk.setColumn(tryLoc.beginColumn);
-        tblk.exp = (Expansion)(nestedExp.member);
+        tblk.SetLine(tryLoc.beginLine);
+        tblk.SetColumn(tryLoc.beginColumn);
+        tblk.exp = (Expansion)(nestedExp.Member);
         tblk.exp.parent = tblk;
         tblk.exp.ordinal = 0;
         tblk.types = types;
         tblk.ids = ids;
         tblk.catchblks = catchblks;
         tblk.finallyblk = finallyblk;
-        result.member = tblk;
+        result.Member = tblk;
     }
 
     public static void reInit()

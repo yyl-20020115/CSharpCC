@@ -109,7 +109,7 @@ public class JavaCCGlobals : JavaCCParserConstants
      * they appear in the input file.  Each entry here will be a subclass of
      * "NormalProduction".
      */
-    static public List<NormalProduction> bnfproductions = new ArrayList<NormalProduction>();
+    static public List<NormalProduction> bnfproductions = new ();
 
     /**
      * A symbol table of all grammar productions - normal and JAVACODE.  The
@@ -153,13 +153,13 @@ public class JavaCCGlobals : JavaCCParserConstants
      * defined with a label).  The index to the table is the image of the label
      * and the contents of the table are of type "RegularExpression".
      */
-    static public Dictionary named_tokens_table = new Dictionary();
+    static public Dictionary named_tokens_table = new ();
 
     /**
      * Contains the same entries as "named_tokens_table", but this is an ordered
      * list which is ordered by the order of appearance in the input file.
      */
-    static public List<RegularExpression> ordered_named_tokens = new ArrayList<RegularExpression>();
+    static public List<RegularExpression> ordered_named_tokens = new ();
 
     /**
      * A mapping of ordinal values (represented as objects of type "int") to

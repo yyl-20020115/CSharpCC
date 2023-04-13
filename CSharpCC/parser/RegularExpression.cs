@@ -92,8 +92,8 @@ public abstract class RegularExpression:Expansion {
    */
   public int walkStatus = 0;
 
-  public override StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped) {
-    var sb = base.dump(indent, alreadyDumped);
+  public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped) {
+    var sb = base.Dump(indent, alreadyDumped);
     alreadyDumped.Add(this);
     sb.Append(' ').Append(label);
     return sb;

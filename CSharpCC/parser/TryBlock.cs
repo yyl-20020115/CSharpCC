@@ -66,13 +66,13 @@ public class TryBlock : Expansion
      */
     public List<Token> finallyblk;
 
-    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
+    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        var sb = base.dump(indent, alreadyDumped);
+        var sb = base.Dump(indent, alreadyDumped);
         if (alreadyDumped.Contains(this))
             return sb;
         alreadyDumped.Add(this);
-        sb.Append(eol).Append(exp.dump(indent + 1, alreadyDumped));
+        sb.Append(eol).Append(exp.Dump(indent + 1, alreadyDumped));
         return sb;
     }
 

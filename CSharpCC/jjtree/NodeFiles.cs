@@ -380,7 +380,7 @@ public static class NodeFiles
         OutputFileGenerator generator = new OutputFileGenerator(
             "/templates/Node.template", options);
 
-        generator.generate(ostr);
+        generator.Generate(ostr);
 
         ostr.Close();
     }
@@ -399,7 +399,7 @@ public static class NodeFiles
         OutputFileGenerator generator = new OutputFileGenerator(
             "/templates/SimpleNode.template", options);
 
-        generator.generate(ostr);
+        generator.Generate(ostr);
 
         ostr.Close();
     }
@@ -419,7 +419,7 @@ public static class NodeFiles
         OutputFileGenerator generator = new OutputFileGenerator(
             "/templates/MultiNode.template", options);
 
-        generator.generate(ostr);
+        generator.Generate(ostr);
 
         ostr.Close();
     }

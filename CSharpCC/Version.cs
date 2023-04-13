@@ -51,22 +51,23 @@ public static class Version
         string minor = "??";
         string patch = "??";
 
-        Properties props = new Properties();
-        InputStream _is = Version.GetType().getResourceAsStream("/version.properties");
-        if (_is != null)
-        {
-            try
-            {
-                props.load(is);
-            }
-            catch (IOException e)
-            {
-                Console.Error.WriteLine("Could not read version.properties: " + e);
-            }
-            major = props.getProperty("version.major", major);
-            minor = props.getProperty("version.minor", minor);
-            patch = props.getProperty("version.patch", patch);
-        }
+        //TODO:
+        //Properties props = new Properties();
+        //InputStream _is = Version.GetType().getResourceAsStream("/version.properties");
+        //if (_is != null)
+        //{
+        //    try
+        //    {
+        //        props.load(is);
+        //    }
+        //    catch (IOException e)
+        //    {
+        //        Console.Error.WriteLine("Could not read version.properties: " + e);
+        //    }
+        //    major = props.getProperty("version.major", major);
+        //    minor = props.getProperty("version.minor", minor);
+        //    patch = props.getProperty("version.patch", patch);
+        //}
 
         MajorVersion = major;
         MinorVersion = minor;

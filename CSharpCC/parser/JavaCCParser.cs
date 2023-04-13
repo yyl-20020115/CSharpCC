@@ -485,7 +485,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_la1[7] = jj_gen;
                 ;
         }
-        Block(p.getCodeTokens());
+        Block(p.GetCodeTokens());
         p.setLastToken(getToken(0));
         addproduction(p);
     }
@@ -535,7 +535,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_la1[9] = jj_gen;
                 ;
         }
-        Block(p.getCodeTokens());
+        Block(p.GetCodeTokens());
         p.setLastToken(getToken(0));
         addproduction(p);
     }
@@ -587,13 +587,13 @@ public class JavaCCParser : JavaCCParserInternals
                 ;
         }
         jj_consume_token(COLON);
-        Block(p.getDeclarationTokens());
+        Block(p.GetDeclarationTokens());
         jj_consume_token(LBRACE);
         expansion_choices(c);
         t = jj_consume_token(RBRACE);
         p.setLastToken(t);
-        p.setJumpPatched(jumpPatched);
-        production_addexpansion(p, (Expansion)(c.member));
+        p.SetJumpPatched(jumpPatched);
+        production_addexpansion(p, (Expansion)(c.Member));
         addproduction(p);
     }
 
@@ -797,13 +797,13 @@ public class JavaCCParser : JavaCCParserInternals
         Token t = null;
         RegExprSpec res = new RegExprSpec();
         regular_expression(c);
-        res.rexp = (RegularExpression)c.member;
+        res.rexp = (RegularExpression)c.Member;
         res.rexp.tpContext = p;
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
         {
             case LBRACE:
                 t = getToken(1);
-                Block(act.getActionTokens());
+                Block(act.GetActionTokens());
                 if (Options.getUserTokenManager())
                 {
                     JavaCCErrors.warning(t, "Ignoring action in regular expression specification since option USER_TOKEN_MANAGER has been set to true.");
@@ -859,21 +859,21 @@ public class JavaCCParser : JavaCCParserInternals
             expansion(c2);
             if (morethanone)
             {
-                ch.getChoices().Add(c2.member);
-                ((Expansion)c2.member).parent = ch;
+                ch.GetChoices().Add(c2.Member);
+                ((Expansion)c2.Member).parent = ch;
             }
             else
             {
                 morethanone = true;
-                ch = new Choice((Expansion)c1.member);
-                ((Expansion)c1.member).parent = ch;
-                ch.getChoices().Add(c2.member);
-                ((Expansion)c2.member).parent = ch;
+                ch = new Choice((Expansion)c1.Member);
+                ((Expansion)c1.Member).parent = ch;
+                ch.GetChoices().Add(c2.Member);
+                ((Expansion)c2.Member).parent = ch;
             }
         }
         if (morethanone)
         {
-            c1.member = ch;
+            c1.Member = ch;
         }
     }
 
@@ -883,10 +883,10 @@ public class JavaCCParser : JavaCCParserInternals
         Container c2 = new Container();
         Lookahead la = new Lookahead();
         Token t = getToken(1);
-        seq.setLine(t.beginLine);
-        seq.setColumn(t.beginColumn);
-        la.setLine(t.beginLine);
-        la.setColumn(t.beginColumn);
+        seq.SetLine(t.beginLine);
+        seq.SetColumn(t.beginColumn);
+        la.SetLine(t.beginLine);
+        la.SetColumn(t.beginColumn);
         la.setAmount(Options.getLookahead());
         la.setLaExpansion(null);
         la.setExplicit(false);
@@ -911,9 +911,9 @@ public class JavaCCParser : JavaCCParserInternals
         while (true)
         {
             expansion_unit(c2);
-            seq.units.Add(c2.member);
-            ((Expansion)c2.member).parent = seq;
-            ((Expansion)c2.member).ordinal = seq.units.Count - 1;
+            seq.units.Add(c2.Member);
+            ((Expansion)c2.Member).parent = seq;
+            ((Expansion)c2.Member).ordinal = seq.units.Count - 1;
             if (notTailOfExpansionUnit())
             {
                 ;
@@ -927,7 +927,7 @@ public class JavaCCParser : JavaCCParserInternals
         {
             la.setLaExpansion(seq);
         }
-        c1.member = seq;
+        c1.Member = seq;
     }
 
     public Lookahead local_lookahead()
@@ -935,8 +935,8 @@ public class JavaCCParser : JavaCCParserInternals
         Lookahead la = new Lookahead();
         la.setExplicit(true);
         Token t = getToken(1);
-        la.setLine(t.beginLine);
-        la.setColumn(t.beginColumn);
+        la.SetLine(t.beginLine);
+        la.SetColumn(t.beginColumn);
         la.setLaExpansion(null);
         Container c = new Container();
         bool commaAtEnd = false, emptyLA = true;
@@ -966,7 +966,7 @@ public class JavaCCParser : JavaCCParserInternals
         {
             expansion_choices(c);
             emptyLA = false; commaAtEnd = false;
-            la.setLaExpansion((Expansion)c.member);
+            la.setLaExpansion((Expansion)c.Member);
         }
         else
         {
@@ -1091,11 +1091,11 @@ public class JavaCCParser : JavaCCParserInternals
                 Sequence seq = new Sequence(t, la);
                 la.parent = seq; la.ordinal = 0;
                 act = new Action();
-                act.setLine(t.beginLine);
-                act.setColumn(t.beginColumn);
+                act.SetLine(t.beginLine);
+                act.SetColumn(t.beginColumn);
                 seq.units.Add(act);
                 act.parent = seq; act.ordinal = 1;
-                ch.getChoices().Add(seq);
+                ch.GetChoices().Add(seq);
                 seq.parent = ch; seq.ordinal = 0;
                 if (la.getAmount() != 0)
                 {
@@ -1108,27 +1108,27 @@ public class JavaCCParser : JavaCCParserInternals
                         JavaCCErrors.warning(t, "Encountered LOOKAHEAD(...) at a non-choice location.  This will be ignored.");
                     }
                 }
-                c.member = ch;
+                c.Member = ch;
                 break;
             case LBRACE:
                 act = new Action();
                 t = getToken(1);
-                act.setLine(t.beginLine);
-                act.setColumn(t.beginColumn);
+                act.SetLine(t.beginLine);
+                act.SetColumn(t.beginColumn);
                 inAction = true;
-                Block(act.getActionTokens());
+                Block(act.GetActionTokens());
                 inAction = false;
                 if (inLocalLA != 0)
                 {
                     JavaCCErrors.warning(t, "Action within lookahead specification will be ignored.");
                 }
-                c.member = act;
+                c.Member = act;
                 break;
             case LBRACKET:
                 t = jj_consume_token(LBRACKET);
                 expansion_choices(c);
                 jj_consume_token(RBRACKET);
-                c.member = new ZeroOrOne(t, (Expansion)c.member);
+                c.Member = new ZeroOrOne(t, (Expansion)c.Member);
                 break;
             case TRY:
                 Container expch = new Container();
@@ -1223,8 +1223,8 @@ public class JavaCCParser : JavaCCParserInternals
                     {
                         t = getToken(1);
                         nt = new NonTerminal();
-                        nt.setLine(t.beginLine);
-                        nt.setColumn(t.beginColumn);
+                        nt.SetLine(t.beginLine);
+                        nt.SetColumn(t.beginColumn);
                         nt.setLhsTokens(lhsTokens);
                         name = identifier();
                         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
@@ -1238,7 +1238,7 @@ public class JavaCCParser : JavaCCParserInternals
                         }
                         Arguments(nt.getArgumentTokens());
                         nt.setName(name);
-                        c.member = nt;
+                        c.Member = nt;
                     }
                     else
                     {
@@ -1247,14 +1247,14 @@ public class JavaCCParser : JavaCCParserInternals
                             case STRING_LITERAL:
                             case LANGLE:
                                 regular_expression(c);
-                                ((RegularExpression)(c.member)).lhsTokens = lhsTokens;
-                                add_inline_regexpr((RegularExpression)(c.member));
+                                ((RegularExpression)(c.Member)).lhsTokens = lhsTokens;
+                                add_inline_regexpr((RegularExpression)(c.Member));
                                 switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
                                 {
                                     case DOT:
                                         jj_consume_token(DOT);
                                         t = jj_consume_token(IDENTIFIER);
-                                        ((RegularExpression)(c.member)).rhsToken = t;
+                                        ((RegularExpression)(c.Member)).rhsToken = t;
                                         break;
                                     default:
                                         jj_la1[30] = jj_gen;
@@ -1285,15 +1285,15 @@ public class JavaCCParser : JavaCCParserInternals
                                     {
                                         case PLUS:
                                             jj_consume_token(PLUS);
-                                            c.member = new OneOrMore(t, (Expansion)c.member);
+                                            c.Member = new OneOrMore(t, (Expansion)c.Member);
                                             break;
                                         case STAR:
                                             jj_consume_token(STAR);
-                                            c.member = new ZeroOrMore(t, (Expansion)c.member);
+                                            c.Member = new ZeroOrMore(t, (Expansion)c.Member);
                                             break;
                                         case HOOK:
                                             jj_consume_token(HOOK);
-                                            c.member = new ZeroOrOne(t, (Expansion)c.member);
+                                            c.Member = new ZeroOrOne(t, (Expansion)c.Member);
                                             break;
                                         default:
                                             jj_la1[32] = jj_gen;
@@ -1325,7 +1325,7 @@ public class JavaCCParser : JavaCCParserInternals
         {
             case STRING_LITERAL:
                 image = StringLiteral();
-                c.member = new RStringLiteral(t, image);
+                c.Member = new RStringLiteral(t, image);
                 break;
             default:
                 jj_la1[38] = jj_gen;
@@ -1357,28 +1357,28 @@ public class JavaCCParser : JavaCCParserInternals
                     complex_regular_expression_choices(c);
                     jj_consume_token(RANGLE);
                     RegularExpression re;
-                    if (c.member is RJustName)
+                    if (c.Member is RJustName)
                     {
                         RSequence seq = new RSequence();
-                        seq.units.Add(c.member);
+                        seq.units.Add(c.Member);
                         re = seq;
                     }
                     else
                     {
-                        re = (RegularExpression)c.member;
+                        re = (RegularExpression)c.Member;
                     }
                     re.label = image;
                     re.private_rexp = private_rexp;
-                    re.setLine(t.beginLine);
-                    re.setColumn(t.beginColumn);
-                    c.member = re;
+                    re.SetLine(t.beginLine);
+                    re.SetColumn(t.beginColumn);
+                    c.Member = re;
                 }
                 else if (jj_2_6(2))
                 {
                     jj_consume_token(LANGLE);
                     image = identifier();
                     jj_consume_token(RANGLE);
-                    c.member = new RJustName(t, image);
+                    c.Member = new RJustName(t, image);
                 }
                 else
                 {
@@ -1389,10 +1389,10 @@ public class JavaCCParser : JavaCCParserInternals
                             jj_consume_token(_EOF);
                             jj_consume_token(RANGLE);
                             ef = new REndOfFile();
-                            ef.setLine(t.beginLine);
-                            ef.setColumn(t.beginColumn);
+                            ef.SetLine(t.beginLine);
+                            ef.SetColumn(t.beginColumn);
                             ef.ordinal = 0;
-                            c.member = ef;
+                            c.Member = ef;
                             break;
                         default:
                             jj_la1[39] = jj_gen;
@@ -1425,21 +1425,21 @@ public class JavaCCParser : JavaCCParserInternals
             complex_regular_expression(c2);
             if (morethanone)
             {
-                ch.getChoices().Add(c2.member);
+                ch.getChoices().Add(c2.Member);
             }
             else
             {
                 morethanone = true;
                 ch = new RChoice();
-                ch.setLine(((RegularExpression)c1.member).getLine());
-                ch.setColumn(((RegularExpression)c1.member).getColumn());
-                ch.getChoices().Add(c1.member);
-                ch.getChoices().Add(c2.member);
+                ch.SetLine(((RegularExpression)c1.Member).GetLine());
+                ch.SetColumn(((RegularExpression)c1.Member).GetColumn());
+                ch.getChoices().Add(c1.Member);
+                ch.getChoices().Add(c2.Member);
             }
         }
         if (morethanone)
         {
-            c1.member = ch;
+            c1.Member = ch;
         }
     }
 
@@ -1455,19 +1455,19 @@ public class JavaCCParser : JavaCCParserInternals
             count++;
             if (count == 1)
             {
-                c1.member = c2.member; // if count does not go beyond 1, we are done.
+                c1.Member = c2.Member; // if count does not go beyond 1, we are done.
             }
             else if (count == 2)
             { // more than 1, so create a sequence.
                 seq = new RSequence();
-                seq.setLine(((RegularExpression)c1.member).getLine());
-                seq.setColumn(((RegularExpression)c1.member).getColumn());
-                seq.units.Add(c1.member);
-                seq.units.Add(c2.member);
+                seq.SetLine(((RegularExpression)c1.Member).GetLine());
+                seq.SetColumn(((RegularExpression)c1.Member).GetColumn());
+                seq.units.Add(c1.Member);
+                seq.units.Add(c2.Member);
             }
             else
             {
-                seq.units.Add(c2.member);
+                seq.units.Add(c2.Member);
             }
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
             {
@@ -1485,7 +1485,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         if (count > 1)
         {
-            c1.member = seq;
+            c1.Member = seq;
         }
     }
 
@@ -1499,13 +1499,13 @@ public class JavaCCParser : JavaCCParserInternals
         {
             case STRING_LITERAL:
                 image = StringLiteral();
-                c.member = new RStringLiteral(t, image);
+                c.Member = new RStringLiteral(t, image);
                 break;
             case LANGLE:
                 jj_consume_token(LANGLE);
                 image = identifier();
                 jj_consume_token(RANGLE);
-                c.member = new RJustName(t, image);
+                c.Member = new RJustName(t, image);
                 break;
             case LBRACKET:
             case TILDE:
@@ -1525,19 +1525,19 @@ public class JavaCCParser : JavaCCParserInternals
                         {
                             case PLUS:
                                 jj_consume_token(PLUS);
-                                c.member = new ROneOrMore(t, (RegularExpression)c.member);
+                                c.Member = new ROneOrMore(t, (RegularExpression)c.Member);
                                 break;
                             case STAR:
                                 jj_consume_token(STAR);
-                                c.member = new RZeroOrMore(t, (RegularExpression)c.member);
+                                c.Member = new RZeroOrMore(t, (RegularExpression)c.Member);
                                 break;
                             case HOOK:
                                 jj_consume_token(HOOK);
                                 RZeroOrOne zorexp = new RZeroOrOne();
-                                zorexp.setLine(t.beginLine);
-                                zorexp.setColumn(t.beginColumn);
-                                zorexp.regexpr = (RegularExpression)c.member;
-                                c.member = zorexp;
+                                zorexp.SetLine(t.beginLine);
+                                zorexp.SetColumn(t.beginColumn);
+                                zorexp.regexpr = (RegularExpression)c.Member;
+                                c.Member = zorexp;
                                 break;
                             case LBRACE:
                                 jj_consume_token(LBRACE);
@@ -1563,13 +1563,13 @@ public class JavaCCParser : JavaCCParserInternals
                                 }
                                 jj_consume_token(RBRACE);
                                 RRepetitionRange rrrexp = new RRepetitionRange();
-                                rrrexp.setLine(t.beginLine);
-                                rrrexp.setColumn(t.beginColumn);
+                                rrrexp.SetLine(t.beginLine);
+                                rrrexp.SetColumn(t.beginColumn);
                                 rrrexp.min = r1;
                                 rrrexp.max = r2;
                                 rrrexp.hasMax = hasMax;
-                                rrrexp.regexpr = (RegularExpression)c.member;
-                                c.member = rrrexp;
+                                rrrexp.regexpr = (RegularExpression)c.Member;
+                                c.Member = rrrexp;
                                 break;
                             default:
                                 jj_la1[44] = jj_gen;
@@ -1593,8 +1593,8 @@ public class JavaCCParser : JavaCCParserInternals
     {
         RCharacterList chlist = new RCharacterList();
         Token t = getToken(1);
-        chlist.setLine(t.beginLine);
-        chlist.setColumn(t.beginColumn);
+        chlist.SetLine(t.beginLine);
+        chlist.SetColumn(t.beginColumn);
         Container c2 = new Container();
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
         {
@@ -1611,7 +1611,7 @@ public class JavaCCParser : JavaCCParserInternals
         {
             case STRING_LITERAL:
                 character_descriptor(c2);
-                chlist.descriptors.Add(c2.member);
+                chlist.descriptors.Add(c2.Member);
             label_14:
                 while (true)
                 {
@@ -1626,7 +1626,7 @@ public class JavaCCParser : JavaCCParserInternals
                     }
                     jj_consume_token(COMMA);
                     character_descriptor(c2);
-                    chlist.descriptors.Add(c2.member);
+                    chlist.descriptors.Add(c2.Member);
                 }
                 break;
             default:
@@ -1634,7 +1634,7 @@ public class JavaCCParser : JavaCCParserInternals
                 ;
         }
         jj_consume_token(RBRACKET);
-        c1.member = chlist;
+        c1.Member = chlist;
     }
 
     public void character_descriptor(Container c)
@@ -1660,11 +1660,11 @@ public class JavaCCParser : JavaCCParserInternals
         if (isrange)
         {
             var cr = new CharacterRange();
-            cr.setLine(t.beginLine);
-            cr.setColumn(t.beginColumn);
-            cr.setLeft(c1);
-            cr.setRight(c2);
-            c.member = cr;
+            cr.SetLine(t.beginLine);
+            cr.SetColumn(t.beginColumn);
+            cr.SetLeft(c1);
+            cr.SetRight(c2);
+            c.Member = cr;
         }
         else
         {
@@ -1672,7 +1672,7 @@ public class JavaCCParser : JavaCCParserInternals
             sc.setLine(t.beginLine);
             sc.setColumn(t.beginColumn);
             sc.ch = c1;
-            c.member = sc;
+            c.Member = sc;
         }
     }
 

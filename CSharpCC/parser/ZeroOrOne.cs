@@ -47,19 +47,19 @@ public class ZeroOrOne : Expansion
 
     public ZeroOrOne(Token t, Expansion e)
     {
-        this.setLine(t.beginLine);
-        this.setColumn(t.beginColumn);
+        this.SetLine(t.beginLine);
+        this.SetColumn(t.beginColumn);
         this.expansion = e;
         e.parent = this;
     }
 
     public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        var sb = base.dump(indent, alreadyDumped);
+        var sb = base.Dump(indent, alreadyDumped);
         if (alreadyDumped.Contains(this))
             return sb;
         alreadyDumped.Add(this);
-        sb.Append(eol).Append(expansion.dump(indent + 1, alreadyDumped));
+        sb.Append(eol).Append(expansion.Dump(indent + 1, alreadyDumped));
         return sb;
     }
 }

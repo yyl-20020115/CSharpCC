@@ -30,10 +30,10 @@
  * Having this intermediary allows the OS scripts to be package name
  * independent.
  */
-public static class jjdoc
+public static class JJDoc
 {
 
-    public static void main(String[] args)
+    public static void main(string[] args)
     {
         org.javacc.jjdoc.JJDocMain.main(args);
     }

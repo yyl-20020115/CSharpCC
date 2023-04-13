@@ -10,13 +10,12 @@ namespace org.javacc.utils;
  * contain only ASCII characters (with java-like unicode escape processing).
  */
 
-public
-class JavaCharStream
+public class JavaCharStream
 {
     /** Whether parser is static. */
     public const bool staticFlag = false;
 
-    static int hexval(char c)
+    static int Hexval(char c)
     {
         switch (c)
         {
@@ -59,6 +58,8 @@ class JavaCharStream
             case 'f':
             case 'F':
                 return 15;
+            default:
+                break;
         }
 
         throw new IOException(); // Should never come here
@@ -145,10 +146,10 @@ class JavaCharStream
 
         try
         {
-            if ((i = inputStream.read(nextCharBuf, maxNextCharInd,
+            if ((i = inputStream.Read(nextCharBuf, maxNextCharInd,
                                                 4096 - maxNextCharInd)) == -1)
             {
-                inputStream.close();
+                inputStream.Close();
                 throw new IOException();
             }
             else
@@ -325,10 +326,10 @@ class JavaCharStream
                 while ((c = ReadByte()) == 'u')
                     ++column;
 
-                buffer[bufpos] = c = (char)(hexval(c) << 12 |
-                                            hexval(ReadByte()) << 8 |
-                                            hexval(ReadByte()) << 4 |
-                                            hexval(ReadByte()));
+                buffer[bufpos] = c = (char)(Hexval(c) << 12 |
+                                            Hexval(ReadByte()) << 8 |
+                                            Hexval(ReadByte()) << 4 |
+                                            Hexval(ReadByte()));
 
                 column += 4;
             }

@@ -58,8 +58,8 @@ public class RZeroOrMore:RegularExpression {
     public RZeroOrMore() {}
 
     public RZeroOrMore(Token t, RegularExpression r) {
-        this.setLine(t.beginLine);
-        this.setColumn(t.beginColumn);
+        this.SetLine(t.beginLine);
+        this.SetColumn(t.beginColumn);
         this.regexpr = r;
     }
 

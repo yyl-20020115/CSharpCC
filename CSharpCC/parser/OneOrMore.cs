@@ -45,18 +45,18 @@ public class OneOrMore:Expansion {
     public OneOrMore() {}
 
     public OneOrMore(Token t, Expansion e) {
-        this.setLine(t.beginLine);
-        this.setColumn(t.beginColumn);
+        this.SetLine(t.beginLine);
+        this.SetColumn(t.beginColumn);
         this.expansion = e;
         expansion.parent = this;
     }
 
     public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped) {
-      StringBuilder sb = base.dump(indent, alreadyDumped);
+      StringBuilder sb = base.Dump(indent, alreadyDumped);
       if (alreadyDumped.Contains(this))
         return sb;
       alreadyDumped.Add(this);
-      sb.Append(eol).Append(expansion.dump(indent + 1, alreadyDumped));
+      sb.Append(eol).Append(expansion.Dump(indent + 1, alreadyDumped));
       return sb;
     }
 }

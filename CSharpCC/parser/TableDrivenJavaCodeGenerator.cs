@@ -47,11 +47,11 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
     public void Finish(TokenizerData tokenizerData)
     {
         // TODO(sreeni) : Fix this mess.
-        codeGenerator.genCodeLine("\n}");
+        codeGenerator.GenCodeLine("\n}");
         if (!Options.getBuildParser()) return;
         string fileName = Options.getOutputDirectory() + File.separator +
                           tokenizerData.parserName + "TokenManager.java";
-        codeGenerator.saveOutput(fileName);
+        codeGenerator.SaveOutput(fileName);
     }
 
     private void dumpDfaTables(
@@ -60,7 +60,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         Dictionary<int, int[]> startAndSize = new Dictionary<int, int[]>();
         int i = 0;
 
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
             "private static final int[] stringLiterals = {");
         foreach (int key in tokenizerData.literalSequence.keySet())
         {
@@ -70,19 +70,19 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             arr[0] = i;
             arr[1] = l.Count;
             int j = 0;
-            if (i > 0) codeGenerator.genCodeLine(", ");
+            if (i > 0) codeGenerator.GenCodeLine(", ");
             foreach (string s in l)
             {
-                if (j > 0) codeGenerator.genCodeLine(", ");
-                codeGenerator.genCode(s.Length);
+                if (j > 0) codeGenerator.GenCodeLine(", ");
+                codeGenerator.GenCode(s.Length);
                 for (int k = 0; k < s.Length; k++)
                 {
-                    codeGenerator.genCode(", ");
-                    codeGenerator.genCode((int)s.charAt(k));
+                    codeGenerator.GenCode(", ");
+                    codeGenerator.GenCode((int)s.charAt(k));
                     i++;
                 }
                 int kind = kinds[j];
-                codeGenerator.genCode(", " + kind);
+                codeGenerator.GenCode(", " + kind);
                 codeGenerator.genCode(
                     ", " + tokenizerData.kindToNfaStartState.get(kind));
                 i += 3;
@@ -90,21 +90,21 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             }
             startAndSize.Add(key, arr);
         }
-        codeGenerator.genCodeLine("};");
+        codeGenerator.GenCodeLine("};");
 
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
             "private static final Dictionary<int, int[]> startAndSize =\n" +
             "    new HashMap<Integer, int[]>();");
 
         // Static block to actually initialize the map from the int array above.
-        codeGenerator.genCodeLine("static {");
+        codeGenerator.GenCodeLine("static {");
         for (int key : tokenizerData.literalSequence.keySet())
         {
             int[] arr = startAndSize.get(key);
-            codeGenerator.genCodeLine("startAndSize.Add(" + key + ", new int[]{" +
+            codeGenerator.GenCodeLine("startAndSize.Add(" + key + ", new int[]{" +
                                        arr[0] + ", " + arr[1] + "});");
         }
-        codeGenerator.genCodeLine("}");
+        codeGenerator.GenCodeLine("}");
     }
 
     private void dumpNfaTables(
@@ -112,18 +112,18 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
     {
         // WE do the following for java so that the generated code is reasonable
         // size and can be compiled. May not be needed for other languages.
-        codeGenerator.genCodeLine("private static final long[][] jjCharData = {");
+        codeGenerator.GenCodeLine("private static final long[][] jjCharData = {");
         Dictionary<int, TokenizerData.NfaState> nfa = tokenizerData.nfa;
         for (int i = 0; i < nfa.Count; i++)
         {
             TokenizerData.NfaState tmp = nfa[i];
-            if (i > 0) codeGenerator.genCodeLine(",");
+            if (i > 0) codeGenerator.GenCodeLine(",");
             if (tmp == null)
             {
-                codeGenerator.genCode("{}");
+                codeGenerator.GenCode("{}");
                 continue;
             }
-            codeGenerator.genCode("{");
+            codeGenerator.GenCode("{");
             BitSet bits = new BitSet();
             for (char c in tmp.characters)
             {
@@ -134,120 +134,120 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             {
                 int rep = 1;
                 while (k + rep < longs.Length && longs[k + rep] == longs[k]) rep++;
-                if (k > 0) codeGenerator.genCode(", ");
-                codeGenerator.genCode(rep + ", ");
+                if (k > 0) codeGenerator.GenCode(", ");
+                codeGenerator.GenCode(rep + ", ");
                 codeGenerator.genCode("0x" + Long.toHexString(longs[k]) + "L");
                 k += rep - 1;
             }
-            codeGenerator.genCode("}");
+            codeGenerator.GenCode("}");
         }
-        codeGenerator.genCodeLine("};");
+        codeGenerator.GenCodeLine("};");
 
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
              "private static final long[][] jjChars = ");
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
              "    new long[" + tokenizerData.nfa.Count +
              "][(Character.MAX_VALUE >> 6) + 1]; ");
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
              "static { ");
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
              "  for (int i = 0; i < " + tokenizerData.nfa.Count + "; i++) { ");
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
              "    int ind = 0; ");
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
              "    for (int j = 0; j < jjCharData[i].length; j += 2) { ");
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
              "      for (int k = 0; k < (int)jjCharData[i][j]; k++) { ");
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
              "        jjChars[i][ind++] = jjCharData[i][j + 1]; ");
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
              "      } ");
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
              "    } ");
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
              "  } ");
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
              "} ");
 
 
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
             "private static final int[][] jjcompositeState = {");
         for (int i = 0; i < nfa.Count; i++)
         {
             TokenizerData.NfaState tmp = nfa[i];
-            if (i > 0) codeGenerator.genCodeLine(", ");
+            if (i > 0) codeGenerator.GenCodeLine(", ");
             if (tmp == null)
             {
-                codeGenerator.genCode("{}");
+                codeGenerator.GenCode("{}");
                 continue;
             }
-            codeGenerator.genCode("{");
+            codeGenerator.GenCode("{");
             int k = 0;
             for (int st in tmp.compositeStates)
             {
-                if (k++ > 0) codeGenerator.genCode(", ");
-                codeGenerator.genCode(st);
+                if (k++ > 0) codeGenerator.GenCode(", ");
+                codeGenerator.GenCode(st);
             }
-            codeGenerator.genCode("}");
+            codeGenerator.GenCode("}");
         }
-        codeGenerator.genCodeLine("};");
+        codeGenerator.GenCodeLine("};");
 
-        codeGenerator.genCodeLine("private static final int[] jjmatchKinds = {");
+        codeGenerator.GenCodeLine("private static final int[] jjmatchKinds = {");
         for (int i = 0; i < nfa.Count; i++)
         {
             TokenizerData.NfaState tmp = nfa[i];
-            if (i > 0) codeGenerator.genCodeLine(", ");
+            if (i > 0) codeGenerator.GenCodeLine(", ");
             // TODO(sreeni) : Fix this mess.
             if (tmp == null)
             {
-                codeGenerator.genCode(int.MaxValue);
+                codeGenerator.GenCode(int.MaxValue);
                 continue;
             }
-            codeGenerator.genCode(tmp.kind);
+            codeGenerator.GenCode(tmp.kind);
         }
-        codeGenerator.genCodeLine("};");
+        codeGenerator.GenCodeLine("};");
 
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
             "private static final int[][]  jjnextStateSet = {");
         for (int i = 0; i < nfa.Count; i++)
         {
             TokenizerData.NfaState tmp = nfa[i];
-            if (i > 0) codeGenerator.genCodeLine(", ");
+            if (i > 0) codeGenerator.GenCodeLine(", ");
             if (tmp == null)
             {
-                codeGenerator.genCode("{}");
+                codeGenerator.GenCode("{}");
                 continue;
             }
             int k = 0;
-            codeGenerator.genCode("{");
+            codeGenerator.GenCode("{");
             foreach (int s in tmp.nextStates)
             {
-                if (k++ > 0) codeGenerator.genCode(", ");
-                codeGenerator.genCode(s);
+                if (k++ > 0) codeGenerator.GenCode(", ");
+                codeGenerator.GenCode(s);
             }
-            codeGenerator.genCode("}");
+            codeGenerator.GenCode("}");
         }
-        codeGenerator.genCodeLine("};");
+        codeGenerator.GenCodeLine("};");
 
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
             "private static final int[] jjInitStates  = {");
         int k = 0;
         foreach (int i in tokenizerData.initialStates.keySet())
         {
-            if (k++ > 0) codeGenerator.genCode(", ");
-            codeGenerator.genCode(tokenizerData.initialStates[i]);
+            if (k++ > 0) codeGenerator.GenCode(", ");
+            codeGenerator.GenCode(tokenizerData.initialStates[i]);
         }
-        codeGenerator.genCodeLine("};");
+        codeGenerator.GenCodeLine("};");
 
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
             "private static final int[] canMatchAnyChar = {");
         k = 0;
         for (int i = 0; i < tokenizerData.wildcardKind.Count; i++)
         {
-            if (k++ > 0) codeGenerator.genCode(", ");
-            codeGenerator.genCode(tokenizerData.wildcardKind[i]);
+            if (k++ > 0) codeGenerator.GenCode(", ");
+            codeGenerator.GenCode(tokenizerData.wildcardKind[i]);
         }
-        codeGenerator.genCodeLine("};");
+        codeGenerator.GenCodeLine("};");
     }
 
     private void dumpMatchInfo(
@@ -268,7 +268,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         toMore.set(allMatches.Count + 1, true);
         toSpecial.set(allMatches.Count + 1, true);
         // Kind map.
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
             "public static final String[] jjstrLiteralImages = {");
 
         int k = 0;
@@ -284,10 +284,10 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             }
             newStates[i] = matchInfo.newLexState;
             string image = matchInfo.image;
-            if (k++ > 0) codeGenerator.genCodeLine(", ");
+            if (k++ > 0) codeGenerator.GenCodeLine(", ");
             if (image != null)
             {
-                codeGenerator.genCode("\"");
+                codeGenerator.GenCode("\"");
                 for (int j = 0; j < image.Length; j++)
                 {
                     if (image.charAt(j) <= 0xff)
@@ -300,17 +300,17 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
                         string hexVal = int.toHexString((int)image.charAt(j));
                         if (hexVal.Length == 3)
                             hexVal = "0" + hexVal;
-                        codeGenerator.genCode("\\u" + hexVal);
+                        codeGenerator.GenCode("\\u" + hexVal);
                     }
                 }
-                codeGenerator.genCode("\"");
+                codeGenerator.GenCode("\"");
             }
             else
             {
-                codeGenerator.genCodeLine("null");
+                codeGenerator.GenCodeLine("null");
             }
         }
-        codeGenerator.genCodeLine("};");
+        codeGenerator.GenCodeLine("};");
 
         // Now generate the bit masks.
         generateBitVector("jjtoSkip", toSkip, codeGenerator);
@@ -318,51 +318,51 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         generateBitVector("jjtoMore", toMore, codeGenerator);
         generateBitVector("jjtoToken", toToken, codeGenerator);
 
-        codeGenerator.genCodeLine("private static final int[] jjnewLexState = {");
+        codeGenerator.GenCodeLine("private static final int[] jjnewLexState = {");
         for (int i = 0; i < newStates.Length; i++)
         {
-            if (i > 0) codeGenerator.genCode(", ");
+            if (i > 0) codeGenerator.GenCode(", ");
             codeGenerator.genCode("0x" + int.toHexString(newStates[i]));
         }
-        codeGenerator.genCodeLine("};");
+        codeGenerator.GenCodeLine("};");
 
         // Action functions.
 
         string staticString = Options.getStatic() ? "static " : "";
         // Token actions.
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
             staticString + "void TokenLexicalActions(Token matchedToken) {");
         dumpLexicalActions(allMatches, TokenizerData.MatchType.TOKEN,
                            "matchedToken.kind", codeGenerator);
-        codeGenerator.genCodeLine("}");
+        codeGenerator.GenCodeLine("}");
 
         // Skip actions.
         // TODO(sreeni) : Streamline this mess.
 
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
             staticString + "void SkipLexicalActions(Token matchedToken) {");
         dumpLexicalActions(allMatches, TokenizerData.MatchType.SKIP,
                            "jjmatchedKind", codeGenerator);
         dumpLexicalActions(allMatches, TokenizerData.MatchType.SPECIAL_TOKEN,
                            "jjmatchedKind", codeGenerator);
-        codeGenerator.genCodeLine("}");
+        codeGenerator.GenCodeLine("}");
 
         // More actions.
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
             staticString + "void MoreLexicalActions() {");
-        codeGenerator.genCodeLine(
+        codeGenerator.GenCodeLine(
             "jjimageLen += (lengthOfMatch = jjmatchedPos + 1);");
         dumpLexicalActions(allMatches, TokenizerData.MatchType.MORE,
                            "jjmatchedKind", codeGenerator);
-        codeGenerator.genCodeLine("}");
+        codeGenerator.GenCodeLine("}");
 
-        codeGenerator.genCodeLine("public String[] lexStateNames = {");
+        codeGenerator.GenCodeLine("public String[] lexStateNames = {");
         for (int i = 0; i < tokenizerData.lexStateNames.Length; i++)
         {
-            if (i > 0) codeGenerator.genCode(", ");
-            codeGenerator.genCode("\"" + tokenizerData.lexStateNames[i] + "\"");
+            if (i > 0) codeGenerator.GenCode(", ");
+            codeGenerator.GenCode("\"" + tokenizerData.lexStateNames[i] + "\"");
         }
-        codeGenerator.genCodeLine("};");
+        codeGenerator.GenCodeLine("};");
     }
 
     private void dumpLexicalActions(
@@ -370,7 +370,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         TokenizerData.MatchType matchType, string kindString,
         CodeGenerator codeGenerator)
     {
-        codeGenerator.genCodeLine("  switch(" + kindString + ") {");
+        codeGenerator.GenCodeLine("  switch(" + kindString + ") {");
         foreach (int i in allMatches.keySet())
         {
             TokenizerData.MatchInfo matchInfo = allMatches[i];
@@ -379,25 +379,25 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             {
                 continue;
             }
-            codeGenerator.genCodeLine("    case " + i + ": {\n");
-            codeGenerator.genCodeLine("      " + matchInfo.action);
-            codeGenerator.genCodeLine("      break;");
-            codeGenerator.genCodeLine("    }");
+            codeGenerator.GenCodeLine("    case " + i + ": {\n");
+            codeGenerator.GenCodeLine("      " + matchInfo.action);
+            codeGenerator.GenCodeLine("      break;");
+            codeGenerator.GenCodeLine("    }");
         }
-        codeGenerator.genCodeLine("    default: break;");
-        codeGenerator.genCodeLine("  }");
+        codeGenerator.GenCodeLine("    default: break;");
+        codeGenerator.GenCodeLine("  }");
     }
 
     private static void generateBitVector(
         string name, BitSet bits, CodeGenerator codeGenerator)
     {
-        codeGenerator.genCodeLine("private static final long[] " + name + " = {");
+        codeGenerator.GenCodeLine("private static final long[] " + name + " = {");
         long[] longs = bits.toLongArray();
         for (int i = 0; i < longs.Length; i++)
         {
-            if (i > 0) codeGenerator.genCode(", ");
+            if (i > 0) codeGenerator.GenCode(", ");
             codeGenerator.genCode("0x" + Long.toHexString(longs[i]) + "L");
         }
-        codeGenerator.genCodeLine("};");
+        codeGenerator.GenCodeLine("};");
     }
 }

@@ -279,7 +279,7 @@ public class JavaFiles:JavaCCGlobals
       OutputFileGenerator generator = new OutputFileGenerator(
     		  locations.getJavaCharStreamTemplateResourceUrl(), options);
 
-      generator.generate(ostr);
+      generator.Generate(ostr);
 
       ostr.Close();
     } catch (IOException e) {
@@ -326,7 +326,7 @@ public class JavaFiles:JavaCCGlobals
       OutputFileGenerator generator = new OutputFileGenerator(
     		  locations.getSimpleCharStreamTemplateResourceUrl(), options);
 
-      generator.generate(ostr);
+      generator.Generate(ostr);
 
       ostr.Close();
     } catch (IOException e) {
@@ -370,7 +370,7 @@ public class JavaFiles:JavaCCGlobals
       OutputFileGenerator generator = new OutputFileGenerator(
     		  locations.getCharStreamTemplateResourceUrl(), Options.getOptions());
 
-      generator.generate(ostr);
+      generator.Generate(ostr);
 
       ostr.Close();
     } catch (IOException e) {
@@ -421,7 +421,7 @@ public class JavaFiles:JavaCCGlobals
 
 	  OutputFileGenerator generator = new OutputFileGenerator( templatePath, Options.getOptions());
 
-	  generator.generate(ostr);
+	  generator.Generate(ostr);
 
 	  ostr.Close();
 	} catch (IOException e) {
@@ -464,7 +464,7 @@ public class JavaFiles:JavaCCGlobals
       OutputFileGenerator generator = new OutputFileGenerator(
     		  locations.getParseExceptionTemplateResourceUrl(), Options.getOptions());
 
-      generator.generate(ostr);
+      generator.Generate(ostr);
 
       ostr.Close();
     } catch (IOException e) {
@@ -514,7 +514,7 @@ public class JavaFiles:JavaCCGlobals
 
       OutputFileGenerator generator = new OutputFileGenerator( locations.getTokenMgrErrorTemplateResourceUrl(), Options.getOptions());
 
-      generator.generate(ostr);
+      generator.Generate(ostr);
 
       ostr.Close();
 
@@ -560,7 +560,7 @@ public class JavaFiles:JavaCCGlobals
       OutputFileGenerator generator = new OutputFileGenerator(
     		  locations.getTokenTemplateResourceUrl(), Options.getOptions());
 
-      generator.generate(ostr);
+      generator.Generate(ostr);
 
       ostr.Close();
     } catch (IOException e) {
@@ -604,7 +604,7 @@ public class JavaFiles:JavaCCGlobals
       OutputFileGenerator generator = new OutputFileGenerator(
     		  locations.getTokenManagerTemplateResourceUrl(), Options.getOptions());
 
-      generator.generate(ostr);
+      generator.Generate(ostr);
 
       ostr.Close();
     } catch (IOException e) {

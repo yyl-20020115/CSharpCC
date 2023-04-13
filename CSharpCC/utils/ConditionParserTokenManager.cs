@@ -575,7 +575,7 @@ public class ConditionParserTokenManager : ConditionParserConstants
         beginColumn = input_stream.getBeginColumn();
         endLine = input_stream.getEndLine();
         endColumn = input_stream.getEndColumn();
-        t = Token.newToken(jjmatchedKind, curTokenImage);
+        t = Token.NewToken(jjmatchedKind, curTokenImage);
 
         t.beginLine = beginLine;
         t.endLine = endLine;

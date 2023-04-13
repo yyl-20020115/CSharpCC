@@ -57,71 +57,47 @@ public class CharacterRange
             JavaCCErrors.semantic_error(this, "Invalid range : \"" + (int)l + "\" - \""
                   + (int)r + "\". First character should be less than or equal to the second one in a range.");
 
-        setLeft(l);
-        setRight(r);
+        SetLeft(l);
+        SetRight(r);
     }
 
     /**
      * @param line the line to set
      */
-    public void setLine(int line)
-    {
-        this.line = line;
-    }
+    public void SetLine(int line) => this.line = line;
 
     /**
      * @return the line
      */
-    public int getLine()
-    {
-        return line;
-    }
+    public int GetLine() => line;
 
     /**
      * @param column the column to set
      */
-    public void setColumn(int column)
-    {
-        this.column = column;
-    }
+    public void SetColumn(int column) => this.column = column;
 
     /**
      * @return the column
      */
-    public int getColumn()
-    {
-        return column;
-    }
+    public int GetColumn() => column;
 
     /**
      * @param left the left to set
      */
-    public void setLeft(char left)
-    {
-        this.left = left;
-    }
+    public void SetLeft(char left) => this.left = left;
 
     /**
      * @return the left
      */
-    public char getLeft()
-    {
-        return left;
-    }
+    public char GetLeft() => left;
 
     /**
      * @param right the right to set
      */
-    public void setRight(char right)
-    {
-        this.right = right;
-    }
+    public void SetRight(char right) => this.right = right;
 
     /**
      * @return the right
      */
-    public char getRight()
-    {
-        return right;
-    }
+    public char GetRight() => right;
 }

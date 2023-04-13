@@ -7,14 +7,6 @@ namespace org.javacc.utils;
 /** Token Manager Error. */
 public class TokenMgrError : Exception
 {
-
-    /**
-     * The version identifier for this Serializable class.
-     * Increment only if the <i>serialized</i> form of the
-     * class changes.
-     */
-    private static long serialVersionUID = 1L;
-
     /*
      * Ordinals for various reasons why an Error of this type can be thrown.
      */
@@ -43,13 +35,13 @@ public class TokenMgrError : Exception
      * Indicates the reason why the exception is thrown. It will have
      * one of the above 4 values.
      */
-    int errorCode;
+    public int errorCode;
 
     /**
      * Replaces unprintable characters by their escaped (or unicode escaped)
      * equivalents in the given string
      */
-    protected static string addEscapes(string str)
+    protected static string AddEscapes(string str)
     {
         var retval = new StringBuilder();
         char ch;
@@ -111,10 +103,8 @@ public class TokenMgrError : Exception
      *    curchar     : the offending character
      * Note: You can customize the lexical error message by modifying this method.
      */
-    protected static string LexicalError(bool EOFSeen, int lexState, int errorLine, int errorColumn, string errorAfter, char curChar)
-    {
-        return ($"Lexical error at line {errorLine}, column {errorColumn}.  Encountered: {(EOFSeen ? "<EOF> " : ("\"" + addEscapes(curChar.ToString()) + "\"") + " (" + (int)curChar + "), ")}after : \"{addEscapes(errorAfter)}\"");
-    }
+    protected static string LexicalError(bool EOFSeen, int lexState, int errorLine, int errorColumn, string errorAfter, char curChar) 
+        => $"Lexical error at line {errorLine}, column {errorColumn}.  Encountered: {(EOFSeen ? "<EOF> " : "\"" + AddEscapes(curChar.ToString()) + "\"" + " (" + (int)curChar + "), ")}after : \"{AddEscapes(errorAfter)}\"";
 
     /**
      * You can also modify the body of this method to customize your error messages.

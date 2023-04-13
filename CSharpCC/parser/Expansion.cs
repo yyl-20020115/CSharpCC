@@ -92,38 +92,35 @@ public class Expansion
      */
     public bool inMinimumSize = false;
 
-    public static void reInit()
+    public static void ReInit()
     {
         nextGenerationIndex = 1;
     }
 
-    private string getSimpleName()
+    private string GetSimpleName()
     {
         string name = this.GetType().Name;
         return name[(name.LastIndexOf(".") + 1)..]; // strip the package name
     }
 
-    public override string ToString()
-    {
-        return "[" + getLine() + "," + getColumn() + " " + (this.GetHashCode()) + " " + getSimpleName() + "]";
-    }
+    public override string ToString() => $"[{GetLine()},{GetColumn()} {this.GetHashCode()} {GetSimpleName()}]";
 
     protected static readonly string eol = Environment.NewLine;// System.getProperty("line.separator", "\n");
-    protected StringBuilder dumpPrefix(int indent)
+    protected StringBuilder DumpPrefix(int indent)
     {
-        StringBuilder sb = new StringBuilder(128);
+        var sb = new StringBuilder(128);
         for (int i = 0; i < indent; i++)
             sb.Append("  ");
         return sb;
     }
 
-    public virtual StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
+    public virtual StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        var value = dumpPrefix(indent).Append((this.GetHashCode())).Append(" ").Append(getSimpleName());
+        var value = DumpPrefix(indent).Append((this.GetHashCode())).Append(" ").Append(GetSimpleName());
         return value;
     }
 
-    public string getProductionName()
+    public string GetProductionName()
     {
         Object next = this;
         // Limit the number of iterations in case there's a cycle
@@ -148,7 +145,7 @@ public class Expansion
     /**
      * @param column the column to set
      */
-    public void setColumn(int column)
+    public void SetColumn(int column)
     {
         this.column = column;
     }
@@ -156,7 +153,7 @@ public class Expansion
     /**
      * @return the column
      */
-    public int getColumn()
+    public int GetColumn()
     {
         return column;
     }
@@ -164,7 +161,7 @@ public class Expansion
     /**
      * @param line the line to set
      */
-    public void setLine(int line)
+    public void SetLine(int line)
     {
         this.line = line;
     }
@@ -172,7 +169,7 @@ public class Expansion
     /**
      * @return the line
      */
-    public int getLine()
+    public int GetLine()
     {
         return line;
     }
@@ -183,7 +180,7 @@ public class Expansion
      * that this method is called only after line and column are set to
      * their actual values.
      */
-    public override int GetHashCode() => getLine() + getColumn();
+    public override int GetHashCode() => GetLine() + GetColumn();
 
 
 }

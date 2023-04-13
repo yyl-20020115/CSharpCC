@@ -598,7 +598,7 @@ public static class CPPNodeFiles
         GeneratePrologue(ostr);
         OutputFileGenerator generator;
         generator = new OutputFileGenerator(template, options);
-        generator.generate(ostr);
+        generator.Generate(ostr);
         if (close) ostr.Close();
     }
 }

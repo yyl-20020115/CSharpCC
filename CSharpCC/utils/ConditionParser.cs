@@ -6,23 +6,23 @@ namespace org.javacc.utils;
 
 public class ConditionParser : ConditionParserConstants
 {
-    private Dictionary<String, Object> options;
+    private Dictionary<string, object> options;
 
     public static void main(params string[] args)
     {
-        test("F", false);
-        test("T", true);
-        test("F || T", true);
-        test("T || F", true);
-        test("T || will not be compiled )", true);
-        test("F && T", false);
-        test("T && T", true);
-        test("unknown", false);
+        Test("F", false);
+        Test("T", true);
+        Test("F || T", true);
+        Test("T || F", true);
+        Test("T || will not be compiled )", true);
+        Test("F && T", false);
+        Test("T && T", true);
+        Test("unknown", false);
     }
 
-    private static void test(String input, bool expectedValue)
+    private static void Test(String input, bool expectedValue)
     {
-        ConditionParser cp = new ConditionParser(new StringReader(input));
+        var cp = new ConditionParser(new StringReader(input));
         Dictionary<String, Object> values = new Dictionary<String, Object>();
         values.Add("F", false);
         values.Add("T", true);
@@ -32,7 +32,7 @@ public class ConditionParser : ConditionParserConstants
             throw new RuntimeException();
     }
 
-    public bool CompilationUnit(Dictionary<String, Object> options)
+    public bool CompilationUnit(Dictionary<string, object> options)
     {
         bool value;
         this.options = options;

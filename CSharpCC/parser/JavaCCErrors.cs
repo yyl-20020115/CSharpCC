@@ -36,7 +36,7 @@ public static class JavaCCErrors
 {
     private static int parse_error_count = 0, semantic_error_count = 0, warning_count = 0;
 
-    private static void printLocationInfo(object node)
+    private static void PrintLocationInfo(object node)
     {
         if (node is NormalProduction)
         {
@@ -52,12 +52,12 @@ public static class JavaCCErrors
         else if (node is Expansion)
         {
             Expansion n = (Expansion)node;
-            Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+            Console.Error.Write("Line " + n.GetLine() + ", Column " + n.GetColumn() + ": ");
         }
         else if (node is CharacterRange)
         {
             CharacterRange n = (CharacterRange)node;
-            Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+            Console.Error.Write("Line " + n.GetLine() + ", Column " + n.GetColumn() + ": ");
         }
         else if (node is SingleCharacter)
         {
@@ -74,7 +74,7 @@ public static class JavaCCErrors
     public static void parse_error(object node, string mess)
     {
         Console.Error.Write("Error: ");
-        printLocationInfo(node);
+        PrintLocationInfo(node);
         Console.Error.WriteLine(mess);
         parse_error_count++;
     }
@@ -94,7 +94,7 @@ public static class JavaCCErrors
     public static void semantic_error(object node, string mess)
     {
         Console.Error.Write("Error: ");
-        printLocationInfo(node);
+        PrintLocationInfo(node);
         Console.Error.WriteLine(mess);
         semantic_error_count++;
     }
@@ -114,7 +114,7 @@ public static class JavaCCErrors
     public static void warning(object node, string mess)
     {
         Console.Error.Write("Warning: ");
-        printLocationInfo(node);
+        PrintLocationInfo(node);
         Console.Error.WriteLine(mess);
         warning_count++;
     }

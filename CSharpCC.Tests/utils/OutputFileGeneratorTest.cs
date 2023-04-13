@@ -15,7 +15,7 @@ public class OutputFileGeneratorTest : CSharpCCTestCase
         impl.getParseExceptionTemplateResourceUrl(), new Dictionary<string,object>());
     
     TextWriter stringWriter = new StringWriter();
-    generator.generate(stringWriter);
+    generator.Generate(stringWriter);
 
     Assert.IsTrue(stringWriter.ToString().Contains("StringBuilder"));
     Assert.IsFalse(stringWriter.ToString().Contains("StringBuilder"));
@@ -30,7 +30,7 @@ public class OutputFileGeneratorTest : CSharpCCTestCase
         impl.getParseExceptionTemplateResourceUrl(), new Dictionary<string, object>());
 
     TextWriter writer = new StringWriter();
-    generator.generate(writer);
+    generator.Generate(writer);
 
     Assert.IsTrue(writer.ToString().Contains("StringBuilder"));
     Assert.IsFalse(writer.ToString().Contains("StringBuilder"));

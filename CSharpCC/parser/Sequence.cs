@@ -49,8 +49,8 @@ public class Sequence : Expansion
 
     public Sequence(Token token, Lookahead lookahead)
     {
-        this.setLine(token.beginLine);
-        this.setColumn(token.beginColumn);
+        this.SetLine(token.beginLine);
+        this.SetColumn(token.beginColumn);
         this.units.Add(lookahead);
     }
 
@@ -59,14 +59,14 @@ public class Sequence : Expansion
     {
         if (alreadyDumped.Contains(this))
         {
-            return base.dump(0, alreadyDumped).Insert(0, '[').Append(']').Insert(0, dumpPrefix(indent));
+            return base.Dump(0, alreadyDumped).Insert(0, '[').Append(']').Insert(0, DumpPrefix(indent));
         }
 
         alreadyDumped.Add(this);
-        var sb = base.dump(indent, alreadyDumped);
+        var sb = base.Dump(indent, alreadyDumped);
         foreach (Expansion next in units)
         {
-            sb.Append(eol).Append(next.dump(indent + 1, alreadyDumped));
+            sb.Append(eol).Append(next.Dump(indent + 1, alreadyDumped));
         }
         return sb;
     }

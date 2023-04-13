@@ -31,8 +31,9 @@ namespace org.javacc.parser;
  * An object container.  Used to pass references to objects as parameter.
  */
 
-public class Container {
+public class Container
+{
 
-  public Object member;
+  public object Member;
 
 }

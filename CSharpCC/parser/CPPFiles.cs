@@ -5,48 +5,47 @@
 using org.javacc.jjtree;
 using org.javacc.utils;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace org.javacc.parser;
-
-
 
 /**
  * Generate CharStream, TokenManager and Exceptions.
  */
-public class CPPFiles : JavaCCGlobals
+public partial class CPPFiles : JavaCCGlobals
 {
     /**
     * ID of the latest version (of JavaCC) in which one of the CharStream classes
     * or the CharStream interface is modified.
     */
-    static readonly string charStreamVersion = Version.MajorDotMinor;
+    static readonly string CharStreamVersion = Version.MajorDotMinor;
 
     /**
      * ID of the latest version (of JavaCC) in which the TokenManager interface is modified.
      */
-    static readonly string tokenManagerVersion = Version.MajorDotMinor;
+    static readonly string TokenManagerVersion = Version.MajorDotMinor;
 
     /**
      * ID of the latest version (of JavaCC) in which the Token class is modified.
      */
-    static readonly string tokenVersion = Version.MajorDotMinor;
+    static readonly string TokenVersion = Version.MajorDotMinor;
 
     /**
      * ID of the latest version (of JavaCC) in which the ParseException class is
      * modified.
      */
-    static readonly string parseExceptionVersion = Version.MajorDotMinor;
+    static readonly string ParseExceptionVersion = Version.MajorDotMinor;
 
     /**
      * ID of the latest version (of JavaCC) in which the TokenMgrError class is
      * modified.
      */
-    static readonly string tokenMgrErrorVersion = Version.MajorDotMinor;
+    static readonly string TokenMgrErrorVersion = Version.MajorDotMinor;
 
     /**
      * Replaces all backslahes with double backslashes.
      */
-    static string replaceBackslash(string str)
+    static string ReplaceBackslash(string str)
     {
         StringBuilder b;
         int i = 0, len = str.Length;
@@ -76,51 +75,38 @@ public class CPPFiles : JavaCCGlobals
      * @return The version as a double, eg 4.1
      * @since 4.1
      */
-    static double getVersion(string fileName)
+    static Regex versionRegex = MyRegex();
+    static double GetVersion(string fileName)
     {
         string commentHeader = "/* " + getIdString(toolName, fileName) + " Version ";
-        string file = System.IO.Path.Combine(Options.getOutputDirectory(), replaceBackslash(fileName));
+        string file = Path.Combine(Options.getOutputDirectory(), ReplaceBackslash(fileName));
 
-        if (!file.exists())
+        if (!File.Exists(file))
         {
             // Has not yet been created, so it must be up to date.
-            try
-            {
-                string majorVersion = Version.VersionNumber.replaceAll("[^0-9.]+.*", "");
-                return Double.parseDouble(majorVersion);
-            }
-            catch (NumberFormatException e)
-            {
-                return 0.0; // Should never happen
-            }
+            string majorVersion = versionRegex.Replace(Version.VersionNumber,"");
+            return double.TryParse(majorVersion, out var d) ? d : 0.0;
         }
 
-        BufferedReader reader = null;
+        TextReader reader = null;
         try
         {
-            reader = new BufferedReader(new FileReader(file));
+            reader = new StreamReader(file);
             string str;
             double version = 0.0;
 
             // Although the version comment should be the first line, sometimes the
             // user might have put comments before it.
-            while ((str = reader.readLine()) != null)
+            while ((str = reader.ReadLine()) != null)
             {
                 if (str.StartsWith(commentHeader))
                 {
-                    str = str.substring(commentHeader.Length);
+                    str = str[commentHeader.Length..];
                     int pos = str.IndexOf(' ');
-                    if (pos >= 0) str = str.substring(0, pos);
-                    if (str.Length > 0)
+                    if (pos >= 0) str = str[..pos];
+                    if (str.Length > 0&& double.TryParse(str, out version))
                     {
-                        try
-                        {
-                            version = Double.parseDouble(str);
-                        }
-                        catch (NumberFormatException nfe)
-                        {
-                            // Ignore - leave version as 0.0
-                        }
+                        //OK    
                     }
 
                     break;
@@ -142,12 +128,12 @@ public class CPPFiles : JavaCCGlobals
         }
     }
 
-    private static void genFile(string name, string version, String[] parameters)
+    private static void GenFile(string name, string version, string[] parameters)
     {
-        File file = new File(Options.getOutputDirectory(), name);
+        string file = Path.Combine(Options.getOutputDirectory(), name);
         try
         {
-            OutputFile outputFile = new OutputFile(file, version, parameters);
+            var outputFile = new OutputFile(file, version, parameters);
 
             if (!outputFile.NeedToWrite)
             {
@@ -157,7 +143,7 @@ public class CPPFiles : JavaCCGlobals
             TextWriter ostr = outputFile.getPrintWriter();
             OutputFileGenerator generator = new OutputFileGenerator(
                 "/templates/cpp/" + name + ".template", Options.getOptions());
-            generator.generate(ostr);
+            generator.Generate(ostr);
             ostr.Close();
         }
         catch (IOException e)
@@ -168,54 +154,56 @@ public class CPPFiles : JavaCCGlobals
         }
     }
 
-    public static void gen_CharStream()
+    public static void GenCharStream()
     {
-        String[] parameters = new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-        genFile("CharStream.h", charStreamVersion, parameters);
-        genFile("CharStream.cc", charStreamVersion, parameters);
+        string[] parameters = new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+        GenFile("CharStream.h", CharStreamVersion, parameters);
+        GenFile("CharStream.cc", CharStreamVersion, parameters);
     }
 
-    public static void gen_ParseException()
+    public static void GenParseException()
     {
-        String[] parameters = new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-        genFile("ParseException.h", parseExceptionVersion, parameters);
-        genFile("ParseException.cc", parseExceptionVersion, parameters);
+        string[] parameters = new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+        GenFile("ParseException.h", ParseExceptionVersion, parameters);
+        GenFile("ParseException.cc", ParseExceptionVersion, parameters);
     }
 
-    public static void gen_TokenMgrError()
+    public static void GenTokenMgrError()
     {
-        String[] parameters = new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-        genFile("TokenMgrError.h", tokenMgrErrorVersion, parameters);
-        genFile("TokenMgrError.cc", tokenMgrErrorVersion, parameters);
+        string[] parameters = new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+        GenFile("TokenMgrError.h", TokenMgrErrorVersion, parameters);
+        GenFile("TokenMgrError.cc", TokenMgrErrorVersion, parameters);
     }
 
-    public static void gen_Token()
+    public static void GenToken()
     {
-        String[] parameters = new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC, Options.USEROPTION__CPP_TOKEN_INCLUDE, Options.USEROPTION__TOKEN_SUPER_CLASS };
-        genFile("Token.h", tokenMgrErrorVersion, parameters);
-        genFile("Token.cc", tokenMgrErrorVersion, parameters);
+        string[] parameters = new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC, Options.USEROPTION__CPP_TOKEN_INCLUDE, Options.USEROPTION__TOKEN_SUPER_CLASS };
+        GenFile("Token.h", TokenMgrErrorVersion, parameters);
+        GenFile("Token.cc", TokenMgrErrorVersion, parameters);
     }
 
-    public static void gen_TokenManager()
+    public static void GenTokenManager()
     {
-        String[] parameters = new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-        genFile("TokenManager.h", tokenManagerVersion, parameters);
+        string[] parameters = new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+        GenFile("TokenManager.h", TokenManagerVersion, parameters);
     }
 
-    public static void gen_JavaCCDefs()
+    public static void GenJavaCCDefs()
     {
-        String[] parameters = new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-        genFile("JavaCC.h", tokenManagerVersion, parameters);
+        string[] parameters = new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+        GenFile("JavaCC.h", TokenManagerVersion, parameters);
     }
 
-    public static void gen_ErrorHandler()
+    public static void GenErrorHandler()
     {
-        String[] parameters = new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC, Options.USEROPTION__BUILD_PARSER, Options.USEROPTION__BUILD_TOKEN_MANAGER };
-        genFile("ErrorHandler.h", parseExceptionVersion, parameters);
+        string[] parameters = new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC, Options.USEROPTION__BUILD_PARSER, Options.USEROPTION__BUILD_TOKEN_MANAGER };
+        GenFile("ErrorHandler.h", ParseExceptionVersion, parameters);
     }
 
-    public static void reInit()
+    public static void ReInit()
     {
     }
 
+    [GeneratedRegex("[^0-9.]+.*")]
+    private static partial Regex MyRegex();
 }
