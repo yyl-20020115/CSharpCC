@@ -67,10 +67,7 @@ public class Token
      * Any subclass of Token that actually wants to return a non-null value can
      * override this method as appropriate.
      */
-    public Object getValue()
-    {
-        return null;
-    }
+    public object GetValue() => null;
 
     /**
      * No-argument constructor
@@ -97,32 +94,18 @@ public class Token
     /**
      * equals
      */
-    public override bool Equals(object? o)
-    {
-        if (o == null)
-            return false;
-        if (this == o)
-            return true;
-        if (o is String)
-            return o == (image);
-        return false;
-    }
+    public override bool Equals(object? o) 
+        => o != null && (this == o || (o is string s && s == image));
 
     /**
      * hashCode
      */
-    public override int GetHashCode()
-    {
-        return image.GetHashCode();
-    }
+    public override int GetHashCode() => image.GetHashCode();
 
     /**
      * Returns the image.
      */
-    public override string ToString()
-    {
-        return image;
-    }
+    public override string ToString() => image;
 
     /**
      * Returns a new Token object, by default. However, if you want, you
@@ -136,16 +119,13 @@ public class Token
      * to the following switch statement. Then you can cast matchedToken
      * variable to the appropriate type and use it in your lexical actions.
      */
-    public static Token newToken(int ofKind, string image) => ofKind switch
+    public static Token NewToken(int ofKind, string? image) => ofKind switch
     {
         JavaCCParserConstants.RUNSIGNEDSHIFT or JavaCCParserConstants.RSIGNEDSHIFT or JavaCCParserConstants.GT => new GTToken(ofKind, image),
         _ => new Token(ofKind, image),
     };
 
-    public static Token newToken(int ofKind)
-    {
-        return newToken(ofKind, null);
-    }
+    public static Token NewToken(int ofKind) => NewToken(ofKind, null);
 
     /**
      * Greater than Token.
@@ -153,10 +133,7 @@ public class Token
     public class GTToken : Token
     {
         public GTToken(int kind, string image)
-                : base(kind, image)
-        {
-
-        }
+                : base(kind, image) { }
 
         public int realKind = JavaCCParserConstants.GT;
     }

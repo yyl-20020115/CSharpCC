@@ -55,7 +55,7 @@ public class TokenMgrError : Error
      * Replaces unprintable characters by their escaped (or unicode escaped)
      * equivalents in the given string
      */
-    protected static String AddEscapes(String str)
+    protected static string AddEscapes(string str)
     {
         var retval = new StringBuilder();
         char ch;
@@ -117,10 +117,8 @@ public class TokenMgrError : Error
      *    curchar     : the offending character
      * Note: You can customize the lexical error message by modifying this method.
      */
-    protected static String LexicalError(bool EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar)
-    {
-        return ($"Lexical error at line {errorLine}, column {errorColumn}.  Encountered: {(EOFSeen ? "<EOF> " : ("\"" + AddEscapes(Convert.ToString(curChar)) + "\"") + " (" + (int)curChar + "), ")}after : \"{AddEscapes(errorAfter)}\"");
-    }
+    protected static string LexicalError(bool EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar)
+        => $"Lexical error at line {errorLine}, column {errorColumn}.  Encountered: {(EOFSeen ? "<EOF> " : "\"" + AddEscapes(Convert.ToString(curChar)) + "\"" + " (" + (int)curChar + "), ")}after : \"{AddEscapes(errorAfter)}\"";
 
     /**
      * You can also modify the body of this method to customize your error messages.
