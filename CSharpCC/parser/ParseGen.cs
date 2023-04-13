@@ -60,8 +60,8 @@ public class ParseGen : CodeGenerator
 
             if (cu_to_insertion_point_1.Count != 0)
             {
-                object firstToken = cu_to_insertion_point_1[0];
-                PrintTokenSetup((Token)firstToken);
+                var firstToken = cu_to_insertion_point_1[0];
+                PrintTokenSetup(firstToken);
                 this.ccol = 1;
                 foreach (var t2 in cu_to_insertion_point_1)
                 {

@@ -265,7 +265,7 @@ public class Options
     {
         return ((Boolean)optionValues.get(option)).booleanValue();
     }
-
+     
     /**
      * Convenience method to retrieve string options.
      */

@@ -106,7 +106,7 @@ public class Semanticize : JavaCCGlobals
          * regular expression specs generate a warning.
          */
         for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
-        {
+        { 
             TokenProduction tp = (TokenProduction)(it.next());
             List<RegExprSpec> respecs = tp.respecs;
             for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();)

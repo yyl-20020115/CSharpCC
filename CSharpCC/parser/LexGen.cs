@@ -65,10 +65,10 @@ public class LexGen : CodeGenerator
     public static int maxLexStates;
     public static String[] lexStateName;
     public static NfaState[] singlesToSkip;
-    public static long[] toSkip;
-    public static long[] toSpecial;
-    public static long[] toMore;
-    public static long[] toToken;
+    public static ulong[] toSkip;
+    public static ulong[] toSpecial;
+    public static ulong[] toMore;
+    public static ulong[] toToken;
     public static int defaultLexState;
     public static RegularExpression[] rexprs;
     public static int[] maxLongsReqd;
