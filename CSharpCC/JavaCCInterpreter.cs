@@ -1,5 +1,4 @@
 using org.javacc.parser;
-using System.Runtime.InteropServices;
 
 public class JavaCCInterpreter
 {
@@ -153,9 +152,7 @@ public class JavaCCInterpreter
                             newStates.UnionWith(nfaState.nextStates);
                         }
                     }
-                    HashSet<int> tmp = newStates;
-                    newStates = curStates;
-                    curStates = tmp;
+                    (curStates, newStates) = (newStates, curStates);
                     newStates.Clear();
                     if (kind != int.MaxValue)
                     {

@@ -2002,8 +2002,7 @@ public class JavaCCParser : JavaCCParserInternals
         class_nesting++;
         Token t;
         bool is_parser_class = false;
-        if (tokens == null)
-            tokens = new ();
+        tokens ??= new ();
         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case CLASS:
@@ -2345,8 +2344,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void ClassOrInterfaceBody(bool isInterface, List tokens)
     {
         Token first, last;
-        if (tokens == null)
-            tokens = new ();
+        tokens ??= new ();
         jj_consume_token(LBRACE);
         first = getToken(1);
     label_24:
@@ -2809,8 +2807,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void FormalParameters(List tokens)
     {
         Token first, last;
-        if (tokens == null)
-            tokens = new ();
+        tokens ??= new ();
         jj_consume_token(LPAREN);
         first = getToken(1);
         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
@@ -3332,8 +3329,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void TypeArguments(List tokens)
     {
         Token first, last;
-        if (tokens == null)
-            tokens = new ();
+        tokens ??= new ();
         jj_consume_token(LANGLE);
         first = getToken(0);
         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
@@ -3488,8 +3484,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void ResultType(List tokens)
     {
         Token first = getToken(1);
-        if (tokens == null)
-            tokens = new ();
+        tokens ??= new ();
         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case VOID:
@@ -3574,8 +3569,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void Name(List tokens)
     {
-        if (tokens == null)
-            tokens = new ();
+        tokens ??= new ();
         Token first = getToken(1);
         JavaIdentifier();
     label_36:
@@ -3628,8 +3622,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void Expression(List tokens)
     {
         Token first = getToken(1);
-        if (tokens == null)
-            tokens = new ();
+        tokens ??= new ();
         ConditionalExpression();
         if (jj_2_24(2))
         {
@@ -4545,8 +4538,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void Arguments(List tokens)
     {
         Token first, last;
-        if (tokens == null)
-            tokens = new ();
+        tokens ??= new ();
         jj_consume_token(LPAREN);
         first = getToken(1);
         // Added by Sreenivas Viswanadha for 6.0
@@ -4903,8 +4895,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void Block(List tokens)
     {
         Token first, last;
-        if (tokens == null)
-            tokens = new ();
+        tokens ??= new ();
         jj_consume_token(LBRACE);
         first = getToken(1);
         if (!IsJavaLanguage())
@@ -10768,7 +10759,7 @@ public class JavaCCParser : JavaCCParserInternals
     }
 
     public class JJCalls
-    {  
+    { 
         public int gen;
         public Token first; 
         public int arg;

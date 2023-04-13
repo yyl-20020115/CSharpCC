@@ -64,12 +64,12 @@ public class NormalProduction
     /**
      * The tokens that make up the return type of this production.
      */
-    private List<Token> return_type_tokens = new();
+    private readonly List<Token> return_type_tokens = new();
 
     /**
      * The tokens that make up the parameters of this production.
      */
-    private List<Token> parameter_list_tokens = new();
+    private readonly List<Token> parameter_list_tokens = new();
 
     /**
      * Each entry in this list is a list of tokens that represents an
@@ -94,7 +94,7 @@ public class NormalProduction
      * pointers exist.
      */
     private NormalProduction[] leftExpansions = new NormalProduction[10];
-    public int leIndex = 0;
+    public readonly int leIndex = 0;
 
     /**
      * The following variable is used to maintain state information for the
@@ -114,7 +114,7 @@ public class NormalProduction
 
     private Token firstToken;
 
-    protected string eol = Environment.NewLine;// System.getProperty("line.separator", "\n");
+    protected readonly string eol = Environment.NewLine;// System.getProperty("line.separator", "\n");
     protected StringBuilder DumpPrefix(int indent)
     {
         StringBuilder sb = new StringBuilder(128);

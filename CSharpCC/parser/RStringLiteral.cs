@@ -724,7 +724,7 @@ public class RStringLiteral : RegularExpression
             String[] keys = ReArrange(tab);
 
             StringBuilder _params = new StringBuilder();
-            _params.Append("(");
+            _params.Append('(');
             if (i != 0)
             {
                 if (i == 1)
@@ -766,7 +766,7 @@ public class RStringLiteral : RegularExpression
                     }
                 }
             }
-            _params.Append(")");
+            _params.Append(')');
 
             // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
             if (Options.IsOutputLanguageJava())
@@ -1129,7 +1129,7 @@ public class RStringLiteral : RegularExpression
                                 if ((LexGen.initMatch[LexGen.lexStateIndex] != 0 &&
                                      LexGen.initMatch[LexGen.lexStateIndex] != int.MaxValue) ||
                                      i != 0)
-                                { 
+                                {  
                                     codeGenerator.GenCodeLine("         {");
                                     codeGenerator.GenCodeLine(prefix + "jjmatchedKind = " +
                                                                kindToPrint + ";");
@@ -1478,7 +1478,7 @@ public class RStringLiteral : RegularExpression
         }
         else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
-            codeGenerator.generateMethodDefHeader(" int", LexGen.tokMgrClassName, "jjStopStringLiteralDfa" + LexGen.lexStateSuffix + "(int pos, " + _params);
+            codeGenerator.GenerateMethodDefHeader(" int", LexGen.tokMgrClassName, "jjStopStringLiteralDfa" + LexGen.lexStateSuffix + "(int pos, " + _params);
         }
         else
         {

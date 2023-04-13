@@ -76,8 +76,8 @@ public class ParseGenCPP : ParseGen
 
 
         string superClass = Options.StringValue(Options.USEROPTION__PARSER_SUPER_CLASS);
-        GenClassStart("", CuName, new String[] { },
-                      superClass == null ? new String[0] : new String[] {
+        GenClassStart("", CuName, Array.Empty<string>(),
+                      superClass == null ? Array.Empty<string>() : new String[] {
                    "public " + superClass});
         SwitchToMainFile();
         if (cu_to_insertion_point_2.Count != 0)

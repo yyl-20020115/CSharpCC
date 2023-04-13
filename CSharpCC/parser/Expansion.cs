@@ -60,7 +60,7 @@ public class Expansion : Descriptor
      * expansions for which phase 3 generations have been already added to
      * a list so that the recursion can be terminated.
      */
-    bool phase3done = false;
+    //bool phase3done = false;
 
     /**
      * The parent of this expansion node.  In case this is the top level

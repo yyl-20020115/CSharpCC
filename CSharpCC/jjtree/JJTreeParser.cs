@@ -42,7 +42,7 @@ public class JJTreeParser : JJTreeParserConstants
     /************************************************
      * THE JAVACC GRAMMAR SPECIFICATION STARTS HERE *
      ************************************************/
-    public void javacc_input()
+    public void javacc_input(Exception jjte001, Exception jjte000)
     {
         /*@bgen(jjtree) Grammar */
         ASTGrammar jjtn000 = new ASTGrammar(JJTGRAMMAR);
@@ -101,9 +101,9 @@ public class JJTreeParser : JJTreeParserConstants
                 {
                     jjtree.PopNode();
                 }
-                if (jjte001 is RuntimeException)
+                if (jjte001 is RuntimeException exception)
                 {
-                    { if (true) throw (RuntimeException)jjte001; }
+                    { if (true) throw exception; }
                 }
                 if (jjte001 is ParseException)
                 {
@@ -270,9 +270,9 @@ public class JJTreeParser : JJTreeParserConstants
                 {
                     jjtree.PopNode();
                 }
-                if (jjte001 is RuntimeException)
+                if (jjte001 is RuntimeException exception)
                 {
-                    { if (true) throw (RuntimeException)jjte001; }
+                    { if (true) throw exception; }
                 }
                 if (jjte001 is ParseException)
                 {

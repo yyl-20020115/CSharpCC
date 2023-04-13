@@ -160,7 +160,7 @@ public class LexGen : CodeGenerator
         //GenCodeLine("class " + tokMgrClassName + " implements " +
         //cu_name + "Constants");
         //String superClass = Options.stringValue(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS);
-        GenClassStart(null, tokMgrClassName, new String[] { }, new String[] { CuName + "Constants" });
+        GenClassStart(null, tokMgrClassName, Array.Empty<string>(), new String[] { CuName + "Constants" });
         //GenCodeLine("{"); // }
 
         if (token_mgr_decls != null && token_mgr_decls.Count > 0)
@@ -429,7 +429,7 @@ public class LexGen : CodeGenerator
                             mixed[lexStateIndex] = true;
                         }
                     }
-                    else if (curRE.CanMatchAnyChar())
+                    else if (curRE.CanMatchAnyChar)
                     {
                         if (canMatchAnyChar[lexStateIndex] == -1 ||
                             canMatchAnyChar[lexStateIndex] > curRE.ordinal)
@@ -597,7 +597,7 @@ public class LexGen : CodeGenerator
                 for (int k = 0; k < act.GetActionTokens().Count; k++)
                 {
                     sb.Append(((Token)act.GetActionTokens().get(k)).image);
-                    sb.Append(" ");
+                    sb.Append(' ');
                 }
                 actionStrings.Add(i, sb.ToString());
             }
@@ -718,7 +718,7 @@ public class LexGen : CodeGenerator
                 cycle += "-->";
                 done[j] = true;
                 seen[j] = true;
-                if (initMatch[j] == 0 || initMatch[j] == int.MaxValue ||
+                if (initMatch[j] == 0 || initMatch[j] == int.MaxValue || 
                     canMatchAnyChar[j] != -1) 
                     continue Outer;
                 if (len != 0)

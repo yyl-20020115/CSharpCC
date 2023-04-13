@@ -30,6 +30,7 @@
 
 using org.javacc.parser;
 using System.Security;
+using System.Text;
 
 namespace org.javacc.jjdoc;
 
@@ -143,31 +144,31 @@ public class JJDocMain : JJDocGlobals
         }
         else
         {
-            Info("Reading from file " + args[args.Length - 1] + " . . .");
+            Info("Reading from file " + args[^1] + " . . .");
             try
             {
                 string fp = (args[^1]);
-                if (!fp.exists())
+                if (!File.Exists(fp))
                 {
-                    Error("File " + args[args.Length - 1] + " not found.");
+                    Error("File " + args[^1] + " not found.");
                     return 1;
                 }
-                if (fp.isDirectory())
+                if (Directory.Exists(fp))
                 {
-                    Error(args[args.Length - 1] + " is a directory. Please use a valid file name.");
+                    Error(args[^1] + " is a directory. Please use a valid file name.");
                     return 1;
                 }
-                JJDocGlobals.input_file = fp.getName();
-                parser = new JavaCCParser(new BufferedReader(new InputStreamReader(new FileInputStream(args[args.Length - 1]), JJDocOptions.GetGrammarEncoding())));
+                JJDocGlobals.input_file = fp;
+                parser = new JavaCCParser(new StreamReader(args[^1],Encoding.GetEncoding(JJDocOptions.GetGrammarEncoding())));
             }
             catch (SecurityException se)
             {
-                Error("Security violation while trying to open " + args[args.Length - 1]);
+                Error("Security violation while trying to open " + args[^1]);
                 return 1;
             }
             catch (FileNotFoundException e)
             {
-                Error("File " + args[args.Length - 1] + " not found.");
+                Error("File " + args[^1] + " not found.");
                 return 1;
             }
         }

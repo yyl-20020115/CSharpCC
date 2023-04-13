@@ -140,7 +140,7 @@ public partial class CPPFiles : JavaCCGlobals
                 return;
             }
 
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
             OutputFileGenerator generator = new OutputFileGenerator(
                 "/templates/cpp/" + name + ".template", Options.getOptions());
             generator.Generate(ostr);

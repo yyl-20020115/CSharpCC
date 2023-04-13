@@ -95,7 +95,7 @@ public class BitSet
 
             acc = (acc & m8) + ((acc >> 8) & m8);
             acc = (acc + (acc >> 16)) & m16;
-            acc = acc + (acc >> 32);
+            acc += (acc >> 32);
             bitCount += (uint)acc;
         }
 
@@ -106,7 +106,7 @@ public class BitSet
         for (uint i = 0; i < size - limit30; i++)
         {
             ulong x = value[data + i];
-            x = x - ((x >> 1) & m1);
+            x -= ((x >> 1) & m1);
             x = (x & m2) + ((x >> 2) & m2);
             x = (x + (x >> 4)) & m4;
             bitCount += (uint)((x * h01) >> 56);

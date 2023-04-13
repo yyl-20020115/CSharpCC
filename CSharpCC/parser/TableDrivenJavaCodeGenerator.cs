@@ -9,7 +9,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
 {
     private static readonly string TokenManagerTemplate =
         "/templates/TableDrivenTokenManager.template";
-    private CodeGenerator codeGenerator = new();
+    private readonly CodeGenerator codeGenerator = new();
 
     //@Override
     public void GenerateCode(TokenizerData tokenizerData)

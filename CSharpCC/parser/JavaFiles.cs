@@ -172,11 +172,14 @@ public partial class JavaFiles : JavaCCGlobals
      */
     [GeneratedRegex("[^0-9.]+.*")]
     private static partial Regex MyRegex();
-    static Regex versionRegex = MyRegex();
+
+    private static readonly Regex regex = MyRegex();
+    static readonly Regex versionRegex = regex;
 
     [GeneratedRegex("(\\d+(\\.\\d+)?).*")]
     private static partial Regex MyRegex1();
-    static Regex numberRegex = MyRegex1();
+
+    private static readonly Regex numberRegex = MyRegex1();
     public static double GetVersion(string fileName)
     {
         string commentHeader = "/* " + GetIdString(ToolName, fileName) + " Version ";
@@ -253,7 +256,7 @@ public partial class JavaFiles : JavaCCGlobals
                 return;
             }
 
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
                 cu_to_insertion_point_1[0].kind == PACKAGE
@@ -308,7 +311,7 @@ public partial class JavaFiles : JavaCCGlobals
                 return;
             }
 
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
                 cu_to_insertion_point_1[0].kind == PACKAGE
@@ -363,7 +366,7 @@ public partial class JavaFiles : JavaCCGlobals
                 return;
             }
 
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
                 cu_to_insertion_point_1[0].kind == PACKAGE
@@ -424,7 +427,7 @@ public partial class JavaFiles : JavaCCGlobals
                 return;
             }
 
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
                 cu_to_insertion_point_1[0].kind == PACKAGE
@@ -474,7 +477,7 @@ public partial class JavaFiles : JavaCCGlobals
                 return;
             }
 
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
                 cu_to_insertion_point_1[0].kind == PACKAGE
@@ -524,14 +527,14 @@ public partial class JavaFiles : JavaCCGlobals
         {
 
             string file = Path.Combine(Options.GetOutputDirectory(), filename);
-            OutputFile outputFile = new OutputFile(file, tokenMgrErrorVersion, new string[0]);
+            OutputFile outputFile = new OutputFile(file, tokenMgrErrorVersion, Array.Empty<string>());
 
             if (!outputFile.NeedToWrite)
             {
                 return;
             }
 
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
                 cu_to_insertion_point_1[0].kind == PACKAGE
@@ -586,7 +589,7 @@ public partial class JavaFiles : JavaCCGlobals
                 return;
             }
 
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
                 cu_to_insertion_point_1[0].kind == PACKAGE
@@ -638,7 +641,7 @@ public partial class JavaFiles : JavaCCGlobals
                 return;
             }
 
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
                 cu_to_insertion_point_1[0].kind == PACKAGE

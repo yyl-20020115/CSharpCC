@@ -120,7 +120,7 @@ public static class ExpansionTreeWalker
      * i.e., it visits the children first and then executes
      * opObj.action.
      */
-    static void PostOrderWalk(Expansion node, TreeWalkerOp opObj)
+    public static void PostOrderWalk(Expansion node, TreeWalkerOp opObj)
     {
         if (opObj.GoDeeper(node))
         {

@@ -212,14 +212,14 @@ public class ConditionParser : ConditionParserConstants
 
     /** Generated Token Manager. */
     public ConditionParserTokenManager token_source;
-    JavaCharStream jj_input_stream;
+    readonly JavaCharStream jj_input_stream;
     /** Current token. */
     public Token token;
     /** Next token. */
     public Token jj_nt;
     private int jj_ntk;
     private int jj_gen;
-    private int[] jj_la1 = new int[6];
+    private readonly int[] jj_la1 = new int[6];
     static private int[] jj_la1_0;
     static ConditionParser()
     {
@@ -352,7 +352,7 @@ public class ConditionParser : ConditionParserConstants
             return (jj_ntk = jj_nt.kind);
     }
 
-    private List<int[]> jj_expentries = new();
+    private readonly List<int[]> jj_expentries = new();
     private int[] jj_expentry;
     private int jj_kind = -1;
 

@@ -107,17 +107,11 @@ public class Token
      * to the following switch statement. Then you can cast matchedToken
      * variable to the appropriate type and use it in your lexical actions.
      */
-    public static Token NewToken(int ofKind, string image)
+    public static Token NewToken(int ofKind, string image) => ofKind switch
     {
-        switch (ofKind)
-        {
-            default: return new Token(ofKind, image);
-            case JJTreeParserConstants.RUNSIGNEDSHIFT:
-            case JJTreeParserConstants.RSIGNEDSHIFT:
-            case JJTreeParserConstants.GT:
-                return new GTToken(ofKind, image);
-        }
-    }
+        JJTreeParserConstants.RUNSIGNEDSHIFT or JJTreeParserConstants.RSIGNEDSHIFT or JJTreeParserConstants.GT => new GTToken(ofKind, image),
+        _ => new Token(ofKind, image),
+    };
 
     public static Token NewToken(int ofKind) => NewToken(ofKind, null);
 

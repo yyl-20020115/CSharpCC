@@ -52,8 +52,8 @@ public class OutputFileGenerator
         this.options = options;
     }
 
-    private string templateName;
-    private Dictionary<string, object> options;
+    private readonly string templateName;
+    private readonly Dictionary<string, object> options;
 
     private string currentLine;
 

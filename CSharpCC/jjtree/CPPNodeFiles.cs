@@ -95,7 +95,7 @@ public static class CPPNodeFiles
         {
             String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
             outputFile = new OutputFile(file, NodeVersion, options);
-            outputFile.setToolName("JJTree");
+            outputFile.SetToolName("JJTree");
 
             if (File.Exists(file) && !outputFile.NeedToWrite)
             {
@@ -127,7 +127,7 @@ public static class CPPNodeFiles
         {
             String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
             outputFile = new OutputFile(file, NodeVersion, options);
-            outputFile.setToolName("JJTree");
+            outputFile.SetToolName("JJTree");
 
             if (File.Exists(file) && !outputFile.NeedToWrite)
             {
@@ -159,7 +159,7 @@ public static class CPPNodeFiles
         {
             String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
             outputFile = new OutputFile(file, NodeVersion, options);
-            outputFile.setToolName("JJTree");
+            outputFile.SetToolName("JJTree");
 
             if (File.Exists(file) && !outputFile.NeedToWrite)
             {
@@ -194,7 +194,7 @@ public static class CPPNodeFiles
                 string file = (JjtreeIncludeFile(node));
                 String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
                 outputFile = new OutputFile(file, NodeVersion, options);
-                outputFile.setToolName("JJTree");
+                outputFile.SetToolName("JJTree");
 
                 if (File.Exists(file) && !outputFile.NeedToWrite)
                 {
@@ -207,7 +207,7 @@ public static class CPPNodeFiles
                 optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
                 optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
 
-                TextWriter ostr = outputFile.getPrintWriter();
+                TextWriter ostr = outputFile.GetPrintWriter();
                 optionMap.Add("NODE_TYPE", node);
                 GenerateFile(outputFile, "/templates/cpp/MultiNodeInterface.template", optionMap, false);
 
@@ -234,7 +234,7 @@ public static class CPPNodeFiles
                 string file = (JjtreeImplFile(node));
                 String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
                 outputFile = new OutputFile(file, NodeVersion, options);
-                outputFile.setToolName("JJTree");
+                outputFile.SetToolName("JJTree");
 
                 if (File.Exists(file) && !outputFile.NeedToWrite)
                 {
@@ -247,7 +247,7 @@ public static class CPPNodeFiles
                 optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
                 optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
 
-                TextWriter ostr = outputFile.getPrintWriter();
+                TextWriter ostr = outputFile.GetPrintWriter();
                 optionMap.Add("NODE_TYPE", node);
                 GenerateFile(outputFile, "/templates/cpp/MultiNodeImpl.template", optionMap, false);
 
@@ -273,7 +273,7 @@ public static class CPPNodeFiles
         {
             String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
             outputFile = new OutputFile(file, NodeVersion, options);
-            outputFile.setToolName("JJTree");
+            outputFile.SetToolName("JJTree");
 
             if (File.Exists(file) && !outputFile.NeedToWrite)
             {
@@ -286,7 +286,7 @@ public static class CPPNodeFiles
             optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
             optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
 
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
             string includeName = file.Replace('.', '_').ToUpper();
             ostr.WriteLine("#ifndef " + includeName);
             ostr.WriteLine("#define " + includeName);
@@ -316,7 +316,7 @@ public static class CPPNodeFiles
         {
             var options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
             outputFile = new OutputFile(file, NodeVersion, options);
-            outputFile.setToolName("JJTree");
+            outputFile.SetToolName("JJTree");
 
             if (File.Exists(file) && !outputFile.NeedToWrite)
             {
@@ -333,7 +333,7 @@ public static class CPPNodeFiles
             bool hasNamespace = JJTreeOptions.StringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0;
             if (hasNamespace)
             {
-                outputFile.getPrintWriter().WriteLine("namespace " + JJTreeOptions.StringValue("NAMESPACE_OPEN"));
+                outputFile.GetPrintWriter().WriteLine("namespace " + JJTreeOptions.StringValue("NAMESPACE_OPEN"));
             }
 
             foreach (string s in NodesToGenerate)
@@ -344,7 +344,7 @@ public static class CPPNodeFiles
 
             if (hasNamespace)
             {
-                outputFile.getPrintWriter().WriteLine(JJTreeOptions.StringValue("NAMESPACE_CLOSE"));
+                outputFile.GetPrintWriter().WriteLine(JJTreeOptions.StringValue("NAMESPACE_CLOSE"));
             }
         }
         catch (IOException e)
@@ -377,7 +377,7 @@ public static class CPPNodeFiles
         try
         {
             OutputFile outputFile = new OutputFile(file);
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             List<string> nodeIds = ASTNodeDescriptor.GetNodeIds();
             List<string> nodeNames = ASTNodeDescriptor.GetNodeNames();
@@ -478,7 +478,7 @@ public static class CPPNodeFiles
             string name = VisitorClass();
             string file = (VisitorIncludeFile());
             OutputFile outputFile = new OutputFile(file);
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             GeneratePrologue(ostr);
             ostr.WriteLine("#ifndef " + file.Replace('.', '_').ToUpper());
@@ -594,7 +594,7 @@ public static class CPPNodeFiles
 
     public static void GenerateFile(OutputFile outputFile, string template, Dictionary<string, object> options, bool close)
     {
-        var ostr = outputFile.getPrintWriter();
+        var ostr = outputFile.GetPrintWriter();
         GeneratePrologue(ostr);
         OutputFileGenerator generator;
         generator = new OutputFileGenerator(template, options);

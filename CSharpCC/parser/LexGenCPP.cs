@@ -84,7 +84,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
           if(kind == PACKAGE || kind == IMPORT) {
             for (; i < cu_to_insertion_point_1.size(); i++) {
               kind = ((Token)cu_to_insertion_point_1[i]).kind;
-              if (kind == CLASS)
+              if (kind == CLASS) 
               { 
                 cline = ((Token)(cu_to_insertion_point_1[l])).beginLine;
                 ccol = ((Token)(cu_to_insertion_point_1[l])).beginColumn;
@@ -106,7 +106,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         GenCodeLine("");
         GenCodeLine("/** Token Manager. */");
         string superClass = Options.StringValue(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS);
-        GenClassStart(null, tokMgrClassName, new String[] { }, new String[] { "public TokenManager" + (superClass == null ? "" : ", public " + superClass) });
+        GenClassStart(null, tokMgrClassName, Array.Empty<string>(), new String[] { "public TokenManager" + (superClass == null ? "" : ", public " + superClass) });
 
         if (token_mgr_decls != null && token_mgr_decls.Count > 0)
         {
@@ -338,7 +338,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                         if (i != 0 && !mixed[lexStateIndex] && ignoring != ignore)
                             mixed[lexStateIndex] = true;
                     }
-                    else if (curRE.CanMatchAnyChar())
+                    else if (curRE.CanMatchAnyChar)
                     {
                         if (canMatchAnyChar[lexStateIndex] == -1 ||
                             canMatchAnyChar[lexStateIndex] > curRE.ordinal)

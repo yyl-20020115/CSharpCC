@@ -44,7 +44,7 @@ public class ExpansionTest: CSharpCCTestCase
         e.SetLine(6);
     }
     public void testZeroOrOneConstructor() {
-        ZeroOrOne zoo = new ZeroOrOne(t, e);
+        var zoo = new ZeroOrOne(t, e);
         Assert.AreEqual(t.beginColumn, zoo.GetColumn());
         Assert.AreEqual(t.beginLine, zoo.GetLine());
         Assert.AreEqual(e, zoo.expansion);

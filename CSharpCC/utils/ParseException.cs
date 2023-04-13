@@ -99,7 +99,7 @@ public class ParseException : Exception
             {
                 expected.Append(tokenImage[expectedTokenSequences[i][j]]).Append(' ');
             }
-            if (expectedTokenSequences[i][expectedTokenSequences[i].Length - 1] != 0)
+            if (expectedTokenSequences[i][^1] != 0)
             {
                 expected.Append("...");
             }

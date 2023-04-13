@@ -134,7 +134,7 @@ public class JJTree
                 Print("(type \"jjtree\" with no arguments for help)");
             }
 
-            string fn = args[args.Length - 1];
+            string fn = args[^1];
 
             if (JJTreeOptions.IsOption(fn))
             {
@@ -170,7 +170,7 @@ public class JJTree
             try
             {
                 var parser = new JJTreeParser(io.GetIn());
-                parser.javacc_input();
+                parser.javacc_input(jjte001, jjte000);
 
                 ASTGrammar root = (ASTGrammar)parser.jjtree.RootNode();
                 if (bool.TryParse(Environment.GetEnvironmentVariable("jjtree-dump"),out var b) && b)

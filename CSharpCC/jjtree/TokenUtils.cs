@@ -55,11 +55,6 @@ public static class TokenUtils
         io.Print(AddUnicodeEscapes(i));
     }
 
-    static void Print(Token t, IO io)
-    {
-        Print(t, io, null, null);
-    }
-
     public static string AddUnicodeEscapes(string str)
     {
         var buff = new StringBuilder(str.Length);

@@ -90,7 +90,7 @@ public class NfaState
     private string epsilonMovesString;
     private NfaState[] epsilonMoveArray;
 
-    private int id;
+    private readonly int id;
     int stateName = -1;
     public int kind = int.MaxValue;
     private int lookingFor;
@@ -177,8 +177,7 @@ public class NfaState
             return;
         }
 
-        if (charMoves == null)
-            charMoves = new char[10];
+        charMoves ??= new char[10];
 
         int len = charMoves.Length;
 
@@ -246,8 +245,7 @@ public class NfaState
                  "one that can handle your character set.");
         }
 
-        if (rangeMoves == null)
-            rangeMoves = new char[20];
+        rangeMoves ??= new char[20];
 
         int len = rangeMoves.Length;
 
@@ -414,7 +412,7 @@ public class NfaState
         isFinal |= other.isFinal;
     }
 
-    NfaState CreateEquivState(List<NfaState> states)
+    static NfaState CreateEquivState(List<NfaState> states)
     {
         NfaState newState = ((NfaState)states[0]).CreateClone();
 
@@ -1056,8 +1054,7 @@ public class NfaState
                     lohiByteTab.Add(tmp, ind = (lohiByteCnt++));
                 }
 
-                if (loByteVec == null)
-                    loByteVec = new Vector();
+                loByteVec ??= new Vector();
 
                 loByteVec.Add((i));
                 loByteVec.Add(ind);
@@ -1239,8 +1236,7 @@ public class NfaState
     {
         GetEpsilonMovesString();
 
-        if (epsilonMovesString == null)
-            epsilonMovesString = "null;";
+        epsilonMovesString ??= "null;";
 
         return AddStartStateSet(epsilonMovesString);
     }
@@ -1258,7 +1254,7 @@ public class NfaState
         {
             ret = new int[2];
             ret[0] = lastIndex;
-            ret[1] = lastIndex + set.Length - 1; 
+            ret[1] = lastIndex + set.Length - 1;  
             lastIndex += set.Length;
             tableToDump.Add(arrayString, ret);
             orderedStateSet.Add(set);
@@ -1379,8 +1375,7 @@ public class NfaState
         if (next == null || next.usefulEpsilonMoves <= 1)
             return false;
 
-        if (stateDone == null)
-            stateDone = new bool[generatedStates];
+        stateDone ??= new bool[generatedStates];
 
         string set = next.epsilonMovesString;
 
@@ -2847,10 +2842,7 @@ public class NfaState
                     nexts[i] = -1;
                     put[state] = true;
 
-                    int toSwap = nexts[0];
-                    nexts[0] = nexts[foundAt];
-                    nexts[foundAt] = toSwap;
-
+                    (nexts[foundAt], nexts[0]) = (nexts[0], nexts[foundAt]);
                     tmp.stateForCase = stateForCase;
                     stateForCase.stateForCase = tmp;
                     stateSetsToFix.Add(s, nexts);

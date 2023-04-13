@@ -38,7 +38,7 @@ public class ParseEngine
     private int indentamt;
     private bool jj2LA;
     private CodeGenerator codeGenerator;
-    private bool isJavaDialect = Options.IsOutputLanguageJava();
+    private readonly bool isJavaDialect = Options.IsOutputLanguageJava();
 
     /**
      * These lists are used to maintain expansions for which code generation
@@ -109,8 +109,8 @@ public class ParseEngine
         {
             for (int i = 0; i < seq.units.Count; i++)
             {
-                Expansion[] units = (Expansion[])seq.units.ToArray(new Expansion[seq.units.Count]);
-                if (units[i] is Lookahead && ((Lookahead)units[i]).IsExplicit())
+                var units = seq.units;
+                if (units[i] is Lookahead lookahead && lookahead.IsExplicit())
                 {
                     // An explicit lookahead (rather than one generated implicitly). Assume
                     // the user knows what he / she is doing, e.g.
@@ -128,24 +128,20 @@ public class ParseEngine
             }
             return false;
         }
-        else if (exp is OneOrMore)
+        else if (exp is OneOrMore om)
         {
-            OneOrMore om = (OneOrMore)exp;
             return JavaCodeCheck(om.expansion);
         }
-        else if (exp is ZeroOrMore)
+        else if (exp is ZeroOrMore zm)
         {
-            ZeroOrMore zm = (ZeroOrMore)exp;
             return JavaCodeCheck(zm.expansion);
         }
-        else if (exp is ZeroOrOne)
+        else if (exp is ZeroOrOne zo)
         {
-            ZeroOrOne zo = (ZeroOrOne)exp;
             return JavaCodeCheck(zo.expansion);
         }
-        else if (exp is TryBlock)
+        else if (exp is TryBlock tb)
         {
-            TryBlock tb = (TryBlock)exp;
             return JavaCodeCheck(tb.exp);
         }
         else
@@ -182,7 +178,7 @@ public class ParseEngine
         {
             for (int i = 0; i < ch.GetChoices().Count; i++)
             {
-                GenFirstSet((Expansion)(ch.GetChoices()[i]));
+                GenFirstSet(ch.GetChoices()[i]);
             }
         }
         else if (exp is Sequence seq)
@@ -216,24 +212,20 @@ public class ParseEngine
                 }
             }
         }
-        else if (exp is OneOrMore)
+        else if (exp is OneOrMore om)
         {
-            OneOrMore om = (OneOrMore)exp;
             GenFirstSet(om.expansion);
         }
-        else if (exp is ZeroOrMore)
+        else if (exp is ZeroOrMore zm)
         {
-            ZeroOrMore zm = (ZeroOrMore)exp;
             GenFirstSet(zm.expansion);
         }
-        else if (exp is ZeroOrOne)
+        else if (exp is ZeroOrOne zo)
         {
-            ZeroOrOne zo = (ZeroOrOne)exp;
             GenFirstSet(zo.expansion);
         }
-        else if (exp is TryBlock)
+        else if (exp is TryBlock tb)
         {
-            TryBlock tb = (TryBlock)exp;
             GenFirstSet(tb.exp);
         }
     }
@@ -245,12 +237,12 @@ public class ParseEngine
     const int OPENIF = 1;
     const int OPENSWITCH = 2;
 
-    private void dumpLookaheads(Lookahead[] conds, String[] actions)
+    private static void DumpLookaheads(Lookahead[] conds, String[] actions)
     {
         for (int i = 0; i < conds.Length; i++)
         {
             Console.Error.WriteLine("Lookahead: " + i);
-            Console.Error.WriteLine(conds[i].dump(0, new HashSet()));
+            Console.Error.WriteLine(conds[i].Dump(0, new ()));
             Console.Error.WriteLine();
         }
     }
@@ -272,7 +264,7 @@ public class ParseEngine
      * A particular action entry ("actions[i]") can be null, in which
      * case, a noop is generated for that action.
      */
-    string buildLookaheadChecker(Lookahead[] conds, String[] actions)
+    string BuildLookaheadChecker(Lookahead[] conds, String[] actions)
     {
 
         // The state variables.
@@ -337,12 +329,12 @@ public class ParseEngine
                             maskVals.Add(tokenMask);
                             retval += "\n" + "if (";
                             indentAmt++;
+                        break;
                     }
-                    JavaCCGlobals.PrintTokenSetup((Token)(la.GetActionTokens()[0]));
-                    for (Iterator it = la.GetActionTokens().iterator(); it.hasNext();)
+                    JavaCCGlobals.PrintTokenSetup((la.GetActionTokens()[0]));
+                    foreach(var t2 in la.GetActionTokens())
                     {
-                        t = (Token)it.next();
-                        retval += codeGenerator.GetStringToPrint(t);
+                        retval += codeGenerator.GetStringToPrint(t=t2);
                     }
                     retval += codeGenerator.GetTrailingComments(t);
                     retval += ") {\u0001" + actions[index];
@@ -355,10 +347,7 @@ public class ParseEngine
                 // Special optimal processing when the lookahead is exactly 1, and there
                 // is no semantic lookahead.
 
-                if (firstSet == null)
-                {
-                    firstSet = new bool[tokenCount];
-                }
+                firstSet ??= new bool[tokenCount];
                 for (int i = 0; i < tokenCount; i++)
                 {
                     firstSet[i] = false;
@@ -378,6 +367,7 @@ public class ParseEngine
                     {
                         case OPENIF:
                             retval += "\u0002\n" + "} else {\u0001";
+                            break;
                         //$FALL-THROUGH$ Control flows through to next case.
                         case NOOPENSTM:
                             retval += "\n" + "switch (";
@@ -407,6 +397,7 @@ public class ParseEngine
                             {
                                 tokenMask[i] = 0;
                             }
+                            break;
                             // Don't need to do anything if state is OPENSWITCH.
                     }
                     for (int i = 0; i < tokenCount; i++)
@@ -420,8 +411,8 @@ public class ParseEngine
                                 int j1 = i / 32;
                                 int j2 = i % 32;
                                 tokenMask[j1] |= 1 << j2;
-                                string s = (String)(names_of_tokens.get((i)));
-                                if (s == null)
+                                //string s = (String)(names_of_tokens.get((i)));
+                                if (names_of_tokens.TryGetValue(i,out var s))
                                 {
                                     retval += i;
                                 }
@@ -437,7 +428,6 @@ public class ParseEngine
                     retval += actions[index];
                     retval += "\nbreak;\n}";
                     state = OPENSWITCH;
-
                 }
 
             }
@@ -474,6 +464,7 @@ public class ParseEngine
                         maskVals.Add(tokenMask);
                         retval += "\n" + "if (";
                         indentAmt++;
+                    break;
                 }
                 jj2index++;
                 // At this point, la.la_expansion.internal_name must be "".
@@ -523,6 +514,7 @@ public class ParseEngine
                     maskindex++;
                 }
                 retval += actions[index];
+                break;
         }
         for (int i = 0; i < indentAmt; i++)
         {
@@ -533,7 +525,7 @@ public class ParseEngine
 
     }
 
-    void dumpFormattedString(string str)
+    void DumpFormattedString(string str)
     {
         char ch = ' ';
         char prevChar;
@@ -582,9 +574,9 @@ public class ParseEngine
     }
 
     // Print CPPCODE method header.
-    private string generateCPPMethodheader(CppCodeProduction p)
+    private string GenerateCPPMethodheader(CppCodeProduction p)
     {
-        StringBuilder sig = new StringBuilder();
+        var sig = new StringBuilder();
         string ret, _params;
         Token t = null;
 
@@ -605,7 +597,7 @@ public class ParseEngine
             t = (Token)(p.GetReturnTypeTokens()[i]);
             string s = codeGenerator.GetStringToPrint(t);
             sig.Append(t.ToString());
-            sig.Append(" ");
+            sig.Append(' ');
             if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
             if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
         }
@@ -616,14 +608,14 @@ public class ParseEngine
         ret = sig.ToString();
 
         sig.Capacity=0;
-        sig.Append("(");
+        sig.Append('(');
         if (p.GetParameterListTokens().Count != 0)
         {
             JavaCCGlobals.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
-            for (Iterator it = p.GetParameterListTokens().iterator(); it.hasNext();)
+            foreach(var t2 in p.GetParameterListTokens())
             {
                 t = (Token)it.next();
-                sig.Append(codeGenerator.GetStringToPrint(t));
+                sig.Append(codeGenerator.GetStringToPrint(t=));
             }
             sig.Append(codeGenerator.GetTrailingComments(t));
         }
@@ -666,7 +658,7 @@ public class ParseEngine
         ret = sig.ToString();
 
         sig.Capacity=0;
-        sig.Append("(");
+        sig.Append('(');
         if (p.GetParameterListTokens().Count != 0)
         {
             codeGenerator.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
@@ -677,7 +669,7 @@ public class ParseEngine
             }
             sig.Append(codeGenerator.GetTrailingComments(t));
         }
-        sig.Append(")");
+        sig.Append(')');
         _params = sig.ToString();
 
         // For now, just ignore comments
@@ -850,7 +842,7 @@ public class ParseEngine
         }
 
         string code = phase1ExpansionGen(p.GetExpansion());
-        dumpFormattedString(code);
+        DumpFormattedString(code);
         codeGenerator.GenCodeLine("");
 
         if (p.IsJumpPatched() && !voidReturn)
@@ -1020,7 +1012,7 @@ public class ParseEngine
                 actions[i] = phase1ExpansionGen(nestedSeq);
                 conds[i] = (Lookahead)(nestedSeq.units[0]);
             }
-            retval = buildLookaheadChecker(conds, actions);
+            retval = BuildLookaheadChecker(conds, actions);
         }
         else if (e is Sequence)
         {
@@ -1088,7 +1080,7 @@ public class ParseEngine
                 actions[1] = "\ngoto end_label_" + labelIndex + ";";
             }
 
-            retval += buildLookaheadChecker(conds, actions);
+            retval += BuildLookaheadChecker(conds, actions);
             retval += "\u0002\n" + "}";
             if (!isJavaDialect)
             {
@@ -1129,7 +1121,7 @@ public class ParseEngine
             {
                 actions[1] = "\ngoto end_label_" + labelIndex + ";";
             }
-            retval += buildLookaheadChecker(conds, actions);
+            retval += BuildLookaheadChecker(conds, actions);
             retval += phase1ExpansionGen(nested_e);
             retval += "\u0002\n" + "}";
             if (!isJavaDialect)
@@ -1157,11 +1149,10 @@ public class ParseEngine
             actions = new String[2];
             actions[0] = phase1ExpansionGen(nested_e);
             actions[1] = "\n;";
-            retval += buildLookaheadChecker(conds, actions);
+            retval += BuildLookaheadChecker(conds, actions);
         }
-        else if (e is TryBlock)
+        else if (e is TryBlock e_nrw)
         {
-            TryBlock e_nrw = (TryBlock)e;
             Expansion nested_e = e_nrw.exp;
             List list;
             retval += "\n";
@@ -1292,7 +1283,7 @@ public class ParseEngine
         }
     }
 
-    private void generate3R(Expansion e, Phase3Data inf)
+    private void generate3R(Expansion e, Phase3Data inf, Expansion seq)
     {
         Expansion seq = e;
         if (e.internal_name == (""))
@@ -1306,7 +1297,7 @@ public class ParseEngine
                 else if (seq is NonTerminal)
                 {
                     NonTerminal e_nrw = (NonTerminal)seq;
-                    NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.GetName()));
+                    NormalProduction ntprod = (NormalProduction)production_table.get(e_nrw.GetName());
                     if (ntprod is CodeProduction)
                     {
                         break; // nothing to do here
@@ -1320,9 +1311,9 @@ public class ParseEngine
                     break;
             }
 
-            if (seq is RegularExpression)
+            if (seq is RegularExpression expression)
             {
-                e.internal_name = "jj_scan_token(" + ((RegularExpression)seq).ordinal + ")";
+                e.internal_name = "jj_scan_token(" + expression.ordinal + ")";
                 return;
             }
 
@@ -1365,7 +1356,7 @@ public class ParseEngine
             }
             else
             {
-                generate3R(ntprod.GetExpansion(), inf);
+                generate3R(ntprod.GetExpansion(), inf, seq);
             }
         }
         else if (e is Choice)
@@ -1373,7 +1364,7 @@ public class ParseEngine
             Choice e_nrw = (Choice)e;
             for (int i = 0; i < e_nrw.GetChoices().Count; i++)
             {
-                generate3R((Expansion)(e_nrw.GetChoices()[i]), inf);
+                generate3R((Expansion)(e_nrw.GetChoices()[i]), inf, seq);
             }
         }
         else if (e is Sequence)
@@ -1398,17 +1389,16 @@ public class ParseEngine
         else if (e is OneOrMore)
         {
             OneOrMore e_nrw = (OneOrMore)e;
-            generate3R(e_nrw.expansion, inf);
+            generate3R(e_nrw.expansion, inf, seq);
         }
         else if (e is ZeroOrMore)
         {
             ZeroOrMore e_nrw = (ZeroOrMore)e;
-            generate3R(e_nrw.expansion, inf);
+            generate3R(e_nrw.expansion, inf, seq);
         }
-        else if (e is ZeroOrOne)
+        else if (e is ZeroOrOne e_nrw)
         {
-            ZeroOrOne e_nrw = (ZeroOrOne)e;
-            generate3R(e_nrw.expansion, inf);
+            generate3R(e_nrw.expansion, inf, seq);
         }
     }
 
@@ -1473,7 +1463,7 @@ public class ParseEngine
         if (e is RegularExpression)
         {
             RegularExpression e_nrw = (RegularExpression)e;
-            if (e_nrw.label == (""))
+            if (e_nrw.label == "")
             {
                 object label = names_of_tokens.get((e_nrw.ordinal));
                 if (label != null)
@@ -1771,7 +1761,7 @@ public class ParseEngine
             {
                 cp = (CppCodeProduction)p;
 
-                generateCPPMethodheader(cp);
+                GenerateCPPMethodheader(cp);
                 //          t = (Token)(cp.getReturnTypeTokens()[0]);
                 //          codeGenerator.printTokenSetup(t); ccol = 1;
                 //          codeGenerator.printLeadingComments(t);
@@ -1818,8 +1808,8 @@ public class ParseEngine
                 }
                 if (cp.GetCodeTokens().Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup((Token)(cp.GetCodeTokens()[0])); cline--;
-                    codeGenerator.PrintTokenList(cp.GetCodeTokens());
+                    JavaCCGlobals.PrintTokenSetup(cp.GetCodeTokens()[0]); cline--;
+                    codeGenerator.PrintTokenList(cp.GetCodeTokens()); 
                 }
                 codeGenerator.GenCodeLine("");
                 if (Options.GetDebugParser())
@@ -1838,7 +1828,7 @@ public class ParseEngine
                     continue;
                 }
                 jp = (JavaCodeProduction)p;
-                t = (Token)(jp.GetReturnTypeTokens()[0]);
+                t = jp.GetReturnTypeTokens()[0];
                 JavaCCGlobals.PrintTokenSetup(t); ccol = 1;
                 codeGenerator.PrintLeadingComments(t);
                 codeGenerator.GenCode("  " + staticOpt() + (p.GetAccessMod() != null ? p.GetAccessMod() + " " : ""));
@@ -1941,7 +1931,7 @@ public class ParseEngine
         jj2LA = false;
         phase2list = new ();
         phase3list = new ();
-        phase3table = new Dictionary();
+        phase3table = new ();
         firstSet = null;
         xsp_declared = false;
         jj3_expansion = null;
@@ -1952,16 +1942,14 @@ public class ParseEngine
     {
         Expansion e = inf.exp;
         Token t = null;
-        if (e is RegularExpression)
+        if (e is RegularExpression e_nrw)
         {
-            RegularExpression e_nrw = (RegularExpression)e;
             Console.Error.WriteLine("TOKEN, " + e_nrw.ordinal);
         }
-        else if (e is NonTerminal)
+        else if (e is NonTerminal e_nrw2)
         {
-            NonTerminal e_nrw = (NonTerminal)e;
             NormalProduction ntprod =
-                (NormalProduction)(production_table.get(e_nrw.GetName()));
+                (NormalProduction)(production_table.get(e_nrw2.GetName()));
             if (ntprod is CodeProduction)
             {
                 // javacode, true - always (warn?)
@@ -1975,10 +1963,9 @@ public class ParseEngine
                 //buildPhase3Table(new Phase3Data(ntexp, inf.count));
             }
         }
-        else if (e is Choice)
+        else if (e is Choice e_nrw)
         {
             Sequence nested_seq;
-            Choice e_nrw = (Choice)e;
             Console.Error.Write("CHOICE, ");
             for (int i = 0; i < e_nrw.GetChoices().Count; i++)
             {
@@ -2014,13 +2001,13 @@ public class ParseEngine
             }
             else
             {
-                Expansion tmp = (Expansion)e_nrw.units.get(1);
+                var tmp = e_nrw.units[1];
                 while (tmp is NonTerminal)
                 {
                     NormalProduction ntprod =
                         (NormalProduction)(
                             production_table.get(((NonTerminal)tmp).GetName()));
-                    if (ntprod is CodeProduction) break;
+                    if ( ntprod is CodeProduction) break;
                     tmp = ntprod.GetExpansion();
                 }
                 buildPhase3Table(new Phase3Data(tmp, cnt));
@@ -2053,29 +2040,5 @@ public class ParseEngine
             //assert(false);
             // table for nested_e - optional
         }
-    }
-}
-
-/**
- * This class stores information to pass from phase 2 to phase 3.
- */
-public class Phase3Data
-{
-
-    /*
-     * This is the expansion to generate the jj3 method for.
-     */
-    public Expansion exp;
-
-    /*
-     * This is the number of tokens that can still be consumed.  This
-     * number is used to limit the number of jj3 methods generated.
-     */
-    public int count;
-
-    public Phase3Data(Expansion e, int c)
-    {
-        exp = e;
-        count = c;
     }
 }

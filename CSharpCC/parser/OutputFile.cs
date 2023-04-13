@@ -57,16 +57,12 @@ public class OutputFile
     private static readonly string MD5_LINE_PART_2q = " \\(do not edit this line\\) \\*/";
 
     TrapClosePrintWriter pw;
-
-    TextWriter dos;
+    readonly TextWriter dos;
 
     string toolName = JavaCCGlobals.ToolName;
-
-    string file;
-
-    string compatibleVersion;
-
-    String[] options;
+    readonly string file;
+    readonly string compatibleVersion;
+    readonly String[] options;
 
     /**
      * Create a new OutputFile.
@@ -98,7 +94,7 @@ public class OutputFile
             {
                 digest = MessageDigest.getInstance("MD5");
             }
-            catch (NoSuchAlgorithmException e)
+            catch (  e)
             {
                 throw (IOException)(new IOException("No MD5 implementation")
                 .initCause(e));
@@ -122,10 +118,11 @@ public class OutputFile
             }
 
             pw.Close();
-            string calculatedDigest = toHexString(digestStream
+
+            string calculatedDigest = ToHexString(digestStream
                 .getMessageDigest().digest());
 
-            if (existingMD5 == null || !existingMD5 == (calculatedDigest))
+            if (existingMD5 == null || existingMD5 != (calculatedDigest))
             {
                 // No checksum in file, or checksum differs.
                 NeedToWrite = false;
@@ -137,7 +134,7 @@ public class OutputFile
 
                 if (options != null)
                 {
-                    checkOptions(file, options);
+                    CheckOptions(file, options); 
                 }
                  
             }
@@ -164,7 +161,7 @@ public class OutputFile
        
     }
 
-    public bool NeedToWrite = true;
+    public readonly bool NeedToWrite = true;
 
     /**
      * Output a warning if the file was created with an incompatible version
@@ -178,15 +175,14 @@ public class OutputFile
 
         try
         {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-
-            string line;
-            while ((line = reader.readLine()) != null)
+            using var reader = new StreamReader(file);
+            string? line;
+            while ((line = reader.ReadLine()) != null)
             {
                 if (line.StartsWith(firstLine))
                 {
-                    string version = line.replaceFirst(".*Version ", "").replaceAll(" \\*/", "");
-                    if (!version == (versionId))
+                    string version = line.Replace(".*Version ", "").Replace(" \\*/", "");
+                    if (version != versionId)
                     {
                         JavaCCErrors.Warning(file
                             + ": File is obsolete.  Please rename or delete this file so"
@@ -218,19 +214,19 @@ public class OutputFile
      * @param fileName
      * @param options
      */
-    private void checkOptions(string file, String[] options)
+    private static void CheckOptions(string file, String[] options)
     {
         try
         {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            using var reader = new StreamReader(file);
 
-            string line;
-            while ((line = reader.readLine()) != null)
+            string? line;
+            while ((line = reader.ReadLine()) != null)
             {
                 if (line.StartsWith("/* JavaCCOptions:"))
                 {
                     string currentOptions = Options.GetOptionsString(options);
-                    if (line.IndexOf(currentOptions) == -1)
+                    if (!line.Contains(currentOptions, StringComparison.CurrentCulture))
                     {
                         JavaCCErrors
                         .Warning(file
@@ -244,8 +240,7 @@ public class OutputFile
         catch (FileNotFoundException e1)
         {
             // This should never happen
-            JavaCCErrors.SemanticError("Could not open file " + file
-                + " for writing.");
+            JavaCCErrors.SemanticError($"Could not open file {file} for writing.");
             throw new Error();
         }
         catch (IOException e2)
@@ -262,23 +257,11 @@ public class OutputFile
      * @return
      * @throws IOException
      */
-    public TextWriter getPrintWriter()
+    public TextWriter GetPrintWriter()
     {
         if (pw == null)
         {
-            MessageDigest digest;
-            try
-            {
-                digest = MessageDigest.getInstance("MD5");
-            }
-            catch (NoSuchAlgorithmException e)
-            {
-                throw (IOException)(new IOException("No MD5 implementation")
-                .initCause(e));
-            }
-            dos = new DigestOutputStream(new BufferedOutputStream(
-                new FileOutputStream(file)), digest);
-            pw = new TrapClosePrintWriter(dos);
+            pw = new TrapClosePrintWriter(this.dos, this); ;
 
             // Write the headers....
             string version = compatibleVersion == null ? Version.VersionNumber : compatibleVersion;
@@ -306,25 +289,25 @@ public class OutputFile
         // Possibly rename the .java.tmp to .java??
         if (pw != null)
         {
-            pw.WriteLine(MD5_LINE_PART_1 + getMD5sum() + MD5_LINE_PART_2);
-            pw.closePrintWriter();
+            pw.WriteLine(MD5_LINE_PART_1 + GetMD5sum() + MD5_LINE_PART_2);
+            pw.ClosePrintWriter();
             //    file.renameTo(dest)
         }
     }
 
-    private string getMD5sum()
+    private string GetMD5sum()
     {
         pw.Flush();
         byte[] digest = dos.getMessageDigest().digest();
-        return toHexString(digest);
+        return ToHexString(digest);
     }
 
-    private static char[] HEX_DIGITS = new char[] { '0', '1', '2', '3',
+    private static readonly char[] HEX_DIGITS = new char[] { '0', '1', '2', '3',
     '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
-    private static string toHexString(byte[] bytes)
+    private static string ToHexString(byte[] bytes)
     {
-        StringBuilder sb = new StringBuilder(32);
+        var sb = new StringBuilder(32);
         for (int i = 0; i < bytes.Length; i++)
         {
             byte b = bytes[i];
@@ -334,7 +317,7 @@ public class OutputFile
     }
 
 
-    private class NullOutputStream : Stream
+    public class NullOutputStream : FileStream
     {
 
         public void write(byte[] arg0, int arg1, int arg2)
@@ -350,36 +333,40 @@ public class OutputFile
         }
     }
 
-    private class TrapClosePrintWriter : TextWriter
+    public class TrapClosePrintWriter : TextWriter
     {
+        public override Encoding Encoding => Encoding.Default;
 
-        public TrapClosePrintWriter(Stream os)
-            :base(os)
+        readonly OutputFile file;
+        public TrapClosePrintWriter(TextWriter writer, OutputFile file)
+            :base()
         {
+            this.file = file;
         }
 
-        public void closePrintWriter()
+        public void ClosePrintWriter()
         {
             base.Close();
         }
 
-        public void close()
+        public override void Close()
         {
             try
             {
-                OutputFile.this.close();
+                this.file.Close();
             }
             catch (IOException e)
             {
                 Console.Error.WriteLine("Could not close " + file);
             }
+            base.Close();
         }
     }
 
     /**
      * @return the toolName
      */
-    public string getToolName()
+    public string GetToolName()
     {
         return toolName;
     }
@@ -388,13 +375,13 @@ public class OutputFile
      * @param toolName
      *            the toolName to set
      */
-    public void setToolName(string toolName)
+    public void SetToolName(string toolName)
     {
         this.toolName = toolName;
     }
 
-    public string getPath()
+    public string GetPath()
     {
-        return file.getAbsolutePath();
+        return file;
     }
 }

@@ -70,7 +70,7 @@ public static class JJTreeState
         try
         {
             OutputFile outputFile = new OutputFile(file);
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
             NodeFiles.generatePrologue(ostr);
             InsertState(ostr);
             outputFile.Close();

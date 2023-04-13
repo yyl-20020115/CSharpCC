@@ -67,32 +67,19 @@ public class ConditionParserTokenManager : ConditionParserConstants
         jjmatchedPos = pos;
         return pos + 1;
     }
-    private int jjMoveStringLiteralDfa0_0()
+    private int jjMoveStringLiteralDfa0_0() => (int)curChar switch
     {
-        switch ((int)curChar)
-        {
-            case 33:
-                return jjStopAtPos(0, 15);
-            case 38:
-                return jjMoveStringLiteralDfa1_0(0x20000L);
-            case 40:
-                return jjStopAtPos(0, 13);
-            case 41:
-                return jjStopAtPos(0, 14);
-            case 47:
-                return jjMoveStringLiteralDfa1_0(0x140L);
-            case 102:
-                return jjMoveStringLiteralDfa1_0(0x100000L);
-            case 116:
-                return jjMoveStringLiteralDfa1_0(0x80000L);
-            case 124:
-                return jjMoveStringLiteralDfa1_0(0x10000L);
-            case 126:
-                return jjStopAtPos(0, 18);
-            default:
-                return jjMoveNfa_0(3, 0);
-        }
-    }
+        33 => jjStopAtPos(0, 15),
+        38 => jjMoveStringLiteralDfa1_0(0x20000L),
+        40 => jjStopAtPos(0, 13),
+        41 => jjStopAtPos(0, 14),
+        47 => jjMoveStringLiteralDfa1_0(0x140L),
+        102 => jjMoveStringLiteralDfa1_0(0x100000L),
+        116 => jjMoveStringLiteralDfa1_0(0x80000L),
+        124 => jjMoveStringLiteralDfa1_0(0x10000L),
+        126 => jjStopAtPos(0, 18),
+        _ => jjMoveNfa_0(3, 0),
+    };
     private int jjMoveStringLiteralDfa1_0(long active0)
     {
         try { curChar = input_stream.readChar(); }
@@ -323,16 +310,11 @@ public class ConditionParserTokenManager : ConditionParserConstants
             catch (IOException e) { return curPos; }
         }
     }
-    private int jjMoveStringLiteralDfa0_3()
+    private int jjMoveStringLiteralDfa0_3() => (int)curChar switch
     {
-        switch ((int)curChar)
-        {
-            case 42:
-                return jjMoveStringLiteralDfa1_3(0x800L);
-            default:
-                return 1;
-        }
-    }
+        42 => jjMoveStringLiteralDfa1_3(0x800L),
+        _ => 1,
+    };
     private int jjMoveStringLiteralDfa1_3(long active0)
     {
         try { curChar = input_stream.readChar(); }
@@ -433,16 +415,11 @@ public class ConditionParserTokenManager : ConditionParserConstants
             catch (IOException e) { return curPos; }
         }
     }
-    private int jjMoveStringLiteralDfa0_2()
+    private int jjMoveStringLiteralDfa0_2() => (int)curChar switch
     {
-        switch ((int)curChar)
-        {
-            case 42:
-                return jjMoveStringLiteralDfa1_2(0x400L);
-            default:
-                return 1;
-        }
-    }
+        42 => jjMoveStringLiteralDfa1_2(0x400L),
+        _ => 1,
+    };
     private int jjMoveStringLiteralDfa1_2(long active0)
     {
         try { curChar = input_stream.readChar(); }
@@ -461,8 +438,7 @@ public class ConditionParserTokenManager : ConditionParserConstants
         }
         return 2;
     }
-    static int[] jjnextStates = {
-};
+    static readonly int[] jjnextStates = Array.Empty<int>();
     private static bool jjCanMove_0(int hiByte, int i1, int i2, long l1, long l2)
     {
         switch (hiByte)
@@ -586,7 +562,7 @@ public class ConditionParserTokenManager : ConditionParserConstants
     }
 
     int curLexState = 0;
-    int defaultLexState = 0;
+    readonly int defaultLexState = 0;
     int jjnewStateCnt;
     int jjround;
     int jjmatchedPos;

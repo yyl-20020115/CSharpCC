@@ -1789,16 +1789,11 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
             catch (IOException e) { return curPos; }
         }
     }
-    private int jjMoveStringLiteralDfa0_3()
+    private int jjMoveStringLiteralDfa0_3() => (int)curChar switch
     {
-        switch ((int)curChar)
-        {
-            case 42:
-                return jjMoveStringLiteralDfa1_3(0x400000L);
-            default:
-                return 1;
-        }
-    }
+        42 => jjMoveStringLiteralDfa1_3(0x400000L),
+        _ => 1,
+    };
     private int jjMoveStringLiteralDfa1_3(ulong active0)
     {
         try { curChar = input_stream.ReadChar(); }
@@ -1899,16 +1894,11 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
             catch (IOException e) { return curPos; }
         }
     }
-    private int jjMoveStringLiteralDfa0_2()
+    private int jjMoveStringLiteralDfa0_2() => (int)curChar switch
     {
-        switch ((int)curChar)
-        {
-            case 42:
-                return jjMoveStringLiteralDfa1_2(0x200000L);
-            default:
-                return 1;
-        }
-    }
+        42 => jjMoveStringLiteralDfa1_2(0x200000L),
+        _ => 1,
+    };
     private int jjMoveStringLiteralDfa1_2(ulong active0)
     {
         try { curChar = input_stream.ReadChar(); }

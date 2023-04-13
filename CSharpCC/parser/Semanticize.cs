@@ -25,6 +25,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+using System.Data.SqlTypes;
+
 namespace org.javacc.parser;
 
 
@@ -34,7 +36,7 @@ public class Semanticize : JavaCCGlobals
     static List removeList = new();
     static List itemList = new();
 
-    static void PrepareToRemove(List vec, Object item)
+    static void PrepareToRemove(List vec, Object item) 
     {
         removeList.Add(vec);
         itemList.Add(item);
@@ -68,22 +70,22 @@ public class Semanticize : JavaCCGlobals
          * them to trivial choices.  This way, their semantic lookahead specification
          * can be evaluated during other lookahead evaluations.
          */
-        for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
+        foreach(var np in bnfproductions)
         {
-            ExpansionTreeWalker.PostOrderWalk(((NormalProduction)it.next()).GetExpansion(),
+            ExpansionTreeWalker.PostOrderWalk(np.GetExpansion(),
                                               new LookaheadFixer());
         }
 
         /*
          * The following loop populates "production_table"
          */
-        for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
+        foreach(var p in bnfproductions)
         {
-            NormalProduction p = it.next();
-            if (production_table.Add(p.GetLhs(), p) != null)
+            if (production_table.ContainsKey(p.GetLhs()))
             {
                 JavaCCErrors.SemanticError(p, p.GetLhs() + " occurs on the left hand side of more than one production.");
             }
+            production_table.Add(p.GetLhs(), p);
         }
 
         /*
@@ -169,7 +171,7 @@ public class Semanticize : JavaCCGlobals
             for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();)
             {
                 RegExprSpec res = (RegExprSpec)(it1.next());
-                if (!(res.rexp is RJustName) && !res.rexp.label == (""))
+                if (res.rexp is not RJustName && res.rexp.label != "")
                 {
                     string s = res.rexp.label;
                     Object obj = named_tokens_table.Add(s, res.rexp);
@@ -380,7 +382,7 @@ public class Semanticize : JavaCCGlobals
                     ExpansionTreeWalker.PreOrderWalk(res.rexp, frjn);
                     if (res.rexp is RJustName)
                     {
-                        prepareToRemove(respecs, res);
+                        PrepareToRemove(respecs, res);
                     }
                 }
             }
@@ -423,7 +425,7 @@ public class Semanticize : JavaCCGlobals
                         else
                         {
                             jn.ordinal = rexp.ordinal;
-                            prepareToRemove(respecs, res);
+                            PrepareToRemove(respecs, res);
                         }
                     }
                 }
@@ -497,7 +499,7 @@ public class Semanticize : JavaCCGlobals
             for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
             {
                 NormalProduction prod = it.next();
-                addLeftMost(prod, prod.GetExpansion());
+                AddLeftMost(prod, prod.GetExpansion());
             }
 
             // Now the following loop calls a recursive walk routine that searches for
@@ -509,7 +511,7 @@ public class Semanticize : JavaCCGlobals
                 NormalProduction prod = it.next();
                 if (prod.GetWalkStatus() == 0)
                 {
-                    prodWalk(prod);
+                    ProdWalk(prod);
                 }
             }
 
@@ -530,7 +532,7 @@ public class Semanticize : JavaCCGlobals
                         if (rexp.walkStatus == 0)
                         {
                             rexp.walkStatus = -1;
-                            if (rexpWalk(rexp))
+                            if (RexpWalk(rexp))
                             {
                                 loopString = "..." + rexp.label + "... --> " + loopString;
                                 JavaCCErrors.SemanticError(rexp, "Loop in regular expression detected: \"" + loopString + "\"");
@@ -548,7 +550,7 @@ public class Semanticize : JavaCCGlobals
             {
                 for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
                 {
-                    ExpansionTreeWalker.preOrderWalk((it.next()).getExpansion(), new LookaheadChecker());
+                    ExpansionTreeWalker.PreOrderWalk((it.next()).getExpansion(), new LookaheadChecker());
                 }
             }
 
@@ -585,9 +587,9 @@ public class Semanticize : JavaCCGlobals
     // returns true if "exp" can expand to the empty string, returns false otherwise.
     public static bool EmptyExpansionExists(Expansion exp)
     {
-        if (exp is NonTerminal)
+        if (exp is NonTerminal terminal)
         {
-            return ((NonTerminal)exp).GetProd().IsEmptyPossible();
+            return terminal.GetProd().IsEmptyPossible();
         }
         else if (exp is Action)
         {
@@ -597,9 +599,9 @@ public class Semanticize : JavaCCGlobals
         {
             return false;
         }
-        else if (exp is OneOrMore)
+        else if (exp is OneOrMore more)
         {
-            return EmptyExpansionExists(((OneOrMore)exp).expansion);
+            return EmptyExpansionExists(more.expansion);
         }
         else if (exp is ZeroOrMore || exp is ZeroOrOne)
         {
@@ -609,22 +611,22 @@ public class Semanticize : JavaCCGlobals
         {
             return true;
         }
-        else if (exp is Choice)
+        else if (exp is Choice choice)
         {
-            for (Iterator it = ((Choice)exp).GetChoices().iterator(); it.hasNext();)
+            foreach(var e in choice.GetChoices())
             {
-                if (EmptyExpansionExists((Expansion)it.next()))
+                if (EmptyExpansionExists(e))
                 {
                     return true;
                 }
             }
             return false;
         }
-        else if (exp is Sequence)
+        else if (exp is Sequence sequence)
         {
-            for (Iterator it = ((Sequence)exp).units.iterator(); it.hasNext();)
+            foreach(var e in sequence.units)
             {
-                if (!EmptyExpansionExists((Expansion)it.next()))
+                if (!EmptyExpansionExists(e))
                 {
                     return false;
                 }
@@ -642,13 +644,13 @@ public class Semanticize : JavaCCGlobals
     }
 
     // Updates prod.leftExpansions based on a walk of exp.
-    static private void addLeftMost(NormalProduction prod, Expansion exp)
+    static private void AddLeftMost(NormalProduction prod, Expansion exp)
     {
-        if (exp is NonTerminal)
+        if (exp is NonTerminal terminal)
         {
             for (int i = 0; i < prod.leIndex; i++)
             {
-                if (prod.GetLeftExpansions()[i] == ((NonTerminal)exp).GetProd())
+                if (prod.GetLeftExpansions()[i] == terminal.GetProd())
                 {
                     return;
                 }
@@ -659,42 +661,41 @@ public class Semanticize : JavaCCGlobals
                 Array.Copy(prod.GetLeftExpansions(), 0, newle, 0, prod.leIndex);
                 prod.SetLeftExpansions(newle);
             }
-            prod.GetLeftExpansions()[prod.leIndex++] = ((NonTerminal)exp).GetProd();
+            prod.GetLeftExpansions()[prod.leIndex++] = terminal.GetProd();
         }
-        else if (exp is OneOrMore)
+        else if (exp is OneOrMore more1)
         {
-            addLeftMost(prod, ((OneOrMore)exp).expansion);
+            AddLeftMost(prod, more1.expansion);
         }
-        else if (exp is ZeroOrMore)
+        else if (exp is ZeroOrMore more)
         {
-            addLeftMost(prod, ((ZeroOrMore)exp).expansion);
+            AddLeftMost(prod, more.expansion);
         }
-        else if (exp is ZeroOrOne)
+        else if (exp is ZeroOrOne one)
         {
-            addLeftMost(prod, ((ZeroOrOne)exp).expansion);
+            AddLeftMost(prod, one.expansion);
         }
-        else if (exp is Choice)
+        else if (exp is Choice choice)
         {
-            for (Iterator<Object> it = ((Choice)exp).GetChoices().iterator(); it.hasNext();)
+            foreach(var p in choice.GetChoices())
             {
-                addLeftMost(prod, (Expansion)it.next());
+                AddLeftMost(prod, p);
             }
         }
-        else if (exp is Sequence)
+        else if (exp is Sequence seq)
         {
-            for (Iterator<Object> it = ((Sequence)exp).units.iterator(); it.hasNext();)
+            foreach(var e in seq.units)
             {
-                Expansion e = (Expansion)it.next();
-                addLeftMost(prod, e);
+                AddLeftMost(prod, e);
                 if (!EmptyExpansionExists(e))
                 {
                     break;
                 }
             }
         }
-        else if (exp is TryBlock)
+        else if (exp is TryBlock block)
         {
-            addLeftMost(prod, ((TryBlock)exp).exp);
+            AddLeftMost(prod, block.exp);
         }
     }
 
@@ -703,7 +704,7 @@ public class Semanticize : JavaCCGlobals
 
     // Returns true to indicate an unraveling of a detected left recursion loop,
     // and returns false otherwise.
-    static private bool prodWalk(NormalProduction prod)
+    static private bool ProdWalk(NormalProduction prod)
     {
         prod.SetWalkStatus(-1);
         for (int i = 0; i < prod.leIndex; i++)
@@ -726,7 +727,7 @@ public class Semanticize : JavaCCGlobals
             }
             else if (prod.GetLeftExpansions()[i].GetWalkStatus() == 0)
             {
-                if (prodWalk(prod.GetLeftExpansions()[i]))
+                if (ProdWalk(prod.GetLeftExpansions()[i]))
                 {
                     loopString = prod.GetLhs() + "... --> " + loopString;
                     if (prod.GetWalkStatus() == -2)
@@ -749,11 +750,10 @@ public class Semanticize : JavaCCGlobals
 
     // Returns true to indicate an unraveling of a detected loop,
     // and returns false otherwise.
-    static private bool rexpWalk(RegularExpression rexp)
+    static private bool RexpWalk(RegularExpression rexp)
     {
-        if (rexp is RJustName)
+        if (rexp is RJustName jn)
         {
-            RJustName jn = (RJustName)rexp;
             if (jn.regexpr.walkStatus == -1)
             {
                 jn.regexpr.walkStatus = -2;
@@ -766,7 +766,7 @@ public class Semanticize : JavaCCGlobals
             else if (jn.regexpr.walkStatus == 0)
             {
                 jn.regexpr.walkStatus = -1;
-                if (rexpWalk(jn.regexpr))
+                if (RexpWalk(jn.regexpr))
                 {
                     loopString = "..." + jn.regexpr.label + "... --> " + loopString;
                     if (jn.regexpr.walkStatus == -2)
@@ -788,43 +788,43 @@ public class Semanticize : JavaCCGlobals
                 }
             }
         }
-        else if (rexp is RChoice)
+        else if (rexp is RChoice ch)
         {
-            for (Iterator it = ((RChoice)rexp).GetChoices().iterator(); it.hasNext();)
+            foreach(var rex in ch.GetChoices())
             {
-                if (rexpWalk((RegularExpression)it.next()))
+                if (rex is RegularExpression re && RexpWalk(re))
                 {
                     return true;
                 }
             }
             return false;
         }
-        else if (rexp is RSequence)
+        else if (rexp is RSequence rseq)
         {
-            for (Iterator it = ((RSequence)rexp).units.iterator(); it.hasNext();)
+            foreach(var u in rseq.units)
             {
-                if (rexpWalk((RegularExpression)it.next()))
+                if (RexpWalk(u))
                 {
                     return true;
                 }
             }
             return false;
         }
-        else if (rexp is ROneOrMore)
+        else if (rexp is ROneOrMore more1)
         {
-            return rexpWalk(((ROneOrMore)rexp).regexpr);
+            return RexpWalk(more1.regexpr);
         }
-        else if (rexp is RZeroOrMore)
+        else if (rexp is RZeroOrMore more)
         {
-            return rexpWalk(((RZeroOrMore)rexp).regexpr);
+            return RexpWalk(more.regexpr);
         }
-        else if (rexp is RZeroOrOne)
+        else if (rexp is RZeroOrOne one)
         {
-            return rexpWalk(((RZeroOrOne)rexp).regexpr);
+            return RexpWalk(one.regexpr);
         }
-        else if (rexp is RRepetitionRange)
+        else if (rexp is RRepetitionRange range)
         {
-            return rexpWalk(((RRepetitionRange)rexp).regexpr);
+            return RexpWalk(range.regexpr);
         }
         return false;
     }
@@ -845,11 +845,9 @@ public class Semanticize : JavaCCGlobals
 
         public void Action(Expansion e)
         {
-            if (e is RJustName)
+            if (e is RJustName jn)
             {
-                RJustName jn = (RJustName)e;
-                RegularExpression rexp = (RegularExpression)named_tokens_table.get(jn.label);
-                if (rexp == null)
+                if (!named_tokens_table.TryGetValue(jn.label,out var rexp))
                 {
                     JavaCCErrors.SemanticError(e, "Undefined lexical token name \"" + jn.label + "\".");
                 }
@@ -890,14 +888,14 @@ public class Semanticize : JavaCCGlobals
 
         public void Action(Expansion e)
         {
-            if (e is Sequence)
+            if (e is Sequence sequence)
             {
                 if (e.parent is Choice || e.parent is ZeroOrMore ||
                     e.parent is OneOrMore || e.parent is ZeroOrOne)
                 {
                     return;
                 }
-                Sequence seq = (Sequence)e;
+                Sequence seq = sequence;
                 Lookahead la = (Lookahead)(seq.units[0]);
                 if (!la.IsExplicit())
                 {
@@ -962,11 +960,12 @@ public class Semanticize : JavaCCGlobals
 
         public void Action(Expansion e)
         {
-            if (e is NonTerminal)
-            {
-                NonTerminal nt = (NonTerminal)e;
-                if ((nt.SetProd((NormalProduction)production_table.get(nt.GetName()))) == null)
+            if (e is NonTerminal nt)
+            {                
+                if (production_table.TryGetValue(nt.GetName(), out var ret))
                 {
+                    nt.SetProd(ret);
+
                     JavaCCErrors.SemanticError(e, "Non-terminal " + nt.GetName() + " has not been defined.");
                 }
                 else

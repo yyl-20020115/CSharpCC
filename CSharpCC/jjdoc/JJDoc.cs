@@ -167,10 +167,9 @@ public class JJDoc : JJDocGlobals
             if (np is BNFProduction)
             {
                 gen.ProductionStart(np);
-                if (np.GetExpansion() is Choice)
+                if (np.GetExpansion() is Choice c)
                 {
                     bool first = true;
-                    Choice c = (Choice)np.GetExpansion();
                     foreach (Expansion e in c.GetChoices())
                     {
                         gen.ExpansionStart(e, first);
@@ -187,13 +186,13 @@ public class JJDoc : JJDocGlobals
                 }
                 gen.ProductionEnd(np);
             }
-            else if (np is CppCodeProduction)
+            else if (np is CppCodeProduction production)
             {
-                gen.Cppcode((CppCodeProduction)np);
+                gen.Cppcode(production);
             }
-            else if (np is JavaCodeProduction)
+            else if (np is JavaCodeProduction production1)
             {
-                gen.Javacode((JavaCodeProduction)np);
+                gen.Javacode(production1);
             }
         }
         gen.NonterminalsEnd();
@@ -201,45 +200,45 @@ public class JJDoc : JJDocGlobals
     private static void EmitExpansionTree(Expansion exp, Generator gen)
     {
         //     gen.text("[->" + exp.getClass().getName() + "]");
-        if (exp is parser.Action)
+        if (exp is parser.Action pa)
         {
-            EmitExpansionAction((parser.Action)exp, gen);
+            EmitExpansionAction(pa, gen);
         }
-        else if (exp is Choice)
+        else if (exp is Choice choice)
         {
-            EmitExpansionChoice((Choice)exp, gen);
+            EmitExpansionChoice(choice, gen);
         }
-        else if (exp is Lookahead)
+        else if (exp is Lookahead lookahead)
         {
-            EmitExpansionLookahead((Lookahead)exp, gen);
+            EmitExpansionLookahead(lookahead, gen);
         }
-        else if (exp is NonTerminal)
+        else if (exp is NonTerminal terminal)
         {
-            EmitExpansionNonTerminal((NonTerminal)exp, gen);
+            EmitExpansionNonTerminal(terminal, gen);
         }
-        else if (exp is OneOrMore)
+        else if (exp is OneOrMore more)
         {
-            EmitExpansionOneOrMore((OneOrMore)exp, gen);
+            EmitExpansionOneOrMore(more, gen);
         }
-        else if (exp is RegularExpression)
+        else if (exp is RegularExpression expression)
         {
-            EmitExpansionRegularExpression((RegularExpression)exp, gen);
+            EmitExpansionRegularExpression(expression, gen);
         }
-        else if (exp is Sequence)
+        else if (exp is Sequence sequence)
         {
-            EmitExpansionSequence((Sequence)exp, gen);
+            EmitExpansionSequence(sequence, gen);
         }
-        else if (exp is TryBlock)
+        else if (exp is TryBlock block)
         {
-            EmitExpansionTryBlock((TryBlock)exp, gen);
+            EmitExpansionTryBlock(block, gen);
         }
-        else if (exp is ZeroOrMore)
+        else if (exp is ZeroOrMore more1)
         {
-            EmitExpansionZeroOrMore((ZeroOrMore)exp, gen);
+            EmitExpansionZeroOrMore(more1, gen);
         }
-        else if (exp is ZeroOrOne)
+        else if (exp is ZeroOrOne one)
         {
-            EmitExpansionZeroOrOne((ZeroOrOne)exp, gen);
+            EmitExpansionZeroOrOne(one, gen);
         }
         else
         {
@@ -366,9 +365,8 @@ public class JJDoc : JJDocGlobals
                 }
             }
         }
-        if (re is RCharacterList)
+        if (re is RCharacterList cl)
         {
-            RCharacterList cl = (RCharacterList)re;
             if (cl.negated_list)
             {
                 returnString += "~";
@@ -406,41 +404,37 @@ public class JJDoc : JJDocGlobals
             }
             returnString += "]";
         }
-        else if (re is RChoice)
+        else if (re is RChoice c)
         {
-            RChoice c = (RChoice)re;
             var first = true;
-            foreach (RegularExpression sub in c.GetChoices())
+            foreach (var sub in c.GetChoices())
             {
                 if (!first)
                 {
                     returnString += " | ";
                 }
                 first = false;
-                returnString += EmitRE(sub);
+                returnString += EmitRE(sub as Regula);
             }
         }
         else if (re is REndOfFile)
         {
             returnString += "EOF";
         }
-        else if (re is RJustName)
+        else if (re is RJustName jn)
         {
-            RJustName jn = (RJustName)re;
             returnString += jn.label;
         }
-        else if (re is ROneOrMore)
+        else if (re is ROneOrMore om)
         {
-            ROneOrMore om = (ROneOrMore)re;
             returnString += "(";
             returnString += EmitRE(om.regexpr);
             returnString += ")+";
         }
-        else if (re is RSequence)
+        else if (re is RSequence s)
         {
-            RSequence s = (RSequence)re;
             var first = true;
-            foreach (RegularExpression sub in s.units)
+            foreach (var sub in s.units)
             {
                 if (!first)
                 {
@@ -463,14 +457,12 @@ public class JJDoc : JJDocGlobals
                 }
             }
         }
-        else if (re is RStringLiteral)
+        else if (re is RStringLiteral sl)
         {
-            RStringLiteral sl = (RStringLiteral)re;
             returnString += ("\"" + JavaCCParserInternals.AddEscapes(sl.image) + "\"");
         }
-        else if (re is RZeroOrMore)
+        else if (re is RZeroOrMore zm)
         {
-            RZeroOrMore zm = (RZeroOrMore)re;
             returnString += "(";
             returnString += EmitRE(zm.regexpr);
             returnString += ")*";
@@ -482,9 +474,8 @@ public class JJDoc : JJDocGlobals
             returnString += EmitRE(zo.regexpr);
             returnString += ")?";
         }
-        else if (re is RRepetitionRange)
+        else if (re is RRepetitionRange zo)
         {
-            RRepetitionRange zo = (RRepetitionRange)re;
             returnString += "(";
             returnString += EmitRE(zo.regexpr);
             returnString += ")";

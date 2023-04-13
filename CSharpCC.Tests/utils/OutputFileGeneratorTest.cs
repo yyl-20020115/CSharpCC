@@ -10,9 +10,9 @@ public class OutputFileGeneratorTest : CSharpCCTestCase
   public void testStringBuffer() {
     Options.Init();
 
-    JavaResourceTemplateLocationImpl impl = new JavaResourceTemplateLocationImpl();
+    //JavaResourceTemplateLocationImpl impl = new JavaResourceTemplateLocationImpl();
     OutputFileGenerator generator = new OutputFileGenerator(
-        impl.getParseExceptionTemplateResourceUrl(), new Dictionary<string,object>());
+        "test.txt", new Dictionary<string,object>());
     
     TextWriter stringWriter = new StringWriter();
     generator.Generate(stringWriter);
@@ -25,9 +25,9 @@ public class OutputFileGeneratorTest : CSharpCCTestCase
     Options.Init();
     Options.SetCmdLineOption(Options.USEROPTION__GENERATE_STRING_BUILDER);
 
-    JavaResourceTemplateLocationImpl impl = new JavaResourceTemplateLocationImpl();
+    //JavaResourceTemplateLocationImpl impl = new JavaResourceTemplateLocationImpl();
     OutputFileGenerator generator = new OutputFileGenerator(
-        impl.getParseExceptionTemplateResourceUrl(), new Dictionary<string, object>());
+        "test.txt", new Dictionary<string, object>());
 
     TextWriter writer = new StringWriter();
     generator.Generate(writer);

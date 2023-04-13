@@ -79,7 +79,7 @@ public static class NodeFiles
         {
             String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
             OutputFile outputFile = new OutputFile(file, nodeVersion, options);
-            outputFile.setToolName("JJTree");
+            outputFile.SetToolName("JJTree");
 
             nodesGenerated.Add(file);
 
@@ -145,7 +145,7 @@ public static class NodeFiles
         try
         {
             OutputFile outputFile = new OutputFile(file);
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             var nodeIds = ASTNodeDescriptor.GetNodeIds();
             var nodeNames = ASTNodeDescriptor.GetNodeNames();
@@ -200,7 +200,7 @@ public static class NodeFiles
         try
         {
             OutputFile outputFile = new OutputFile(file);
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             var nodeNames = ASTNodeDescriptor.GetNodeNames();
 
@@ -276,7 +276,7 @@ public static class NodeFiles
         try
         {
             OutputFile outputFile = new OutputFile(file);
-            TextWriter ostr = outputFile.getPrintWriter();
+            TextWriter ostr = outputFile.GetPrintWriter();
 
             var nodeNames = ASTNodeDescriptor.GetNodeNames();
 
@@ -370,7 +370,7 @@ public static class NodeFiles
 
     private static void generateNode_java(OutputFile outputFile)
     {
-        TextWriter ostr = outputFile.getPrintWriter();
+        TextWriter ostr = outputFile.GetPrintWriter();
 
         generatePrologue(ostr);
 
@@ -388,7 +388,7 @@ public static class NodeFiles
 
     private static void generateSimpleNode_java(OutputFile outputFile)
     {
-        TextWriter ostr = outputFile.getPrintWriter();
+        TextWriter ostr = outputFile.GetPrintWriter();
 
         generatePrologue(ostr);
 
@@ -407,7 +407,7 @@ public static class NodeFiles
 
     private static void generateMULTINode_java(OutputFile outputFile, string nodeType)
     {
-        TextWriter ostr = outputFile.getPrintWriter();
+        TextWriter ostr = outputFile.GetPrintWriter();
 
         generatePrologue(ostr);
 

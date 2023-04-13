@@ -211,7 +211,7 @@ public class MainParser
 
         if (Options.IsOption(args[^1]))
         {
-            Console.WriteLine("Last argument \"" + args[args.Length - 1] + "\" is not a filename.");
+            Console.WriteLine("Last argument \"" + args[^1] + "\" is not a filename.");
             return 1;
         }
         for (int arg = 0; arg < args.Length - 1; arg++)
@@ -257,7 +257,7 @@ public class MainParser
         {
             Console.WriteLine("Reading from file " + args[^1] + " . . .");
             JavaCCGlobals.FileName = JavaCCGlobals.OrigFileName = args[^1];
-            JavaCCGlobals.JjtreeGenerated = JavaCCGlobals.IsGeneratedBy("JJTree", args[args.Length - 1]);
+            JavaCCGlobals.JjtreeGenerated = JavaCCGlobals.IsGeneratedBy("JJTree", args[^1]);
             JavaCCGlobals.ToolNames = JavaCCGlobals.GetToolNames(args[^1]);
             parser.javacc_input();
 

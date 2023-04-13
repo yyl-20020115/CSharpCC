@@ -2011,16 +2011,11 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
             catch (IOException e) { return curPos; }
         }
     }
-    private int jjMoveStringLiteralDfa0_4()
+    private int jjMoveStringLiteralDfa0_4() => (int)curChar switch
     {
-        switch ((int)curChar)
-        {
-            case 42:
-                return jjMoveStringLiteralDfa1_4(0x4000000L);
-            default:
-                return 1;
-        }
-    }
+        42 => jjMoveStringLiteralDfa1_4(0x4000000L),
+        _ => 1,
+    };
     private int jjMoveStringLiteralDfa1_4(ulong active0)
     {
         try { curChar = input_stream.ReadChar(); }
@@ -2125,16 +2120,11 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
     {
         return 1;
     }
-    private int jjMoveStringLiteralDfa0_3()
+    private int jjMoveStringLiteralDfa0_3() => (int)curChar switch
     {
-        switch ((int)curChar)
-        {
-            case 42:
-                return jjMoveStringLiteralDfa1_3(0x2000000L);
-            default:
-                return 1;
-        }
-    }
+        42 => jjMoveStringLiteralDfa1_3(0x2000000L),
+        _ => 1,
+    };
     private int jjMoveStringLiteralDfa1_3(ulong active0)
     {
         try { curChar = input_stream.ReadChar(); }
@@ -2343,7 +2333,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
         }
     }
 
-    /** Token literal values. */ 
+    /** Token literal values. */  
     public static string[] jjstrLiteralImages = {
 "", "\114\117\117\113\101\110\105\101\104", 
 "\111\107\116\117\122\105\137\103\101\123\105", "\120\101\122\123\105\122\137\102\105\107\111\116",
@@ -2489,7 +2479,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
     }
 
     int curLexState = 0;
-    int defaultLexState = 0;
+    readonly int defaultLexState = 0;
     int jjnewStateCnt;
     uint jjround;
     int jjmatchedPos;
