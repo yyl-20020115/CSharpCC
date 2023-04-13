@@ -48,8 +48,8 @@ public class Sequence : Expansion
 
     public Sequence(Token token, Lookahead lookahead)
     {
-        this.        Line = token.beginLine;
-        this.        Column = token.beginColumn;
+        this.Line = token.beginLine;
+        this.Column = token.beginColumn;
         this.units.Add(lookahead);
     }
 
@@ -62,11 +62,11 @@ public class Sequence : Expansion
         }
 
         alreadyDumped.Add(this);
-        var sb = base.Dump(indent, alreadyDumped);
+        var builder = base.Dump(indent, alreadyDumped);
         foreach (Expansion next in units)
         {
-            sb.Append(eol).Append(next.Dump(indent + 1, alreadyDumped));
+            builder.Append(eol).Append(next.Dump(indent + 1, alreadyDumped));
         }
-        return sb;
+        return builder;
     }
 }

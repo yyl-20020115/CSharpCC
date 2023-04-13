@@ -32,18 +32,18 @@ namespace CSharpCC.Parser;
  */
 public class Nfa
 {
-   public NfaState Start;
-   public NfaState End;
+    public NfaState Start;
+    public NfaState End;
 
-   public Nfa()
-   {
-      Start = new NfaState();
-      End = new NfaState();
-   }
+    public Nfa()
+    {
+        Start = new NfaState();
+        End = new NfaState();
+    }
 
-   public Nfa(NfaState startGiven, NfaState finalGiven)
-   {
-      Start = startGiven;
-      End = finalGiven;
-   }
+    public Nfa(NfaState startGiven, NfaState finalGiven)
+    {
+        Start = startGiven;
+        End = finalGiven;
+    }
 }

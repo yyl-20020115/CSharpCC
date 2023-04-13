@@ -31,29 +31,28 @@ namespace CSharpCC.Parser;
 public class Semanticize : CSharpCCGlobals
 {
 
-    public static List<List<RegExprSpec>> removeList = new();
-    public static List<RegExprSpec> itemList = new();
+    public static List<List<RegExprSpec>> RemoveList = new();
+    public static List<RegExprSpec> ItemList = new();
 
     public static void PrepareToRemove(List<RegExprSpec> vec, RegExprSpec item) 
     {
-        removeList.Add(vec);
-        itemList.Add(item);
+        RemoveList.Add(vec);
+        ItemList.Add(item);
     }
 
     public static void RemovePreparedItems()
     {
-        for (int i = 0; i < removeList.Count; i++)
+        for (int i = 0; i < RemoveList.Count; i++)
         {
-            var list = removeList[i];
-            list.Remove(itemList[i]);
+            var list = RemoveList[i];
+            list.Remove(ItemList[i]);
         }
-        removeList.Clear();
-        itemList.Clear(); 
+        RemoveList.Clear();
+        ItemList.Clear(); 
     }
 
     public static void Start()
     {
-
         if (CSharpCCErrors.ErrorCount != 0) throw new MetaParseException();
 
         if (Options.GetLookahead() > 1 && !Options.GetForceLaCheck() && Options.GetSanityCheck())
@@ -70,7 +69,7 @@ public class Semanticize : CSharpCCGlobals
          */
         foreach(var np in BNFProductions)
         {
-            ExpansionTreeWalker.PostOrderWalk(np.GetExpansion(),
+            ExpansionTreeWalker.PostOrderWalk(np.Expansion,
                                               new LookaheadFixer());
         }
 
@@ -79,11 +78,11 @@ public class Semanticize : CSharpCCGlobals
          */
         foreach(var p in BNFProductions)
         {
-            if (ProductionTable.ContainsKey(p.GetLhs()))
+            if (ProductionTable.ContainsKey(p.Lhs))
             {
-                CSharpCCErrors.SemanticError(p, p.GetLhs() + " occurs on the left hand side of more than one production.");
+                CSharpCCErrors.SemanticError(p, p.Lhs + " occurs on the left hand side of more than one production.");
             }
-            ProductionTable.Add(p.GetLhs(), p);
+            ProductionTable.Add(p.Lhs, p);
         }
 
         /*
@@ -92,7 +91,7 @@ public class Semanticize : CSharpCCGlobals
          */
         foreach(var np in BNFProductions)
         {
-            ExpansionTreeWalker.PreOrderWalk(np.GetExpansion(), new ProductionDefinedChecker());
+            ExpansionTreeWalker.PreOrderWalk(np.Expansion, new ProductionDefinedChecker());
         }
 
         /*
@@ -110,44 +109,44 @@ public class Semanticize : CSharpCCGlobals
             List<RegExprSpec> respecs = tp.respecs;
             foreach(var res in respecs)
             {
-                if (res.nextState != null)
+                if (res.NextState != null)
                 {
-                    if (!LexstateS2I.TryGetValue(res.nextState,out var _))
+                    if (!LexstateS2I.TryGetValue(res.NextState,out var _))
                     {
-                        CSharpCCErrors.SemanticError(res.nsTok, "Lexical state \"" + res.nextState +
+                        CSharpCCErrors.SemanticError(res.NsToken, "Lexical state \"" + res.NextState +
                                                                "\" has not been defined.");
                     }
                 }
-                if (res.rexp is REndOfFile)
+                if (res.Rexp is REndOfFile)
                 {
                     //JavaCCErrors.semantic_error(res.rexp, "Badly placed <EOF>.");
                     if (tp.lexStates != null)
-                        CSharpCCErrors.SemanticError(res.rexp, "EOF action/state change must be specified for all states, " +
+                        CSharpCCErrors.SemanticError(res.Rexp, "EOF action/state change must be specified for all states, " +
                                 "i.e., <*>TOKEN:.");
                     if (tp.kind != TokenProduction.TOKEN)
-                        CSharpCCErrors.SemanticError(res.rexp, "EOF action/state change can be specified only in a " +
+                        CSharpCCErrors.SemanticError(res.Rexp, "EOF action/state change can be specified only in a " +
                                 "TOKEN specification.");
                     if (nextStateForEof != null || actForEof != null)
-                        CSharpCCErrors.SemanticError(res.rexp, "Duplicate action/state change specification for <EOF>.");
-                    actForEof = res.act;
-                    nextStateForEof = res.nextState;
+                        CSharpCCErrors.SemanticError(res.Rexp, "Duplicate action/state change specification for <EOF>.");
+                    actForEof = res.Act;
+                    nextStateForEof = res.NextState;
                     PrepareToRemove(respecs, res);
                 }
                 else if (tp.isExplicit && Options.GetUserTokenManager())
                 {
-                    CSharpCCErrors.Warning(res.rexp, "Ignoring regular expression specification since " +
+                    CSharpCCErrors.Warning(res.Rexp, "Ignoring regular expression specification since " +
                             "option USER_TOKEN_MANAGER has been set to true.");
                 }
-                else if (tp.isExplicit && !Options.GetUserTokenManager() && res.rexp is RJustName)
+                else if (tp.isExplicit && !Options.GetUserTokenManager() && res.Rexp is RJustName)
                 {
-                    CSharpCCErrors.Warning(res.rexp, "Ignoring free-standing regular expression reference.  " +
+                    CSharpCCErrors.Warning(res.Rexp, "Ignoring free-standing regular expression reference.  " +
                             "If you really want this, you must give it a different label as <NEWLABEL:<"
-                            + res.rexp.label + ">>.");
+                            + res.Rexp.label + ">>.");
                     PrepareToRemove(respecs, res);
                 }
-                else if (!tp.isExplicit && res.rexp.private_rexp)
+                else if (!tp.isExplicit && res.Rexp.private_rexp)
                 {
-                    CSharpCCErrors.SemanticError(res.rexp, "Private (#) regular expression cannot be defined within " +
+                    CSharpCCErrors.SemanticError(res.Rexp, "Private (#) regular expression cannot be defined within " +
                             "grammar productions.");
                 }
             }
@@ -165,22 +164,22 @@ public class Semanticize : CSharpCCGlobals
             List<RegExprSpec> respecs = tp.respecs;
             foreach(var res in respecs)
             {
-                if (res.rexp is not RJustName && res.rexp.label != "")
+                if (res.Rexp is not RJustName && res.Rexp.label != "")
                 {
-                    string s = res.rexp.label;
+                    string s = res.Rexp.label;
                     var b = NamedTokenTable.ContainsKey(s);
-                    NamedTokenTable.Add(s, res.rexp);
+                    NamedTokenTable.Add(s, res.Rexp);
                     if (b)
                     {
-                        CSharpCCErrors.SemanticError(res.rexp, "Multiply defined lexical token name \"" + s + "\".");
+                        CSharpCCErrors.SemanticError(res.Rexp, "Multiply defined lexical token name \"" + s + "\".");
                     }
                     else
                     {
-                        OrderedNamedToken.Add(res.rexp);
+                        OrderedNamedToken.Add(res.Rexp);
                     }
                     if (!LexstateS2I.TryGetValue(s,out var _))
                     {
-                        CSharpCCErrors.SemanticError(res.rexp, "Lexical token name \"" + s + "\" is the same as " +
+                        CSharpCCErrors.SemanticError(res.Rexp, "Lexical token name \"" + s + "\" is the same as " +
                                 "that of a lexical state.");
                     }
                 }
@@ -218,7 +217,7 @@ public class Semanticize : CSharpCCGlobals
             }
             foreach(var res in respecs)
             {
-                if (res.rexp is RStringLiteral sl)
+                if (res.Rexp is RStringLiteral sl)
                 {
                     // This loop performs the checks and actions with respect to each lexical state.
                     for (int i = 0; i < table.Length; i++)
@@ -333,17 +332,17 @@ public class Semanticize : CSharpCCGlobals
                         }
                     }
                 }
-                else if (res.rexp is not RJustName)
+                else if (res.Rexp is not RJustName)
                 {
-                    res.rexp.ordinal = TokenCount++;
+                    res.Rexp.ordinal = TokenCount++;
                 }
-                if (res.rexp is not RJustName && res.rexp.label != (""))
+                if (res.Rexp is not RJustName && res.Rexp.label != (""))
                 {
-                    NamesOfTokens.Add((res.rexp.ordinal), res.rexp.label);
+                    NamesOfTokens.Add((res.Rexp.ordinal), res.Rexp.label);
                 }
-                if (res.rexp is not RJustName)
+                if (res.Rexp is not RJustName)
                 {
-                    RegexpsOfTokens.Add((res.rexp.ordinal), res.rexp);
+                    RegexpsOfTokens.Add((res.Rexp.ordinal), res.Rexp);
                 }
             }
         }
@@ -369,9 +368,9 @@ public class Semanticize : CSharpCCGlobals
                 List<RegExprSpec> respecs = tp.respecs;
                 foreach(var res in respecs)
                 {
-                    frjn.root = res.rexp;
-                    ExpansionTreeWalker.PreOrderWalk(res.rexp, frjn);
-                    if (res.rexp is RJustName)
+                    frjn.root = res.Rexp;
+                    ExpansionTreeWalker.PreOrderWalk(res.Rexp, frjn);
+                    if (res.Rexp is RJustName)
                     {
                         PrepareToRemove(respecs, res);
                     }
@@ -399,7 +398,7 @@ public class Semanticize : CSharpCCGlobals
                 List<RegExprSpec> respecs = tp.respecs;
                 foreach(var res in respecs)
                 {
-                    if (res.rexp is RJustName jn)
+                    if (res.Rexp is RJustName jn)
                     {
                         if (NamedTokenTable.TryGetValue(jn.label, out var rexp))
                         {
@@ -434,10 +433,10 @@ public class Semanticize : CSharpCCGlobals
                 List<RegExprSpec> respecs = tp.respecs;
                 foreach(var res in respecs)
                 {
-                    int ii = (res.rexp.ordinal);
+                    int ii = (res.Rexp.ordinal);
                     if (!NamesOfTokens.TryGetValue(ii,out var _))
                     {
-                        CSharpCCErrors.Warning(res.rexp, "Unlabeled regular expression cannot be referred to by " +
+                        CSharpCCErrors.Warning(res.Rexp, "Unlabeled regular expression cannot be referred to by " +
                                 "user generated token manager.");
                     }
                 }
@@ -456,11 +455,11 @@ public class Semanticize : CSharpCCGlobals
             emptyUpdate = false;
             foreach(var prod in BNFProductions)
             {
-                if (EmptyExpansionExists(prod.GetExpansion()))
+                if (EmptyExpansionExists(prod.Expansion))
                 {
                     if (!prod.IsEmptyPossible())
                     {
-                        emptyUpdate = prod.SetEmptyPossible(true);
+                        prod.SetEmptyPossible(emptyUpdate = true);
                     }
                 }
             }
@@ -473,7 +472,7 @@ public class Semanticize : CSharpCCGlobals
             // do not contain expansions that can expand to the empty token list.
             foreach (var prod in BNFProductions)
             {
-                ExpansionTreeWalker.PreOrderWalk(prod.GetExpansion(), new EmptyChecker());
+                ExpansionTreeWalker.PreOrderWalk(prod.Expansion, new EmptyChecker());
             }
 
             // The following code goes through the productions and adds pointers to other
@@ -481,7 +480,7 @@ public class Semanticize : CSharpCCGlobals
             // done, a left-recursion check can be performed.
             foreach(var prod in BNFProductions)
             {
-                AddLeftMost(prod, prod.GetExpansion());
+                AddLeftMost(prod, prod.Expansion);
             }
 
             // Now the following loop calls a recursive walk routine that searches for
@@ -490,7 +489,7 @@ public class Semanticize : CSharpCCGlobals
             // in any other loop.
             foreach(var prod in BNFProductions)
             {
-                if (prod.GetWalkStatus() == 0)
+                if (prod.WalkStatus == 0)
                 {
                     ProdWalk(prod);
                 }
@@ -507,7 +506,7 @@ public class Semanticize : CSharpCCGlobals
                     List<RegExprSpec> respecs = tp.respecs;
                     foreach( var res in respecs)    
                     {
-                        RegularExpression rexp = res.rexp;
+                        RegularExpression rexp = res.Rexp;
                         if (rexp.walkStatus == 0)
                         {
                             rexp.walkStatus = -1;
@@ -529,7 +528,7 @@ public class Semanticize : CSharpCCGlobals
             {
                 foreach(var tp in BNFProductions)
                 {
-                    ExpansionTreeWalker.PreOrderWalk(tp.GetExpansion(), new LookaheadChecker());
+                    ExpansionTreeWalker.PreOrderWalk(tp.Expansion, new LookaheadChecker());
                 }
             }
 
@@ -567,7 +566,7 @@ public class Semanticize : CSharpCCGlobals
     {
         if (exp is NonTerminal terminal)
         {
-            return terminal.GetProd().IsEmptyPossible();
+            return terminal.Production.IsEmptyPossible();
         }
         else if (exp is Action)
         {
@@ -628,18 +627,18 @@ public class Semanticize : CSharpCCGlobals
         {
             for (int i = 0; i < prod.leIndex; i++)
             {
-                if (prod.GetLeftExpansions()[i] == terminal.GetProd())
+                if (prod.LeftExpansions[i] == terminal.Production)
                 {
                     return;
                 }
             }
-            if (prod.leIndex == prod.GetLeftExpansions().Length)
+            if (prod.leIndex == prod.LeftExpansions.Length)
             {
                 NormalProduction[] newle = new NormalProduction[prod.leIndex * 2];
-                Array.Copy(prod.GetLeftExpansions(), 0, newle, 0, prod.leIndex);
-                prod.SetLeftExpansions(newle);
+                Array.Copy(prod.LeftExpansions, 0, newle, 0, prod.leIndex);
+                prod.                LeftExpansions = newle;
             }
-            prod.GetLeftExpansions()[prod.leIndex++] = terminal.GetProd();
+            prod.            LeftExpansions[prod.leIndex++] = terminal.Production;
         }
         else if (exp is OneOrMore more1)
         {
@@ -684,45 +683,45 @@ public class Semanticize : CSharpCCGlobals
     // and returns false otherwise.
     static private bool ProdWalk(NormalProduction prod)
     {
-        prod.SetWalkStatus(-1);
+        prod.        WalkStatus = -1;
         for (int i = 0; i < prod.leIndex; i++)
         {
-            if (prod.GetLeftExpansions()[i].GetWalkStatus() == -1)
+            if (prod.LeftExpansions[i].WalkStatus == -1)
             {
-                prod.GetLeftExpansions()[i].SetWalkStatus(-2);
-                loopString = prod.GetLhs() + "... --> " + prod.GetLeftExpansions()[i].GetLhs() + "...";
-                if (prod.GetWalkStatus() == -2)
+                prod.                LeftExpansions[i].                WalkStatus = -2;
+                loopString = prod.Lhs + "... --> " + prod.LeftExpansions[i].Lhs + "...";
+                if (prod.WalkStatus == -2)
                 {
-                    prod.SetWalkStatus(1);
+                    prod.                    WalkStatus = 1;
                     CSharpCCErrors.SemanticError(prod, "Left recursion detected: \"" + loopString + "\"");
                     return false;
                 }
                 else
                 {
-                    prod.SetWalkStatus(1);
+                    prod.                    WalkStatus = 1;
                     return true;
                 }
             }
-            else if (prod.GetLeftExpansions()[i].GetWalkStatus() == 0)
+            else if (prod.LeftExpansions[i].WalkStatus == 0)
             {
-                if (ProdWalk(prod.GetLeftExpansions()[i]))
+                if (ProdWalk(prod.LeftExpansions[i]))
                 {
-                    loopString = prod.GetLhs() + "... --> " + loopString;
-                    if (prod.GetWalkStatus() == -2)
+                    loopString = prod.Lhs + "... --> " + loopString;
+                    if (prod.WalkStatus == -2)
                     {
-                        prod.SetWalkStatus(1);
+                        prod.                        WalkStatus = 1;
                         CSharpCCErrors.SemanticError(prod, "Left recursion detected: \"" + loopString + "\"");
                         return false;
                     }
                     else
                     {
-                        prod.SetWalkStatus(1);
+                        prod.                        WalkStatus = 1;
                         return true;
                     }
                 }
             }
         }
-        prod.SetWalkStatus(1);
+        prod.        WalkStatus = 1;
         return false;
     }
 
@@ -768,7 +767,7 @@ public class Semanticize : CSharpCCGlobals
         }
         else if (rexp is RChoice ch)
         {
-            foreach(var rex in ch.GetChoices())
+            foreach(var rex in ch.Choices)
             {
                 if (rex is RegularExpression re && RexpWalk(re))
                 {
@@ -868,8 +867,8 @@ public class Semanticize : CSharpCCGlobals
         {
             if (e is Sequence sequence)
             {
-                if (e.parent is Choice || e.parent is ZeroOrMore ||
-                    e.parent is OneOrMore || e.parent is ZeroOrOne)
+                if (e.Parent is Choice || e.Parent is ZeroOrMore ||
+                    e.Parent is OneOrMore || e.Parent is ZeroOrOne)
                 {
                     return;
                 }
@@ -882,20 +881,20 @@ public class Semanticize : CSharpCCGlobals
                 // Create a singleton choice with an empty action.
                 Choice ch = new();
                 ch.                Line = la.Line; ch.Column = la.Column;
-                ch.parent = seq;
+                ch.Parent = seq;
                 Sequence seq1 = new();
                 seq1.                Line = la.Line; seq1.Column = la.Column;
-                seq1.parent = ch;
+                seq1.Parent = ch;
                 seq1.units.Add(la);
-                la.parent = seq1;
+                la.Parent = seq1;
                 Action act = new();
                 act.                Line = la.Line; act.Column = la.Column;
-                act.parent = seq1;
+                act.Parent = seq1;
                 seq1.units.Add(act);
                 ch.                Choices.Add(seq1);
-                if (la.GetAmount() != 0)
+                if (la.Amount != 0)
                 {
-                    if (la.GetActionTokens().Count != 0)
+                    if (la.ActionTokens.Count != 0)
                     {
                         CSharpCCErrors.Warning(la, "Encountered LOOKAHEAD(...) at a non-choice location.  " +
                                 "Only semantic lookahead will be considered here.");
@@ -910,10 +909,11 @@ public class Semanticize : CSharpCCGlobals
                 Lookahead la1 = new();
                 la1.SetExplicit(false);
                 la1.                Line = la.Line; la1.Column = la.Column;
-                la1.parent = seq;
+                la1.Parent = seq;
                 // Now set the la_expansion field of la and la1 with a dummy expansion (we use EOF).
-                la.SetLaExpansion(new REndOfFile());
-                la1.SetLaExpansion(new REndOfFile());
+                la.                // Now set the la_expansion field of la and la1 with a dummy expansion (we use EOF).
+                LaExpansion = new REndOfFile();
+                la1.                LaExpansion = new REndOfFile();
                 seq.units[0] = la1;
                 seq.units.Insert(1, ch);
             }
@@ -940,15 +940,15 @@ public class Semanticize : CSharpCCGlobals
         {
             if (e is NonTerminal nt)
             {                
-                if (ProductionTable.TryGetValue(nt.GetName(), out var ret))
+                if (ProductionTable.TryGetValue(nt.Name, out var ret))
                 {
-                    nt.SetProd(ret);
+                    nt.                    Production = ret;
 
-                    CSharpCCErrors.SemanticError(e, "Non-terminal " + nt.GetName() + " has not been defined.");
+                    CSharpCCErrors.SemanticError(e, "Non-terminal " + nt.Name + " has not been defined.");
                 }
                 else
                 {
-                    nt.GetProd().GetParents().Add(nt);
+                    nt.                    Production.                    Parents.Add(nt);
                 }
             }
         }
@@ -1049,15 +1049,13 @@ public class Semanticize : CSharpCCGlobals
 
         static bool ImplicitLA(Expansion exp)
             => exp is not Sequence seq || seq.units[0] is not Lookahead la || !la.IsExplicit();
-
     }
 
     public static new void ReInit()
     {
-        removeList = new();
-        itemList = new();
+        RemoveList = new();
+        ItemList = new();
         other = null;
         loopString = null;
     }
-
 }

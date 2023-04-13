@@ -35,7 +35,6 @@ using System.Text;
 namespace CSharpCC.Parser;
 
 
-
 /**
  * Entry point.
  */
@@ -73,13 +72,13 @@ public class MainParser
     private static void PrintOptions()
     {
 
-        HashSet<OptionInfo> options = Options.GetUserOptions();
+        var options = Options.GetUserOptions();
 
         int maxLengthInt = 0;
         int maxLengthBool = 0;
         int maxLengthString = 0;
 
-        foreach (OptionInfo i in options)
+        foreach (var i in options)
         {
             int length = i.Name.Length;
 
@@ -224,9 +223,6 @@ public class MainParser
             Options.SetCmdLineOption(args[arg]);
         }
 
-
-
-
         try
         {
             string fp = (args[^1]);
@@ -259,7 +255,7 @@ public class MainParser
             CSharpCCGlobals.FileName = CSharpCCGlobals.OrigFileName = args[^1];
             CSharpCCGlobals.CCTreeGenerated = CSharpCCGlobals.IsGeneratedBy("JJTree", args[^1]);
             CSharpCCGlobals.ToolNames = CSharpCCGlobals.GetToolNames(args[^1]);
-            parser.javacc_input();
+            parser.CSharpCC_Input();
 
             // 2012/05/02 - Moved this here as cannot evaluate output language
             // until the cc file has been processed. Was previously setting the 'lg' variable
@@ -308,7 +304,7 @@ public class MainParser
                 }
 
                 // Must always create the lexer object even if not building a parser.
-                new LexGen().start();
+                new LexGen().Start();
 
                 Options.SetStringOption(Options.NONUSER_OPTION__PARSER_NAME, CSharpCCGlobals.CuName);
                 OtherFilesGen.Start(isJavaModern);
@@ -317,7 +313,7 @@ public class MainParser
             { // C++ for now
                 if (isBuildParser)
                 {
-                    new ParseGenCPP().start();
+                    new ParseGenCPP().Start();
                 }
                 if (isBuildParser)
                 {
@@ -386,12 +382,12 @@ public class MainParser
         CSharpCCParserInternals.ReInit();
         RStringLiteral.reInit();
         CSharpFiles.ReInit();
-        NfaState.reInit();
+        NfaState.ReInitOther();
         MatchInfo.ReInit();
-        LookaheadWalk.reInit();
+        LookaheadWalk.ReInit();
         Semanticize.ReInit();
         OtherFilesGen.ReInit();
-        LexGen.reInit();
+        LexGen.ReInit();
     }
 
 }

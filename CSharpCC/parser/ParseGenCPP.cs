@@ -3,15 +3,13 @@
 
 namespace CSharpCC.Parser;
 
-
-
 /**
  * Generate the parser.
  */
 public class ParseGenCPP : ParseGen
 {
 
-    public void start()
+    public void Start()
     {
 
         Token t = null;

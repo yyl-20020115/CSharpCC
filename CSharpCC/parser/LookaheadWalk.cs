@@ -31,9 +31,9 @@ namespace CSharpCC.Parser;
 public static class LookaheadWalk
 {
 
-    public static bool considerSemanticLA;
+    public static bool ConsiderSemanticLA;
 
-    public static List<MatchInfo> sizeLimitedMatches;
+    public static List<MatchInfo> SizeLimitedMatches;
 
     private static void ListAppend(List<MatchInfo> vToAppendTo, List<MatchInfo> vToAppend)
     {
@@ -60,7 +60,7 @@ public static class LookaheadWalk
                 mnew.match[mnew.firstFreeLoc++] = expression.ordinal;
                 if (mnew.firstFreeLoc == MatchInfo.laLimit)
                 {
-                    sizeLimitedMatches.Add(mnew);
+                    SizeLimitedMatches.Add(mnew);
                 }
                 else
                 {
@@ -71,14 +71,14 @@ public static class LookaheadWalk
         }
         else if (exp is NonTerminal terminal)
         {
-            NormalProduction prod = terminal.GetProd();
+            NormalProduction prod = terminal.Production;
             if (prod is CodeProduction)
             {
                 return new();
             }
             else
             {
-                return GenFirstSet(partialMatches, prod.GetExpansion());
+                return GenFirstSet(partialMatches, prod.Expansion);
             }
         }
         else if (exp is Choice choice)
@@ -141,9 +141,9 @@ public static class LookaheadWalk
         {
             return GenFirstSet(partialMatches, block.exp);
         }
-        else if (considerSemanticLA &&
+        else if (ConsiderSemanticLA &&
                    exp is Lookahead lookahead &&
-                   lookahead.GetActionTokens().Count != 0
+                   lookahead.                   ActionTokens.Count != 0
                   )
         {
             return new();
@@ -178,13 +178,13 @@ public static class LookaheadWalk
 
     public static List<MatchInfo> GenFollowSet(List<MatchInfo> partialMatches, Expansion exp, long generation)
     {
-        if (exp.myGeneration == generation)
+        if (exp.MyGeneration == generation)
         {
             return new();
         }
         //  Console.WriteLine("*** Parent: " + exp.parent);
-        exp.myGeneration = generation;
-        if (exp.parent == null)
+        exp.MyGeneration = generation;
+        if (exp.Parent == null)
         {
             List<MatchInfo> retval = new();
             ListAppend(retval, partialMatches);
@@ -192,9 +192,9 @@ public static class LookaheadWalk
         }
         else
 
-        if (exp.parent is NormalProduction np)
+        if (exp.Parent is NormalProduction np)
         {
-            List<Expansion> parents = np.GetParents();
+            List<Expansion> parents = np.Parents;
             List<MatchInfo> retval = new();
             //    Console.WriteLine("1; gen: " + generation + "; exp: " + exp);
             for (int i = 0; i < parents.Count; i++)
@@ -206,11 +206,11 @@ public static class LookaheadWalk
         }
         else
 
-        if (exp.parent is Sequence)
+        if (exp.Parent is Sequence)
         {
-            Sequence seq = (Sequence)exp.parent;
+            Sequence seq = (Sequence)exp.Parent;
             List<MatchInfo> v = partialMatches;
-            for (int i = exp.ordinal + 1; i < seq.units.Count; i++)
+            for (int i = exp.Ordinal + 1; i < seq.units.Count; i++)
             {
                 v = GenFirstSet(v, (Expansion)seq.units[i]);
                 if (v.Count == 0) return v;
@@ -226,14 +226,14 @@ public static class LookaheadWalk
             if (v2.Count != 0)
             {
                 //Console.WriteLine("3; gen: " + generation + "; exp: " + exp);
-                v2 = GenFollowSet(v2, seq, Expansion.nextGenerationIndex++);
+                v2 = GenFollowSet(v2, seq, Expansion.NextGenerationIndex++);
             }
             ListAppend(v2, v1);
             return v2;
         }
         else
 
-        if (exp.parent is OneOrMore || exp.parent is ZeroOrMore)
+        if (exp.Parent is OneOrMore || exp.Parent is ZeroOrMore)
         {
             List<MatchInfo> moreMatches = new();
             ListAppend(moreMatches, partialMatches);
@@ -250,12 +250,12 @@ public static class LookaheadWalk
             if (v1.Count != 0)
             {
                 //		Console.WriteLine("4; gen: " + generation + "; exp: " + exp);
-                v1 = GenFollowSet(v1, (Expansion)exp.parent, generation);
+                v1 = GenFollowSet(v1, (Expansion)exp.Parent, generation);
             }
             if (v2.Count != 0)
             {
                 //		Console.WriteLine("5; gen: " + generation + "; exp: " + exp);
-                v2 = GenFollowSet(v2, (Expansion)exp.parent, Expansion.nextGenerationIndex++);
+                v2 = GenFollowSet(v2, (Expansion)exp.Parent, Expansion.NextGenerationIndex++);
             }
             ListAppend(v2, v1);
             return v2;
@@ -263,14 +263,14 @@ public static class LookaheadWalk
         else
         {
             //		Console.WriteLine("6; gen: " + generation + "; exp: " + exp);
-            return GenFollowSet(partialMatches, (Expansion)exp.parent, generation);
+            return GenFollowSet(partialMatches, (Expansion)exp.Parent, generation);
         }
     }
 
-    public static void reInit()
+    public static void ReInit()
     {
-        considerSemanticLA = false;
-        sizeLimitedMatches = null;
+        ConsiderSemanticLA = false;
+        SizeLimitedMatches = null;
     }
 
 }

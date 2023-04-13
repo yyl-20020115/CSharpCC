@@ -129,6 +129,9 @@ public class NormalProduction
         return name[(name.LastIndexOf(".") + 1)..]; // strip the package name
     }
 
+    /**
+     * @return the line
+     */
     //public virtual StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     //{
     //    var sb = DumpPrefix(indent).Append((this).GetHashCode()).Append(' ').Append(GetSimpleName()).Append(' ').Append(GetLhs());
@@ -147,138 +150,72 @@ public class NormalProduction
     /**
      * @param line the line to set
      */
-    public void SetLine(int line)
-    {
-        this.line = line;
-    }
-
-    /**
-     * @return the line
-     */
-    public int GetLine()
-    {
-        return line;
-    }
-
-    /**
-     * @param column the column to set
-     */
-    public void SetColumn(int column)
-    {
-        this.column = column;
-    }
+    public int Line { get => line; set => this.line = value; }
 
     /**
      * @return the column
      */
-    public int GetColumn()
-    {
-        return column;
-    }
-
     /**
-     * @param parents the parents to set
-     */
-    public void SetParents(List<Expansion> parents)
-    {
-        this.parents = parents;
-    }
+ * @param column the column to set
+ */
+    public int Column { get => column; set => this.column = value; }
 
     /**
      * @return the parents
      */
-    public List<Expansion> GetParents()
-    {
-        return parents;
-    }
-
     /**
-     * @param accessMod the accessMod to set
-     */
-    public void SetAccessMod(string accessMod)
-    {
-        this.accessMod = accessMod;
-    }
+ * @param parents the parents to set
+ */
+    public List<Expansion> Parents { get => parents; set => this.parents = value; }
 
     /**
      * @return the accessMod
      */
-    public string GetAccessMod()
-    {
-        return accessMod;
-    }
-
     /**
-     * @param lhs the lhs to set
-     */
-    public void SetLhs(string lhs)
-    {
-        this.lhs = lhs;
-    }
+ * @param accessMod the accessMod to set
+ */
+    public string AccessMod { get => accessMod; set => this.accessMod = value; }
 
     /**
      * @return the lhs
      */
-    public string GetLhs()
-    {
-        return lhs;
-    }
+    /**
+ * @param lhs the lhs to set
+ */
+    public string Lhs { get => lhs; set => this.lhs = value; }
 
     /**
      * @return the return_type_tokens
      */
-    public List<Token> GetReturnTypeTokens()
-    {
-        return return_type_tokens;
-    }
+    public List<Token> ReturnTypeTokens => return_type_tokens;
 
     /**
      * @return the parameter_list_tokens
      */
-    public List<Token> GetParameterListTokens()
-    {
-        return parameter_list_tokens;
-    }
-
-    /**
-     * @param throws_list the throws_list to set
-     */
-    public void SetThrowsList(List<List<Token>> throws_list)
-    {
-        this.throws_list = throws_list;
-    }
+    public List<Token> ParameterListTokens => parameter_list_tokens;
 
     /**
      * @return the throws_list
      */
-    public List<List<Token>> GetThrowsList()
-    {
-        return throws_list;
-    }
-
     /**
-     * @param expansion the expansion to set
-     */
-    public void SetExpansion(Expansion expansion)
-    {
-        this.expansion = expansion;
-    }
+ * @param throws_list the throws_list to set
+ */
+    public List<List<Token>> ThrowsList { get => throws_list; set => this.throws_list = value; }
 
     /**
      * @return the expansion
      */
-    public Expansion GetExpansion()
-    {
-        return expansion;
-    }
+    /**
+ * @param expansion the expansion to set
+ */
+    public Expansion Expansion { get => expansion; set => this.expansion = value; }
 
     /**
      * @param emptyPossible the emptyPossible to set
      */
-    public bool SetEmptyPossible(bool emptyPossible)
+    public void SetEmptyPossible(bool emptyPossible)
     {
         this.emptyPossible = emptyPossible;
-        return emptyPossible;
     }
 
     /**
@@ -287,68 +224,36 @@ public class NormalProduction
     public bool IsEmptyPossible() => emptyPossible;
 
     /**
-     * @param leftExpansions the leftExpansions to set
-     */
-    public void SetLeftExpansions(NormalProduction[] leftExpansions)
-    {
-        this.leftExpansions = leftExpansions;
-    }
-
-    /**
      * @return the leftExpansions
      */
-    public NormalProduction[] GetLeftExpansions()
-    {
-        return leftExpansions;
-    }
-
     /**
-     * @param walkStatus the walkStatus to set
-     */
-    public void SetWalkStatus(int walkStatus)
-    {
-        this.walkStatus = walkStatus;
-    }
+ * @param leftExpansions the leftExpansions to set
+ */
+    public NormalProduction[] LeftExpansions { get => leftExpansions; set => this.leftExpansions = value; }
 
     /**
      * @return the walkStatus
      */
-    public int GetWalkStatus()
-    {
-        return walkStatus;
-    }
-
     /**
-     * @param firstToken the firstToken to set
-     */
-    public Token SetFirstToken(Token firstToken)
-    {
-        this.firstToken = firstToken;
-        return firstToken;
-    }
+ * @param walkStatus the walkStatus to set
+ */
+    public int WalkStatus { get => walkStatus; set => this.walkStatus = value; }
 
     /**
      * @return the firstToken
      */
-    public Token GetFirstToken()
-    {
-        return firstToken;
-    }
-
     /**
-     * @param lastToken the lastToken to set
-     */
-    public void SetLastToken(Token lastToken)
-    {
-        this.lastToken = lastToken;
-    }
+ * @param firstToken the firstToken to set
+ */
+    public Token FirstToken { get => firstToken; set => this.firstToken = value;
+        //return firstToken;
+                    }
 
     /**
      * @return the lastToken
      */
-    public Token GetLastToken()
-    {
-        return lastToken;
-    }
-
+    /**
+ * @param lastToken the lastToken to set
+ */
+    public Token LastToken { get => lastToken; set => this.lastToken = value; }
 }

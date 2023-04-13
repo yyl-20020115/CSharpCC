@@ -31,7 +31,7 @@ namespace CSharpCC.Parser;
  * Describes character range descriptors in a character list.
  */
 
-public class CharacterRange : Descriptor
+public class CharacterRange : LocationDescriptor
 {
 
     /**

@@ -40,17 +40,17 @@ public class Phase3Data
     /*
      * This is the expansion to generate the jj3 method for.
      */
-    public Expansion exp;
+    public Expansion Exp;
 
     /*
      * This is the number of tokens that can still be consumed.  This
      * number is used to limit the number of jj3 methods generated.
      */
-    public int count;
+    public int Count;
 
     public Phase3Data(Expansion e, int c)
     {
-        exp = e;
-        count = c;
+        Exp = e;
+        Count = c;
     }
 }

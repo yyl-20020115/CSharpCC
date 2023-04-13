@@ -36,7 +36,7 @@ namespace CSharpCC.Parser;
  * a bunch of other more specific classes.
  */
 
-public class Expansion : Descriptor
+public class Expansion : LocationDescriptor
 {
     /**
      * The line and column number of the construct that corresponds
@@ -68,12 +68,12 @@ public class Expansion : Descriptor
      * otherwise it is a reference to another Expansion node.  In case this
      * is the top level of a lookahead expansion,then the parent is null.
      */
-    public object parent;
+    public object Parent;
 
     /**
      * The ordinal of this node with respect to its parent.
      */
-    public int ordinal;
+    public int Ordinal;
 
     /**
      * To avoid right-recursive loops when calculating follow sets, we use
@@ -82,8 +82,8 @@ public class Expansion : Descriptor
      * are obtained by incrementing the static counter below, and the current
      * generation is stored in the non-static variable below.
      */
-    public static long nextGenerationIndex = 1;
-    public long myGeneration = 0;
+    public static long NextGenerationIndex = 1;
+    public long MyGeneration = 0;
 
     /**
      * This flag is used for bookkeeping by the minimumSize method in class
@@ -93,7 +93,7 @@ public class Expansion : Descriptor
 
     public static void ReInit()
     {
-        nextGenerationIndex = 1;
+        NextGenerationIndex = 1;
     }
 
     private string GetSimpleName()
@@ -127,11 +127,11 @@ public class Expansion : Descriptor
         {
             if (next is BNFProduction production)
             {
-                return production.GetLhs();
+                return production.Lhs;
             }
             else if (next is Expansion expansion)
             {
-                next = expansion.parent;
+                next = expansion.Parent;
             }
             else
             {

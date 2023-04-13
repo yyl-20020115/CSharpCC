@@ -42,13 +42,13 @@ public static class CSharpCCErrors
         {
             case NormalProduction n:
                 {
-                    Console.Error.Write("Line " + n.GetLine() + ", Column " + n.GetColumn() + ": ");
+                    Console.Error.Write("Line " + n.Line + ", Column " + n.Column + ": ");
                     break;
                 }
 
             case TokenProduction n:
                 {
-                    Console.Error.Write("Line " + n.GetLine() + ", Column " + n.GetColumn() + ": ");
+                    Console.Error.Write("Line " + n.Line + ", Column " + n.Column + ": ");
                     break;
                 }
 

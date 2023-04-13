@@ -18,5 +18,5 @@ public class ParserData
         public List<int> data = new();
     }
 
-    readonly Dictionary<int, List<LookaheadInfo>> lookaheads =new();
+    public readonly Dictionary<int, List<LookaheadInfo>> Lookaheads =new();
 }

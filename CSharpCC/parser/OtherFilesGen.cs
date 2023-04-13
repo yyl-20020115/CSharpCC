@@ -173,7 +173,7 @@ public class OtherFilesGen : CSharpCCGlobals
         {
             foreach(var res in tp.respecs)
             {
-                var re = res.rexp;
+                var re = res.Rexp;
                 ostr.Write("    ");
                 if (re is RStringLiteral literal)
                 { 

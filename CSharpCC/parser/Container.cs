@@ -33,5 +33,5 @@ namespace CSharpCC.Parser;
 
 public class Container
 {
-    public Descriptor? Member;
+    public LocationDescriptor? Member;
 }

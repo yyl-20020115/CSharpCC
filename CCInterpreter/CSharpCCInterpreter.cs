@@ -44,11 +44,11 @@ public class CSharpCCInterpreter
         try
         {
             var parser = new CSharpCCParser(new StringReader(grammar));
-            parser.javacc_input();
+            parser.CSharpCC_Input();
             Semanticize.Start();
             LexGen.GenerateDataOnly = true;
             var lg = new LexGen();
-            lg.start();
+            lg.Start();
             TokenizerData td = LexGen.tokenizerData;
             if (CSharpCCErrors.ErrorCount == 0)
             {

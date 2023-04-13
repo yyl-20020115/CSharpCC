@@ -145,11 +145,11 @@ public class CCDoc : CCDocGlobals
                     token += "| ";
                 }
                 first = false;
-                token += EmitRE(res.rexp);
+                token += EmitRE(res.Rexp);
 
-                if (res.nsTok != null)
+                if (res.NsToken != null)
                 {
-                    token += " : " + res.nsTok.image;
+                    token += " : " + res.NsToken.image;
                 }
 
                 token += "\n";
@@ -164,11 +164,11 @@ public class CCDoc : CCDocGlobals
         gen.NonterminalsStart();
         foreach (NormalProduction np in prods)
         {
-            EmitTopLevelSpecialTokens(np.GetFirstToken(), gen);
+            EmitTopLevelSpecialTokens(np.FirstToken, gen);
             if (np is BNFProduction)
             {
                 gen.ProductionStart(np);
-                if (np.GetExpansion() is Choice c)
+                if (np.Expansion is Choice c)
                 {
                     bool first = true;
                     foreach (Expansion e in c.Choices)
@@ -181,9 +181,9 @@ public class CCDoc : CCDocGlobals
                 }
                 else
                 {
-                    gen.ExpansionStart(np.GetExpansion(), true);
-                    EmitExpansionTree(np.GetExpansion(), gen);
-                    gen.ExpansionEnd(np.GetExpansion(), true);
+                    gen.ExpansionStart(np.Expansion, true);
+                    EmitExpansionTree(np.Expansion, gen);
+                    gen.ExpansionEnd(np.Expansion, true);
                 }
                 gen.ProductionEnd(np);
             }
@@ -269,7 +269,7 @@ public class CCDoc : CCDocGlobals
     private static void EmitExpansionNonTerminal(NonTerminal nt, Generator gen)
     {
         gen.NonTerminalStart(nt);
-        gen.Text(nt.GetName());
+        gen.Text(nt.Name);
         gen.NonTerminalEnd(nt);
     }
     private static void EmitExpansionOneOrMore(OneOrMore o, Generator gen)
@@ -408,7 +408,7 @@ public class CCDoc : CCDocGlobals
         else if (re is RChoice c)
         {
             var first = true;
-            foreach (var sub in c.GetChoices())
+            foreach (var sub in c.Choices)
             {
                 if (!first)
                 {

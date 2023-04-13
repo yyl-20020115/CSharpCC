@@ -194,10 +194,10 @@ public class HTMLGenerator : TextGenerator
         {
             Println("");
             Println("<TABLE ALIGN=CENTER>");
-            Println("<CAPTION><STRONG>" + np.GetLhs() + "</STRONG></CAPTION>");
+            Println("<CAPTION><STRONG>" + np.Lhs + "</STRONG></CAPTION>");
         }
         Println("<TR>");
-        Println("<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME=\"" + GetId(np.GetLhs()) + "\">" + np.GetLhs() + "</A></TD>");
+        Println("<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME=\"" + GetId(np.Lhs) + "\">" + np.Lhs + "</A></TD>");
         Println("<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>");
         Print("<TD ALIGN=LEFT VALIGN=BASELINE>");
     }
@@ -228,7 +228,7 @@ public class HTMLGenerator : TextGenerator
 
     public override void NonTerminalStart(NonTerminal nt)
     {
-        Print("<A HREF=\"#" + GetId(nt.GetName()) + "\">");
+        Print("<A HREF=\"#" + GetId(nt.Name) + "\">");
     }
     public override void NonTerminalEnd(NonTerminal nt)
     {

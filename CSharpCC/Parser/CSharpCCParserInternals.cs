@@ -111,8 +111,8 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
 
     static protected void ProductionAddexpansion(BNFProduction p, Expansion e)
     {
-        e.parent = p;
-        p.SetExpansion(e);
+        e.Parent = p;
+        p.        Expansion = e;
     }
 
     static private int nextFreeLexState = 1;
@@ -176,12 +176,12 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
             var p = new TokenProduction { isExplicit = false, lexStates = new String[] { "DEFAULT" }, kind = TokenProduction.TOKEN };
             RegExprSpec res = new()
             {
-                rexp = r
+                Rexp = r
             };
-            res.rexp.tpContext = p;
-            res.act = new Action();
-            res.nextState = null;
-            res.nsTok = null;
+            res.Rexp.tpContext = p;
+            res.Act = new Action();
+            res.NextState = null;
+            res.NsToken = null;
             p.respecs.Add(res);
             RegexpList.Add(p);
         }
@@ -360,8 +360,8 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
         tblk.        Line = tryLoc.beginLine;
         tblk.        Column = tryLoc.beginColumn;
         tblk.exp = (Expansion)(nestedExp.Member);
-        tblk.exp.parent = tblk;
-        tblk.exp.ordinal = 0;
+        tblk.exp.Parent = tblk;
+        tblk.exp.Ordinal = 0;
         tblk.types = types;
         tblk.ids = ids;
         tblk.catchblks = catchblks;

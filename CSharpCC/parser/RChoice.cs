@@ -42,33 +42,28 @@ public class RChoice : RegularExpression
     private List<Expansion> choices = new();
 
     /**
-     * @param choices the choices to set
-     */
-    public void setChoices(List<Expansion> choices)
-    {
-        this.choices = choices;
-    }
-
-    /**
      * @return the choices
      */
-    public List<Expansion> GetChoices() => choices;
+    /**
+     * @param choices the choices to set
+     */
+    public List<Expansion> Choices { get => choices; set => this.choices = value; }
 
     public override Nfa GenerateNfa(bool ignoreCase)
     {
         CompressCharLists();
 
-        if (GetChoices().Count == 1)
-            return ((RegularExpression)GetChoices()[0]).GenerateNfa(ignoreCase);
+        if (Choices.Count == 1)
+            return ((RegularExpression)Choices[0]).GenerateNfa(ignoreCase);
 
         var retVal = new Nfa();
         var startState = retVal.Start;
         var finalState = retVal.End;
 
-        for (int i = 0; i < GetChoices().Count; i++)
+        for (int i = 0; i < Choices.Count; i++)
         {
             Nfa temp;
-            var curRE = (RegularExpression)GetChoices()[i];
+            var curRE = (RegularExpression)Choices[i];
 
             temp = curRE.GenerateNfa(ignoreCase);
 
@@ -85,16 +80,16 @@ public class RChoice : RegularExpression
         RegularExpression curRE;
         RCharacterList curCharList = null;
 
-        for (int i = 0; i < GetChoices().Count; i++)
+        for (int i = 0; i < Choices.Count; i++)
         {
-            curRE = (RegularExpression)GetChoices()[i];
+            curRE = (RegularExpression)Choices[i];
 
             while (curRE is RJustName name)
                 curRE = name.regexpr;
 
             if (curRE is RStringLiteral literal &&
                 literal.image.Length == 1)
-                GetChoices()[i] = curRE = new RCharacterList(
+                Choices[i] = curRE = new RCharacterList(
                            literal.image[0]);
 
             if (curRE is RCharacterList list)
@@ -105,9 +100,9 @@ public class RChoice : RegularExpression
                 var tmp = list.descriptors;
 
                 if (curCharList == null)
-                    GetChoices()[i] = curRE = curCharList = new RCharacterList();
+                    Choices[i] = curRE = curCharList = new RCharacterList();
                 else
-                    GetChoices().RemoveAt(i--);
+                    Choices.RemoveAt(i--);
 
                 for (int j = tmp.Count; j-- > 0;)
                     curCharList.descriptors.Add(tmp[j]);
@@ -120,18 +115,18 @@ public class RChoice : RegularExpression
     {
         RegularExpression curRE;
 
-        for (int i = 0; i < GetChoices().Count; i++)
+        for (int i = 0; i < Choices.Count; i++)
         {
-            curRE = (RegularExpression)GetChoices()[i];
+            curRE = (RegularExpression)Choices[i];
 
             while (curRE is RJustName name)
                 curRE = name.regexpr;
 
             if (curRE is RChoice choice)
             {
-                GetChoices().RemoveAt(i--);
-                for (int j = choice.GetChoices().Count; j-- > 0;)
-                    GetChoices().Add(choice.GetChoices()[j]);
+                Choices.RemoveAt(i--);
+                for (int j = choice.Choices.Count; j-- > 0;)
+                    Choices.Add(choice.Choices[j]);
             }
         }
     }
@@ -141,9 +136,9 @@ public class RChoice : RegularExpression
         RegularExpression curRE;
         int numStrings = 0;
 
-        for (int i = 0; i < GetChoices().Count; i++)
+        for (int i = 0; i < Choices.Count; i++)
         {
-            if (!(curRE = (RegularExpression)GetChoices()[i]).private_rexp &&
+            if (!(curRE = (RegularExpression)Choices[i]).private_rexp &&
                 //curRE is RJustName &&
                 curRE.ordinal > 0 && curRE.ordinal < ordinal &&
                 LexGen.lexStates[curRE.ordinal] == LexGen.lexStates[ordinal])

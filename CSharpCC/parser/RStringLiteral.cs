@@ -46,14 +46,11 @@ public class RStringLiteral : RegularExpression
      */
     public string image;
 
-    public RStringLiteral()
-    {
-    }
-
+    public RStringLiteral() { }
     public RStringLiteral(Token t, string image)
     {
-        this.        Line = t.beginLine;
-        this.        Column = t.beginColumn;
+        this.Line = t.beginLine;
+        this.Column = t.beginColumn;
         this.image = image;
     }
 
@@ -455,15 +452,9 @@ public class RStringLiteral : RegularExpression
             return " <token of kind " + kind + ">";
     }
 
-    static int GetLine(int kind)
-    {
-        return LexGen.rexprs[kind].Line;
-    }
+    static int GetLine(int kind) => LexGen.rexprs[kind].Line;
 
-    static int GetColumn(int kind)
-    {
-        return LexGen.rexprs[kind].Column;
-    }
+    static int GetColumn(int kind) => LexGen.rexprs[kind].Column;
 
     /**
      * Returns true if s1 starts with s2 (ignoring case for each character).
@@ -1322,7 +1313,7 @@ public class RStringLiteral : RegularExpression
                                                   NfaState initialState)
     {
         bool[] seen = new bool[NfaState.generatedStates];
-        var stateSets = new Dictionary<string,string>();
+        var stateSets = new Dictionary<string, string>();
         string stateSetString = "";
         int i, j, kind, jjmatchedPos = 0;
         int maxKindsReqd = maxStrKind / 64 + 1;
@@ -1406,7 +1397,7 @@ public class RStringLiteral : RegularExpression
                     continue;
 
                 int p;
-                if (!stateSets.TryGetValue(stateSetString,out var _))
+                if (!stateSets.TryGetValue(stateSetString, out var _))
                 {
                     stateSets.Add(stateSetString, stateSetString);
                     for (p = 0; p < newStates.Count; p++)
@@ -1431,7 +1422,7 @@ public class RStringLiteral : RegularExpression
                     statesForPos[j] = new();
 
                 string nk = kind + ", " + jjmatchedPos + ", " + stateSetString;
-                if (!statesForPos[j].TryGetValue(nk,out long[] actives))
+                if (!statesForPos[j].TryGetValue(nk, out long[] actives))
                 {
                     actives = new long[maxKindsReqd];
                     statesForPos[j].Add(kind + ", " + jjmatchedPos + ", " +
@@ -1450,7 +1441,7 @@ public class RStringLiteral : RegularExpression
         }
     }
 
-    static void DumpNfaStartStatesCode(Dictionary<string,long[]>[] statesForPos,
+    static void DumpNfaStartStatesCode(Dictionary<string, long[]>[] statesForPos,
                                                 CodeGenerator codeGenerator)
     {
         if (maxStrKind == 0)
@@ -1511,7 +1502,7 @@ public class RStringLiteral : RegularExpression
 
             codeGenerator.GenCodeLine("      case " + i + ":");
 
-            foreach(var stateSetString2 in statesForPos[i].Keys)
+            foreach (var stateSetString2 in statesForPos[i].Keys)
             {
                 var stateSetString = stateSetString2;
                 long[] actives = (long[])statesForPos[i][stateSetString2];
@@ -1529,7 +1520,7 @@ public class RStringLiteral : RegularExpression
                     condGenerated = true;
 
                     codeGenerator.GenCode("(active" + j + " & 0x" +
-                        Convert.ToString(actives[j],16) + "L) != 0L");
+                        Convert.ToString(actives[j], 16) + "L) != 0L");
                 }
 
                 if (condGenerated)
@@ -1539,7 +1530,7 @@ public class RStringLiteral : RegularExpression
                     string kindStr = stateSetString[..(ind = stateSetString.IndexOf(", "))];
                     string afterKind = stateSetString[(ind + 2)..];
 
-                    if(!int.TryParse(afterKind[..afterKind.IndexOf(", ")],out var jjmatchedPos))
+                    if (!int.TryParse(afterKind[..afterKind.IndexOf(", ")], out var jjmatchedPos))
                     {
                         jjmatchedPos = 0;
                     }
@@ -1804,10 +1795,10 @@ public class RStringLiteral : RegularExpression
         Dictionary<int, int> nfaStateIndices = new();
         foreach (int kind in nfaStateMap.Keys)
         {
-            if (nfaStateMap.TryGetValue(kind,out var r))
+            if (nfaStateMap.TryGetValue(kind, out var r))
             {
                 nfaStateIndices.Add(kind, r.stateName);
-            } 
+            }
             else
             {
                 nfaStateIndices.Add(kind, -1);

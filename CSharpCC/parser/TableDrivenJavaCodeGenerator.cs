@@ -1,6 +1,5 @@
 namespace CSharpCC.Parser;
 
-
 /**
  * Class that implements a table driven code generator for the token manager in
  * java.
@@ -15,7 +14,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
     public void GenerateCode(TokenizerData tokenizerData)
     {
         string superClass = (string)Options.getOptions()[Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS];
-        Dictionary<String, Object> options = Options.getOptions();
+        Dictionary<string, object> options = Options.getOptions();
         options.Add("maxOrdinal", tokenizerData.allMatches.Count);
         options.Add("maxLexStates", tokenizerData.lexStateNames.Length);
         options.Add("stateSetSize", tokenizerData.nfa.Count);
@@ -32,7 +31,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         {
             codeGenerator.WriteTemplate(TokenManagerTemplate, options);
             DumpDfaTables(codeGenerator, tokenizerData);
-            dumpNfaTables(codeGenerator, tokenizerData);
+            DumpNfaTables(codeGenerator, tokenizerData);
             DumpMatchInfo(codeGenerator, tokenizerData);
         }
         catch (IOException ioe)
@@ -47,7 +46,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         // TODO(sreeni) : Fix this mess.
         codeGenerator.GenCodeLine("\n}");
         if (!Options.GetBuildParser()) return;
-        string fileName = Options.GetOutputDirectory() + Path.DirectorySeparatorChar +
+        var fileName = Options.GetOutputDirectory() + Path.DirectorySeparatorChar +
                           tokenizerData.parserName + "TokenManager.java";
         codeGenerator.SaveOutput(fileName);
     }
@@ -105,7 +104,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         codeGenerator.GenCodeLine("}");
     }
 
-    private void dumpNfaTables(
+    private void DumpNfaTables(
         CodeGenerator codeGenerator, TokenizerData tokenizerData)
     {
         // WE do the following for java so that the generated code is reasonable

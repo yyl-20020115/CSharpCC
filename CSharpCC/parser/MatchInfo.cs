@@ -34,9 +34,6 @@ public class MatchInfo
 {
     public static int laLimit = 0;
     public int[] match = new int[laLimit];
-    public int firstFreeLoc;
-    public static void ReInit()
-    {
-        laLimit = 0;
-    }
+    public int firstFreeLoc = 0;
+    public static void ReInit() => laLimit = 0;
 }

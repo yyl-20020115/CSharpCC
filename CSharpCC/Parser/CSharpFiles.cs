@@ -44,29 +44,29 @@ public partial class CSharpFiles : CSharpCCGlobals
      * ID of the latest version (of JavaCC) in which one of the CharStream classes
      * or the CharStream interface is modified.
      */
-    static readonly string charStreamVersion = Version.MajorDotMinor;
+    static readonly string CharStreamVersion = Version.MajorDotMinor;
 
     /**
      * ID of the latest version (of JavaCC) in which the TokenManager interface is modified.
      */
-    static readonly string tokenManagerVersion = Version.MajorDotMinor;
+    static readonly string TokenManagerVersion = Version.MajorDotMinor;
 
     /**
      * ID of the latest version (of JavaCC) in which the Token class is modified.
      */
-    static readonly string tokenVersion = Version.MajorDotMinor;
+    static readonly string TokenVersion = Version.MajorDotMinor;
 
     /**
      * ID of the latest version (of JavaCC) in which the ParseException class is
      * modified.
      */
-    static readonly string parseExceptionVersion = Version.MajorDotMinor;
+    static readonly string ParseExceptionVersion = Version.MajorDotMinor;
 
     /**
      * ID of the latest version (of JavaCC) in which the TokenMgrError class is
      * modified.
      */
-    static readonly string tokenMgrErrorVersion = Version.MajorDotMinor;
+    static readonly string TokenMgrErrorVersion = Version.MajorDotMinor;
 
 
     public interface JavaResourceTemplateLocations
@@ -142,7 +142,7 @@ public partial class CSharpFiles : CSharpCCGlobals
      */
     static string ReplaceBackslash(string str)
     {
-        StringBuilder b;
+        StringBuilder builder;
         int i = 0, len = str.Length;
 
         while (i < len && str[i++] != '\\') ;
@@ -151,14 +151,14 @@ public partial class CSharpFiles : CSharpCCGlobals
             return str;
 
         char c;
-        b = new StringBuilder();
+        builder = new StringBuilder();
         for (i = 0; i < len; i++)
             if ((c = str[i]) == '\\')
-                b.Append("\\\\");
+                builder.Append("\\\\");
             else
-                b.Append(c);
+                builder.Append(c);
 
-        return b.ToString();
+        return builder.ToString();
     }
 
     /**
@@ -244,7 +244,7 @@ public partial class CSharpFiles : CSharpCCGlobals
         try
         {
             string file = Path.Combine(Options.GetOutputDirectory(), "JavaCharStream.java");
-            var outputFile = new OutputFile(file, charStreamVersion, new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+            var outputFile = new OutputFile(file, CharStreamVersion, new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
             {
@@ -273,9 +273,11 @@ public partial class CSharpFiles : CSharpCCGlobals
                     }
                 }
             }
-            string prefix = Options.GetStatic() ? "static " : "";
-            Dictionary<string,object> options = new (Options.getOptions());
-            options.Add("PREFIX", prefix);
+            var prefix = Options.GetStatic() ? "static " : "";
+            Dictionary<string, object> options = new(Options.getOptions())
+            {
+                { "PREFIX", prefix }
+            };
 
             var generator = new OutputFileGenerator(
                     locations.GetJavaCharStreamTemplateResourceUrl(), options);
@@ -299,7 +301,7 @@ public partial class CSharpFiles : CSharpCCGlobals
         try
         {
             string file = Path.Combine(Options.GetOutputDirectory(), "SimpleCharStream.java");
-            var outputFile = new OutputFile(file, charStreamVersion, new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+            var outputFile = new OutputFile(file, CharStreamVersion, new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
             {
@@ -322,8 +324,8 @@ public partial class CSharpFiles : CSharpCCGlobals
                         {
                             PrintToken(CuToInsertionPoint1[j], ostr);
                         }
-                        ostr.WriteLine("");
-                        ostr.WriteLine("");
+                        ostr.WriteLine();
+                        ostr.WriteLine();
                         break;
                     }
                 }
@@ -354,7 +356,7 @@ public partial class CSharpFiles : CSharpCCGlobals
         try
         {
             var file = Path.Combine(Options.GetOutputDirectory(), "CharStream.java");
-            var outputFile = new OutputFile(file, charStreamVersion, new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+            var outputFile = new OutputFile(file, CharStreamVersion, new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
             {
@@ -384,7 +386,7 @@ public partial class CSharpFiles : CSharpCCGlobals
                 }
             }
 
-            OutputFileGenerator generator = new OutputFileGenerator(
+            var generator = new OutputFileGenerator(
                     locations.GetCharStreamTemplateResourceUrl(), Options.getOptions());
 
             generator.Generate(ostr);
@@ -403,26 +405,26 @@ public partial class CSharpFiles : CSharpCCGlobals
 
     public static void GenJavaModernFiles()
     {
-        genMiscFile("Provider.java", "/templates/gwt/Provider.template");
-        genMiscFile("StringProvider.java", "/templates/gwt/StringProvider.template");
+        GenMiscFile("Provider.java", "/templates/gwt/Provider.template");
+        GenMiscFile("StringProvider.java", "/templates/gwt/StringProvider.template");
 
         // This provides a bridge to standard Java readers.
-        genMiscFile("StreamProvider.java", "/templates/gwt/StreamProvider.template");
+        GenMiscFile("StreamProvider.java", "/templates/gwt/StreamProvider.template");
     }
 
-    private static void genMiscFile(string fileName, string templatePath)
+    private static void GenMiscFile(string fileName, string templatePath)
     {
         try
         {
             var file = Path.Combine(Options.GetOutputDirectory(), fileName);
-            var outputFile = new OutputFile(file, parseExceptionVersion, new string[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN });
+            var outputFile = new OutputFile(file, ParseExceptionVersion, new string[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN });
 
             if (!outputFile.NeedToWrite)
             {
                 return;
             }
 
-            TextWriter ostr = outputFile.GetPrintWriter();
+            var ostr = outputFile.GetPrintWriter();
 
             if (CuToInsertionPoint1.Count != 0 &&
                 CuToInsertionPoint1[0].kind == PACKAGE
@@ -465,14 +467,14 @@ public partial class CSharpFiles : CSharpCCGlobals
         try
         {
             string file = Path.Combine(Options.GetOutputDirectory(), "ParseException.java");
-            OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new string[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN });
+            OutputFile outputFile = new OutputFile(file, ParseExceptionVersion, new string[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN });
 
             if (!outputFile.NeedToWrite)
             {
                 return;
             }
 
-            TextWriter ostr = outputFile.GetPrintWriter();
+            var ostr = outputFile.GetPrintWriter();
 
             if (CuToInsertionPoint1.Count != 0 &&
                 CuToInsertionPoint1[0].kind == PACKAGE
@@ -495,7 +497,7 @@ public partial class CSharpFiles : CSharpCCGlobals
                 }
             }
 
-            OutputFileGenerator generator = new OutputFileGenerator(
+            var generator = new OutputFileGenerator(
                     locations.GetParseExceptionTemplateResourceUrl(), Options.getOptions());
 
             generator.Generate(ostr);
@@ -514,15 +516,13 @@ public partial class CSharpFiles : CSharpCCGlobals
 
     public static void GenTokenMgrError(JavaResourceTemplateLocations locations)
     {
-
-
         bool isLegacyExceptionHandling = Options.IsLegacyExceptionHandling();
         string filename = isLegacyExceptionHandling ? "TokenMgrError.java" : "TokenMgrException.java";
         try
         {
 
             string file = Path.Combine(Options.GetOutputDirectory(), filename);
-            OutputFile outputFile = new OutputFile(file, tokenMgrErrorVersion, Array.Empty<string>());
+            OutputFile outputFile = new OutputFile(file, TokenMgrErrorVersion, Array.Empty<string>());
 
             if (!outputFile.NeedToWrite)
             {
@@ -554,7 +554,7 @@ public partial class CSharpFiles : CSharpCCGlobals
 
 
 
-            OutputFileGenerator generator = new OutputFileGenerator(locations.GetTokenMgrErrorTemplateResourceUrl(), Options.getOptions());
+            var generator = new OutputFileGenerator(locations.GetTokenMgrErrorTemplateResourceUrl(), Options.getOptions());
 
             generator.Generate(ostr);
 
@@ -577,7 +577,7 @@ public partial class CSharpFiles : CSharpCCGlobals
         try
         {
             string file = Path.Combine(Options.GetOutputDirectory(), "Token.java");
-            OutputFile outputFile = new OutputFile(file, tokenVersion, new string[] { Options.USEROPTION__TOKEN_EXTENDS, Options.USEROPTION__KEEP_LINE_COLUMN, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+            OutputFile outputFile = new OutputFile(file, TokenVersion, new string[] { Options.USEROPTION__TOKEN_EXTENDS, Options.USEROPTION__KEEP_LINE_COLUMN, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
             {
@@ -607,7 +607,7 @@ public partial class CSharpFiles : CSharpCCGlobals
                 }
             }
 
-            OutputFileGenerator generator = new OutputFileGenerator(
+            var generator = new OutputFileGenerator(
                     locations.GetTokenTemplateResourceUrl(), Options.getOptions());
 
             generator.Generate(ostr);
@@ -629,7 +629,7 @@ public partial class CSharpFiles : CSharpCCGlobals
         try
         {
             string file = Path.Combine(Options.GetOutputDirectory(), "TokenManager.java");
-            OutputFile outputFile = new OutputFile(file, tokenManagerVersion, new string[] { Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+            OutputFile outputFile = new OutputFile(file, TokenManagerVersion, new string[] { Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
             {
@@ -659,7 +659,7 @@ public partial class CSharpFiles : CSharpCCGlobals
                 }
             }
 
-            OutputFileGenerator generator = new OutputFileGenerator(
+            var generator = new OutputFileGenerator(
                     locations.GetTokenManagerTemplateResourceUrl(), Options.getOptions());
 
             generator.Generate(ostr);
@@ -677,10 +677,5 @@ public partial class CSharpFiles : CSharpCCGlobals
 
     public static new void ReInit()
     {
-    }
-
-    internal static void gen_JavaCharStream(JavaResourceTemplateLocations templateLoc)
-    {
-        throw new NotImplementedException();
     }
 }

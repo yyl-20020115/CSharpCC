@@ -47,19 +47,19 @@ public class OneOrMore : Expansion
 
     public OneOrMore(Token t, Expansion e)
     {
-        this.        Line = t.beginLine;
-        this.        Column = t.beginColumn;
+        this.Line = t.beginLine;
+        this.Column = t.beginColumn;
         this.expansion = e;
-        expansion.parent = this;
+        expansion.Parent = this;
     }
 
     public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        var sb = base.Dump(indent, alreadyDumped);
+        var builder = base.Dump(indent, alreadyDumped);
         if (alreadyDumped.Contains(this))
-            return sb;
+            return builder;
         alreadyDumped.Add(this);
-        sb.Append(eol).Append(expansion.Dump(indent + 1, alreadyDumped));
-        return sb;
+        builder.Append(eol).Append(expansion.Dump(indent + 1, alreadyDumped));
+        return builder;
     }
 }

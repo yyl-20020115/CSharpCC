@@ -49,7 +49,7 @@ public class Lookahead : Expansion
      * that forms the semantic lookahead.  In this case, the following
      * fields "amount" and "la_expansion" are ignored.
      */
-    private readonly List<Token> ActionTokens = new();
+    private readonly List<Token> actionTokens = new();
 
     /**
      * The lookahead amount.  Its default value essentially gives us
@@ -69,71 +69,42 @@ public class Lookahead : Expansion
     /**
      * Is set to true if this is an explicit lookahead specification.
      */
-    private bool _isExplicit;
+    private bool isExplicit;
 
     public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        var sb = base.Dump(indent, alreadyDumped).Append(_isExplicit ? " explicit" : " implicit");
+        var builder = base.Dump(indent, alreadyDumped).Append(isExplicit ? " explicit" : " implicit");
         if (alreadyDumped.Contains(this))
-            return sb;
+            return builder;
         alreadyDumped.Add(this);
-        sb.Append(eol).Append(laExpansion.Dump(indent + 1, alreadyDumped));
-        return sb;
+        builder.Append(eol).Append(laExpansion.Dump(indent + 1, alreadyDumped));
+        return builder;
     }
 
     /**
      * @return the action_tokens
      */
-    public List<Token> GetActionTokens()
-    {
-        return ActionTokens;
-    }
-
-    /**
-     * @param amount the amount to set
-     */
-    public void SetAmount(int amount)
-    {
-        this.amount = amount;
-    }
+    public List<Token> ActionTokens => actionTokens;
 
     /**
      * @return the amount
      */
-    public int GetAmount()
-    {
-        return amount;
-    }
-
     /**
-     * @param la_expansion the la_expansion to set
-     */
-    public void SetLaExpansion(Expansion la_expansion)
-    {
-        this.laExpansion = la_expansion;
-    }
+ * @param amount the amount to set
+ */
+    public int Amount { get => amount; set => this.amount = value; }
 
     /**
      * @return the la_expansion
      */
-    public Expansion GetLaExpansion()
-    {
-        return laExpansion;
-    }
-
     /**
-     * @param isExplicit the isExplicit to set
-     */
-    public void SetExplicit(bool _isExplicit)
-    {
-        this._isExplicit = _isExplicit;
-    }
+ * @param la_expansion the la_expansion to set
+ */
+    public Expansion LaExpansion { get => laExpansion; set => this.laExpansion = value; }
 
     /**
      * @return the isExplicit
      */
-    public bool IsExplicit()
-    {
-        return _isExplicit;
-    }
+    public bool IsExplicit() => isExplicit;
+    public void SetExplicit(bool value) => this.isExplicit = value;
 }

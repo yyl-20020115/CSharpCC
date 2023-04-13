@@ -144,7 +144,7 @@ public class BNFGenerator : Generator
     public void ProductionStart(NormalProduction np)
     {
         Println("");
-        Print(np.GetLhs() + " ::= ");
+        Print(np.Lhs + " ::= ");
     }
     public void ProductionEnd(NormalProduction np)
     {

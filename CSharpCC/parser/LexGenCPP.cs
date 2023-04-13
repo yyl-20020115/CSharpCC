@@ -193,10 +193,10 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
             for (i = 0; i < tp.lexStates.Length; i++)
             {
-                if (!allTpsForState.TryGetValue(tp.lexStates[i],out var tps))
+                if (!AllTpsForState.TryGetValue(tp.lexStates[i],out var tps))
                 {
                     tmpLexStateName[maxLexStates++] = tp.lexStates[i];
-                    allTpsForState.Add(tp.lexStates[i], tps = new());
+                    AllTpsForState.Add(tp.lexStates[i], tps = new());
                 }
 
                 tps.Add(tp);
@@ -207,7 +207,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
             RegularExpression re;
             for (i = 0; i < respecs.Count; i++)
-                if (maxOrdinal <= (re = ((RegExprSpec)respecs[i]).rexp).ordinal)
+                if (maxOrdinal <= (re = ((RegExprSpec)respecs[i]).Rexp).ordinal)
                     maxOrdinal = re.ordinal + 1;
         }
 
@@ -220,7 +220,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         actions = new Action[maxOrdinal];
         actions[0] = actForEof;
         hasTokenActions = actForEof != null;
-        initStates = new (); 
+        InitStates = new (); 
         canMatchAnyChar = new int[maxLexStates]; 
         canLoop = new bool[maxLexStates];
         stateHasActions = new bool[maxLexStates];
@@ -280,15 +280,15 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
         bool ignoring = false;
 
-        foreach(var key in allTpsForState.Keys)
+        foreach(var key in AllTpsForState.Keys)
         {
             NfaState.ReInit();
             RStringLiteral.ReInit();
 
             lexStateIndex = GetIndex(key);
             lexStateSuffix = "_" + lexStateIndex;
-            var allTps = allTpsForState[key];
-            initStates.Add(key, initialState = new NfaState());
+            var allTps = AllTpsForState[key];
+            InitStates.Add(key, initialState = new NfaState());
             ignoring = false;
 
             singlesToSkip[lexStateIndex] = new NfaState();
@@ -310,7 +310,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 for (j = 0; j < rexps.Count; j++)
                 {
                     RegExprSpec respec = rexps[j];
-                    curRE = respec.rexp;
+                    curRE = respec.Rexp;
 
                     rexprs[curKind = curRE.ordinal] = curRE;
                     lexStates[curRE.ordinal] = lexStateIndex;
@@ -359,13 +359,13 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
                     kinds[curRE.ordinal] = kind;
 
-                    if (respec.nextState != null &&
-                        respec.nextState != (lexStateName[lexStateIndex]))
-                        newLexState[curRE.ordinal] = respec.nextState;
+                    if (respec.NextState != null &&
+                        respec.NextState != (lexStateName[lexStateIndex]))
+                        newLexState[curRE.ordinal] = respec.NextState;
 
-                    if (respec.act != null && respec.act.ActionTokens != null &&
-                        respec.act.                        ActionTokens.Count > 0)
-                        actions[curRE.ordinal] = respec.act;
+                    if (respec.Act != null && respec.Act.ActionTokens != null &&
+                        respec.Act.                        ActionTokens.Count > 0)
+                        actions[curRE.ordinal] = respec.Act;
 
                     switch (kind)
                     {

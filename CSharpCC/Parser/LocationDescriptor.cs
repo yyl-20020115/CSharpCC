@@ -27,7 +27,7 @@
  */
 namespace CSharpCC.Parser;
 
-public interface Descriptor
+public interface LocationDescriptor
 {
     int Line { get; set; }
 

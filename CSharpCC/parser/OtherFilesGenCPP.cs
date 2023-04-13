@@ -134,7 +134,7 @@ public class OtherFilesGenCPP : CSharpCCGlobals
         {
             foreach (var res in tp.respecs)
             {
-                var re = res.rexp;
+                var re = res.Rexp;
                 ostr.WriteLine("  static const JJChar tokenImage_arr_" + ++cnt + "[] = ");
                 if (re is RStringLiteral)
                 {

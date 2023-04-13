@@ -38,18 +38,18 @@ public class RegExprSpec
     /**
      * The regular expression of this specification.
      */
-    public RegularExpression rexp;
+    public RegularExpression Rexp;
 
     /**
      * The action corresponding to this specification.
      */
-    public Action act;
+    public Action Act;
 
     /**
      * The next state corresponding to this specification.  If no
      * next state has been specified, this field is set to "null".
      */
-    public string nextState;
+    public string NextState;
 
     /**
      * If the next state specification was explicit in the previous
@@ -57,6 +57,6 @@ public class RegExprSpec
      * the next state.  This is used for location information, etc.
      * in error reporting.
      */
-    public Token nsTok;
+    public Token NsToken;
 
 }

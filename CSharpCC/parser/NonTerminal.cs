@@ -67,79 +67,42 @@ public class NonTerminal : Expansion
     }
 
     /**
-     * @param lhsTokens the lhsTokens to set
-     */
-    public void SetLhsTokens(List<Token> lhsTokens)
-    {
-        this.lhsTokens = lhsTokens;
-    }
-
-    /**
      * @return the lhsTokens
      */
-    public List<Token> GetLhsTokens()
-    {
-        return lhsTokens;
-    }
-
     /**
-     * @param name the name to set
-     */
-    public void SetName(string name)
-    {
-        this.name = name;
-    }
+ * @param lhsTokens the lhsTokens to set
+ */
+    public List<Token> LhsTokens { get => lhsTokens; set => this.lhsTokens = value; }
 
     /**
      * @return the name
      */
-    public string GetName()
-    {
-        return name;
-    }
-
     /**
-     * @param argument_tokens the argument_tokens to set
-     */
-    public void SetParametrizedTypeTokens(List<Token> argument_tokens)
-    {
-        this.argument_tokens = argument_tokens;
-    }
+ * @param name the name to set
+ */
+    public string Name { get => name; set => this.name = value; }
 
     /**
      * @return the argument_tokens
      */
-    public List<Token> GetParametrizedTypeTokens()
-    {
-        return parametrized_type__tokens;
-    }
-
     /**
-     * @param argument_tokens the argument_tokens to set
-     */
-    public void SetArgumentTokens(List<Token> parametrized_type__tokens)
-    {
-        this.parametrized_type__tokens = parametrized_type__tokens;
-    }
+ * @param argument_tokens the argument_tokens to set
+ */
+    public List<Token> ParametrizedTypeTokens { get => parametrized_type__tokens; set => this.argument_tokens = value; }
 
     /**
      * @return the argument_tokens
      */
-    public List<Token> GetArgumentTokens()
-    {
-        return argument_tokens;
-    }
-
     /**
-     * @param prod the prod to set
-     */
-    public NormalProduction SetProd(NormalProduction prod) => this.prod = prod;
+ * @param argument_tokens the argument_tokens to set
+ */
+    public List<Token> ArgumentTokens { get => argument_tokens; set => this.parametrized_type__tokens = value; }
 
     /**
      * @return the prod
      */
-    public NormalProduction GetProd()
-    {
-        return prod;
-    }
+    /**
+ * @param prod the prod to set
+ */
+    public NormalProduction Production { get => prod; set => this.prod = value; }
 }

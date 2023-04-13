@@ -36,7 +36,9 @@ namespace CSharpCC.Parser;
 
 public enum Language
 {
-    java, cpp
+    Java,
+    CPP,
+    CSharp
 }
 /**
  * A class with static state that stores all option information.
@@ -126,7 +128,7 @@ public class Options
 
 
 
-    public static Language language = Language.java;
+    public static Language language = Language.Java;
 
 
     /**
@@ -212,7 +214,7 @@ public class Options
         };
 
         userOptions = (options);
-        language = Language.java;
+        language = Language.Java;
         supportedJavaTemplateTypes.Add(JAVA_TEMPLATE_TYPE_CLASSIC);
         supportedJavaTemplateTypes.Add(JAVA_TEMPLATE_TYPE_MODERN);
         supportedLanguages.Add(OUTPUT_LANGUAGE__JAVA);
@@ -459,9 +461,9 @@ public class Options
                 return;
             }
             if (IsOutputLanguageJava())
-                language = Language.java;
+                language = Language.Java;
             else if (IsOutputLanguageCpp())
-                language = Language.cpp;
+                language = Language.CPP;
         }
         else
 

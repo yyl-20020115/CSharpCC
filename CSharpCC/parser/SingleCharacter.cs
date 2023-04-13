@@ -30,7 +30,7 @@ namespace CSharpCC.Parser;
  * Describes single character descriptors in a character list.
  */
 
-public class SingleCharacter : Descriptor
+public class SingleCharacter : LocationDescriptor
 {
 
     /**
@@ -46,14 +46,9 @@ public class SingleCharacter : Descriptor
      */
     public char ch;
 
-    public SingleCharacter()
-    {
-    }
+    public SingleCharacter() { }
 
-    public SingleCharacter(char c)
-    {
-        ch = c;
-    }
+    public SingleCharacter(char c) => ch = c;
 
     /**
      * @return the line

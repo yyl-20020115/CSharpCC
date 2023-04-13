@@ -173,7 +173,7 @@ public class CCDocMain : CCDocGlobals
         try
         {
 
-            parser.javacc_input();
+            parser.CSharpCC_Input();
             CCDoc.Start();
 
             if (CSharpCCErrors.ErrorCount == 0)

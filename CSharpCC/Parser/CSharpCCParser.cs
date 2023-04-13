@@ -51,20 +51,14 @@ public class CSharpCCParser : CSharpCCParserInternals
      */
     bool jumpPatched = false;
 
-    protected static bool IsJavaLanguage()
-    {
-        return Options.language == Language.java;
-    }
-    protected static bool IsCppLanguage()
-    {
-        return Options.language == Language.cpp;
-    }
-
+    protected static bool IsJavaLanguage => Options.language == Language.Java;
+    protected static bool IsCppLanguage => Options.language == Language.CPP;
+    protected static bool IsCSharpLanguage => Options.language == Language.CSharp;
     /*
      * Returns true if the next token is not in the FOLLOW list of "expansion".
      * It is used to decide when the end of an "expansion" has been reached.
      */
-    private bool notTailOfExpansionUnit()
+    private bool NotTailOfExpansionUnit()
     {
         Token t;
         t = GetToken(1);
@@ -76,9 +70,9 @@ public class CSharpCCParser : CSharpCCParserInternals
      * return true if the token is allowed in a ResultType. Used to  mark a c++
      * result type as an error for a java grammar
      */
-    private bool isAllowed(Token t)
+    private bool IsAllowed(Token t)
     {
-        if (IsJavaLanguage() && (t.kind == STAR || t.kind == BIT_AND || t.kind == CONST))
+        if (IsJavaLanguage && (t.kind == STAR || t.kind == BIT_AND || t.kind == CONST))
             return false;
         else
             return true;
@@ -105,57 +99,57 @@ public class CSharpCCParser : CSharpCCParserInternals
         /** A set of accessors that indicate whether the specified modifier
             is in the set. */
 
-        public bool isPublic(int modifiers)
+        public bool IsPublic(int modifiers)
         {
             return (modifiers & PUBLIC) != 0;
         }
 
-        public bool isProtected(int modifiers)
+        public bool IsProtected(int modifiers)
         {
             return (modifiers & PROTECTED) != 0;
         }
 
-        public bool isPrivate(int modifiers)
+        public bool IsPrivate(int modifiers)
         {
             return (modifiers & PRIVATE) != 0;
         }
 
-        public bool isStatic(int modifiers)
+        public bool IsStatic(int modifiers)
         {
             return (modifiers & STATIC) != 0;
         }
 
-        public bool isAbstract(int modifiers)
+        public bool IsAbstract(int modifiers)
         {
             return (modifiers & ABSTRACT) != 0;
         }
 
-        public bool isFinal(int modifiers)
+        public bool IsFinal(int modifiers)
         {
             return (modifiers & FINAL) != 0;
         }
 
-        public bool isNative(int modifiers)
+        public bool IsNative(int modifiers)
         {
             return (modifiers & NATIVE) != 0;
         }
 
-        public bool isStrictfp(int modifiers)
+        public bool IsStrictfp(int modifiers)
         {
             return (modifiers & STRICTFP) != 0;
         }
 
-        public bool isSynchronized(int modifiers)
+        public bool IsSynchronized(int modifiers)
         {
             return (modifiers & SYNCHRONIZED) != 0;
         }
 
-        public bool isTransient(int modifiers)
+        public bool IsTransient(int modifiers)
         {
             return (modifiers & TRANSIENT) != 0;
         }
 
-        public bool isVolatile(int modifiers)
+        public bool IsVolatile(int modifiers)
         {
             return (modifiers & VOLATILE) != 0;
         }
@@ -163,13 +157,13 @@ public class CSharpCCParser : CSharpCCParserInternals
         /**
          * Removes the given modifier.
          */
-        static int removeModifier(int modifiers, int mod)
+        static int RemoveModifier(int modifiers, int mod)
         {
             return modifiers & ~mod;
         }
     }
 
-    private void eatUptoCloseBrace(List<Token> tokens)
+    private void EatUptoCloseBrace(List<Token> tokens)
     {
         int b = 1;
         Token t;
@@ -183,7 +177,7 @@ public class CSharpCCParser : CSharpCCParserInternals
     }
 
 
-    private void eatUptoRParen(List<Token> tokens)
+    private void EatUptoRParen(List<Token> tokens)
     {
         int b = 1;
         Token t;
@@ -196,24 +190,21 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
     }
 
-    /************************************************
-     * THE JAVACC GRAMMAR SPECIFICATION STARTS HERE *
-     ************************************************/
-    public void javacc_input()
+    public void CSharpCC_Input()
     {
-        String id1, id2;
+        string id1, id2;
         Initialize();
-        javacc_options();
+        CSharpCC_Options();
 
-        jj_consume_token(_PARSER_BEGIN);
-        jj_consume_token(LPAREN);
-        id1 = identifier();
+        cc_consume_token(_PARSER_BEGIN);
+        cc_consume_token(LPAREN);
+        id1 = Identifier();
         Addcuname(id1);
-        jj_consume_token(RPAREN);
+        cc_consume_token(RPAREN);
         processing_cu = true;
         parser_class_name = id1;
 
-        if (!IsJavaLanguage())
+        if (!IsJavaLanguage)
         {
             CSharpCCGlobals.otherLanguageDeclTokenBeg = GetToken(1);
             while (GetToken(1).kind != _PARSER_END)
@@ -224,16 +215,16 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         CompilationUnit();
         processing_cu = false;
-        jj_consume_token(_PARSER_END);
-        jj_consume_token(LPAREN);
-        id2 = identifier();
+        cc_consume_token(_PARSER_END);
+        cc_consume_token(LPAREN);
+        id2 = Identifier();
         Compare(GetToken(0), id1, id2);
-        jj_consume_token(RPAREN);
+        cc_consume_token(RPAREN);
     label_1:
         while (true)
         {
-            production();
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            Production();
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case _JAVACODE:
                 case _CPPCODE:
@@ -262,24 +253,24 @@ public class CSharpCCParser : CSharpCCParserInternals
                     ;
                     break;
                 default:
-                    jj_la1[0] = jj_gen;
+                    cc_la1[0] = cc_gen;
                     goto label_1_exit;
             }
         }
-        label_1_exit:
-        jj_consume_token(0);
+    label_1_exit:
+        cc_consume_token(0);
     }
 
-    public void javacc_options()
+    public void CSharpCC_Options()
     {
         if (GetToken(1).image.Equals("options"))
         {
-            jj_consume_token(IDENTIFIER);
-            jj_consume_token(LBRACE);
+            cc_consume_token(IDENTIFIER);
+            cc_consume_token(LBRACE);
         label_2:
             while (true)
             {
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case _LOOKAHEAD:
                     case _IGNORE_CASE:
@@ -289,13 +280,13 @@ public class CSharpCCParser : CSharpCCParserInternals
                         ;
                         break;
                     default:
-                        jj_la1[1] = jj_gen;
+                        cc_la1[1] = cc_gen;
                         goto label_2_exit;
                 }
-                option_binding();
+                OptionBinding();
             }
         label_2_exit:
-            jj_consume_token(RBRACE);
+            cc_consume_token(RBRACE);
         }
         else
         {
@@ -304,7 +295,7 @@ public class CSharpCCParser : CSharpCCParserInternals
         Options.Normalize();
     }
 
-    public void option_binding()
+    public void OptionBinding()
     {
         String option_name;
         int int_val;
@@ -312,31 +303,31 @@ public class CSharpCCParser : CSharpCCParserInternals
         String string_val;
         List<string> string_list;
         Token t = GetToken(1);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case IDENTIFIER:
-                jj_consume_token(IDENTIFIER);
+                cc_consume_token(IDENTIFIER);
                 break;
             case _LOOKAHEAD:
-                jj_consume_token(_LOOKAHEAD);
+                cc_consume_token(_LOOKAHEAD);
                 break;
             case _IGNORE_CASE:
-                jj_consume_token(_IGNORE_CASE);
+                cc_consume_token(_IGNORE_CASE);
                 break;
             case STATIC:
-                jj_consume_token(STATIC);
+                cc_consume_token(STATIC);
                 break;
             case _PARSER_BEGIN:
-                jj_consume_token(_PARSER_BEGIN);
+                cc_consume_token(_PARSER_BEGIN);
                 break;
             default:
-                jj_la1[2] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[2] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
         option_name = t.image;
-        jj_consume_token(ASSIGN);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        cc_consume_token(ASSIGN);
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case INTEGER_LITERAL:
                 int_val = IntegerLiteral();
@@ -356,61 +347,61 @@ public class CSharpCCParser : CSharpCCParserInternals
                 Options.SetInputFileOption(t, GetToken(0), option_name, string_list);
                 break;
             default:
-                jj_la1[3] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[3] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
-        jj_consume_token(SEMICOLON);
+        cc_consume_token(SEMICOLON);
     }
 
     public List<string> StringList()
     {
-        List<string> strings = new (); 
+        List<string> strings = new();
         String s;
-        jj_consume_token(LPAREN);
+        cc_consume_token(LPAREN);
         s = StringLiteral();
         strings.Add(s);
     label_3:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case COMMA:
                     ;
                     break;
                 default:
-                    jj_la1[4] = jj_gen;
+                    cc_la1[4] = cc_gen;
                     goto label_3_exit;
             }
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             s = StringLiteral();
             strings.Add(s);
         }
-        label_3_exit:
-        jj_consume_token(RPAREN);
+    label_3_exit:
+        cc_consume_token(RPAREN);
         { if (true) return strings; }
         throw new Error("Missing return statement in function");
     }
 
-    public void production()
+    public void Production()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case _JAVACODE:
-                javacode_production();
+                JavaCodeProduction();
                 break;
             case _CPPCODE:
-                cppcode_production();
+                CPPCodeProduction();
                 break;
             case _TOKEN:
             case _SPECIAL_TOKEN:
             case _MORE:
             case _SKIP:
             case LANGLE:
-                regular_expr_production();
+                RegularExprProduction();
                 break;
             case _TOKEN_MGR_DECLS:
-                token_manager_decls();
+                TokenManagerDecls();
                 break;
             case BOOLEAN:
             case BYTE:
@@ -428,172 +419,172 @@ public class CSharpCCParser : CSharpCCParserInternals
             case TEMPLATE:
             case DOUBLECOLON:
             case IDENTIFIER:
-                bnf_production();
+                BnfProduction();
                 break;
             default:
-                jj_la1[5] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[5] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
-    public void javacode_production()
+    public void JavaCodeProduction()
     {
         var p = new CSharpCodeProduction();
         String lhs;
         Token t = GetToken(1);
-        p.SetFirstToken(t);
+        p.        FirstToken = t;
         List<Token> excName;
-        p.SetThrowsList(new ());
-        p.SetLine(t.beginLine);
-        p.SetColumn(t.beginColumn);
-        jj_consume_token(_JAVACODE);
+        p.        ThrowsList = new();
+        p.        Line = t.beginLine;
+        p.        Column = t.beginColumn;
+        cc_consume_token(_JAVACODE);
         AccessModifier(p);
-        ResultType(p.GetReturnTypeTokens());
-        lhs = identifier();
-        p.SetLhs(lhs);
-        FormalParameters(p.GetParameterListTokens());
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        ResultType(p.ReturnTypeTokens);
+        lhs = Identifier();
+        p.        Lhs = lhs;
+        FormalParameters(p.ParameterListTokens);
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case THROWS:
-                jj_consume_token(THROWS);
-                excName = new ();
+                cc_consume_token(THROWS);
+                excName = new();
                 Name(excName);
-                p.GetThrowsList().Add(excName);
+                p.                ThrowsList.Add(excName);
             label_4:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case COMMA:
                             ;
                             break;
                         default:
-                            jj_la1[6] = jj_gen;
+                            cc_la1[6] = cc_gen;
                             goto label_4_exit;
                     }
-                    excName = new ();
-                    jj_consume_token(COMMA);
+                    excName = new();
+                    cc_consume_token(COMMA);
                     Name(excName);
-                    p.GetThrowsList().Add(excName);
+                    p.                    ThrowsList.Add(excName);
                 }
-                label_4_exit:
+            label_4_exit:
                 break;
             default:
-                jj_la1[7] = jj_gen;
+                cc_la1[7] = cc_gen;
                 break;
         }
         Block(p.CodeTokens);
-        p.SetLastToken(GetToken(0));
+        p.        LastToken = GetToken(0);
         AddProduction(p);
     }
 
-    public void cppcode_production()
+    public void CPPCodeProduction()
     {
         var p = new CppCodeProduction();
         String lhs;
         Token t = GetToken(1);
-        p.SetFirstToken(t);
+        p.        FirstToken = t;
         List<Token> excName;
-        p.SetThrowsList(new ());
-        p.SetLine(t.beginLine);
-        p.SetColumn(t.beginColumn);
-        jj_consume_token(_CPPCODE);
+        p.        ThrowsList = new();
+        p.        Line = t.beginLine;
+        p.        Column = t.beginColumn;
+        cc_consume_token(_CPPCODE);
         AccessModifier(p);
-        ResultType(p.GetReturnTypeTokens());
-        lhs = identifier();
-        p.SetLhs(lhs);
-        FormalParameters(p.GetParameterListTokens());
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        ResultType(p.ReturnTypeTokens);
+        lhs = Identifier();
+        p.        Lhs = lhs;
+        FormalParameters(p.ParameterListTokens);
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case THROWS:
-                jj_consume_token(THROWS);
-                excName = new ();
+                cc_consume_token(THROWS);
+                excName = new();
                 Name(excName);
-                p.GetThrowsList().Add(excName);
+                p.                ThrowsList.Add(excName);
             label_5:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case COMMA:
                             ;
                             break;
                         default:
-                            jj_la1[8] = jj_gen;
+                            cc_la1[8] = cc_gen;
                             goto label_5_exit;
                     }
-                    excName = new ();
-                    jj_consume_token(COMMA);
+                    excName = new();
+                    cc_consume_token(COMMA);
                     Name(excName);
-                    p.GetThrowsList().Add(excName);
+                    p.                    ThrowsList.Add(excName);
                 }
             label_5_exit:
                 break;
             default:
-                jj_la1[9] = jj_gen;
+                cc_la1[9] = cc_gen;
                 break;
                 ;
         }
         Block(p.CodeTokens);
-        p.SetLastToken(GetToken(0));
+        p.        LastToken = GetToken(0);
         AddProduction(p);
     }
 
-    public void bnf_production()
+    public void BnfProduction()
     {
         BNFProduction p = new();
         Container c = new();
         Token t = GetToken(1);
-        p.SetFirstToken(t);
+        p.        FirstToken = t;
         List<Token> excName;
         String lhs;
-        p.SetThrowsList(new ());
-        p.SetLine(t.beginLine);
-        p.SetColumn(t.beginColumn);
+        p.        ThrowsList = new();
+        p.        Line = t.beginLine;
+        p.        Column = t.beginColumn;
         jumpPatched = false;
         AccessModifier(p);
-        ResultType(p.GetReturnTypeTokens());
-        lhs = identifier();
-        p.SetLhs(lhs);
-        FormalParameters(p.GetParameterListTokens());
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        ResultType(p.ReturnTypeTokens);
+        lhs = Identifier();
+        p.        Lhs = lhs;
+        FormalParameters(p.ParameterListTokens);
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case THROWS:
-                jj_consume_token(THROWS);
-                excName = new ();
+                cc_consume_token(THROWS);
+                excName = new();
                 Name(excName);
-                p.GetThrowsList().Add(excName);
+                p.                ThrowsList.Add(excName);
             label_6:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case COMMA:
                             ;
                             break;
                         default:
-                            jj_la1[10] = jj_gen;
+                            cc_la1[10] = cc_gen;
                             goto label_6_exit;
                     }
-                    excName = new ();
-                    jj_consume_token(COMMA);
+                    excName = new();
+                    cc_consume_token(COMMA);
                     Name(excName);
-                    p.GetThrowsList().Add(excName);
+                    p.                    ThrowsList.Add(excName);
                 }
             label_6_exit:
                 break;
             default:
-                jj_la1[11] = jj_gen;
+                cc_la1[11] = cc_gen;
                 break;
-                
+
         }
-        jj_consume_token(COLON);
+        cc_consume_token(COLON);
         Block(p.GetDeclarationTokens());
-        jj_consume_token(LBRACE);
-        expansion_choices(c);
-        t = jj_consume_token(RBRACE);
-        p.SetLastToken(t);
+        cc_consume_token(LBRACE);
+        ExpansionChoices(c);
+        t = cc_consume_token(RBRACE);
+        p.        LastToken = t;
         p.SetJumpPatched(jumpPatched);
         ProductionAddexpansion(p, (Expansion)(c.Member));
         AddProduction(p);
@@ -602,85 +593,85 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void AccessModifier(NormalProduction p)
     {
         Token t = null;
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case PRIVATE:
             case PROTECTED:
             case PUBLIC:
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case PUBLIC:
-                        t = jj_consume_token(PUBLIC);
+                        t = cc_consume_token(PUBLIC);
                         break;
                     case PROTECTED:
-                        t = jj_consume_token(PROTECTED);
+                        t = cc_consume_token(PROTECTED);
                         break;
                     case PRIVATE:
-                        t = jj_consume_token(PRIVATE);
+                        t = cc_consume_token(PRIVATE);
                         break;
                     default:
-                        jj_la1[12] = jj_gen;
-                        jj_consume_token(-1);
+                        cc_la1[12] = cc_gen;
+                        cc_consume_token(-1);
                         throw new ParseException();
                 }
                 break;
             default:
-                jj_la1[13] = jj_gen;
+                cc_la1[13] = cc_gen;
                 break;
         }
         if (t != null)
         {
-            p.SetAccessMod(t.image);
+            p.            AccessMod = t.image;
         }
     }
 
-    public void regular_expr_production()
+    public void RegularExprProduction()
     {
         var p = new TokenProduction();
         List<string> states;
         Token t = p.firstToken = GetToken(1);
-        p.SetLine(t.beginLine);
-        p.SetColumn(t.beginColumn);
+        p.        Line = t.beginLine;
+        p.        Column = t.beginColumn;
         // set p.lexStates assuming there is no state spec.
         // and then override if necessary.
         p.lexStates = new String[] { "DEFAULT" };
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case LANGLE:
                 if (jj_2_1(2))
                 {
-                    jj_consume_token(LANGLE);
-                    jj_consume_token(STAR);
-                    jj_consume_token(RANGLE);
+                    cc_consume_token(LANGLE);
+                    cc_consume_token(STAR);
+                    cc_consume_token(RANGLE);
                     p.lexStates = null;
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case LANGLE:
-                            jj_consume_token(LANGLE);
-                            states = new ();
-                            t = jj_consume_token(IDENTIFIER);
+                            cc_consume_token(LANGLE);
+                            states = new();
+                            t = cc_consume_token(IDENTIFIER);
                             states.Add(t.image);
                         label_7:
                             while (true)
                             {
-                                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                                 {
                                     case COMMA:
                                         ;
                                         break;
                                     default:
-                                        jj_la1[14] = jj_gen;
+                                        cc_la1[14] = cc_gen;
                                         goto label_7_exit;
                                 }
-                                jj_consume_token(COMMA);
-                                t = jj_consume_token(IDENTIFIER);
+                                cc_consume_token(COMMA);
+                                t = cc_consume_token(IDENTIFIER);
                                 states.Add(t.image);
                             }
                         label_7_exit:
-                            jj_consume_token(RANGLE);
+                            cc_consume_token(RANGLE);
                             p.lexStates = new String[states.Count];
                             for (int i = 0; i < states.Count; i++)
                             {
@@ -688,27 +679,27 @@ public class CSharpCCParser : CSharpCCParserInternals
                             }
                             break;
                         default:
-                            jj_la1[15] = jj_gen;
-                            jj_consume_token(-1);
+                            cc_la1[15] = cc_gen;
+                            cc_consume_token(-1);
                             throw new ParseException();
                     }
                 }
                 break;
             default:
-                jj_la1[16] = jj_gen;
+                cc_la1[16] = cc_gen;
                 break;
         }
-        regexpr_kind(p);
+        RegexprKind(p);
         if (p.kind != TokenProduction.TOKEN && Options.GetUserTokenManager())
         {
             CSharpCCErrors.Warning(GetToken(0), "Regular expression is being treated as if it were a TOKEN since option USER_TOKEN_MANAGER has been set to true.");
         }
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case LBRACKET:
-                jj_consume_token(LBRACKET);
-                t = jj_consume_token(_IGNORE_CASE);
-                jj_consume_token(RBRACKET);
+                cc_consume_token(LBRACKET);
+                t = cc_consume_token(_IGNORE_CASE);
+                cc_consume_token(RBRACKET);
                 p.ignoreCase = true;
                 if (Options.GetUserTokenManager())
                 {
@@ -716,94 +707,94 @@ public class CSharpCCParser : CSharpCCParserInternals
                 }
                 break;
             default:
-                jj_la1[17] = jj_gen;
+                cc_la1[17] = cc_gen;
                 break;
         }
-        jj_consume_token(COLON);
-        jj_consume_token(LBRACE);
-        regexpr_spec(p);
+        cc_consume_token(COLON);
+        cc_consume_token(LBRACE);
+        RegexprSpec(p);
     label_8:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case BIT_OR:
                     ;
                     break;
                 default:
-                    jj_la1[18] = jj_gen;
+                    cc_la1[18] = cc_gen;
                     goto label_8_exit;
             }
-            jj_consume_token(BIT_OR);
-            regexpr_spec(p);
+            cc_consume_token(BIT_OR);
+            RegexprSpec(p);
         }
     label_8_exit:
-        t = jj_consume_token(RBRACE);
+        t = cc_consume_token(RBRACE);
         p.lastToken = t;
         AddRegexpr(p);
     }
 
-    public void token_manager_decls()
+    public void TokenManagerDecls()
     {
-        List<Token> decls = new ();
+        List<Token> decls = new();
         Token t;
-        t = jj_consume_token(_TOKEN_MGR_DECLS);
-        jj_consume_token(COLON);
-        if (!IsJavaLanguage())
+        t = cc_consume_token(_TOKEN_MGR_DECLS);
+        cc_consume_token(COLON);
+        if (!IsJavaLanguage)
         {
             getNextToken(); // eat {
-            eatUptoCloseBrace(decls);
+            EatUptoCloseBrace(decls);
             getNextToken(); // eat }
         }
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case LBRACE:
                 ClassOrInterfaceBody(false, decls);
                 break;
             default:
-                jj_la1[19] = jj_gen;
+                cc_la1[19] = cc_gen;
                 break;
         }
         AddTokenManagerDecls(t, decls);
     }
 
-    public void regexpr_kind(TokenProduction p)
+    public void RegexprKind(TokenProduction p)
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case _TOKEN:
-                jj_consume_token(_TOKEN);
+                cc_consume_token(_TOKEN);
                 p.kind = TokenProduction.TOKEN;
                 break;
             case _SPECIAL_TOKEN:
-                jj_consume_token(_SPECIAL_TOKEN);
+                cc_consume_token(_SPECIAL_TOKEN);
                 p.kind = TokenProduction.SPECIAL;
                 break;
             case _SKIP:
-                jj_consume_token(_SKIP);
+                cc_consume_token(_SKIP);
                 p.kind = TokenProduction.SKIP;
                 break;
             case _MORE:
-                jj_consume_token(_MORE);
+                cc_consume_token(_MORE);
                 p.kind = TokenProduction.MORE;
                 break;
             default:
-                jj_la1[20] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[20] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
-    public void regexpr_spec(TokenProduction p)
+    public void RegexprSpec(TokenProduction p)
     {
         var c = new Container();
         var act = new Action();
         Token t = null;
         var res = new RegExprSpec();
-        regular_expression(c);  
-        res.rexp = (RegularExpression)c.Member;
-        res.rexp.tpContext = p;
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        RegularExpression(c);
+        res.Rexp = (RegularExpression)c.Member;
+        res.Rexp.tpContext = p;
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case LBRACE:
                 t = GetToken(1);
@@ -812,67 +803,67 @@ public class CSharpCCParser : CSharpCCParserInternals
                 {
                     CSharpCCErrors.Warning(t, "Ignoring action in regular expression specification since option USER_TOKEN_MANAGER has been set to true.");
                 }
-                if (res.rexp.private_rexp)
+                if (res.Rexp.private_rexp)
                 {
                     CSharpCCErrors.ParseError(t, "Actions are not permitted on private (#) regular expressions.");
                 }
                 break;
             default:
-                jj_la1[21] = jj_gen;
+                cc_la1[21] = cc_gen;
                 break;
         }
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case COLON:
-                jj_consume_token(COLON);
-                t = jj_consume_token(IDENTIFIER);
-                res.nextState = t.image;
-                if (res.rexp.private_rexp)
+                cc_consume_token(COLON);
+                t = cc_consume_token(IDENTIFIER);
+                res.NextState = t.image;
+                if (res.Rexp.private_rexp)
                 {
                     CSharpCCErrors.ParseError(t, "Lexical state changes are not permitted after private (#) regular expressions.");
                 }
                 break;
             default:
-                jj_la1[22] = jj_gen;
+                cc_la1[22] = cc_gen;
                 break;
         }
-        res.act = act;
-        res.nsTok = t;
+        res.Act = act;
+        res.NsToken = t;
         p.respecs.Add(res);
     }
 
-    public void expansion_choices(Container c1)
+    public void ExpansionChoices(Container c1)
     {
         bool morethanone = false;
         Choice ch = null; // unnecessary initialization to make Java compiler happy!
         var c2 = new Container();
-        expansion(c1);
+        Expansion(c1);
     label_9:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case BIT_OR:
                     ;
                     break;
                 default:
-                    jj_la1[23] = jj_gen;
+                    cc_la1[23] = cc_gen;
                     goto label_9_exit;
             }
-            jj_consume_token(BIT_OR);
-            expansion(c2);
+            cc_consume_token(BIT_OR);
+            Expansion(c2);
             if (morethanone)
             {
-                ch.                Choices.Add(c2.Member as Expansion);
-                ((Expansion)c2.Member).parent = ch;
+                ch.Choices.Add(c2.Member as Expansion);
+                ((Expansion)c2.Member).Parent = ch;
             }
             else
             {
                 morethanone = true;
                 ch = new Choice((Expansion)c1.Member);
-                ((Expansion)c1.Member).parent = ch;
-                ch.                Choices.Add(c2.Member as Expansion);
-                ((Expansion)c2.Member).parent = ch;
+                ((Expansion)c1.Member).Parent = ch;
+                ch.Choices.Add(c2.Member as Expansion);
+                ((Expansion)c2.Member).Parent = ch;
             }
         }
     label_9_exit:
@@ -882,44 +873,44 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
     }
 
-    public void expansion(Container c1)
+    public void Expansion(Container c1)
     {
         var seq = new Sequence();
         var c2 = new Container();
         var la = new Lookahead();
         var t = GetToken(1);
-        seq.        Line = t.beginLine;
-        seq.        Column = t.beginColumn;
-        la.        Line = t.beginLine;
-        la.        Column = t.beginColumn;
-        la.SetAmount(Options.GetLookahead());
-        la.SetLaExpansion(null);
+        seq.Line = t.beginLine;
+        seq.Column = t.beginColumn;
+        la.Line = t.beginLine;
+        la.Column = t.beginColumn;
+        la.        Amount = Options.GetLookahead();
+        la.        LaExpansion = null;
         la.SetExplicit(false);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case _LOOKAHEAD:
-                t = jj_consume_token(_LOOKAHEAD);
-                jj_consume_token(LPAREN);
-                la = local_lookahead();
-                jj_consume_token(RPAREN);
-                if (inLocalLA != 0 && la.GetAmount() != 0)
+                t = cc_consume_token(_LOOKAHEAD);
+                cc_consume_token(LPAREN);
+                la = LocalLookahead();
+                cc_consume_token(RPAREN);
+                if (inLocalLA != 0 && la.Amount != 0)
                 {
                     CSharpCCErrors.Warning(t, "Only semantic lookahead specifications within other lookahead specifications is considered.  Syntactic lookahead is ignored.");
                 }
                 break;
             default:
-                jj_la1[24] = jj_gen;
+                cc_la1[24] = cc_gen;
                 break;
         }
         seq.units.Add(la);
     label_10:
         while (true)
         {
-            expansion_unit(c2);
+            ExpansionUnit(c2);
             seq.units.Add(c2.Member as Expansion);
-            ((Expansion)c2.Member).parent = seq;
-            ((Expansion)c2.Member).ordinal = seq.units.Count - 1;
-            if (notTailOfExpansionUnit())
+            ((Expansion)c2.Member).Parent = seq;
+            ((Expansion)c2.Member).Ordinal = seq.units.Count - 1;
+            if (NotTailOfExpansionUnit())
             {
                 ;
             }
@@ -929,39 +920,39 @@ public class CSharpCCParser : CSharpCCParserInternals
             }
         }
     label_10_exit:
-        if (la.GetLaExpansion() == null)
+        if (la.LaExpansion == null)
         {
-            la.SetLaExpansion(seq);
+            la.            LaExpansion = seq;
         }
         c1.Member = seq;
     }
 
-    public Lookahead local_lookahead()
+    public Lookahead LocalLookahead()
     {
         var la = new Lookahead();
         la.SetExplicit(true);
         var t = GetToken(1);
-        la.        Line = t.beginLine;
-        la.        Column = t.beginColumn;
-        la.SetLaExpansion(null);
+        la.Line = t.beginLine;
+        la.Column = t.beginColumn;
+        la.        LaExpansion = null;
         Container c = new();
         bool commaAtEnd = false, emptyLA = true;
         int laAmount;
         inLocalLA++;
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case INTEGER_LITERAL:
                 laAmount = IntegerLiteral();
                 emptyLA = false;
-                la.SetAmount(laAmount);
+                la.                Amount = laAmount;
                 break;
             default:
-                jj_la1[25] = jj_gen;
+                cc_la1[25] = cc_gen;
                 break;
         }
         if (!emptyLA && (GetToken(1).kind != RPAREN))
         {
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             commaAtEnd = true;
         }
         else
@@ -970,9 +961,9 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         if (GetToken(1).kind != RPAREN && GetToken(1).kind != LBRACE)
         {
-            expansion_choices(c);
+            ExpansionChoices(c);
             emptyLA = false; commaAtEnd = false;
-            la.SetLaExpansion((Expansion)c.Member);
+            la.            LaExpansion = (Expansion)c.Member;
         }
         else
         {
@@ -980,7 +971,7 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         if (!emptyLA && !commaAtEnd && (GetToken(1).kind != RPAREN))
         {
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             commaAtEnd = true;
         }
         else
@@ -989,18 +980,18 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         if (emptyLA || commaAtEnd)
         {
-            jj_consume_token(LBRACE);
-            if (!IsJavaLanguage())
+            cc_consume_token(LBRACE);
+            if (!IsJavaLanguage)
             {
                 int b = 0;
                 while (GetToken(1).kind != RBRACE || --b > 0)
                 {
                     t = getNextToken();
-                    la.GetActionTokens().Add(t);
+                    la.                    ActionTokens.Add(t);
                     if (t.kind == LBRACE) b++;
                 }
             }
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -1049,16 +1040,16 @@ public class CSharpCCParser : CSharpCCParserInternals
                 case 143:
                 case 144:
                 case IDENTIFIER:
-                    Expression(la.GetActionTokens());
+                    Expression(la.ActionTokens);
                     break;
                 default:
-                    jj_la1[26] = jj_gen;
+                    cc_la1[26] = cc_gen;
                     break;
             }
-            jj_consume_token(RBRACE);
+            cc_consume_token(RBRACE);
             if (emptyLA)
             {
-                la.SetAmount(0);
+                la.                Amount = 0;
             }
         }
         else
@@ -1070,42 +1061,44 @@ public class CSharpCCParser : CSharpCCParserInternals
         throw new Error("Missing return statement in function");
     }
 
-    public void expansion_unit(Container c)
+    public void ExpansionUnit(Container c)
     {
         String name;
-        List<Token> lhsTokens = new ();
+        List<Token> lhsTokens = new();
         NonTerminal nt;
         Action act;
         Token t;
         Lookahead la;
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case _LOOKAHEAD:
                 /*
                    * We give this priority over primary expressions which use LOOKAHEAD as the
                    * name of its identifier.
                    */
-                t = jj_consume_token(_LOOKAHEAD);
-                jj_consume_token(LPAREN);
-                la = local_lookahead();
-                jj_consume_token(RPAREN);
+                t = cc_consume_token(_LOOKAHEAD);
+                cc_consume_token(LPAREN);
+                la = LocalLookahead();
+                cc_consume_token(RPAREN);
                 // Now set the la_expansion field of la with a dummy
                 // expansion (we use EOF).
-                la.SetLaExpansion(new REndOfFile());
+                la.                // Now set the la_expansion field of la with a dummy
+                // expansion (we use EOF).
+                LaExpansion = new REndOfFile();
                 // Create a singleton choice with an empty action.
                 var ch = new Choice(t);
                 var seq = new Sequence(t, la);
-                la.parent = seq; la.ordinal = 0;
+                la.Parent = seq; la.Ordinal = 0;
                 act = new Action();
-                act.                Line = t.beginLine;
-                act.                Column = t.beginColumn;
+                act.Line = t.beginLine;
+                act.Column = t.beginColumn;
                 seq.units.Add(act);
-                act.parent = seq; act.ordinal = 1;
-                ch.                Choices.Add(seq);
-                seq.parent = ch; seq.ordinal = 0;
-                if (la.GetAmount() != 0)
+                act.Parent = seq; act.Ordinal = 1;
+                ch.Choices.Add(seq);
+                seq.Parent = ch; seq.Ordinal = 0;
+                if (la.Amount != 0)
                 {
-                    if (la.GetActionTokens().Count != 0)
+                    if (la.ActionTokens.Count != 0)
                     {
                         CSharpCCErrors.Warning(t, "Encountered LOOKAHEAD(...) at a non-choice location.  Only semantic lookahead will be considered here.");
                     }
@@ -1119,8 +1112,8 @@ public class CSharpCCParser : CSharpCCParserInternals
             case LBRACE:
                 act = new Action();
                 t = GetToken(1);
-                act.                Line = t.beginLine;
-                act.                Column = t.beginColumn;
+                act.Line = t.beginLine;
+                act.Column = t.beginColumn;
                 inAction = true;
                 Block(act.ActionTokens);
                 inAction = false;
@@ -1131,9 +1124,9 @@ public class CSharpCCParser : CSharpCCParserInternals
                 c.Member = act;
                 break;
             case LBRACKET:
-                t = jj_consume_token(LBRACKET);
-                expansion_choices(c);
-                jj_consume_token(RBRACKET);
+                t = cc_consume_token(LBRACKET);
+                ExpansionChoices(c);
+                cc_consume_token(RBRACKET);
                 c.Member = new ZeroOrOne(t, (Expansion)c.Member);
                 break;
             case TRY:
@@ -1144,68 +1137,68 @@ public class CSharpCCParser : CSharpCCParserInternals
                 List<Token> finallyblk = null;
                 List<Token> vec = new();
                 Token t0;
-                t0 = jj_consume_token(TRY);
-                jj_consume_token(LBRACE);
-                expansion_choices(expch);
-                jj_consume_token(RBRACE);
+                t0 = cc_consume_token(TRY);
+                cc_consume_token(LBRACE);
+                ExpansionChoices(expch);
+                cc_consume_token(RBRACE);
             label_11:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case CATCH:
                             ;
                             break;
                         default:
-                            jj_la1[27] = jj_gen;
+                            cc_la1[27] = cc_gen;
                             goto label_11_exit;
                     }
-                    jj_consume_token(CATCH);
-                    jj_consume_token(LPAREN);
-                    if (!IsJavaLanguage())
+                    cc_consume_token(CATCH);
+                    cc_consume_token(LPAREN);
+                    if (!IsJavaLanguage)
                     {
                         while (GetToken(1).kind != RPAREN) getNextToken();
                     }
                     t = GetToken(0);
                     t.kind = IDENTIFIER;
                     t.image = "...";
-                    if (IsJavaLanguage())
+                    if (IsJavaLanguage)
                     {
                         Name(vec);
-                        t = jj_consume_token(IDENTIFIER);
+                        t = cc_consume_token(IDENTIFIER);
                     }
                     else
                     {
                         ;
                     }
-                    jj_consume_token(RPAREN);
+                    cc_consume_token(RPAREN);
                     types.Add(vec);
                     ids.Add(t);
-                    vec = new ();
+                    vec = new();
                     inAction = true;
                     Block(vec);
                     inAction = false;
                     catchblks.Add(vec);
-                    vec = new ();
+                    vec = new();
                 }
             label_11_exit:
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case FINALLY:
                         inAction = true;
-                        jj_consume_token(FINALLY);
+                        cc_consume_token(FINALLY);
                         Block(vec);
                         inAction = false;
                         finallyblk = vec;
                         break;
                     default:
-                        jj_la1[28] = jj_gen;
+                        cc_la1[28] = cc_gen;
                         break;
                 }
                 MakeTryBlock(t0, c, expch, types, ids, catchblks, finallyblk);
                 break;
             default:
-                jj_la1[34] = jj_gen;
+                cc_la1[34] = cc_gen;
                 if (jj_2_4(2147483647))
                 {
                     if (jj_2_2(2147483647))
@@ -1213,7 +1206,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                         Token first = GetToken(1);
                         PrimaryExpression();
                         Token last = GetToken(0);
-                        jj_consume_token(ASSIGN);
+                        cc_consume_token(ASSIGN);
                         t = first;
                         while (true)
                         {
@@ -1230,92 +1223,92 @@ public class CSharpCCParser : CSharpCCParserInternals
                     {
                         t = GetToken(1);
                         nt = new NonTerminal();
-                        nt.                        Line = t.beginLine;
-                        nt.                        Column = t.beginColumn;
-                        nt.SetLhsTokens(lhsTokens);
-                        name = identifier();
-                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                        nt.Line = t.beginLine;
+                        nt.Column = t.beginColumn;
+                        nt.                        LhsTokens = lhsTokens;
+                        name = Identifier();
+                        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                         {
                             case LANGLE:
-                                TypeArguments(nt.GetParametrizedTypeTokens());
+                                TypeArguments(nt.ParametrizedTypeTokens);
                                 break;
                             default:
-                                jj_la1[29] = jj_gen;
+                                cc_la1[29] = cc_gen;
                                 break;
                         }
-                        Arguments(nt.GetArgumentTokens());
-                        nt.SetName(name);
+                        Arguments(nt.ArgumentTokens);
+                        nt.                        Name = name;
                         c.Member = nt;
                     }
                     else
                     {
-                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                         {
                             case STRING_LITERAL:
                             case LANGLE:
-                                regular_expression(c);
+                                RegularExpression(c);
                                 ((RegularExpression)(c.Member)).lhsTokens = lhsTokens;
                                 AddInlineRegexpr((RegularExpression)(c.Member));
-                                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                                 {
                                     case DOT:
-                                        jj_consume_token(DOT);
-                                        t = jj_consume_token(IDENTIFIER);
+                                        cc_consume_token(DOT);
+                                        t = cc_consume_token(IDENTIFIER);
                                         ((RegularExpression)(c.Member)).rhsToken = t;
                                         break;
                                     default:
-                                        jj_la1[30] = jj_gen;
+                                        cc_la1[30] = cc_gen;
                                         break;
                                 }
                                 break;
                             default:
-                                jj_la1[31] = jj_gen;
-                                jj_consume_token(-1);
+                                cc_la1[31] = cc_gen;
+                                cc_consume_token(-1);
                                 throw new ParseException();
                         }
                     }
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case LPAREN:
-                            t = jj_consume_token(LPAREN);
-                            expansion_choices(c);
-                            jj_consume_token(RPAREN);
-                            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                            t = cc_consume_token(LPAREN);
+                            ExpansionChoices(c);
+                            cc_consume_token(RPAREN);
+                            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                             {
                                 case HOOK:
                                 case PLUS:
                                 case STAR:
-                                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                                     {
                                         case PLUS:
-                                            jj_consume_token(PLUS);
+                                            cc_consume_token(PLUS);
                                             c.Member = new OneOrMore(t, (Expansion)c.Member);
                                             break;
                                         case STAR:
-                                            jj_consume_token(STAR);
+                                            cc_consume_token(STAR);
                                             c.Member = new ZeroOrMore(t, (Expansion)c.Member);
                                             break;
                                         case HOOK:
-                                            jj_consume_token(HOOK);
+                                            cc_consume_token(HOOK);
                                             c.Member = new ZeroOrOne(t, (Expansion)c.Member);
                                             break;
                                         default:
-                                            jj_la1[32] = jj_gen;
-                                            jj_consume_token(-1);
+                                            cc_la1[32] = cc_gen;
+                                            cc_consume_token(-1);
                                             throw new ParseException();
                                     }
                                     break;
                                 default:
-                                    jj_la1[33] = jj_gen;
+                                    cc_la1[33] = cc_gen;
                                     break;
                             }
                             break;
                         default:
-                            jj_la1[35] = jj_gen;
-                            jj_consume_token(-1);
+                            cc_la1[35] = cc_gen;
+                            cc_consume_token(-1);
                             throw new ParseException();
                     }
                 }
@@ -1323,47 +1316,47 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
     }
 
-    public void regular_expression(Container c)
+    public void RegularExpression(Container c)
     {
         REndOfFile ef;
         String image;
         bool private_rexp = false;
         Token t = GetToken(1);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case STRING_LITERAL:
                 image = StringLiteral();
                 c.Member = new RStringLiteral(t, image);
                 break;
             default:
-                jj_la1[38] = jj_gen;
+                cc_la1[38] = cc_gen;
                 if (jj_2_5(3))
                 {
                     image = "";
-                    jj_consume_token(LANGLE);
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    cc_consume_token(LANGLE);
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case 138:
                         case IDENTIFIER:
-                            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                             {
                                 case 138:
-                                    jj_consume_token(138);
+                                    cc_consume_token(138);
                                     private_rexp = true;
                                     break;
                                 default:
-                                    jj_la1[36] = jj_gen;
+                                    cc_la1[36] = cc_gen;
                                     break;
                             }
-                            image = identifier();
-                            jj_consume_token(COLON);
+                            image = Identifier();
+                            cc_consume_token(COLON);
                             break;
                         default:
-                            jj_la1[37] = jj_gen;
+                            cc_la1[37] = cc_gen;
                             break;
                     }
-                    complex_regular_expression_choices(c);
-                    jj_consume_token(RANGLE);
+                    ComplexRegularExpressionChoices(c);
+                    cc_consume_token(RANGLE);
                     RegularExpression re;
                     if (c.Member is RJustName rj)
                     {
@@ -1377,34 +1370,34 @@ public class CSharpCCParser : CSharpCCParserInternals
                     }
                     re.label = image;
                     re.private_rexp = private_rexp;
-                    re.                    Line = t.beginLine;
-                    re.                    Column = t.beginColumn;
+                    re.Line = t.beginLine;
+                    re.Column = t.beginColumn;
                     c.Member = re;
                 }
                 else if (jj_2_6(2))
                 {
-                    jj_consume_token(LANGLE);
-                    image = identifier();
-                    jj_consume_token(RANGLE);
+                    cc_consume_token(LANGLE);
+                    image = Identifier();
+                    cc_consume_token(RANGLE);
                     c.Member = new RJustName(t, image);
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case LANGLE:
-                            jj_consume_token(LANGLE);
-                            jj_consume_token(_EOF);
-                            jj_consume_token(RANGLE);
+                            cc_consume_token(LANGLE);
+                            cc_consume_token(_EOF);
+                            cc_consume_token(RANGLE);
                             ef = new REndOfFile();
-                            ef.                            Line = t.beginLine;
-                            ef.                            Column = t.beginColumn;
+                            ef.Line = t.beginLine;
+                            ef.Column = t.beginColumn;
                             ef.ordinal = 0;
                             c.Member = ef;
                             break;
                         default:
-                            jj_la1[39] = jj_gen;
-                            jj_consume_token(-1);
+                            cc_la1[39] = cc_gen;
+                            cc_consume_token(-1);
                             throw new ParseException();
                     }
                 }
@@ -1412,38 +1405,38 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
     }
 
-    public void complex_regular_expression_choices(Container c1)
+    public void ComplexRegularExpressionChoices(Container c1)
     {
         bool morethanone = false;
         RChoice ch = null; // unnecessary initialization to make Java compiler happy!
         Container c2 = new();
-        complex_regular_expression(c1);
+        ComplexRegularExpression(c1);
     label_12:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case BIT_OR:
                     ;
                     break;
                 default:
-                    jj_la1[40] = jj_gen;
+                    cc_la1[40] = cc_gen;
                     goto label_12_exit;
             }
-            jj_consume_token(BIT_OR);
-            complex_regular_expression(c2);
+            cc_consume_token(BIT_OR);
+            ComplexRegularExpression(c2);
             if (morethanone)
             {
-                ch.GetChoices().Add(c2.Member as Expansion);
+                ch.                Choices.Add(c2.Member as Expansion);
             }
             else
             {
                 morethanone = true;
                 ch = new RChoice();
-                ch.                Line = ((RegularExpression)c1.Member).Line;
-                ch.                Column = ((RegularExpression)c1.Member).Column;
-                ch.GetChoices().Add(c1.Member as Expansion);
-                ch.GetChoices().Add(c2.Member as Expansion);
+                ch.Line = ((RegularExpression)c1.Member).Line;
+                ch.Column = ((RegularExpression)c1.Member).Column;
+                ch.                Choices.Add(c1.Member as Expansion);
+                ch.                Choices.Add(c2.Member as Expansion);
             }
         }
     label_12_exit:
@@ -1454,7 +1447,7 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
     }
 
-    public void complex_regular_expression(Container c1)
+    public void ComplexRegularExpression(Container c1)
     {
         int count = 0;
         RSequence seq = null; // unnecessary initialization to make Java compiler happy!
@@ -1462,7 +1455,7 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_13:
         while (true)
         {
-            complex_regular_expression_unit(c2);
+            ComplexRegularExpressionUnit(c2);
             count++;
             if (count == 1)
             {
@@ -1471,8 +1464,8 @@ public class CSharpCCParser : CSharpCCParserInternals
             else if (count == 2)
             { // more than 1, so create a sequence.
                 seq = new RSequence();
-                seq.                Line = ((RegularExpression)c1.Member).Line;
-                seq.                Column = ((RegularExpression)c1.Member).Column;
+                seq.Line = ((RegularExpression)c1.Member).Line;
+                seq.Column = ((RegularExpression)c1.Member).Column;
                 seq.units.Add(c1.Member as RegularExpression);
                 seq.units.Add(c2.Member as RegularExpression);
             }
@@ -1480,7 +1473,7 @@ public class CSharpCCParser : CSharpCCParserInternals
             {
                 seq.units.Add(c2.Member as RegularExpression);
             }
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case STRING_LITERAL:
                 case LPAREN:
@@ -1490,7 +1483,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                     ;
                     break;
                 default:
-                    jj_la1[41] = jj_gen;
+                    cc_la1[41] = cc_gen;
                     goto label_13_exit;
             }
         }
@@ -1501,82 +1494,82 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
     }
 
-    public void complex_regular_expression_unit(Container c)
+    public void ComplexRegularExpressionUnit(Container c)
     {
         String image;
         Token t = GetToken(1);
         int r1 = 0, r2 = -1;
         bool hasMax = false;
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case STRING_LITERAL:
                 image = StringLiteral();
                 c.Member = new RStringLiteral(t, image);
                 break;
             case LANGLE:
-                jj_consume_token(LANGLE);
-                image = identifier();
-                jj_consume_token(RANGLE);
+                cc_consume_token(LANGLE);
+                image = Identifier();
+                cc_consume_token(RANGLE);
                 c.Member = new RJustName(t, image);
                 break;
             case LBRACKET:
             case TILDE:
-                character_list(c);
+                CharacterList(c);
                 break;
             case LPAREN:
-                jj_consume_token(LPAREN);
-                complex_regular_expression_choices(c);
-                jj_consume_token(RPAREN);
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                cc_consume_token(LPAREN);
+                ComplexRegularExpressionChoices(c);
+                cc_consume_token(RPAREN);
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case LBRACE:
                     case HOOK:
                     case PLUS:
                     case STAR:
-                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                         {
                             case PLUS:
-                                jj_consume_token(PLUS);
+                                cc_consume_token(PLUS);
                                 c.Member = new ROneOrMore(t, (RegularExpression)c.Member);
                                 break;
                             case STAR:
-                                jj_consume_token(STAR);
+                                cc_consume_token(STAR);
                                 c.Member = new RZeroOrMore(t, (RegularExpression)c.Member);
                                 break;
                             case HOOK:
-                                jj_consume_token(HOOK);
+                                cc_consume_token(HOOK);
                                 RZeroOrOne zorexp = new();
-                                zorexp.                                Line = t.beginLine;
-                                zorexp.                                Column = t.beginColumn;
+                                zorexp.Line = t.beginLine;
+                                zorexp.Column = t.beginColumn;
                                 zorexp.regexpr = (RegularExpression)c.Member;
                                 c.Member = zorexp;
                                 break;
                             case LBRACE:
-                                jj_consume_token(LBRACE);
+                                cc_consume_token(LBRACE);
                                 r1 = IntegerLiteral();
-                                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                                 {
                                     case COMMA:
-                                        jj_consume_token(COMMA);
+                                        cc_consume_token(COMMA);
                                         hasMax = true;
-                                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                                        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                                         {
                                             case INTEGER_LITERAL:
                                                 r2 = IntegerLiteral();
                                                 break;
                                             default:
-                                                jj_la1[42] = jj_gen;
+                                                cc_la1[42] = cc_gen;
                                                 break;
                                         }
                                         break;
                                     default:
-                                        jj_la1[43] = jj_gen;
+                                        cc_la1[43] = cc_gen;
                                         break;
                                 }
-                                jj_consume_token(RBRACE);
+                                cc_consume_token(RBRACE);
                                 RRepetitionRange rrrexp = new();
-                                rrrexp.                                Line = t.beginLine;
-                                rrrexp.                                Column = t.beginColumn;
+                                rrrexp.Line = t.beginLine;
+                                rrrexp.Column = t.beginColumn;
                                 rrrexp.min = r1;
                                 rrrexp.max = r2;
                                 rrrexp.hasMax = hasMax;
@@ -1584,74 +1577,74 @@ public class CSharpCCParser : CSharpCCParserInternals
                                 c.Member = rrrexp;
                                 break;
                             default:
-                                jj_la1[44] = jj_gen;
-                                jj_consume_token(-1);
+                                cc_la1[44] = cc_gen;
+                                cc_consume_token(-1);
                                 throw new ParseException();
                         }
                         break;
                     default:
-                        jj_la1[45] = jj_gen;
+                        cc_la1[45] = cc_gen;
                         break;
                 }
                 break;
             default:
-                jj_la1[46] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[46] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
-    public void character_list(Container c1)
+    public void CharacterList(Container c1)
     {
         RCharacterList chlist = new();
         Token t = GetToken(1);
-        chlist.        Line = t.beginLine;
-        chlist.        Column = t.beginColumn;
+        chlist.Line = t.beginLine;
+        chlist.Column = t.beginColumn;
         Container c2 = new();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case TILDE:
-                jj_consume_token(TILDE);
+                cc_consume_token(TILDE);
                 chlist.negated_list = true;
                 break;
             default:
-                jj_la1[47] = jj_gen;
+                cc_la1[47] = cc_gen;
                 break;
         }
-        jj_consume_token(LBRACKET);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        cc_consume_token(LBRACKET);
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case STRING_LITERAL:
-                character_descriptor(c2);
+                CharacterDescriptor(c2);
                 chlist.descriptors.Add(c2.Member);
             label_14:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case COMMA:
                             ;
                             break;
                         default:
-                            jj_la1[48] = jj_gen;
+                            cc_la1[48] = cc_gen;
                             goto label_14_exit;
                     }
-                    jj_consume_token(COMMA);
-                    character_descriptor(c2);
+                    cc_consume_token(COMMA);
+                    CharacterDescriptor(c2);
                     chlist.descriptors.Add(c2.Member);
                 }
             label_14_exit:
 
                 break;
             default:
-                jj_la1[49] = jj_gen;
+                cc_la1[49] = cc_gen;
                 break;
         }
-        jj_consume_token(RBRACKET);
+        cc_consume_token(RBRACKET);
         c1.Member = chlist;
     }
 
-    public void character_descriptor(Container c)
+    public void CharacterDescriptor(Container c)
     {
         char c1, c2 = ' '; // unnecessary initialization to make Java compiler happy!
         bool isrange = false;
@@ -1659,41 +1652,41 @@ public class CSharpCCParser : CSharpCCParserInternals
         Token t = GetToken(1);
         imageL = StringLiteral();
         c1 = CharacterDescriptorAssign(GetToken(0), imageL);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case MINUS:
-                jj_consume_token(MINUS);
+                cc_consume_token(MINUS);
                 imageR = StringLiteral();
                 isrange = true;
                 c2 = CharacterDescriptorAssign(GetToken(0), imageR, imageL);
                 break;
             default:
-                jj_la1[50] = jj_gen;
+                cc_la1[50] = cc_gen;
                 break;
         }
         if (isrange)
         {
             var cr = new CharacterRange();
-            cr.            Line = t.beginLine;
-            cr.            Column = t.beginColumn;
-            cr.            Left = c1;
-            cr.            Right = c2;
+            cr.Line = t.beginLine;
+            cr.Column = t.beginColumn;
+            cr.Left = c1;
+            cr.Right = c2;
             c.Member = cr;
         }
         else
         {
             var sc = new SingleCharacter();
-            sc.            Line = t.beginLine;
-            sc.            Column = t.beginColumn;
+            sc.Line = t.beginLine;
+            sc.Column = t.beginColumn;
             sc.ch = c1;
             c.Member = sc;
         }
     }
 
-    public String identifier()
+    public String Identifier()
     {
         Token t;
-        t = jj_consume_token(IDENTIFIER);
+        t = cc_consume_token(IDENTIFIER);
         { if (true) return t.image; }
         throw new Error("Missing return statement in function");
     }
@@ -1713,68 +1706,68 @@ public class CSharpCCParser : CSharpCCParserInternals
      */
     public Token JavaIdentifier()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case IDENTIFIER:
-                jj_consume_token(IDENTIFIER);
+                cc_consume_token(IDENTIFIER);
                 break;
             case _LOOKAHEAD:
-                jj_consume_token(_LOOKAHEAD);
+                cc_consume_token(_LOOKAHEAD);
                 break;
             case _IGNORE_CASE:
-                jj_consume_token(_IGNORE_CASE);
+                cc_consume_token(_IGNORE_CASE);
                 break;
             case _PARSER_BEGIN:
-                jj_consume_token(_PARSER_BEGIN);
+                cc_consume_token(_PARSER_BEGIN);
                 break;
             case _PARSER_END:
-                jj_consume_token(_PARSER_END);
+                cc_consume_token(_PARSER_END);
                 break;
             case _JAVACODE:
-                jj_consume_token(_JAVACODE);
+                cc_consume_token(_JAVACODE);
                 break;
             case _TOKEN:
-                jj_consume_token(_TOKEN);
+                cc_consume_token(_TOKEN);
                 break;
             case _SPECIAL_TOKEN:
-                jj_consume_token(_SPECIAL_TOKEN);
+                cc_consume_token(_SPECIAL_TOKEN);
                 break;
             case _MORE:
-                jj_consume_token(_MORE);
+                cc_consume_token(_MORE);
                 break;
             case _SKIP:
-                jj_consume_token(_SKIP);
+                cc_consume_token(_SKIP);
                 break;
             case _TOKEN_MGR_DECLS:
-                jj_consume_token(_TOKEN_MGR_DECLS);
+                cc_consume_token(_TOKEN_MGR_DECLS);
                 break;
             case _EOF:
-                jj_consume_token(_EOF);
+                cc_consume_token(_EOF);
                 break;
             case TEMPLATE:
-                jj_consume_token(TEMPLATE);
+                cc_consume_token(TEMPLATE);
                 break;
             case 139:
-                jj_consume_token(139);
+                cc_consume_token(139);
                 break;
             case 140:
-                jj_consume_token(140);
+                cc_consume_token(140);
                 break;
             case 141:
-                jj_consume_token(141);
+                cc_consume_token(141);
                 break;
             case 142:
-                jj_consume_token(142);
+                cc_consume_token(142);
                 break;
             case 143:
-                jj_consume_token(143);
+                cc_consume_token(143);
                 break;
             case 144:
-                jj_consume_token(144);
+                cc_consume_token(144);
                 break;
             default:
-                jj_la1[51] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[51] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
         Token retval = GetToken(0);
@@ -1800,13 +1793,13 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_15:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case IMPORT:
                     ;
                     break;
                 default:
-                    jj_la1[52] = jj_gen;
+                    cc_la1[52] = cc_gen;
                     goto label_16;
             }
             ImportDeclaration();
@@ -1814,7 +1807,7 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_16:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case ABSTRACT:
                 case CLASS:
@@ -1835,7 +1828,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                     ;
                     break;
                 default:
-                    jj_la1[53] = jj_gen;
+                    cc_la1[53] = cc_gen;
                     goto label_16_exit;
             }
             TypeDeclaration();
@@ -1850,35 +1843,35 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void PackageDeclaration()
     {
         Modifiers();
-        jj_consume_token(PACKAGE);
+        cc_consume_token(PACKAGE);
         Name(null);
-        jj_consume_token(SEMICOLON);
+        cc_consume_token(SEMICOLON);
     }
 
     public void ImportDeclaration()
     {
-        jj_consume_token(IMPORT);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        cc_consume_token(IMPORT);
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case STATIC:
-                jj_consume_token(STATIC);
+                cc_consume_token(STATIC);
                 break;
             default:
-                jj_la1[54] = jj_gen;
+                cc_la1[54] = cc_gen;
                 break;
         }
         Name(null);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case DOT:
-                jj_consume_token(DOT);
-                jj_consume_token(STAR);
+                cc_consume_token(DOT);
+                cc_consume_token(STAR);
                 break;
             default:
-                jj_la1[55] = jj_gen;
+                cc_la1[55] = cc_gen;
                 break;
         }
-        jj_consume_token(SEMICOLON);
+        cc_consume_token(SEMICOLON);
     }
 
     /*
@@ -1900,62 +1893,62 @@ public class CSharpCCParser : CSharpCCParserInternals
             {
                 goto label_17_exit;
             }
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case PUBLIC:
-                    jj_consume_token(PUBLIC);
+                    cc_consume_token(PUBLIC);
                     modifiers |= ModifierSet.PUBLIC;
                     break;
                 case STATIC:
-                    jj_consume_token(STATIC);
+                    cc_consume_token(STATIC);
                     modifiers |= ModifierSet.STATIC;
                     break;
                 case PROTECTED:
-                    jj_consume_token(PROTECTED);
+                    cc_consume_token(PROTECTED);
                     modifiers |= ModifierSet.PROTECTED;
                     break;
                 case PRIVATE:
-                    jj_consume_token(PRIVATE);
+                    cc_consume_token(PRIVATE);
                     modifiers |= ModifierSet.PRIVATE;
                     break;
                 case FINAL:
-                    jj_consume_token(FINAL);
+                    cc_consume_token(FINAL);
                     modifiers |= ModifierSet.FINAL;
                     break;
                 case ABSTRACT:
-                    jj_consume_token(ABSTRACT);
+                    cc_consume_token(ABSTRACT);
                     modifiers |= ModifierSet.ABSTRACT;
                     break;
                 case SYNCHRONIZED:
-                    jj_consume_token(SYNCHRONIZED);
+                    cc_consume_token(SYNCHRONIZED);
                     modifiers |= ModifierSet.SYNCHRONIZED;
                     break;
                 case NATIVE:
-                    jj_consume_token(NATIVE);
+                    cc_consume_token(NATIVE);
                     modifiers |= ModifierSet.NATIVE;
                     break;
                 case TRANSIENT:
-                    jj_consume_token(TRANSIENT);
+                    cc_consume_token(TRANSIENT);
                     modifiers |= ModifierSet.TRANSIENT;
                     break;
                 case VOLATILE:
-                    jj_consume_token(VOLATILE);
+                    cc_consume_token(VOLATILE);
                     modifiers |= ModifierSet.VOLATILE;
                     break;
                 case STRICTFP:
-                    jj_consume_token(STRICTFP);
+                    cc_consume_token(STRICTFP);
                     modifiers |= ModifierSet.STRICTFP;
                     break;
                 case 150:
                     Annotation();
                     break;
                 default:
-                    jj_la1[56] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[56] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
-        label_17_exit:
+    label_17_exit:
         { if (true) return modifiers; }
         throw new Error("Missing return statement in function");
     }
@@ -1966,10 +1959,10 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void TypeDeclaration()
     {
         int modifiers;
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case SEMICOLON:
-                jj_consume_token(SEMICOLON);
+                cc_consume_token(SEMICOLON);
                 break;
             case ABSTRACT:
             case CLASS:
@@ -1987,7 +1980,7 @@ public class CSharpCCParser : CSharpCCParserInternals
             case VOLATILE:
             case 150:
                 modifiers = Modifiers();
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case CLASS:
                     case INTERFACE:
@@ -2000,14 +1993,14 @@ public class CSharpCCParser : CSharpCCParserInternals
                         AnnotationTypeDeclaration(modifiers);
                         break;
                     default:
-                        jj_la1[57] = jj_gen;
-                        jj_consume_token(-1);
+                        cc_la1[57] = cc_gen;
+                        cc_consume_token(-1);
                         throw new ParseException();
                 }
                 break;
             default:
-                jj_la1[58] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[58] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
@@ -2018,47 +2011,47 @@ public class CSharpCCParser : CSharpCCParserInternals
         class_nesting++;
         Token t;
         bool is_parser_class = false;
-        tokens ??= new ();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        tokens ??= new();
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case CLASS:
-                jj_consume_token(CLASS);
+                cc_consume_token(CLASS);
                 break;
             case INTERFACE:
-                jj_consume_token(INTERFACE);
+                cc_consume_token(INTERFACE);
                 isInterface = true;
                 break;
             default:
-                jj_la1[59] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[59] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
         t = JavaIdentifier();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case LANGLE:
                 TypeParameters();
                 break;
             default:
-                jj_la1[60] = jj_gen;
+                cc_la1[60] = cc_gen;
                 break;
         }
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case EXTENDS:
                 ExtendsList(isInterface);
                 break;
             default:
-                jj_la1[61] = jj_gen;
+                cc_la1[61] = cc_gen;
                 break;
         }
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case IMPLEMENTS:
                 ImplementsList(isInterface);
                 break;
             default:
-                jj_la1[62] = jj_gen;
+                cc_la1[62] = cc_gen;
                 break;
         }
         if (t.image.Equals(parser_class_name) && class_nesting == 1 && processing_cu)
@@ -2077,46 +2070,46 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void ExtendsList(bool isInterface)
     {
         bool extendsMoreThanOne = false;
-        jj_consume_token(EXTENDS);
+        cc_consume_token(EXTENDS);
         ClassOrInterfaceType();
     label_18:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case COMMA:
                     ;
                     break;
                 default:
-                    jj_la1[63] = jj_gen;
+                    cc_la1[63] = cc_gen;
                     goto label_18_exit;
             }
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             ClassOrInterfaceType();
             extendsMoreThanOne = true;
         }
-        label_18_exit:
+    label_18_exit:
         if (extendsMoreThanOne && !isInterface)
         { if (true) throw new ParseException("A class cannot extend more than one other class"); }
     }
 
     public void ImplementsList(bool isInterface)
     {
-        jj_consume_token(IMPLEMENTS);
+        cc_consume_token(IMPLEMENTS);
         ClassOrInterfaceType();
     label_19:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case COMMA:
                     ;
                     break;
                 default:
-                    jj_la1[64] = jj_gen;
+                    cc_la1[64] = cc_gen;
                     goto label_19_exit;
             }
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             ClassOrInterfaceType();
         }
     label_19_exit:
@@ -2126,15 +2119,15 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void EnumDeclaration(int modifiers)
     {
-        jj_consume_token(ENUM);
+        cc_consume_token(ENUM);
         JavaIdentifier();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case IMPLEMENTS:
                 ImplementsList(false);
                 break;
             default:
-                jj_la1[65] = jj_gen;
+                cc_la1[65] = cc_gen;
                 break;
         }
         EnumBody();
@@ -2142,8 +2135,8 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void EnumBody()
     {
-        jj_consume_token(LBRACE);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        cc_consume_token(LBRACE);
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -2171,7 +2164,7 @@ public class CSharpCCParser : CSharpCCParserInternals
             case 139:
             case 140:
             case 141:
-            case 142: 
+            case 142:
             case 143:
             case 144:
             case 150:
@@ -2188,33 +2181,33 @@ public class CSharpCCParser : CSharpCCParserInternals
                     {
                         goto label_20_exit;
                     }
-                    jj_consume_token(COMMA);
+                    cc_consume_token(COMMA);
                     EnumConstant();
                 }
             label_20_exit:
                 break;
             default:
-                jj_la1[66] = jj_gen;
-                                break;
+                cc_la1[66] = cc_gen;
+                break;
 
         }
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case COMMA:
-                jj_consume_token(COMMA);
+                cc_consume_token(COMMA);
                 break;
             default:
-                jj_la1[67] = jj_gen;
+                cc_la1[67] = cc_gen;
                 break;
         }
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case SEMICOLON:
-                jj_consume_token(SEMICOLON);
+                cc_consume_token(SEMICOLON);
             label_21:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -2267,7 +2260,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                             ;
                             break;
                         default:
-                            jj_la1[68] = jj_gen;
+                            cc_la1[68] = cc_gen;
                             goto label_21_exit;
                     }
                     ClassOrInterfaceBodyDeclaration(false);
@@ -2275,90 +2268,90 @@ public class CSharpCCParser : CSharpCCParserInternals
             label_21_exit:
                 break;
             default:
-                jj_la1[69] = jj_gen;
+                cc_la1[69] = cc_gen;
                 break;
         }
-        jj_consume_token(RBRACE);
+        cc_consume_token(RBRACE);
     }
 
     public void EnumConstant()
     {
         Modifiers();
         JavaIdentifier();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case LPAREN:
                 Arguments(null);
                 break;
             default:
-                jj_la1[70] = jj_gen;
+                cc_la1[70] = cc_gen;
                 break;
         }
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case LBRACE:
                 ClassOrInterfaceBody(false, null);
                 break;
             default:
-                jj_la1[71] = jj_gen;
+                cc_la1[71] = cc_gen;
                 break;
         }
     }
 
     public void TypeParameters()
     {
-        jj_consume_token(LANGLE);
+        cc_consume_token(LANGLE);
         TypeParameter();
     label_22:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case COMMA:
                     ;
                     break;
                 default:
-                    jj_la1[72] = jj_gen;
+                    cc_la1[72] = cc_gen;
                     goto label_22_exit;
             }
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             TypeParameter();
         }
     label_22_exit:
-        jj_consume_token(RANGLE);
+        cc_consume_token(RANGLE);
     }
 
     public void TypeParameter()
     {
         JavaIdentifier();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case EXTENDS:
                 TypeBound();
                 break;
             default:
-                jj_la1[73] = jj_gen;
+                cc_la1[73] = cc_gen;
                 break;
         }
     }
 
     public void TypeBound()
     {
-        jj_consume_token(EXTENDS);
+        cc_consume_token(EXTENDS);
         ClassOrInterfaceType();
     label_23:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case BIT_AND:
                     ;
                     break;
                 default:
-                    jj_la1[74] = jj_gen;
+                    cc_la1[74] = cc_gen;
                     goto label_23_exit;
             }
-            jj_consume_token(BIT_AND);
+            cc_consume_token(BIT_AND);
             ClassOrInterfaceType();
         }
     label_23_exit:
@@ -2368,13 +2361,13 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void ClassOrInterfaceBody(bool isInterface, List<Token> tokens)
     {
         Token first, last;
-        tokens ??= new ();
-        jj_consume_token(LBRACE);
+        tokens ??= new();
+        cc_consume_token(LBRACE);
         first = GetToken(1);
     label_24:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -2427,14 +2420,14 @@ public class CSharpCCParser : CSharpCCParserInternals
                     ;
                     break;
                 default:
-                    jj_la1[75] = jj_gen;
+                    cc_la1[75] = cc_gen;
                     goto label_24_exit;
             }
             ClassOrInterfaceBodyDeclaration(isInterface);
         }
     label_24_exit:
         last = GetToken(0);
-        jj_consume_token(RBRACE);
+        cc_consume_token(RBRACE);
         if (last.next != first)
         { // i.e., this is not an empty sequence
             Token t = first;
@@ -2458,7 +2451,7 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -2507,7 +2500,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                 case 150:
                 case IDENTIFIER:
                     modifiers = Modifiers();
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case CLASS:
                         case INTERFACE:
@@ -2517,7 +2510,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                             EnumDeclaration(modifiers);
                             break;
                         default:
-                            jj_la1[76] = jj_gen;
+                            cc_la1[76] = cc_gen;
                             if (jj_2_10(2147483647))
                             {
                                 ConstructorDeclaration();
@@ -2528,7 +2521,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                             }
                             else
                             {
-                                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                                 {
                                     case BOOLEAN:
                                     case BYTE:
@@ -2547,8 +2540,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                                         MethodDeclaration(modifiers);
                                         break;
                                     default:
-                                        jj_la1[77] = jj_gen;
-                                        jj_consume_token(-1);
+                                        cc_la1[77] = cc_gen;
+                                        cc_consume_token(-1);
                                         throw new ParseException();
                                 }
                             }
@@ -2556,11 +2549,11 @@ public class CSharpCCParser : CSharpCCParserInternals
                     }
                     break;
                 case SEMICOLON:
-                    jj_consume_token(SEMICOLON);
+                    cc_consume_token(SEMICOLON);
                     break;
                 default:
-                    jj_la1[78] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[78] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
@@ -2573,33 +2566,33 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_25:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case COMMA:
                     ;
                     break;
                 default:
-                    jj_la1[79] = jj_gen;
+                    cc_la1[79] = cc_gen;
                     goto label_25_exit;
             }
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             VariableDeclarator();
         }
     label_25_exit:
-        jj_consume_token(SEMICOLON);
+        cc_consume_token(SEMICOLON);
     }
 
     public void VariableDeclarator()
     {
         VariableDeclaratorId();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case ASSIGN:
-                jj_consume_token(ASSIGN);
+                cc_consume_token(ASSIGN);
                 VariableInitializer();
                 break;
             default:
-                jj_la1[80] = jj_gen;
+                cc_la1[80] = cc_gen;
                 break;
         }
     }
@@ -2610,17 +2603,17 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_26:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case LBRACKET:
                     ;
                     break;
                 default:
-                    jj_la1[81] = jj_gen;
+                    cc_la1[81] = cc_gen;
                     goto label_26_exit;
             }
-            jj_consume_token(LBRACKET);
-            jj_consume_token(RBRACKET);
+            cc_consume_token(LBRACKET);
+            cc_consume_token(RBRACKET);
         }
     label_26_exit:
         ;
@@ -2628,7 +2621,7 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void VariableInitializer()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case LBRACE:
                 ArrayInitializer();
@@ -2683,16 +2676,16 @@ public class CSharpCCParser : CSharpCCParserInternals
                 Expression(null);
                 break;
             default:
-                jj_la1[82] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[82] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
     public void ArrayInitializer()
     {
-        jj_consume_token(LBRACE);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        cc_consume_token(LBRACE);
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -2754,61 +2747,61 @@ public class CSharpCCParser : CSharpCCParserInternals
                     {
                         goto label_27_exit;
                     }
-                    jj_consume_token(COMMA);
+                    cc_consume_token(COMMA);
                     VariableInitializer();
                 }
             label_27_exit:
                 break;
             default:
-                jj_la1[83] = jj_gen;
+                cc_la1[83] = cc_gen;
                 break;
         }
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case COMMA:
-                jj_consume_token(COMMA);
+                cc_consume_token(COMMA);
                 break;
             default:
-                jj_la1[84] = jj_gen;
+                cc_la1[84] = cc_gen;
                 break;
         }
-        jj_consume_token(RBRACE);
+        cc_consume_token(RBRACE);
     }
 
     public void MethodDeclaration(int modifiers)
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case LANGLE:
                 TypeParameters();
                 break;
             default:
-                jj_la1[85] = jj_gen;
+                cc_la1[85] = cc_gen;
                 break;
         }
         ResultType(null);
         MethodDeclarator();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case THROWS:
-                jj_consume_token(THROWS);
+                cc_consume_token(THROWS);
                 NameList();
                 break;
             default:
-                jj_la1[86] = jj_gen;
+                cc_la1[86] = cc_gen;
                 break;
         }
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case LBRACE:
                 Block(null);
                 break;
             case SEMICOLON:
-                jj_consume_token(SEMICOLON);
+                cc_consume_token(SEMICOLON);
                 break;
             default:
-                jj_la1[87] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[87] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
@@ -2820,17 +2813,17 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_28:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case LBRACKET:
                     ;
                     break;
                 default:
-                    jj_la1[88] = jj_gen;
+                    cc_la1[88] = cc_gen;
                     goto label_28_exit;
             }
-            jj_consume_token(LBRACKET);
-            jj_consume_token(RBRACKET);
+            cc_consume_token(LBRACKET);
+            cc_consume_token(RBRACKET);
         }
     label_28_exit:
         ;
@@ -2839,10 +2832,10 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void FormalParameters(List<Token> tokens)
     {
         Token first, last;
-        tokens ??= new ();
-        jj_consume_token(LPAREN);
+        tokens ??= new();
+        cc_consume_token(LPAREN);
         first = GetToken(1);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case ABSTRACT:
             case BOOLEAN:
@@ -2871,26 +2864,26 @@ public class CSharpCCParser : CSharpCCParserInternals
             label_29:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case COMMA:
                             ;
                             break;
                         default:
-                            jj_la1[89] = jj_gen;
+                            cc_la1[89] = cc_gen;
                             goto label_29_exit;
                     }
-                    jj_consume_token(COMMA);
+                    cc_consume_token(COMMA);
                     FormalParameter();
                 }
             label_29_exit:
                 break;
             default:
-                jj_la1[90] = jj_gen;
+                cc_la1[90] = cc_gen;
                 break;
         }
         last = GetToken(0);
-        jj_consume_token(RPAREN);
+        cc_consume_token(RPAREN);
         if (last.next != first)
         { // i.e., this is not an empty sequence
             Token t = first;
@@ -2908,41 +2901,41 @@ public class CSharpCCParser : CSharpCCParserInternals
         Token t;
         Modifiers();
         Type();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case STAR:
             case BIT_AND:
             case 145:
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case STAR:
                     case BIT_AND:
-                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                         {
                             case BIT_AND:
-                                t = jj_consume_token(BIT_AND);
+                                t = cc_consume_token(BIT_AND);
                                 break;
                             case STAR:
-                                t = jj_consume_token(STAR);
+                                t = cc_consume_token(STAR);
                                 break;
                             default:
-                                jj_la1[91] = jj_gen;
-                                jj_consume_token(-1);
+                                cc_la1[91] = cc_gen;
+                                cc_consume_token(-1);
                                 throw new ParseException();
                         }
-                        if (!isAllowed(t)) { if (true) throw new ParseException(t.image + " is invalid in this context"); }
+                        if (!IsAllowed(t)) { if (true) throw new ParseException(t.image + " is invalid in this context"); }
                         break;
                     case 145:
-                        jj_consume_token(145);
+                        cc_consume_token(145);
                         break;
                     default:
-                        jj_la1[92] = jj_gen;
-                        jj_consume_token(-1);
+                        cc_la1[92] = cc_gen;
+                        cc_consume_token(-1);
                         throw new ParseException();
                 }
                 break;
             default:
-                jj_la1[93] = jj_gen;
+                cc_la1[93] = cc_gen;
                 break;
         }
         VariableDeclaratorId();
@@ -2950,28 +2943,28 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void ConstructorDeclaration()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case LANGLE:
                 TypeParameters();
                 break;
             default:
-                jj_la1[94] = jj_gen;
+                cc_la1[94] = cc_gen;
                 break;
         }
         JavaIdentifier();
         FormalParameters(null);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case THROWS:
-                jj_consume_token(THROWS);
+                cc_consume_token(THROWS);
                 NameList();
                 break;
             default:
-                jj_la1[95] = jj_gen;
+                cc_la1[95] = cc_gen;
                 break;
         }
-        jj_consume_token(LBRACE);
+        cc_consume_token(LBRACE);
         if (jj_2_14(2147483647))
         {
             ExplicitConstructorInvocation();
@@ -2983,7 +2976,7 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_30:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -3058,26 +3051,26 @@ public class CSharpCCParser : CSharpCCParserInternals
                     ;
                     break;
                 default:
-                    jj_la1[96] = jj_gen;
+                    cc_la1[96] = cc_gen;
                     goto label_30_exit;
             }
             BlockStatement();
         }
     label_30_exit:
-        jj_consume_token(RBRACE);
+        cc_consume_token(RBRACE);
     }
 
     public void ExplicitConstructorInvocation()
     {
         if (jj_2_16(2147483647))
         {
-            jj_consume_token(THIS);
+            cc_consume_token(THIS);
             Arguments(null);
-            jj_consume_token(SEMICOLON);
+            cc_consume_token(SEMICOLON);
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -3123,19 +3116,19 @@ public class CSharpCCParser : CSharpCCParserInternals
                     if (jj_2_15(2))
                     {
                         PrimaryExpression();
-                        jj_consume_token(DOT);
+                        cc_consume_token(DOT);
                     }
                     else
                     {
                         ;
                     }
-                    jj_consume_token(SUPER);
+                    cc_consume_token(SUPER);
                     Arguments(null);
-                    jj_consume_token(SEMICOLON);
+                    cc_consume_token(SEMICOLON);
                     break;
                 default:
-                    jj_la1[97] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[97] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
@@ -3143,13 +3136,13 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void Initializer()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case STATIC:
-                jj_consume_token(STATIC);
+                cc_consume_token(STATIC);
                 break;
             default:
-                jj_la1[98] = jj_gen;
+                cc_la1[98] = cc_gen;
                 break;
         }
         Block(null);
@@ -3166,7 +3159,7 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case BOOLEAN:
                 case BYTE:
@@ -3179,8 +3172,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                     PrimitiveType();
                     break;
                 default:
-                    jj_la1[99] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[99] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
@@ -3188,7 +3181,7 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void ReferenceType()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case BOOLEAN:
             case BYTE:
@@ -3202,8 +3195,8 @@ public class CSharpCCParser : CSharpCCParserInternals
             label_31:
                 while (true)
                 {
-                    jj_consume_token(LBRACKET);
-                    jj_consume_token(RBRACKET);
+                    cc_consume_token(LBRACKET);
+                    cc_consume_token(RBRACKET);
                     if (jj_2_18(2))
                     {
                         ;
@@ -3218,13 +3211,13 @@ public class CSharpCCParser : CSharpCCParserInternals
             case TEMPLATE:
             case DOUBLECOLON:
             case IDENTIFIER:
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case TEMPLATE:
                         Template();
                         break;
                     default:
-                        jj_la1[100] = jj_gen;
+                        cc_la1[100] = cc_gen;
                         break;
                 }
                 ClassOrInterfaceType();
@@ -3239,86 +3232,86 @@ public class CSharpCCParser : CSharpCCParserInternals
                     {
                         goto label_32_exit;
                     }
-                    jj_consume_token(LBRACKET);
-                    jj_consume_token(RBRACKET);
+                    cc_consume_token(LBRACKET);
+                    cc_consume_token(RBRACKET);
                 }
             label_32_exit:
                 break;
             default:
-                jj_la1[101] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[101] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
     public void Template()
     {
-        jj_consume_token(TEMPLATE);
-        jj_consume_token(LANGLE);
+        cc_consume_token(TEMPLATE);
+        cc_consume_token(LANGLE);
         TemplateBase();
     label_33:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case COMMA:
                     ;
                     break;
                 default:
-                    jj_la1[102] = jj_gen;
+                    cc_la1[102] = cc_gen;
                     goto label_33_exit;
             }
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             TemplateBase();
         }
     label_33_exit:
-        jj_consume_token(RANGLE);
+        cc_consume_token(RANGLE);
     }
 
     public void TemplateBase()
     {
         TemplatePack();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case 145:
-                jj_consume_token(145);
+                cc_consume_token(145);
                 break;
             default:
-                jj_la1[103] = jj_gen;
+                cc_la1[103] = cc_gen;
                 break;
         }
-        jj_consume_token(IDENTIFIER);
+        cc_consume_token(IDENTIFIER);
     }
 
     public void TemplatePack()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case CLASS:
-                jj_consume_token(CLASS);
+                cc_consume_token(CLASS);
                 break;
             case TYPENAME:
-                jj_consume_token(TYPENAME);
+                cc_consume_token(TYPENAME);
                 break;
             default:
-                jj_la1[104] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[104] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
     public void ClassOrInterfaceType()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case DOUBLECOLON:
-                jj_consume_token(DOUBLECOLON);
+                cc_consume_token(DOUBLECOLON);
                 break;
             default:
-                jj_la1[105] = jj_gen;
+                cc_la1[105] = cc_gen;
                 break;
         }
-        jj_consume_token(IDENTIFIER);
+        cc_consume_token(IDENTIFIER);
         if (jj_2_20(2))
         {
             TypeArguments(null);
@@ -3338,20 +3331,20 @@ public class CSharpCCParser : CSharpCCParserInternals
             {
                 goto label_34_exit;
             }
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case DOT:
-                    jj_consume_token(DOT);
+                    cc_consume_token(DOT);
                     break;
                 case DOUBLECOLON:
-                    jj_consume_token(DOUBLECOLON);
+                    cc_consume_token(DOUBLECOLON);
                     break;
                 default:
-                    jj_la1[106] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[106] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
-            jj_consume_token(IDENTIFIER);
+            cc_consume_token(IDENTIFIER);
             if (jj_2_22(2))
             {
                 TypeArguments(null);
@@ -3368,10 +3361,10 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void TypeArguments(List<Token> tokens)
     {
         Token first, last;
-        tokens ??= new ();
-        jj_consume_token(LANGLE);
+        tokens ??= new();
+        cc_consume_token(LANGLE);
         first = GetToken(0);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case BOOLEAN:
             case BYTE:
@@ -3389,34 +3382,34 @@ public class CSharpCCParser : CSharpCCParserInternals
             label_35:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case COMMA:
                             ;
                             break;
                         default:
-                            jj_la1[107] = jj_gen;
+                            cc_la1[107] = cc_gen;
                             goto label_35_exit;
                     }
-                    jj_consume_token(COMMA);
+                    cc_consume_token(COMMA);
                     TypeArgument();
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case 145:
-                            jj_consume_token(145);
+                            cc_consume_token(145);
                             break;
                         default:
-                            jj_la1[108] = jj_gen;
+                            cc_la1[108] = cc_gen;
                             break;
                     }
                 }
             label_35_exit:
                 break;
             default:
-                jj_la1[109] = jj_gen;
+                cc_la1[109] = cc_gen;
                 break;
         }
-        jj_consume_token(RANGLE);
+        cc_consume_token(RANGLE);
         last = GetToken(0);
         if (last.next != first)
         { // i.e., this is not an empty sequence
@@ -3432,7 +3425,7 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void TypeArgument()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case BOOLEAN:
             case BYTE:
@@ -3448,75 +3441,75 @@ public class CSharpCCParser : CSharpCCParserInternals
                 ReferenceType();
                 break;
             case HOOK:
-                jj_consume_token(HOOK);
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                cc_consume_token(HOOK);
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case EXTENDS:
                     case SUPER:
                         WildcardBounds();
                         break;
                     default:
-                        jj_la1[110] = jj_gen;
+                        cc_la1[110] = cc_gen;
                         break;
                 }
                 break;
             default:
-                jj_la1[111] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[111] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
     public void WildcardBounds()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case EXTENDS:
-                jj_consume_token(EXTENDS);
+                cc_consume_token(EXTENDS);
                 ReferenceType();
                 break;
             case SUPER:
-                jj_consume_token(SUPER);
+                cc_consume_token(SUPER);
                 ReferenceType();
                 break;
             default:
-                jj_la1[112] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[112] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
     public void PrimitiveType()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case BOOLEAN:
-                jj_consume_token(BOOLEAN);
+                cc_consume_token(BOOLEAN);
                 break;
             case CHAR:
-                jj_consume_token(CHAR);
+                cc_consume_token(CHAR);
                 break;
             case BYTE:
-                jj_consume_token(BYTE);
+                cc_consume_token(BYTE);
                 break;
             case SHORT:
-                jj_consume_token(SHORT);
+                cc_consume_token(SHORT);
                 break;
             case INT:
-                jj_consume_token(INT);
+                cc_consume_token(INT);
                 break;
             case LONG:
-                jj_consume_token(LONG);
+                cc_consume_token(LONG);
                 break;
             case FLOAT:
-                jj_consume_token(FLOAT);
+                cc_consume_token(FLOAT);
                 break;
             case DOUBLE:
-                jj_consume_token(DOUBLE);
+                cc_consume_token(DOUBLE);
                 break;
             default:
-                jj_la1[113] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[113] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
@@ -3524,18 +3517,18 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void ResultType(List<Token> tokens)
     {
         Token first = GetToken(1);
-        tokens ??= new ();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        tokens ??= new();
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case VOID:
-                jj_consume_token(VOID);
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                cc_consume_token(VOID);
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case STAR:
-                        jj_consume_token(STAR);
+                        cc_consume_token(STAR);
                         break;
                     default:
-                        jj_la1[114] = jj_gen;
+                        cc_la1[114] = cc_gen;
                         break;
                 }
                 break;
@@ -3551,42 +3544,42 @@ public class CSharpCCParser : CSharpCCParserInternals
             case TEMPLATE:
             case DOUBLECOLON:
             case IDENTIFIER:
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case CONST:
-                        jj_consume_token(CONST);
+                        cc_consume_token(CONST);
                         break;
                     default:
-                        jj_la1[115] = jj_gen;
+                        cc_la1[115] = cc_gen;
                         break;
                 }
                 Type();
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case STAR:
                     case BIT_AND:
-                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                         {
                             case STAR:
-                                jj_consume_token(STAR);
+                                cc_consume_token(STAR);
                                 break;
                             case BIT_AND:
-                                jj_consume_token(BIT_AND);
+                                cc_consume_token(BIT_AND);
                                 break;
                             default:
-                                jj_la1[116] = jj_gen;
-                                jj_consume_token(-1);
+                                cc_la1[116] = cc_gen;
+                                cc_consume_token(-1);
                                 throw new ParseException();
                         }
                         break;
                     default:
-                        jj_la1[117] = jj_gen;
+                        cc_la1[117] = cc_gen;
                         break;
                 }
                 break;
             default:
-                jj_la1[118] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[118] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
         Token last = GetToken(0);
@@ -3594,7 +3587,7 @@ public class CSharpCCParser : CSharpCCParserInternals
         while (true)
         {
             var i = t.image;
-            if (isAllowed(t))
+            if (IsAllowed(t))
             {
                 tokens.Add(t);
                 if (t == last) break;
@@ -3609,7 +3602,7 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void Name(List<Token> tokens)
     {
-        tokens ??= new ();
+        tokens ??= new();
         Token first = GetToken(1);
         JavaIdentifier();
     label_36:
@@ -3623,7 +3616,7 @@ public class CSharpCCParser : CSharpCCParserInternals
             {
                 goto label_36_exit;
             }
-            jj_consume_token(DOT);
+            cc_consume_token(DOT);
             JavaIdentifier();
         }
     label_36_exit:
@@ -3643,16 +3636,16 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_37:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case COMMA:
                     ;
                     break;
                 default:
-                    jj_la1[119] = jj_gen;
+                    cc_la1[119] = cc_gen;
                     goto label_37_exit;
             }
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             Name(null);
         }
     label_37_exit:
@@ -3665,7 +3658,7 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void Expression(List<Token> tokens)
     {
         Token first = GetToken(1);
-        tokens ??= new ();
+        tokens ??= new();
         ConditionalExpression();
         if (jj_2_24(2))
         {
@@ -3688,47 +3681,47 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void AssignmentOperator()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case ASSIGN:
-                jj_consume_token(ASSIGN);
+                cc_consume_token(ASSIGN);
                 break;
             case STARASSIGN:
-                jj_consume_token(STARASSIGN);
+                cc_consume_token(STARASSIGN);
                 break;
             case SLASHASSIGN:
-                jj_consume_token(SLASHASSIGN);
+                cc_consume_token(SLASHASSIGN);
                 break;
             case REMASSIGN:
-                jj_consume_token(REMASSIGN);
+                cc_consume_token(REMASSIGN);
                 break;
             case PLUSASSIGN:
-                jj_consume_token(PLUSASSIGN);
+                cc_consume_token(PLUSASSIGN);
                 break;
             case MINUSASSIGN:
-                jj_consume_token(MINUSASSIGN);
+                cc_consume_token(MINUSASSIGN);
                 break;
             case 146:
-                jj_consume_token(146);
+                cc_consume_token(146);
                 break;
             case 147:
-                jj_consume_token(147);
+                cc_consume_token(147);
                 break;
             case 148:
-                jj_consume_token(148);
+                cc_consume_token(148);
                 break;
             case ANDASSIGN:
-                jj_consume_token(ANDASSIGN);
+                cc_consume_token(ANDASSIGN);
                 break;
             case XORASSIGN:
-                jj_consume_token(XORASSIGN);
+                cc_consume_token(XORASSIGN);
                 break;
             case ORASSIGN:
-                jj_consume_token(ORASSIGN);
+                cc_consume_token(ORASSIGN);
                 break;
             default:
-                jj_la1[120] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[120] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
@@ -3736,16 +3729,16 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void ConditionalExpression()
     {
         ConditionalOrExpression();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case HOOK:
-                jj_consume_token(HOOK);
+                cc_consume_token(HOOK);
                 Expression(null);
-                jj_consume_token(COLON);
+                cc_consume_token(COLON);
                 Expression(null);
                 break;
             default:
-                jj_la1[121] = jj_gen;
+                cc_la1[121] = cc_gen;
                 break;
         }
     }
@@ -3756,16 +3749,16 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_38:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case SC_OR:
                     ;
                     break;
                 default:
-                    jj_la1[122] = jj_gen;
+                    cc_la1[122] = cc_gen;
                     goto label_38_exit;
             }
-            jj_consume_token(SC_OR);
+            cc_consume_token(SC_OR);
             ConditionalAndExpression();
         }
     label_38_exit:
@@ -3778,16 +3771,16 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_39:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case SC_AND:
                     ;
                     break;
                 default:
-                    jj_la1[123] = jj_gen;
+                    cc_la1[123] = cc_gen;
                     goto label_39_exit;
             }
-            jj_consume_token(SC_AND);
+            cc_consume_token(SC_AND);
             InclusiveOrExpression();
         }
     label_39_exit:
@@ -3800,16 +3793,16 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_40:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case BIT_OR:
                     ;
                     break;
                 default:
-                    jj_la1[124] = jj_gen;
+                    cc_la1[124] = cc_gen;
                     goto label_40_exit;
             }
-            jj_consume_token(BIT_OR);
+            cc_consume_token(BIT_OR);
             ExclusiveOrExpression();
         }
     label_40_exit:
@@ -3822,16 +3815,16 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_41:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case XOR:
                     ;
                     break;
                 default:
-                    jj_la1[125] = jj_gen;
+                    cc_la1[125] = cc_gen;
                     goto label_41_exit;
             }
-            jj_consume_token(XOR);
+            cc_consume_token(XOR);
             AndExpression();
         }
     label_41_exit:
@@ -3844,16 +3837,16 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_42:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case BIT_AND:
                     ;
                     break;
                 default:
-                    jj_la1[126] = jj_gen;
+                    cc_la1[126] = cc_gen;
                     goto label_42_exit;
             }
-            jj_consume_token(BIT_AND);
+            cc_consume_token(BIT_AND);
             EqualityExpression();
         }
     label_42_exit:
@@ -3866,27 +3859,27 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_43:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case EQ:
                 case NE:
                     ;
                     break;
                 default:
-                    jj_la1[127] = jj_gen;
+                    cc_la1[127] = cc_gen;
                     goto label_43_exit;
             }
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case EQ:
-                    jj_consume_token(EQ);
+                    cc_consume_token(EQ);
                     break;
                 case NE:
-                    jj_consume_token(NE);
+                    cc_consume_token(NE);
                     break;
                 default:
-                    jj_la1[128] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[128] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
             InstanceOfExpression();
@@ -3898,14 +3891,14 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void InstanceOfExpression()
     {
         RelationalExpression();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case INSTANCEOF:
-                jj_consume_token(INSTANCEOF);
+                cc_consume_token(INSTANCEOF);
                 Type();
                 break;
             default:
-                jj_la1[129] = jj_gen;
+                cc_la1[129] = cc_gen;
                 break;
         }
     }
@@ -3916,7 +3909,7 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_44:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case LANGLE:
                 case LE:
@@ -3925,26 +3918,26 @@ public class CSharpCCParser : CSharpCCParserInternals
                     ;
                     break;
                 default:
-                    jj_la1[130] = jj_gen;
+                    cc_la1[130] = cc_gen;
                     goto label_44_exit;
             }
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case LANGLE:
-                    jj_consume_token(LANGLE);
+                    cc_consume_token(LANGLE);
                     break;
                 case RANGLE:
-                    jj_consume_token(RANGLE);
+                    cc_consume_token(RANGLE);
                     break;
                 case LE:
-                    jj_consume_token(LE);
+                    cc_consume_token(LE);
                     break;
                 case GE:
-                    jj_consume_token(GE);
+                    cc_consume_token(GE);
                     break;
                 default:
-                    jj_la1[131] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[131] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
             ShiftExpression();
@@ -3967,13 +3960,13 @@ public class CSharpCCParser : CSharpCCParserInternals
             {
                 goto label_45_exit;
             }
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case 149:
-                    jj_consume_token(149);
+                    cc_consume_token(149);
                     break;
                 default:
-                    jj_la1[132] = jj_gen;
+                    cc_la1[132] = cc_gen;
                     if (jj_2_26(1))
                     {
                         RSIGNEDSHIFT();
@@ -3984,7 +3977,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                     }
                     else
                     {
-                        jj_consume_token(-1);
+                        cc_consume_token(-1);
                         throw new ParseException();
                     }
                     break;
@@ -4001,27 +3994,27 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_46:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case PLUS:
                 case MINUS:
                     ;
                     break;
                 default:
-                    jj_la1[133] = jj_gen;
+                    cc_la1[133] = cc_gen;
                     goto label_46_exit;
             }
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case PLUS:
-                    jj_consume_token(PLUS);
+                    cc_consume_token(PLUS);
                     break;
                 case MINUS:
-                    jj_consume_token(MINUS);
+                    cc_consume_token(MINUS);
                     break;
                 default:
-                    jj_la1[134] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[134] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
             MultiplicativeExpression();
@@ -4036,7 +4029,7 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_47:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case STAR:
                 case SLASH:
@@ -4044,23 +4037,23 @@ public class CSharpCCParser : CSharpCCParserInternals
                     ;
                     break;
                 default:
-                    jj_la1[135] = jj_gen;
+                    cc_la1[135] = cc_gen;
                     goto label_47_exit;
             }
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case STAR:
-                    jj_consume_token(STAR);
+                    cc_consume_token(STAR);
                     break;
                 case SLASH:
-                    jj_consume_token(SLASH);
+                    cc_consume_token(SLASH);
                     break;
                 case REM:
-                    jj_consume_token(REM);
+                    cc_consume_token(REM);
                     break;
                 default:
-                    jj_la1[136] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[136] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
             UnaryExpression();
@@ -4071,21 +4064,21 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void UnaryExpression()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case PLUS:
             case MINUS:
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case PLUS:
-                        jj_consume_token(PLUS);
+                        cc_consume_token(PLUS);
                         break;
                     case MINUS:
-                        jj_consume_token(MINUS);
+                        cc_consume_token(MINUS);
                         break;
                     default:
-                        jj_la1[137] = jj_gen;
-                        jj_consume_token(-1);
+                        cc_la1[137] = cc_gen;
+                        cc_consume_token(-1);
                         throw new ParseException();
                 }
                 UnaryExpression();
@@ -4142,54 +4135,54 @@ public class CSharpCCParser : CSharpCCParserInternals
                 UnaryExpressionNotPlusMinus();
                 break;
             default:
-                jj_la1[138] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[138] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
     public void PreIncrementExpression()
     {
-        jj_consume_token(INCR);
+        cc_consume_token(INCR);
         PrimaryExpression();
     }
 
     public void PreDecrementExpression()
     {
-        jj_consume_token(DECR);
+        cc_consume_token(DECR);
         PrimaryExpression();
     }
 
     public void UnaryExpressionNotPlusMinus()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case BANG:
             case TILDE:
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case TILDE:
-                        jj_consume_token(TILDE);
+                        cc_consume_token(TILDE);
                         break;
                     case BANG:
-                        jj_consume_token(BANG);
+                        cc_consume_token(BANG);
                         break;
                     default:
-                        jj_la1[139] = jj_gen;
-                        jj_consume_token(-1);
+                        cc_la1[139] = cc_gen;
+                        cc_consume_token(-1);
                         throw new ParseException();
                 }
                 UnaryExpression();
                 break;
             default:
-                jj_la1[140] = jj_gen;
+                cc_la1[140] = cc_gen;
                 if (jj_2_28(2147483647))
                 {
                     CastExpression();
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -4235,8 +4228,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                             PostfixExpression();
                             break;
                         default:
-                            jj_la1[141] = jj_gen;
-                            jj_consume_token(-1);
+                            cc_la1[141] = cc_gen;
+                            cc_consume_token(-1);
                             throw new ParseException();
                     }
                 }
@@ -4251,34 +4244,34 @@ public class CSharpCCParser : CSharpCCParserInternals
     {
         if (jj_2_29(2))
         {
-            jj_consume_token(LPAREN);
+            cc_consume_token(LPAREN);
             PrimitiveType();
         }
         else if (jj_2_30(2147483647))
         {
-            jj_consume_token(LPAREN);
+            cc_consume_token(LPAREN);
             Type();
-            jj_consume_token(LBRACKET);
-            jj_consume_token(RBRACKET);
+            cc_consume_token(LBRACKET);
+            cc_consume_token(RBRACKET);
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case LPAREN:
-                    jj_consume_token(LPAREN);
+                    cc_consume_token(LPAREN);
                     Type();
-                    jj_consume_token(RPAREN);
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    cc_consume_token(RPAREN);
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case TILDE:
-                            jj_consume_token(TILDE);
+                            cc_consume_token(TILDE);
                             break;
                         case BANG:
-                            jj_consume_token(BANG);
+                            cc_consume_token(BANG);
                             break;
                         case LPAREN:
-                            jj_consume_token(LPAREN);
+                            cc_consume_token(LPAREN);
                             break;
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -4302,13 +4295,13 @@ public class CSharpCCParser : CSharpCCParserInternals
                             JavaIdentifier();
                             break;
                         case THIS:
-                            jj_consume_token(THIS);
+                            cc_consume_token(THIS);
                             break;
                         case SUPER:
-                            jj_consume_token(SUPER);
+                            cc_consume_token(SUPER);
                             break;
                         case NEW:
-                            jj_consume_token(NEW);
+                            cc_consume_token(NEW);
                             break;
                         case FALSE:
                         case NULL:
@@ -4320,14 +4313,14 @@ public class CSharpCCParser : CSharpCCParserInternals
                             Literal();
                             break;
                         default:
-                            jj_la1[142] = jj_gen;
-                            jj_consume_token(-1);
+                            cc_la1[142] = cc_gen;
+                            cc_consume_token(-1);
                             throw new ParseException();
                     }
                     break;
                 default:
-                    jj_la1[143] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[143] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
@@ -4336,26 +4329,26 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void PostfixExpression()
     {
         PrimaryExpression();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case INCR:
             case DECR:
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case INCR:
-                        jj_consume_token(INCR);
+                        cc_consume_token(INCR);
                         break;
                     case DECR:
-                        jj_consume_token(DECR);
+                        cc_consume_token(DECR);
                         break;
                     default:
-                        jj_la1[144] = jj_gen;
-                        jj_consume_token(-1);
+                        cc_la1[144] = cc_gen;
+                        cc_consume_token(-1);
                         throw new ParseException();
                 }
                 break;
             default:
-                jj_la1[145] = jj_gen;
+                cc_la1[145] = cc_gen;
                 break;
         }
     }
@@ -4364,24 +4357,24 @@ public class CSharpCCParser : CSharpCCParserInternals
     {
         if (jj_2_31(2147483647))
         {
-            jj_consume_token(LPAREN);
+            cc_consume_token(LPAREN);
             Type();
-            jj_consume_token(RPAREN);
+            cc_consume_token(RPAREN);
             UnaryExpression();
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case LPAREN:
-                    jj_consume_token(LPAREN);
+                    cc_consume_token(LPAREN);
                     Type();
-                    jj_consume_token(RPAREN);
+                    cc_consume_token(RPAREN);
                     UnaryExpressionNotPlusMinus();
                     break;
                 default:
-                    jj_la1[146] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[146] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
@@ -4409,14 +4402,14 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void MemberSelector()
     {
-        jj_consume_token(DOT);
+        cc_consume_token(DOT);
         TypeArguments(null);
         JavaIdentifier();
     }
 
     public void PrimaryPrefix()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case FALSE:
             case NULL:
@@ -4428,32 +4421,32 @@ public class CSharpCCParser : CSharpCCParserInternals
                 Literal();
                 break;
             case THIS:
-                jj_consume_token(THIS);
+                cc_consume_token(THIS);
                 break;
             case SUPER:
-                jj_consume_token(SUPER);
-                jj_consume_token(DOT);
+                cc_consume_token(SUPER);
+                cc_consume_token(DOT);
                 JavaIdentifier();
                 break;
             case LPAREN:
-                jj_consume_token(LPAREN);
+                cc_consume_token(LPAREN);
                 Expression(null);
-                jj_consume_token(RPAREN);
+                cc_consume_token(RPAREN);
                 break;
             case NEW:
                 AllocationExpression();
                 break;
             default:
-                jj_la1[147] = jj_gen;
+                cc_la1[147] = cc_gen;
                 if (jj_2_33(2147483647))
                 {
                     ResultType(null);
-                    jj_consume_token(DOT);
-                    jj_consume_token(CLASS);
+                    cc_consume_token(DOT);
+                    cc_consume_token(CLASS);
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -4477,8 +4470,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                             Name(null);
                             break;
                         default:
-                            jj_la1[148] = jj_gen;
-                            jj_consume_token(-1);
+                            cc_la1[148] = cc_gen;
+                            cc_consume_token(-1);
                             throw new ParseException();
                     }
                 }
@@ -4490,12 +4483,12 @@ public class CSharpCCParser : CSharpCCParserInternals
     {
         if (jj_2_34(2))
         {
-            jj_consume_token(DOT);
-            jj_consume_token(THIS);
+            cc_consume_token(DOT);
+            cc_consume_token(THIS);
         }
         else if (jj_2_35(2))
         {
-            jj_consume_token(DOT);
+            cc_consume_token(DOT);
             AllocationExpression();
         }
         else if (jj_2_36(3))
@@ -4504,23 +4497,23 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case LBRACKET:
-                    jj_consume_token(LBRACKET);
+                    cc_consume_token(LBRACKET);
                     Expression(null);
-                    jj_consume_token(RBRACKET);
+                    cc_consume_token(RBRACKET);
                     break;
                 case DOT:
-                    jj_consume_token(DOT);
+                    cc_consume_token(DOT);
                     JavaIdentifier();
                     break;
                 case LPAREN:
                     Arguments(null);
                     break;
                 default:
-                    jj_la1[149] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[149] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
@@ -4528,19 +4521,19 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void Literal()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case INTEGER_LITERAL:
-                jj_consume_token(INTEGER_LITERAL);
+                cc_consume_token(INTEGER_LITERAL);
                 break;
             case FLOATING_POINT_LITERAL:
-                jj_consume_token(FLOATING_POINT_LITERAL);
+                cc_consume_token(FLOATING_POINT_LITERAL);
                 break;
             case CHARACTER_LITERAL:
-                jj_consume_token(CHARACTER_LITERAL);
+                cc_consume_token(CHARACTER_LITERAL);
                 break;
             case STRING_LITERAL:
-                jj_consume_token(STRING_LITERAL);
+                cc_consume_token(STRING_LITERAL);
                 break;
             case FALSE:
             case TRUE:
@@ -4550,34 +4543,34 @@ public class CSharpCCParser : CSharpCCParserInternals
                 NullLiteral();
                 break;
             default:
-                jj_la1[150] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[150] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
     public int IntegerLiteral()
     {
-        jj_consume_token(INTEGER_LITERAL);
+        cc_consume_token(INTEGER_LITERAL);
         { if (true) return int.TryParse(token.image, out var i) ? i : throw new Error(); }
         //throw new Error("Missing return statement in function");
     }
 
     public bool BooleanLiteral()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case TRUE:
-                jj_consume_token(TRUE);
+                cc_consume_token(TRUE);
                 { if (true) return true; }
                 break;
             case FALSE:
-                jj_consume_token(FALSE);
+                cc_consume_token(FALSE);
                 { if (true) return false; }
                 break;
             default:
-                jj_la1[151] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[151] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
         throw new Error("Missing return statement in function");
@@ -4586,29 +4579,29 @@ public class CSharpCCParser : CSharpCCParserInternals
     public String StringLiteral()
     {
         Token t;
-        t = jj_consume_token(STRING_LITERAL);
+        t = cc_consume_token(STRING_LITERAL);
         { if (true) return RemoveEscapesAndQuotes(t, t.image); }
         throw new Error("Missing return statement in function");
     }
 
     public void NullLiteral()
     {
-        jj_consume_token(NULL);
+        cc_consume_token(NULL);
     }
 
     public void Arguments(List<Token> tokens)
     {
         Token first, last;
-        tokens ??= new ();
-        jj_consume_token(LPAREN);
+        tokens ??= new();
+        cc_consume_token(LPAREN);
         first = GetToken(1);
         // Added by Sreenivas Viswanadha for 6.0
         // TODO :: 2013/07/16 -- cba : Think this condition should be if the language IS C++, not if the language ISN'T Java ...
-        if (!IsJavaLanguage())
+        if (!IsJavaLanguage)
         {
-            eatUptoRParen(null);
+            EatUptoRParen(null);
         }
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -4660,11 +4653,11 @@ public class CSharpCCParser : CSharpCCParserInternals
                 ArgumentList();
                 break;
             default:
-                jj_la1[152] = jj_gen;
+                cc_la1[152] = cc_gen;
                 break;
         }
         last = GetToken(0);
-        jj_consume_token(RPAREN);
+        cc_consume_token(RPAREN);
         if (last.next != first)
         { // i.e., this is not an empty sequence
             Token t = first;
@@ -4683,16 +4676,16 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_49:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case COMMA:
                     ;
                     break;
                 default:
-                    jj_la1[153] = jj_gen;
+                    cc_la1[153] = cc_gen;
                     goto label_49_exit;
             }
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             Expression(null);
         }
     label_49_exit:
@@ -4703,54 +4696,54 @@ public class CSharpCCParser : CSharpCCParserInternals
     {
         if (jj_2_37(2))
         {
-            jj_consume_token(NEW);
+            cc_consume_token(NEW);
             PrimitiveType();
             ArrayDimsAndInits();
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case NEW:
-                    jj_consume_token(NEW);
+                    cc_consume_token(NEW);
                     ClassOrInterfaceType();
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case LANGLE:
                             TypeArguments(null);
                             break;
                         default:
-                            jj_la1[154] = jj_gen;
+                            cc_la1[154] = cc_gen;
                             break;
                             ;
                     }
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case LBRACKET:
                             ArrayDimsAndInits();
                             break;
                         case LPAREN:
                             Arguments(null);
-                            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                             {
                                 case LBRACE:
                                     ClassOrInterfaceBody(false, null);
                                     break;
                                 default:
-                                    jj_la1[155] = jj_gen;
+                                    cc_la1[155] = cc_gen;
                                     break;
                                     ;
                             }
                             break;
                         default:
-                            jj_la1[156] = jj_gen;
-                            jj_consume_token(-1);
+                            cc_la1[156] = cc_gen;
+                            cc_consume_token(-1);
                             throw new ParseException();
                     }
                     break;
                 default:
-                    jj_la1[157] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[157] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
@@ -4767,9 +4760,9 @@ public class CSharpCCParser : CSharpCCParserInternals
         label_50:
             while (true)
             {
-                jj_consume_token(LBRACKET);
+                cc_consume_token(LBRACKET);
                 Expression(null);
-                jj_consume_token(RBRACKET);
+                cc_consume_token(RBRACKET);
                 if (jj_2_38(2))
                 {
                     ;
@@ -4790,29 +4783,29 @@ public class CSharpCCParser : CSharpCCParserInternals
                 {
                     goto label_51_exit;
                 }
-                jj_consume_token(LBRACKET);
-                jj_consume_token(RBRACKET);
+                cc_consume_token(LBRACKET);
+                cc_consume_token(RBRACKET);
             }
         label_51_exit:
             ;
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case LBRACKET:
                 label_52:
                     while (true)
                     {
-                        jj_consume_token(LBRACKET);
-                        jj_consume_token(RBRACKET);
-                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                        cc_consume_token(LBRACKET);
+                        cc_consume_token(RBRACKET);
+                        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                         {
                             case LBRACKET:
                                 ;
                                 break;
                             default:
-                                jj_la1[158] = jj_gen;
+                                cc_la1[158] = cc_gen;
                                 goto label_52_exit;
                         }
                     }
@@ -4820,8 +4813,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                     ArrayInitializer();
                     break;
                 default:
-                    jj_la1[159] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[159] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
@@ -4838,7 +4831,7 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case ASSERT:
                     AssertStatement();
@@ -4893,7 +4886,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                 case 144:
                 case IDENTIFIER:
                     StatementExpression();
-                    jj_consume_token(SEMICOLON);
+                    cc_consume_token(SEMICOLON);
                     break;
                 case SWITCH:
                     SwitchStatement();
@@ -4929,8 +4922,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                     TryStatement();
                     break;
                 default:
-                    jj_la1[160] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[160] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
@@ -4938,43 +4931,43 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void AssertStatement()
     {
-        jj_consume_token(ASSERT);
+        cc_consume_token(ASSERT);
         Expression(null);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case COLON:
-                jj_consume_token(COLON);
+                cc_consume_token(COLON);
                 Expression(null);
                 break;
             default:
-                jj_la1[161] = jj_gen;
+                cc_la1[161] = cc_gen;
                 break;
                 ;
         }
-        jj_consume_token(SEMICOLON);
+        cc_consume_token(SEMICOLON);
     }
 
     public void LabeledStatement()
     {
         JavaIdentifier();
-        jj_consume_token(COLON);
+        cc_consume_token(COLON);
         Statement();
     }
 
     public void Block(List<Token> tokens)
     {
         Token first, last;
-        tokens ??= new ();
-        jj_consume_token(LBRACE);
+        tokens ??= new();
+        cc_consume_token(LBRACE);
         first = GetToken(1);
-        if (!IsJavaLanguage())
+        if (!IsJavaLanguage)
         {
-            eatUptoCloseBrace(null);
+            EatUptoCloseBrace(null);
         }
     label_53:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -5049,14 +5042,14 @@ public class CSharpCCParser : CSharpCCParserInternals
                     ;
                     break;
                 default:
-                    jj_la1[162] = jj_gen;
+                    cc_la1[162] = cc_gen;
                     goto label_53_exit;
             }
             BlockStatement();
         }
     label_53_exit:
         last = GetToken(0);
-        jj_consume_token(RBRACE);
+        cc_consume_token(RBRACE);
         if (last.next != first)
         { // i.e., this is not an empty sequence
             Token t = first;
@@ -5074,11 +5067,11 @@ public class CSharpCCParser : CSharpCCParserInternals
         if (jj_2_42(2147483647))
         {
             LocalVariableDeclaration();
-            jj_consume_token(SEMICOLON);
+            cc_consume_token(SEMICOLON);
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -5144,8 +5137,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                     ClassOrInterfaceDeclaration(0, null);
                     break;
                 default:
-                    jj_la1[163] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[163] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
@@ -5159,16 +5152,16 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_54:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case COMMA:
                     ;
                     break;
                 default:
-                    jj_la1[164] = jj_gen;
+                    cc_la1[164] = cc_gen;
                     goto label_54_exit;
             }
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             VariableDeclarator();
         }
     label_54_exit:
@@ -5177,12 +5170,12 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void EmptyStatement()
     {
-        jj_consume_token(SEMICOLON);
+        cc_consume_token(SEMICOLON);
     }
 
     public void StatementExpression()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case INCR:
                 PreIncrementExpression();
@@ -5232,7 +5225,7 @@ public class CSharpCCParser : CSharpCCParserInternals
             case 144:
             case IDENTIFIER:
                 PrimaryExpression();
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case ASSIGN:
                     case INCR:
@@ -5248,13 +5241,13 @@ public class CSharpCCParser : CSharpCCParserInternals
                     case 146:
                     case 147:
                     case 148:
-                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                         {
                             case INCR:
-                                jj_consume_token(INCR);
+                                cc_consume_token(INCR);
                                 break;
                             case DECR:
-                                jj_consume_token(DECR);
+                                cc_consume_token(DECR);
                                 break;
                             case ASSIGN:
                             case PLUSASSIGN:
@@ -5272,48 +5265,48 @@ public class CSharpCCParser : CSharpCCParserInternals
                                 Expression(null);
                                 break;
                             default:
-                                jj_la1[165] = jj_gen;
-                                jj_consume_token(-1);
+                                cc_la1[165] = cc_gen;
+                                cc_consume_token(-1);
                                 throw new ParseException();
                         }
                         break;
                     default:
-                        jj_la1[166] = jj_gen;
+                        cc_la1[166] = cc_gen;
                         break;
                 }
                 break;
             default:
-                jj_la1[167] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[167] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
     public void SwitchStatement()
     {
-        jj_consume_token(SWITCH);
-        jj_consume_token(LPAREN);
+        cc_consume_token(SWITCH);
+        cc_consume_token(LPAREN);
         Expression(null);
-        jj_consume_token(RPAREN);
-        jj_consume_token(LBRACE);
+        cc_consume_token(RPAREN);
+        cc_consume_token(LBRACE);
     label_55:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case CASE:
                 case _DEFAULT:
                     ;
                     break;
                 default:
-                    jj_la1[168] = jj_gen;
+                    cc_la1[168] = cc_gen;
                     goto label_56;
             }
             SwitchLabel();
         label_56:
             while (true)
             {
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case _LOOKAHEAD:
                     case _IGNORE_CASE:
@@ -5388,91 +5381,91 @@ public class CSharpCCParser : CSharpCCParserInternals
                         ;
                         break;
                     default:
-                        jj_la1[169] = jj_gen;
+                        cc_la1[169] = cc_gen;
                         goto label_56_exit;
                 }
                 BlockStatement();
             }
         }
-        label_56_exit:
+    label_56_exit:
 
-        jj_consume_token(RBRACE);
+        cc_consume_token(RBRACE);
     }
 
     public void SwitchLabel()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case CASE:
-                jj_consume_token(CASE);
+                cc_consume_token(CASE);
                 Expression(null);
-                jj_consume_token(COLON);
+                cc_consume_token(COLON);
                 break;
             case _DEFAULT:
-                jj_consume_token(_DEFAULT);
-                jj_consume_token(COLON);
+                cc_consume_token(_DEFAULT);
+                cc_consume_token(COLON);
                 break;
             default:
-                jj_la1[170] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[170] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
     public void IfStatement()
     {
-        jj_consume_token(IF);
-        jj_consume_token(LPAREN);
+        cc_consume_token(IF);
+        cc_consume_token(LPAREN);
         Expression(null);
-        jj_consume_token(RPAREN);
+        cc_consume_token(RPAREN);
         Statement();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case ELSE:
-                jj_consume_token(ELSE);
+                cc_consume_token(ELSE);
                 Statement();
                 break;
             default:
-                jj_la1[171] = jj_gen;
+                cc_la1[171] = cc_gen;
                 break;
         }
     }
 
     public void WhileStatement()
     {
-        jj_consume_token(WHILE);
-        jj_consume_token(LPAREN);
+        cc_consume_token(WHILE);
+        cc_consume_token(LPAREN);
         Expression(null);
-        jj_consume_token(RPAREN);
+        cc_consume_token(RPAREN);
         Statement();
     }
 
     public void DoStatement()
     {
-        jj_consume_token(DO);
+        cc_consume_token(DO);
         Statement();
-        jj_consume_token(WHILE);
-        jj_consume_token(LPAREN);
+        cc_consume_token(WHILE);
+        cc_consume_token(LPAREN);
         Expression(null);
-        jj_consume_token(RPAREN);
-        jj_consume_token(SEMICOLON);
+        cc_consume_token(RPAREN);
+        cc_consume_token(SEMICOLON);
     }
 
     public void ForStatement()
     {
-        jj_consume_token(FOR);
-        jj_consume_token(LPAREN);
+        cc_consume_token(FOR);
+        cc_consume_token(LPAREN);
         if (jj_2_43(2147483647))
         {
             Modifiers();
             Type();
             JavaIdentifier();
-            jj_consume_token(COLON);
+            cc_consume_token(COLON);
             Expression(null);
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -5530,7 +5523,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                 case 144:
                 case 150:
                 case IDENTIFIER:
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -5590,11 +5583,11 @@ public class CSharpCCParser : CSharpCCParserInternals
                             ForInit();
                             break;
                         default:
-                            jj_la1[172] = jj_gen;
+                            cc_la1[172] = cc_gen;
                             break;
                     }
-                    jj_consume_token(SEMICOLON);
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    cc_consume_token(SEMICOLON);
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -5646,11 +5639,11 @@ public class CSharpCCParser : CSharpCCParserInternals
                             Expression(null);
                             break;
                         default:
-                            jj_la1[173] = jj_gen;
+                            cc_la1[173] = cc_gen;
                             break;
                     }
-                    jj_consume_token(SEMICOLON);
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    cc_consume_token(SEMICOLON);
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -5698,17 +5691,17 @@ public class CSharpCCParser : CSharpCCParserInternals
                             ForUpdate();
                             break;
                         default:
-                            jj_la1[174] = jj_gen;
+                            cc_la1[174] = cc_gen;
                             break;
                     }
                     break;
                 default:
-                    jj_la1[175] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[175] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
-        jj_consume_token(RPAREN);
+        cc_consume_token(RPAREN);
         Statement();
     }
 
@@ -5720,7 +5713,7 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -5768,8 +5761,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                     StatementExpressionList();
                     break;
                 default:
-                    jj_la1[176] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[176] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
@@ -5781,16 +5774,16 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_57:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case COMMA:
                     ;
                     break;
                 default:
-                    jj_la1[177] = jj_gen;
+                    cc_la1[177] = cc_gen;
                     goto label_57_exit;
             }
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             StatementExpression();
         }
     label_57_exit:
@@ -5804,8 +5797,8 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void BreakStatement()
     {
-        jj_consume_token(BREAK);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        cc_consume_token(BREAK);
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -5829,16 +5822,16 @@ public class CSharpCCParser : CSharpCCParserInternals
                 JavaIdentifier();
                 break;
             default:
-                jj_la1[178] = jj_gen;
+                cc_la1[178] = cc_gen;
                 break;
         }
-        jj_consume_token(SEMICOLON);
+        cc_consume_token(SEMICOLON);
     }
 
     public void ContinueStatement()
     {
-        jj_consume_token(CONTINUE);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        cc_consume_token(CONTINUE);
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -5862,16 +5855,16 @@ public class CSharpCCParser : CSharpCCParserInternals
                 JavaIdentifier();
                 break;
             default:
-                jj_la1[179] = jj_gen;
+                cc_la1[179] = cc_gen;
                 break;
         }
-        jj_consume_token(SEMICOLON);
+        cc_consume_token(SEMICOLON);
     }
 
     public void ReturnStatement()
     {
         Token t;
-        t = jj_consume_token(RETURN);
+        t = cc_consume_token(RETURN);
         // Add if statement to prevent subsequent code generated
         // from being dead code.
         // NB: eclipse now detects 'if (true)' as dead code, so use the more complicated
@@ -5881,7 +5874,7 @@ public class CSharpCCParser : CSharpCCParserInternals
             t.image = "{if (\u005c\"\u005c\" != null) return";
             jumpPatched = true;
         }
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -5933,10 +5926,10 @@ public class CSharpCCParser : CSharpCCParserInternals
                 Expression(null);
                 break;
             default:
-                jj_la1[180] = jj_gen;
+                cc_la1[180] = cc_gen;
                 break;
         }
-        t = jj_consume_token(SEMICOLON);
+        t = cc_consume_token(SEMICOLON);
         // Add closing brace for above if statement.
         if (inAction && (Options.IsLegacyExceptionHandling()))
         {
@@ -5947,7 +5940,7 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void ThrowStatement()
     {
         Token t;
-        t = jj_consume_token(THROW);
+        t = cc_consume_token(THROW);
         // Add if statement to prevent subsequent code generated
         // from being dead code.
         if (inAction)
@@ -5956,7 +5949,7 @@ public class CSharpCCParser : CSharpCCParserInternals
             jumpPatched = true;
         }
         Expression(null);
-        t = jj_consume_token(SEMICOLON);
+        t = cc_consume_token(SEMICOLON);
         // Add closing brace for above if statement.
         if (inAction)
         {
@@ -5966,10 +5959,10 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void SynchronizedStatement()
     {
-        jj_consume_token(SYNCHRONIZED);
-        jj_consume_token(LPAREN);
+        cc_consume_token(SYNCHRONIZED);
+        cc_consume_token(LPAREN);
         Expression(null);
-        jj_consume_token(RPAREN);
+        cc_consume_token(RPAREN);
         Block(null);
     }
 
@@ -5977,7 +5970,7 @@ public class CSharpCCParser : CSharpCCParserInternals
     {
         Type();
         VariableDeclaratorId();
-        jj_consume_token(ASSIGN);
+        cc_consume_token(ASSIGN);
         Expression(null);
     }
 
@@ -5986,59 +5979,59 @@ public class CSharpCCParser : CSharpCCParserInternals
         Token t;
         Modifiers();
         Type();
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case STAR:
             case BIT_AND:
             case 145:
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case STAR:
                     case BIT_AND:
-                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                         {
                             case BIT_AND:
-                                t = jj_consume_token(BIT_AND);
+                                t = cc_consume_token(BIT_AND);
                                 break;
                             case STAR:
-                                t = jj_consume_token(STAR);
+                                t = cc_consume_token(STAR);
                                 break;
                             default:
-                                jj_la1[181] = jj_gen;
-                                jj_consume_token(-1);
+                                cc_la1[181] = cc_gen;
+                                cc_consume_token(-1);
                                 throw new ParseException();
                         }
-                        if (!isAllowed(t)) { if (true) throw new ParseException(t.image + " is invalid in this context"); }
+                        if (!IsAllowed(t)) { if (true) throw new ParseException(t.image + " is invalid in this context"); }
                         break;
                     case 145:
-                        jj_consume_token(145);
+                        cc_consume_token(145);
                         break;
                     default:
-                        jj_la1[182] = jj_gen;
-                        jj_consume_token(-1);
+                        cc_la1[182] = cc_gen;
+                        cc_consume_token(-1);
                         throw new ParseException();
                 }
                 break;
             default:
-                jj_la1[183] = jj_gen;
+                cc_la1[183] = cc_gen;
                 break;
         }
     label_58:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case BIT_OR:
                     ;
                     break;
                 default:
-                    jj_la1[184] = jj_gen;
+                    cc_la1[184] = cc_gen;
                     goto label_58_exit;
             }
-            jj_consume_token(BIT_OR);
+            cc_consume_token(BIT_OR);
             Type();
         }
-        label_58_exit:
+    label_58_exit:
 
         VariableDeclaratorId();
     }
@@ -6046,11 +6039,11 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void TryStatement()
     {
         bool empty = true;
-        jj_consume_token(TRY);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        cc_consume_token(TRY);
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case LPAREN:
-                jj_consume_token(LPAREN);
+                cc_consume_token(LPAREN);
                 ResourceDeclaration();
             label_59:
                 while (true)
@@ -6063,56 +6056,56 @@ public class CSharpCCParser : CSharpCCParserInternals
                     {
                         goto label_59_exit;
                     }
-                    jj_consume_token(SEMICOLON);
+                    cc_consume_token(SEMICOLON);
                     ResourceDeclaration();
                 }
-                label_59_exit:
-                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            label_59_exit:
+                switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                 {
                     case SEMICOLON:
-                        jj_consume_token(SEMICOLON);
+                        cc_consume_token(SEMICOLON);
                         break;
                     default:
-                        jj_la1[185] = jj_gen;
+                        cc_la1[185] = cc_gen;
                         break;
                 }
-                jj_consume_token(RPAREN);
+                cc_consume_token(RPAREN);
                 empty = false;
                 break;
             default:
-                jj_la1[186] = jj_gen;
+                cc_la1[186] = cc_gen;
                 break;
         }
         Block(null);
     label_60:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case CATCH:
                     ;
                     break;
                 default:
-                    jj_la1[187] = jj_gen;
+                    cc_la1[187] = cc_gen;
                     goto label_60_exit;
             }
-            jj_consume_token(CATCH);
-            jj_consume_token(LPAREN);
+            cc_consume_token(CATCH);
+            cc_consume_token(LPAREN);
             CatchParameter();
-            jj_consume_token(RPAREN);
+            cc_consume_token(RPAREN);
             Block(null);
             empty = false;
         }
-        label_60_exit:
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+    label_60_exit:
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case FINALLY:
-                jj_consume_token(FINALLY);
+                cc_consume_token(FINALLY);
                 Block(null);
                 empty = false;
                 break;
             default:
-                jj_la1[188] = jj_gen;
+                cc_la1[188] = cc_gen;
                 break;
                 ;
         }
@@ -6132,12 +6125,12 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         else
         {
-            jj_consume_token(-1);
+            cc_consume_token(-1);
             throw new ParseException();
         }
-        jj_consume_token(RANGLE);
-        jj_consume_token(RANGLE);
-        jj_consume_token(RANGLE);
+        cc_consume_token(RANGLE);
+        cc_consume_token(RANGLE);
+        cc_consume_token(RANGLE);
     }
 
     public void RSIGNEDSHIFT()
@@ -6149,11 +6142,11 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         else
         {
-            jj_consume_token(-1);
+            cc_consume_token(-1);
             throw new ParseException();
         }
-        jj_consume_token(RANGLE);
-        jj_consume_token(RANGLE);
+        cc_consume_token(RANGLE);
+        cc_consume_token(RANGLE);
     }
 
     /* Annotation syntax follows. */
@@ -6169,14 +6162,14 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case 150:
                     MarkerAnnotation();
                     break;
                 default:
-                    jj_la1[189] = jj_gen;
-                    jj_consume_token(-1);
+                    cc_la1[189] = cc_gen;
+                    cc_consume_token(-1);
                     throw new ParseException();
             }
         }
@@ -6184,10 +6177,10 @@ public class CSharpCCParser : CSharpCCParserInternals
 
     public void NormalAnnotation()
     {
-        jj_consume_token(150);
+        cc_consume_token(150);
         Name(null);
-        jj_consume_token(LPAREN);
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        cc_consume_token(LPAREN);
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -6211,25 +6204,25 @@ public class CSharpCCParser : CSharpCCParserInternals
                 MemberValuePairs();
                 break;
             default:
-                jj_la1[190] = jj_gen;
+                cc_la1[190] = cc_gen;
                 break;
         }
-        jj_consume_token(RPAREN);
+        cc_consume_token(RPAREN);
     }
 
     public void MarkerAnnotation()
     {
-        jj_consume_token(150);
+        cc_consume_token(150);
         Name(null);
     }
 
     public void SingleMemberAnnotation()
     {
-        jj_consume_token(150);
+        cc_consume_token(150);
         Name(null);
-        jj_consume_token(LPAREN);
+        cc_consume_token(LPAREN);
         MemberValue();
-        jj_consume_token(RPAREN);
+        cc_consume_token(RPAREN);
     }
 
     public void MemberValuePairs()
@@ -6238,16 +6231,16 @@ public class CSharpCCParser : CSharpCCParserInternals
     label_61:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case COMMA:
                     ;
                     break;
                 default:
-                    jj_la1[191] = jj_gen;
+                    cc_la1[191] = cc_gen;
                     goto label_61_exit;
             }
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             MemberValuePair();
         }
     label_61_exit:
@@ -6257,13 +6250,13 @@ public class CSharpCCParser : CSharpCCParserInternals
     public void MemberValuePair()
     {
         JavaIdentifier();
-        jj_consume_token(ASSIGN);
+        cc_consume_token(ASSIGN);
         MemberValue();
     }
 
     public void MemberValue()
     {
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case 150:
                 Annotation();
@@ -6321,15 +6314,15 @@ public class CSharpCCParser : CSharpCCParserInternals
                 ConditionalExpression();
                 break;
             default:
-                jj_la1[192] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[192] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
     public void MemberValueArrayInitializer()
     {
-        jj_consume_token(LBRACE);
+        cc_consume_token(LBRACE);
         MemberValue();
     label_62:
         while (true)
@@ -6342,38 +6335,38 @@ public class CSharpCCParser : CSharpCCParserInternals
             {
                 goto label_62_exit;
             }
-            jj_consume_token(COMMA);
+            cc_consume_token(COMMA);
             MemberValue();
         }
-        label_62_exit:
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+    label_62_exit:
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case COMMA:
-                jj_consume_token(COMMA);
+                cc_consume_token(COMMA);
                 break;
             default:
-                jj_la1[193] = jj_gen;
+                cc_la1[193] = cc_gen;
                 break;
         }
-        jj_consume_token(RBRACE);
+        cc_consume_token(RBRACE);
     }
 
     /* Annotation Types. */
     public void AnnotationTypeDeclaration(int modifiers)
     {
-        jj_consume_token(150);
-        jj_consume_token(INTERFACE);
+        cc_consume_token(150);
+        cc_consume_token(INTERFACE);
         JavaIdentifier();
         AnnotationTypeBody();
     }
 
     public void AnnotationTypeBody()
     {
-        jj_consume_token(LBRACE);
+        cc_consume_token(LBRACE);
     label_63:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+            switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
             {
                 case ABSTRACT:
                 case BOOLEAN:
@@ -6405,19 +6398,19 @@ public class CSharpCCParser : CSharpCCParserInternals
                     ;
                     break;
                 default:
-                    jj_la1[194] = jj_gen;
+                    cc_la1[194] = cc_gen;
                     goto label_63_exit;
             }
             AnnotationTypeMemberDeclaration();
         }
-        label_63_exit:
-        jj_consume_token(RBRACE);
+    label_63_exit:
+        cc_consume_token(RBRACE);
     }
 
     public void AnnotationTypeMemberDeclaration()
     {
         int modifiers;
-        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+        switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
         {
             case ABSTRACT:
             case BOOLEAN:
@@ -6450,22 +6443,22 @@ public class CSharpCCParser : CSharpCCParserInternals
                 {
                     Type();
                     JavaIdentifier();
-                    jj_consume_token(LPAREN);
-                    jj_consume_token(RPAREN);
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    cc_consume_token(LPAREN);
+                    cc_consume_token(RPAREN);
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case _DEFAULT:
                             DefaultValue();
                             break;
                         default:
-                            jj_la1[195] = jj_gen;
+                            cc_la1[195] = cc_gen;
                             break;
                     }
-                    jj_consume_token(SEMICOLON);
+                    cc_consume_token(SEMICOLON);
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
+                    switch ((cc_ntk == -1) ? jj_ntk_() : cc_ntk)
                     {
                         case CLASS:
                         case INTERFACE:
@@ -6491,25 +6484,25 @@ public class CSharpCCParser : CSharpCCParserInternals
                             FieldDeclaration(modifiers);
                             break;
                         default:
-                            jj_la1[196] = jj_gen;
-                            jj_consume_token(-1);
+                            cc_la1[196] = cc_gen;
+                            cc_consume_token(-1);
                             throw new ParseException();
                     }
                 }
                 break;
             case SEMICOLON:
-                jj_consume_token(SEMICOLON);
+                cc_consume_token(SEMICOLON);
                 break;
             default:
-                jj_la1[197] = jj_gen;
-                jj_consume_token(-1);
+                cc_la1[197] = cc_gen;
+                cc_consume_token(-1);
                 throw new ParseException();
         }
     }
 
     public void DefaultValue()
     {
-        jj_consume_token(_DEFAULT);
+        cc_consume_token(_DEFAULT);
         MemberValue();
     }
 
@@ -10433,14 +10426,14 @@ public class CSharpCCParser : CSharpCCParserInternals
     public Token token;
     /** Next token. */
     public Token jj_nt;
-    private int jj_ntk;
+    private int cc_ntk;
     private Token jj_scanpos, jj_lastpos;
     private int jj_la;
     /** Whether we are looking ahead. */
     private bool jj_lookingAhead = false;
     private bool jj_semLA;
-    private int jj_gen;
-    private readonly int[] jj_la1 = new int[198];
+    private int cc_gen;
+    private readonly int[] cc_la1 = new int[198];
     static private uint[] jj_la1_0;
     static private uint[] jj_la1_1;
     static private uint[] jj_la1_2;
@@ -10486,12 +10479,12 @@ public class CSharpCCParser : CSharpCCParserInternals
     /** Constructor with InputStream and supplied encoding */
     public CSharpCCParser(Stream stream, Encoding encoding)
     {
-        try { jj_input_stream = new CSharpCharStream(stream, encoding, 1, 1); } catch (Exception e) { throw new Exception(e.Message,e); }
+        try { jj_input_stream = new CSharpCharStream(stream, encoding, 1, 1); } catch (Exception e) { throw new Exception(e.Message, e); }
         token_source = new CSharpCCParserTokenManager(jj_input_stream);
         token = new Token();
-        jj_ntk = -1;
-        jj_gen = 0;
-        for (int i = 0; i < 198; i++) jj_la1[i] = -1;
+        cc_ntk = -1;
+        cc_gen = 0;
+        for (int i = 0; i < 198; i++) cc_la1[i] = -1;
         for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
     }
 
@@ -10503,12 +10496,12 @@ public class CSharpCCParser : CSharpCCParserInternals
     /** Reinitialise. */
     public void ReInit(Stream stream, Encoding encoding)
     {
-        try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (Exception e) { throw new Exception(e.Message,e); }
+        try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (Exception e) { throw new Exception(e.Message, e); }
         token_source.ReInit(jj_input_stream);
         token = new Token();
-        jj_ntk = -1;
-        jj_gen = 0;
-        for (int i = 0; i < 198; i++) jj_la1[i] = -1;
+        cc_ntk = -1;
+        cc_gen = 0;
+        for (int i = 0; i < 198; i++) cc_la1[i] = -1;
         for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
     }
 
@@ -10518,9 +10511,9 @@ public class CSharpCCParser : CSharpCCParserInternals
         jj_input_stream = new CSharpCharStream(stream, 1, 1);
         token_source = new CSharpCCParserTokenManager(jj_input_stream);
         token = new Token();
-        jj_ntk = -1;
-        jj_gen = 0;
-        for (int i = 0; i < 198; i++) jj_la1[i] = -1;
+        cc_ntk = -1;
+        cc_gen = 0;
+        for (int i = 0; i < 198; i++) cc_la1[i] = -1;
         for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
     }
 
@@ -10530,9 +10523,9 @@ public class CSharpCCParser : CSharpCCParserInternals
         jj_input_stream.ReInit(stream, 1, 1);
         token_source.ReInit(jj_input_stream);
         token = new Token();
-        jj_ntk = -1;
-        jj_gen = 0;
-        for (int i = 0; i < 198; i++) jj_la1[i] = -1;
+        cc_ntk = -1;
+        cc_gen = 0;
+        for (int i = 0; i < 198; i++) cc_la1[i] = -1;
         for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
     }
 
@@ -10541,9 +10534,9 @@ public class CSharpCCParser : CSharpCCParserInternals
     {
         token_source = tm;
         token = new Token();
-        jj_ntk = -1;
-        jj_gen = 0;
-        for (int i = 0; i < 198; i++) jj_la1[i] = -1;
+        cc_ntk = -1;
+        cc_gen = 0;
+        for (int i = 0; i < 198; i++) cc_la1[i] = -1;
         for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
     }
 
@@ -10552,21 +10545,21 @@ public class CSharpCCParser : CSharpCCParserInternals
     {
         token_source = tm;
         token = new Token();
-        jj_ntk = -1;
-        jj_gen = 0;
-        for (int i = 0; i < 198; i++) jj_la1[i] = -1;
+        cc_ntk = -1;
+        cc_gen = 0;
+        for (int i = 0; i < 198; i++) cc_la1[i] = -1;
         for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
     }
 
-    private Token jj_consume_token(int kind)
+    private Token cc_consume_token(int kind)
     {
         Token oldToken;
         if ((oldToken = token).next != null) token = token.next;
         else token = token.next = token_source.getNextToken();
-        jj_ntk = -1;
+        cc_ntk = -1;
         if (token.kind == kind)
         {
-            jj_gen++;
+            cc_gen++;
             if (++jj_gc > 100)
             {
                 jj_gc = 0;
@@ -10575,7 +10568,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                     JJCalls c = jj_2_rtns[i];
                     while (c != null)
                     {
-                        if (c.gen < jj_gen) c.first = null;
+                        if (c.gen < cc_gen) c.first = null;
                         c = c.next;
                     }
                 }
@@ -10624,8 +10617,8 @@ public class CSharpCCParser : CSharpCCParserInternals
     {
         if (token.next != null) token = token.next;
         else token = token.next = token_source.getNextToken();
-        jj_ntk = -1;
-        jj_gen++;
+        cc_ntk = -1;
+        cc_gen++;
         return token;
     }
 
@@ -10644,12 +10637,12 @@ public class CSharpCCParser : CSharpCCParserInternals
     private int jj_ntk_()
     {
         if ((jj_nt = token.next) == null)
-            return (jj_ntk = (token.next = token_source.getNextToken()).kind);
+            return (cc_ntk = (token.next = token_source.getNextToken()).kind);
         else
-            return (jj_ntk = jj_nt.kind);
+            return (cc_ntk = jj_nt.kind);
     }
 
-    private readonly List<int[]> jj_expentries = new ();
+    private readonly List<int[]> jj_expentries = new();
     private int[] jj_expentry;
     private int jj_kind = -1;
     private readonly int[] jj_lasttokens = new int[100];
@@ -10669,8 +10662,8 @@ public class CSharpCCParser : CSharpCCParserInternals
             {
                 jj_expentry[i] = jj_lasttokens[i];
             }
-        jj_entries_loop: 
-            foreach(var oldentry in jj_expentries)
+        jj_entries_loop:
+            foreach (var oldentry in jj_expentries)
             {
                 if (oldentry.Length == jj_expentry.Length)
                 {
@@ -10705,7 +10698,7 @@ public class CSharpCCParser : CSharpCCParserInternals
         }
         for (int i = 0; i < 198; i++)
         {
-            if (jj_la1[i] == jj_gen)
+            if (cc_la1[i] == cc_gen)
             {
                 for (int j = 0; j < 32; j++)
                 {
@@ -10772,7 +10765,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                 JJCalls p = jj_2_rtns[i];
                 do
                 {
-                    if (p.gen > jj_gen)
+                    if (p.gen > cc_gen)
                     {
                         jj_la = p.arg; jj_lastpos = jj_scanpos = p.first;
                         switch (i)
@@ -10839,18 +10832,18 @@ public class CSharpCCParser : CSharpCCParserInternals
     private void jj_save(int index, int xla)
     {
         JJCalls p = jj_2_rtns[index];
-        while (p.gen > jj_gen)
+        while (p.gen > cc_gen)
         {
             if (p.next == null) { p = p.next = new JJCalls(); break; }
             p = p.next;
         }
-        p.gen = jj_gen + xla - jj_la; p.first = token; p.arg = xla;
+        p.gen = cc_gen + xla - jj_la; p.first = token; p.arg = xla;
     }
 
     public class JJCalls
-    { 
+    {
         public int gen;
-        public Token first; 
+        public Token first;
         public int arg;
         public JJCalls next;
     }

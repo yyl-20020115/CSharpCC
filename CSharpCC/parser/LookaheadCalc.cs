@@ -131,27 +131,27 @@ public class LookaheadCalc : CSharpCCGlobals
         for (int la = 1; la <= Options.GetChoiceAmbiguityCheck(); la++)
         {
             MatchInfo.laLimit = la;
-            LookaheadWalk.considerSemanticLA = !Options.GetForceLaCheck();
+            LookaheadWalk.ConsiderSemanticLA = !Options.GetForceLaCheck();
             for (int i = first; i < ch.Choices.Count - 1; i++)
             {
-                LookaheadWalk.sizeLimitedMatches = new();
+                LookaheadWalk.SizeLimitedMatches = new();
                 m = new MatchInfo();
                 m.firstFreeLoc = 0;
                 v = new();
                 v.Add(m);
                 LookaheadWalk.GenFirstSet(v, (Expansion)ch.Choices[i]);
-                dbl[i] = LookaheadWalk.sizeLimitedMatches;
+                dbl[i] = LookaheadWalk.SizeLimitedMatches;
             }
-            LookaheadWalk.considerSemanticLA = false;
+            LookaheadWalk.ConsiderSemanticLA = false;
             for (int i = first + 1; i < ch.Choices.Count; i++)
             {
-                LookaheadWalk.sizeLimitedMatches = new();
+                LookaheadWalk.SizeLimitedMatches = new();
                 m = new MatchInfo();
                 m.firstFreeLoc = 0;
                 v = new();
                 v.Add(m);
                 LookaheadWalk.GenFirstSet(v, (Expansion)ch.Choices[i]);
-                dbr[i] = LookaheadWalk.sizeLimitedMatches;
+                dbr[i] = LookaheadWalk.SizeLimitedMatches;
             }
             if (la == 1)
             {
@@ -194,7 +194,7 @@ public class LookaheadCalc : CSharpCCGlobals
         }
         for (int i = first; i < ch.Choices.Count - 1; i++)
         {
-            if (ExplicitLA((Expansion)ch.Choices[i]) && !Options.GetForceLaCheck())
+            if (ExplicitLA(ch.Choices[i]) && !Options.GetForceLaCheck())
             {
                 continue;
             }
@@ -245,7 +245,7 @@ public class LookaheadCalc : CSharpCCGlobals
         {
             for (int i = 0; i < ch.Choices.Count; i++)
             {
-                if (!ExplicitLA((Expansion)ch.Choices[i]))
+                if (!ExplicitLA(ch.Choices[i]))
                 {
                     return i;
                 }
@@ -281,18 +281,18 @@ public class LookaheadCalc : CSharpCCGlobals
         for (la = 1; la <= Options.GetOtherAmbiguityCheck(); la++)
         {
             MatchInfo.laLimit = la;
-            LookaheadWalk.sizeLimitedMatches = new();
+            LookaheadWalk.SizeLimitedMatches = new();
             m = new MatchInfo();
             m.firstFreeLoc = 0;
             v = new();
             v.Add(m);
-            LookaheadWalk.considerSemanticLA = !Options.GetForceLaCheck();
+            LookaheadWalk.ConsiderSemanticLA = !Options.GetForceLaCheck();
             LookaheadWalk.GenFirstSet(v, nested);
-            first = LookaheadWalk.sizeLimitedMatches;
-            LookaheadWalk.sizeLimitedMatches = new();
-            LookaheadWalk.considerSemanticLA = false;
-            LookaheadWalk.GenFollowSet(v, exp, Expansion.nextGenerationIndex++);
-            follow = LookaheadWalk.sizeLimitedMatches;
+            first = LookaheadWalk.SizeLimitedMatches;
+            LookaheadWalk.SizeLimitedMatches = new();
+            LookaheadWalk.ConsiderSemanticLA = false;
+            LookaheadWalk.GenFollowSet(v, exp, Expansion.NextGenerationIndex++);
+            follow = LookaheadWalk.SizeLimitedMatches;
             if (la == 1)
             {
                 if (JavaCodeCheck(first))

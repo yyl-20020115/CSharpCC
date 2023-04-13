@@ -78,7 +78,7 @@ public abstract class RegularExpression : Expansion
 
     public abstract Nfa GenerateNfa(bool ignoreCase);
 
-    public bool CanMatchAnyChar => false;
+    public virtual bool CanMatchAnyChar => false;
 
     /**
      * The following variable is used to maintain state information for the
@@ -92,9 +92,9 @@ public abstract class RegularExpression : Expansion
 
     public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        var sb = base.Dump(indent, alreadyDumped);
+        var builder = base.Dump(indent, alreadyDumped);
         alreadyDumped.Add(this);
-        sb.Append(' ').Append(label);
-        return sb;
+        builder.Append(' ').Append(label);
+        return builder;
     }
 }

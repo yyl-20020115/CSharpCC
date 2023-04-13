@@ -84,14 +84,14 @@ public class ParseEngine
         }
         else if (exp is NonTerminal terminal)
         {
-            var prod = terminal.GetProd();
+            var prod = terminal.Production;
             if (prod is CodeProduction)
             {
                 return true;
             }
             else
             {
-                return JavaCodeCheck(prod.GetExpansion());
+                return JavaCodeCheck(prod.Expansion);
             }
         }
         else if (exp is Choice ch)
@@ -169,9 +169,9 @@ public class ParseEngine
         }
         else if (exp is NonTerminal terminal)
         {
-            if (terminal.GetProd() is not CodeProduction)
+            if (terminal.Production is not CodeProduction)
             {
-                GenFirstSet(((BNFProduction)(terminal.GetProd())).GetExpansion());
+                GenFirstSet(((BNFProduction)(terminal.Production)).Expansion);
             }
         }
         else if (exp is Choice ch)
@@ -184,7 +184,7 @@ public class ParseEngine
         else if (exp is Sequence seq)
         {
             object obj = seq.units[0];
-            if ((obj is Lookahead lookahead) && (lookahead.GetActionTokens().Count != 0))
+            if ((obj is Lookahead lookahead) && (lookahead.ActionTokens.Count != 0))
             {
                 jj2LA = true;
             }
@@ -194,12 +194,12 @@ public class ParseEngine
                 // Javacode productions can not have FIRST sets. Instead we generate the FIRST set
                 // for the preceding LOOKAHEAD (the semantic checks should have made sure that
                 // the LOOKAHEAD is suitable).
-                if (unit is NonTerminal terminal1 && terminal1.GetProd() is CodeProduction)
+                if (unit is NonTerminal terminal1 && terminal1.Production is CodeProduction)
                 {
                     if (i > 0 && seq.units[i - 1] is Lookahead lookahead1)
                     {
                         Lookahead la = lookahead1;
-                        GenFirstSet(la.GetLaExpansion());
+                        GenFirstSet(la.LaExpansion);
                     }
                 }
                 else
@@ -275,9 +275,9 @@ public class ParseEngine
             la = conds[index];
             jj2LA = false;
 
-            if ((la.GetAmount() == 0) ||
-                Semanticize.EmptyExpansionExists(la.GetLaExpansion()) ||
-                JavaCodeCheck(la.GetLaExpansion())
+            if ((la.Amount == 0) ||
+                Semanticize.EmptyExpansionExists(la.LaExpansion) ||
+                JavaCodeCheck(la.LaExpansion)
             )
             {
 
@@ -288,7 +288,7 @@ public class ParseEngine
                 //   string - in which case the lookahead trivially passes.
                 // . If the lookahead expansion has a JAVACODE production that it directly
                 //   expands to - in which case the lookahead trivially passes.
-                if (la.GetActionTokens().Count == 0)
+                if (la.ActionTokens.Count == 0)
                 {
                     // In addition, if there is no semantic lookahead, then the
                     // lookahead trivially succeeds.  So break the main loop and
@@ -321,8 +321,8 @@ public class ParseEngine
                             indentAmt++;
                             break;
                     }
-                    CSharpCCGlobals.PrintTokenSetup((la.GetActionTokens()[0]));
-                    foreach (var t2 in la.GetActionTokens())
+                    CSharpCCGlobals.PrintTokenSetup((la.ActionTokens[0]));
+                    foreach (var t2 in la.ActionTokens)
                     {
                         retval += _CodeGenerator.GetStringToPrint(t = t2);
                     }
@@ -332,7 +332,7 @@ public class ParseEngine
                 }
 
             }
-            else if (la.GetAmount() == 1 && la.GetActionTokens().Count == 0)
+            else if (la.Amount == 1 && la.ActionTokens.Count == 0)
             {
                 // Special optimal processing when the lookahead is exactly 1, and there
                 // is no semantic lookahead.
@@ -345,7 +345,7 @@ public class ParseEngine
                 // jj2LA is set to false at the beginning of the containing "if" statement.
                 // It is checked immediately after the end of the same statement to determine
                 // if lookaheads are to be performed using calls to the jj2 methods.
-                GenFirstSet(la.GetLaExpansion());
+                GenFirstSet(la.LaExpansion);
                 // genFirstSet may find that semantic attributes are appropriate for the next
                 // token.  In which case, it sets jj2LA to true.
                 if (!jj2LA)
@@ -458,17 +458,18 @@ public class ParseEngine
                 }
                 CSharpCCGlobals.CC2Index++;
                 // At this point, la.la_expansion.internal_name must be "".
-                la.GetLaExpansion().internal_name = "_" + CSharpCCGlobals.CC2Index;
-                la.GetLaExpansion().internal_index = CSharpCCGlobals.CC2Index;
+                la.                // At this point, la.la_expansion.internal_name must be "".
+                LaExpansion.internal_name = "_" + CSharpCCGlobals.CC2Index;
+                la.                LaExpansion.internal_index = CSharpCCGlobals.CC2Index;
                 phase2list.Add(la);
-                retval += "jj_2" + la.GetLaExpansion().internal_name + "(" + la.GetAmount() + ")";
-                if (la.GetActionTokens().Count != 0)
+                retval += "jj_2" + la.LaExpansion.internal_name + "(" + la.Amount + ")";
+                if (la.ActionTokens.Count != 0)
                 {
                     // In addition, there is also a semantic lookahead.  So concatenate
                     // the semantic check with the syntactic one.
                     retval += " && (";
-                    CSharpCCGlobals.PrintTokenSetup(la.GetActionTokens()[0]);
-                    foreach (var t2 in la.GetActionTokens())
+                    CSharpCCGlobals.PrintTokenSetup(la.ActionTokens[0]);
+                    foreach (var t2 in la.ActionTokens)
                     {
                         retval += _CodeGenerator.GetStringToPrint(t = t2);
                     }
@@ -569,7 +570,7 @@ public class ParseEngine
         string ret, _params;
         Token t = null;
 
-        string method_name = p.GetLhs();
+        string method_name = p.Lhs;
         bool void_ret = false;
         bool ptr_ret = false;
 
@@ -581,9 +582,9 @@ public class ParseEngine
         //    if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
         //    if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
 
-        for (int i = 0; i < p.GetReturnTypeTokens().Count; i++)
+        for (int i = 0; i < p.ReturnTypeTokens.Count; i++)
         {
-            t = (Token)(p.GetReturnTypeTokens()[i]);
+            t = (Token)(p.ReturnTypeTokens[i]);
             string s = _CodeGenerator.GetStringToPrint(t);
             sig.Append(t.ToString());
             sig.Append(' ');
@@ -597,10 +598,10 @@ public class ParseEngine
 
         sig.Capacity = 0;
         sig.Append('(');
-        if (p.GetParameterListTokens().Count != 0)
+        if (p.ParameterListTokens.Count != 0)
         {
-            CSharpCCGlobals.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
-            foreach (var t2 in p.GetParameterListTokens())
+            CSharpCCGlobals.PrintTokenSetup((Token)(p.ParameterListTokens[0]));
+            foreach (var t2 in p.ParameterListTokens)
             {
                 sig.Append(_CodeGenerator.GetStringToPrint(t = t2));
             }
@@ -610,7 +611,7 @@ public class ParseEngine
         _params = sig.ToString();
 
         // For now, just ignore comments
-        _CodeGenerator.GenerateMethodDefHeader(ret, CSharpCCGlobals.CuName, p.GetLhs() + _params, sig.ToString());
+        _CodeGenerator.GenerateMethodDefHeader(ret, CSharpCCGlobals.CuName, p.Lhs + _params, sig.ToString());
 
         return "";
     }
@@ -621,13 +622,13 @@ public class ParseEngine
         StringBuilder sig = new();
         string ret, _params;
 
-        string method_name = p.GetLhs();
+        string method_name = p.Lhs;
         bool void_ret = false;
         bool ptr_ret = false;
 
-        for (int i = 1; i < p.GetReturnTypeTokens().Count; i++)
+        for (int i = 1; i < p.ReturnTypeTokens.Count; i++)
         {
-            t = (Token)(p.GetReturnTypeTokens()[i]);
+            t = (Token)(p.ReturnTypeTokens[i]);
             sig.Append(_CodeGenerator.GetStringToPrint(t));
             if (t.kind == CSharpCCParserConstants.VOID) void_ret = true;
             if (t.kind == CSharpCCParserConstants.STAR) ptr_ret = true;
@@ -638,10 +639,10 @@ public class ParseEngine
 
         sig.Capacity = 0;
         sig.Append('(');
-        if (p.GetParameterListTokens().Count != 0)
+        if (p.ParameterListTokens.Count != 0)
         {
-            CodeGenerator.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
-            foreach (var t2 in p.GetParameterListTokens())
+            CodeGenerator.PrintTokenSetup((Token)(p.ParameterListTokens[0]));
+            foreach (var t2 in p.ParameterListTokens)
             {
                 sig.Append(_CodeGenerator.GetStringToPrint(t = t2));
             }
@@ -651,7 +652,7 @@ public class ParseEngine
         _params = sig.ToString();
 
         // For now, just ignore comments
-        _CodeGenerator.GenerateMethodDefHeader(ret, CSharpCCGlobals.CuName, p.GetLhs() + _params, sig.ToString());
+        _CodeGenerator.GenerateMethodDefHeader(ret, CSharpCCGlobals.CuName, p.Lhs + _params, sig.ToString());
 
         // Generate a default value for error return.
         string default_return;
@@ -726,7 +727,7 @@ public class ParseEngine
     void buildPhase1Routine(BNFProduction p)
     {
         Token t;
-        t = (Token)(p.GetReturnTypeTokens()[0]);
+        t = (Token)(p.ReturnTypeTokens[0]);
         bool voidReturn = false;
         if (t.kind == CSharpCCParserConstants.VOID)
         {
@@ -738,21 +739,21 @@ public class ParseEngine
             CodeGenerator.PrintTokenSetup(t);
             CSharpCCGlobals.ccol = 1;
             _CodeGenerator.PrintLeadingComments(t);
-            _CodeGenerator.GenCode("  " + CSharpCCGlobals.StaticOpt + "final " + (p.GetAccessMod() ?? "public") + " ");
+            _CodeGenerator.GenCode("  " + CSharpCCGlobals.StaticOpt + "final " + (p.AccessMod ?? "public") + " ");
             CSharpCCGlobals.cline = t.beginLine;
             CSharpCCGlobals.ccol = t.beginColumn;
             _CodeGenerator.PrintTokenOnly(t);
-            for (int i = 1; i < p.GetReturnTypeTokens().Count; i++)
+            for (int i = 1; i < p.ReturnTypeTokens.Count; i++)
             {
-                t = p.GetReturnTypeTokens()[i];
+                t = p.ReturnTypeTokens[i];
                 _CodeGenerator.PrintToken(t);
             }
             _CodeGenerator.PrintTrailingComments(t);
-            _CodeGenerator.GenCode(" " + p.GetLhs() + "(");
-            if (p.GetParameterListTokens().Count != 0)
+            _CodeGenerator.GenCode(" " + p.Lhs + "(");
+            if (p.ParameterListTokens.Count != 0)
             {
-                CSharpCCGlobals.PrintTokenSetup((p.GetParameterListTokens()[0]));
-                foreach (var t2 in p.GetParameterListTokens())
+                CSharpCCGlobals.PrintTokenSetup((p.ParameterListTokens[0]));
+                foreach (var t2 in p.ParameterListTokens)
                 {
                     _CodeGenerator.PrintToken(t = t2);
                 }
@@ -761,7 +762,7 @@ public class ParseEngine
             _CodeGenerator.GenCode(")");
             _CodeGenerator.GenCode(" throws ParseException");
 
-            foreach(var name in p.GetThrowsList())
+            foreach(var name in p.ThrowsList)
             {
                 _CodeGenerator.GenCode(", ");
                 foreach(var t2 in name)
@@ -796,12 +797,12 @@ public class ParseEngine
             _CodeGenerator.GenCodeLine("");
             if (isJavaDialect)
             {
-                _CodeGenerator.GenCodeLine("    trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\");");
+                _CodeGenerator.GenCodeLine("    trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(p.Lhs) + "\");");
             }
             else
             {
-                _CodeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + CSharpCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\"); });");
-                _CodeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\"); });");
+                _CodeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + CSharpCCGlobals.AddUnicodeEscapes(p.Lhs) + "\"); });");
+                _CodeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(p.Lhs) + "\"); });");
             }
             _CodeGenerator.GenCodeLine("    try {");
             indentamt = 6;
@@ -819,7 +820,7 @@ public class ParseEngine
             _CodeGenerator.PrintTrailingComments(t);
         }
 
-        string code = phase1ExpansionGen(p.GetExpansion());
+        string code = phase1ExpansionGen(p.Expansion);
         DumpFormattedString(code);
         _CodeGenerator.GenCodeLine("");
 
@@ -840,7 +841,7 @@ public class ParseEngine
             if (isJavaDialect)
             {
                 _CodeGenerator.GenCodeLine("    } finally {");
-                _CodeGenerator.GenCodeLine("      trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\");");
+                _CodeGenerator.GenCodeLine("      trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(p.Lhs) + "\");");
             }
             else
             {
@@ -921,21 +922,21 @@ public class ParseEngine
         else if (e is NonTerminal e_nrw6)
         {
             retval += "\n";
-            if (e_nrw6.GetLhsTokens().Count != 0)
+            if (e_nrw6.LhsTokens.Count != 0)
             {
-                CSharpCCGlobals.PrintTokenSetup(e_nrw6.GetLhsTokens()[0]);
-                foreach(var t2 in e_nrw6.GetLhsTokens())
+                CSharpCCGlobals.PrintTokenSetup(e_nrw6.LhsTokens[0]);
+                foreach(var t2 in e_nrw6.LhsTokens)
                 {
                     retval += _CodeGenerator.GetStringToPrint(t = t2);
                 }
                 retval += _CodeGenerator.GetTrailingComments(t);
                 retval += " = ";
             }
-            retval += e_nrw6.GetName() + "(";
-            if (e_nrw6.GetArgumentTokens().Count != 0)
+            retval += e_nrw6.Name + "(";
+            if (e_nrw6.ArgumentTokens.Count != 0)
             {
-                CSharpCCGlobals.PrintTokenSetup(e_nrw6.GetArgumentTokens()[0]);
-                foreach(var t2 in e_nrw6.GetArgumentTokens())
+                CSharpCCGlobals.PrintTokenSetup(e_nrw6.ArgumentTokens[0]);
+                foreach(var t2 in e_nrw6.ArgumentTokens)
                 {
                     retval += _CodeGenerator.GetStringToPrint(t = t2);
                 }
@@ -998,7 +999,7 @@ public class ParseEngine
                     // for the last one, if it's an action, we will not protect it.
                     Expansion elem = (Expansion)e_nrw9.units[i];
                     if (elem is not Action ||
-                        e.parent is not BNFProduction ||
+                        e.Parent is not BNFProduction ||
                         i != e_nrw9.units.Count - 1)
                     {
                         wrap_in_block = true;
@@ -1023,8 +1024,8 @@ public class ParseEngine
             else
             {
                 la = new Lookahead();
-                la.SetAmount(Options.GetLookahead());
-                la.SetLaExpansion(nested_e);
+                la.                Amount = Options.GetLookahead();
+                la.                LaExpansion = nested_e;
             }
             retval += "\n";
             int labelIndex = ++gensymindex;
@@ -1066,8 +1067,8 @@ public class ParseEngine
             else
             {
                 la = new Lookahead();
-                la.SetAmount(Options.GetLookahead());
-                la.SetLaExpansion(nested_e);
+                la.                Amount = Options.GetLookahead();
+                la.                LaExpansion = nested_e;
             }
             retval += "\n";
             int labelIndex = ++gensymindex;
@@ -1107,8 +1108,8 @@ public class ParseEngine
             else
             {
                 la = new Lookahead();
-                la.SetAmount(Options.GetLookahead());
-                la.SetLaExpansion(nested_e);
+                la.                Amount = Options.GetLookahead();
+                la.                LaExpansion = nested_e;
             }
             conds = new Lookahead[1];
             conds[0] = la;
@@ -1186,7 +1187,7 @@ public class ParseEngine
 
     void buildPhase2Routine(Lookahead la)
     {
-        Expansion e = la.GetLaExpansion();
+        Expansion e = la.LaExpansion;
         if (isJavaDialect)
         {
             _CodeGenerator.GenCodeLine("  " + CSharpCCGlobals.StaticOpt + "private " + Options.GetBooleanType() + " jj_2" + e.internal_name + "(int xla)");
@@ -1221,7 +1222,7 @@ public class ParseEngine
         }
         _CodeGenerator.GenCodeLine("  }");
         _CodeGenerator.GenCodeLine("");
-        var p3d = new Phase3Data(e, la.GetAmount());
+        var p3d = new Phase3Data(e, la.Amount);
         phase3list.Add(p3d);
         phase3table.Add(e, p3d);
     }
@@ -1235,7 +1236,7 @@ public class ParseEngine
         string retval = (value ? "true" : "false");
         if (Options.GetDebugLookahead() && jj3_expansion != null)
         {
-            string tracecode = "trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(((NormalProduction)jj3_expansion.parent).GetLhs()) +
+            string tracecode = "trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(((NormalProduction)jj3_expansion.Parent).Lhs) +
             "(LOOKAHEAD " + (value ? "FAILED" : "SUCCEEDED") + ")\");";
             if (Options.GetErrorReporting())
             {
@@ -1262,7 +1263,7 @@ public class ParseEngine
                 }
                 else if (seq is NonTerminal e_nrw)
                 {
-                    CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw.GetName(), out var ntprod);
+                    CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw.Name, out var ntprod);
 
                     if (ntprod is CodeProduction)
                     {
@@ -1270,7 +1271,7 @@ public class ParseEngine
                     }
                     else
                     {
-                        seq = ntprod.GetExpansion();
+                        seq = ntprod.Expansion;
                     }
                 }
                 else
@@ -1292,9 +1293,9 @@ public class ParseEngine
             e.internal_name = "R_" + e.GetProductionName() + "_" + e.Line + "_" + e.Column + "_" + gensymindex;
             e.internal_index = gensymindex;
         }
-        if (!phase3table.TryGetValue(e, out var p3d) || p3d.count < inf.count)
+        if (!phase3table.TryGetValue(e, out var p3d) || p3d.Count < inf.Count)
         {
-            p3d = new Phase3Data(e, inf.count);
+            p3d = new Phase3Data(e, inf.Count);
             phase3list.Add(p3d);
             phase3table.Add(e, p3d);
         }
@@ -1302,7 +1303,7 @@ public class ParseEngine
 
     void setupPhase3Builds(Phase3Data inf)
     {
-        Expansion e = inf.exp;
+        Expansion e = inf.Exp;
         if (e is RegularExpression)
         {
             ; // nothing to here
@@ -1314,14 +1315,14 @@ public class ParseEngine
             // fact, we rely here on the fact that the "name" fields of both these
             // variables are the same.
 
-            CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw.GetName(), out var ntprod);
+            CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw.Name, out var ntprod);
             if (ntprod is CodeProduction)
             {
                 ; // nothing to do here
             }
             else
             {
-                generate3R(ntprod.GetExpansion(), inf);
+                generate3R(ntprod.Expansion, inf);
             }
         }
         else if (e is Choice e_nrw2)
@@ -1335,7 +1336,7 @@ public class ParseEngine
         {
             // We skip the first element in the following iteration since it is the
             // Lookahead object.
-            int cnt = inf.count;
+            int cnt = inf.Count;
             for (int i = 1; i < e_nrw4.units.Count; i++)
             {
                 Expansion eseq = e_nrw4.units[i];
@@ -1346,7 +1347,7 @@ public class ParseEngine
         }
         else if (e is TryBlock e_nrw5)
         {
-            setupPhase3Builds(new Phase3Data(e_nrw5.exp, inf.count));
+            setupPhase3Builds(new Phase3Data(e_nrw5.exp, inf.Count));
         }
         else if (e is OneOrMore e_nrw6)
         {
@@ -1378,7 +1379,7 @@ public class ParseEngine
     //Dictionary generated = new Dictionary();
     void buildPhase3Routine(Phase3Data inf, bool recursive_call)
     {
-        Expansion e = inf.exp;
+        Expansion e = inf.Exp;
         Token t = null;
         if (e.internal_name.StartsWith("jj_scan_token"))
             return;
@@ -1405,14 +1406,14 @@ public class ParseEngine
             }
             genStackCheck(false);
             xsp_declared = false;
-            if (Options.GetDebugLookahead() && e.parent is NormalProduction production)
+            if (Options.GetDebugLookahead() && e.Parent is NormalProduction production)
             {
                 _CodeGenerator.GenCode("    ");
                 if (Options.GetErrorReporting())
                 {
                     _CodeGenerator.GenCode("if (!jj_rescan) ");
                 }
-                _CodeGenerator.GenCodeLine("trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(production.GetLhs()) + "(LOOKING AHEAD...)\");");
+                _CodeGenerator.GenCodeLine("trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(production.Lhs) + "(LOOKING AHEAD...)\");");
                 jj3_expansion = e;
             }
             else
@@ -1446,7 +1447,7 @@ public class ParseEngine
             // there's no need to check it below for "e_nrw" and "ntexp".  In
             // fact, we rely here on the fact that the "name" fields of both these
             // variables are the same.
-            CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw.GetName(),out var ntprod);
+            CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw.Name,out var ntprod);
 
             if (ntprod is CodeProduction)
             {
@@ -1454,7 +1455,7 @@ public class ParseEngine
             }
             else
             {
-                Expansion ntexp = ntprod.GetExpansion();
+                Expansion ntexp = ntprod.Expansion;
                 //codeGenerator.GenCodeLine("    if (jj_3" + ntexp.internal_name + "()) " + genReturn(true));
                 _CodeGenerator.GenCodeLine("    if (" + genjj_3Call(ntexp) + ") " + genReturn(true));
                 //codeGenerator.GenCodeLine("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
@@ -1476,14 +1477,14 @@ public class ParseEngine
             {
                 nested_seq = (Sequence)(e_nrw2.Choices[i]);
                 Lookahead la = (Lookahead)(nested_seq.units[0]);
-                if (la.GetActionTokens().Count != 0)
+                if (la.ActionTokens.Count != 0)
                 {
                     // We have semantic lookahead that must be evaluated.
                     CSharpCCGlobals.LookaheadNeeded = true;
                     _CodeGenerator.GenCodeLine("    jj_lookingAhead = true;");
                     _CodeGenerator.GenCode("    jj_semLA = ");
-                    CSharpCCGlobals.PrintTokenSetup(la.GetActionTokens()[0]);
-                    foreach(var t2 in la.GetActionTokens())
+                    CSharpCCGlobals.PrintTokenSetup(la.ActionTokens[0]);
+                    foreach(var t2 in la.ActionTokens)
                     {
                         _CodeGenerator.PrintToken(t=t2);
                     }
@@ -1492,7 +1493,7 @@ public class ParseEngine
                     _CodeGenerator.GenCodeLine("    jj_lookingAhead = false;");
                 }
                 _CodeGenerator.GenCode("    if (");
-                if (la.GetActionTokens().Count != 0)
+                if (la.ActionTokens.Count != 0)
                 {
                     _CodeGenerator.GenCode("!jj_semLA || ");
                 }
@@ -1519,7 +1520,7 @@ public class ParseEngine
         {
             // We skip the first element in the following iteration since it is the
             // Lookahead object.
-            int cnt = inf.count;
+            int cnt = inf.Count;
             for (int i = 1; i < e_nrw23.units.Count; i++)
             {
                 Expansion eseq = (Expansion)(e_nrw23.units[i]);
@@ -1534,7 +1535,7 @@ public class ParseEngine
         }
         else if (e is TryBlock e_nrw22)
         {
-            buildPhase3Routine(new Phase3Data(e_nrw22.exp, inf.count), true);
+            buildPhase3Routine(new Phase3Data(e_nrw22.exp, inf.Count), true);
         }
         else if (e is OneOrMore e_nrw18)
         {
@@ -1618,7 +1619,7 @@ public class ParseEngine
         }
         else if (e is NonTerminal e_nrw6)
         {
-            if (CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw6.GetName(), out var ntprod))
+            if (CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw6.Name, out var ntprod))
             {
 
 
@@ -1630,7 +1631,7 @@ public class ParseEngine
                 }
                 else
                 {
-                    Expansion ntexp = ntprod.GetExpansion();
+                    Expansion ntexp = ntprod.Expansion;
                     retval = minimumSize(ntexp);
                 }
             }
@@ -1742,12 +1743,12 @@ public class ParseEngine
                     codeGenerator.GenCodeLine("");
                     if (isJavaDialect)
                     {
-                        codeGenerator.GenCodeLine("    trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(cp.GetLhs()) + "\");");
+                        codeGenerator.GenCodeLine("    trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(cp.Lhs) + "\");");
                     }
                     else
                     {
-                        codeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + CSharpCCGlobals.AddUnicodeEscapes(cp.GetLhs()) + "\"); });");
-                        codeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(cp.GetLhs()) + "\"); });");
+                        codeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + CSharpCCGlobals.AddUnicodeEscapes(cp.Lhs) + "\"); });");
+                        codeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(cp.Lhs) + "\"); });");
                     }
                     codeGenerator.GenCodeLine("    try {");
                 }
@@ -1773,25 +1774,25 @@ public class ParseEngine
                     CSharpCCErrors.SemanticError("Cannot use JAVACODE productions with C++ output (yet).");
                     continue;
                 }
-                t = jp.GetReturnTypeTokens()[0];
+                t = jp.ReturnTypeTokens[0];
                 CSharpCCGlobals.PrintTokenSetup(t);
                 CSharpCCGlobals.ccol = 1;
                 codeGenerator.PrintLeadingComments(t);
-                codeGenerator.GenCode("  " + CSharpCCGlobals.StaticOpt + (p.GetAccessMod() != null ? p.GetAccessMod() + " " : ""));
+                codeGenerator.GenCode("  " + CSharpCCGlobals.StaticOpt + (p.AccessMod != null ? p.AccessMod + " " : ""));
                 CSharpCCGlobals.cline = t.beginLine; 
                 CSharpCCGlobals.ccol = t.beginColumn;
                 codeGenerator.PrintTokenOnly(t);
-                for (int i = 1; i < jp.GetReturnTypeTokens().Count; i++)
+                for (int i = 1; i < jp.ReturnTypeTokens.Count; i++)
                 {
-                    t = (Token)(jp.GetReturnTypeTokens()[i]);
+                    t = (Token)(jp.ReturnTypeTokens[i]);
                     codeGenerator.PrintToken(t);
                 }
                 codeGenerator.PrintTrailingComments(t);
-                codeGenerator.GenCode(" " + jp.GetLhs() + "(");
-                if (jp.GetParameterListTokens().Count != 0)
+                codeGenerator.GenCode(" " + jp.Lhs + "(");
+                if (jp.ParameterListTokens.Count != 0)
                 {
-                    CSharpCCGlobals.PrintTokenSetup((jp.GetParameterListTokens()[0]));
-                    foreach(var t2 in jp.GetParameterListTokens())
+                    CSharpCCGlobals.PrintTokenSetup((jp.ParameterListTokens[0]));
+                    foreach(var t2 in jp.ParameterListTokens)
                     {
                         codeGenerator.PrintToken(t=t2);
                     }
@@ -1802,7 +1803,7 @@ public class ParseEngine
                 {
                     codeGenerator.GenCode(" throws ParseException");
                 }
-                foreach(var name in jp.GetThrowsList())
+                foreach(var name in jp.ThrowsList)
                 {
                     codeGenerator.GenCode(", ");
                     foreach(var t2 in name)
@@ -1815,7 +1816,7 @@ public class ParseEngine
                 if (Options.GetDebugParser())
                 {
                     codeGenerator.GenCodeLine("");
-                    codeGenerator.GenCodeLine("    trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(jp.GetLhs()) + "\");");
+                    codeGenerator.GenCodeLine("    trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(jp.Lhs) + "\");");
                     codeGenerator.GenCode("    try {");
                 }
                 if (jp.CodeTokens.Count != 0)
@@ -1828,7 +1829,7 @@ public class ParseEngine
                 if (Options.GetDebugParser())
                 {
                     codeGenerator.GenCodeLine("    } finally {");
-                    codeGenerator.GenCodeLine("      trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(jp.GetLhs()) + "\");");
+                    codeGenerator.GenCodeLine("      trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(jp.Lhs) + "\");");
                     codeGenerator.GenCodeLine("    }");
                 }
                 codeGenerator.GenCodeLine("  }");
@@ -1886,7 +1887,7 @@ public class ParseEngine
     // Table driven.
     void buildPhase3Table(Phase3Data inf)
     {
-        Expansion e = inf.exp;
+        Expansion e = inf.Exp;
         Token t = null;
         if (e is RegularExpression e_nrw)
         {
@@ -1894,7 +1895,7 @@ public class ParseEngine
         }
         else if (e is NonTerminal e_nrw2)
         {
-            if (!CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw2.GetName(), out var ntprod))
+            if (!CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw2.Name, out var ntprod))
                 return;
 
             if (ntprod is CodeProduction)
@@ -1904,7 +1905,7 @@ public class ParseEngine
             }
             else
             {
-                Expansion ntexp = ntprod.GetExpansion();
+                Expansion ntexp = ntprod.Expansion;
                 // nt exp's table.
                 Console.Error.WriteLine("PRODUCTION, " + ntexp.internal_index);
                 //buildPhase3Table(new Phase3Data(ntexp, inf.count));
@@ -1919,20 +1920,20 @@ public class ParseEngine
                 if (i > 0) Console.Error.Write("\n|");
                 nested_seq = (Sequence)(e_nrw4.Choices[i]);
                 Lookahead la = (Lookahead)(nested_seq.units[0]);
-                if (la.GetActionTokens().Count != 0)
+                if (la.ActionTokens.Count != 0)
                 {
                     Console.Error.Write("SEMANTIC,");
                 }
                 else
                 {
-                    buildPhase3Table(new Phase3Data(nested_seq, inf.count));
+                    buildPhase3Table(new Phase3Data(nested_seq, inf.Count));
                 }
             }
             Console.Error.WriteLine();
         }
         else if (e is Sequence e_nrw5)
         {
-            int cnt = inf.count;
+            int cnt = inf.Count;
             if (e_nrw5.units.Count > 2)
             {
                 Console.Error.WriteLine("SEQ, " + cnt);
@@ -1950,11 +1951,11 @@ public class ParseEngine
                 var tmp = e_nrw5.units[1];
                 while (tmp is NonTerminal tx)
                 {
-                    if (!CSharpCCGlobals.ProductionTable.TryGetValue(tx.GetName(), out var ntprod))
+                    if (!CSharpCCGlobals.ProductionTable.TryGetValue(tx.Name, out var ntprod))
                         break;
 
                     if (ntprod is CodeProduction) break;
-                    tmp = ntprod.GetExpansion();
+                    tmp = ntprod.Expansion;
                 }
                 buildPhase3Table(new Phase3Data(tmp, cnt));
             }
@@ -1962,7 +1963,7 @@ public class ParseEngine
         }
         else if (e is TryBlock e_nrw6)
         {
-            buildPhase3Table(new Phase3Data(e_nrw6.exp, inf.count));
+            buildPhase3Table(new Phase3Data(e_nrw6.exp, inf.Count));
         }
         else if (e is OneOrMore e_nrw15)
         {

@@ -42,14 +42,15 @@ public class RJustName : RegularExpression
      */
     public RegularExpression regexpr;
 
-    public override Nfa GenerateNfa(bool ignoreCase) => regexpr.GenerateNfa(ignoreCase);
+    public override Nfa GenerateNfa(bool ignoreCase)
+        => regexpr.GenerateNfa(ignoreCase);
 
     public RJustName() { }
 
     public RJustName(Token token, string image)
     {
-        this.        Line = token.beginLine;
-        this.        Column = token.beginColumn;
+        this.Line = token.beginLine;
+        this.Column = token.beginColumn;
         this.label = image;
     }
 

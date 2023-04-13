@@ -53,12 +53,12 @@ public class XTextGenerator : TextGenerator
 
         foreach(var res in tp.respecs)
         {
-            var regularExpressionText = CCDoc.EmitRE(res.rexp);
+            var regularExpressionText = CCDoc.EmitRE(res.Rexp);
             sb.Append(regularExpressionText);
 
-            if (res.nsTok != null)
+            if (res.NsToken != null)
             {
-                sb.Append(" : " + res.nsTok.image);
+                sb.Append(" : " + res.NsToken.image);
             }
 
             sb.Append('\n');

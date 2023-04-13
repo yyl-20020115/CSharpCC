@@ -62,24 +62,6 @@ public class NfaState
     private static bool jjCheckNAddStatesUnaryNeeded = false;
     private static bool jjCheckNAddStatesDualNeeded = false;
 
-    public static void ReInit()
-    {
-        generatedStates = 0;
-        idCnt = 0;
-        dummyStateIndex = -1;
-        done = false;
-        mark = null;
-        stateDone = null;
-
-        allStates.Clear();
-        indexedAllStates.Clear();
-        equivStatesTable.Clear();
-        allNextStates.Clear();
-        compositeStateTable.Clear();
-        stateBlockTable.Clear();
-        stateNameForComposite.Clear();
-        stateSetsToFix.Clear();
-    }
 
     public ulong[] asciiMoves = new ulong[2];
     public char[] charMoves = null;
@@ -3336,8 +3318,26 @@ public class NfaState
         codeGenerator.GenCodeLine("\n};");
         codeGenerator.SwitchToMainFile();
     }
+    public static void ReInit()
+    {
+        generatedStates = 0;
+        idCnt = 0;
+        dummyStateIndex = -1;
+        done = false;
+        mark = null;
+        stateDone = null;
 
-    public static void reInit()
+        allStates.Clear();
+        indexedAllStates.Clear();
+        equivStatesTable.Clear();
+        allNextStates.Clear();
+        compositeStateTable.Clear();
+        stateBlockTable.Clear();
+        stateNameForComposite.Clear();
+        stateSetsToFix.Clear();
+    }
+
+    public static void ReInitOther()
     {
         unicodeWarningGiven = false;
         generatedStates = 0;

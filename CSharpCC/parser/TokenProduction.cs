@@ -99,35 +99,18 @@ public class TokenProduction
     public Token firstToken, lastToken;
 
     /**
-     * @param line the line to set
-     */
-    public void SetLine(int line)
-    {
-        this.line = line;
-    }
-
-    /**
      * @return the line
      */
-    public int GetLine()
-    {
-        return line;
-    }
-
     /**
-     * @param column the column to set
-     */
-    public void SetColumn(int column)
-    {
-        this.column = column;
-    }
+ * @param line the line to set
+ */
+    public int Line { get => line; set => this.line = value; }
 
     /**
      * @return the column
      */
-    public int GetColumn()
-    {
-        return column;
-    }
-
+    /**
+ * @param column the column to set
+ */
+    public int Column { get => column; set => this.column = value; }
 }

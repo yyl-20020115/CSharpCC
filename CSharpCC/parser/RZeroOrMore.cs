@@ -60,8 +60,8 @@ public class RZeroOrMore : RegularExpression
 
     public RZeroOrMore(Token t, RegularExpression r)
     {
-        this.        Line = t.beginLine;
-        this.        Column = t.beginColumn;
+        this.Line = t.beginLine;
+        this.Column = t.beginColumn;
         this.regexpr = r;
     }
 }

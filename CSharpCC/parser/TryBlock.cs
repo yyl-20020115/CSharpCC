@@ -68,11 +68,11 @@ public class TryBlock : Expansion
 
     public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        var sb = base.Dump(indent, alreadyDumped);
+        var builder = base.Dump(indent, alreadyDumped);
         if (alreadyDumped.Contains(this))
-            return sb;
+            return builder;
         alreadyDumped.Add(this);
-        sb.Append(eol).Append(exp.Dump(indent + 1, alreadyDumped));
-        return sb;
+        builder.Append(eol).Append(exp.Dump(indent + 1, alreadyDumped));
+        return builder;
     }
 }

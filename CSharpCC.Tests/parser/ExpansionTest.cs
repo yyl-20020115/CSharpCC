@@ -56,7 +56,7 @@ public class ExpansionTest : CSharpCCTestCase
         Assert.AreEqual(t.beginColumn, zoo.Column);
         Assert.AreEqual(t.beginLine, zoo.Line);
         Assert.AreEqual(e, zoo.expansion);
-        Assert.AreSame(e.parent, zoo);
+        Assert.AreSame(e.Parent, zoo);
     }
     [TestMethod]
     public void TestZeroOrMoreConstructor()
@@ -65,7 +65,7 @@ public class ExpansionTest : CSharpCCTestCase
         Assert.AreEqual(t.beginColumn, zom.Column);
         Assert.AreEqual(t.beginLine, zom.Line);
         Assert.AreEqual(e, zom.expansion);
-        Assert.AreEqual(e.parent, zom);
+        Assert.AreEqual(e.Parent, zom);
     }
     [TestMethod]
     public void TestRZeroOrMoreConstructor()
@@ -93,7 +93,7 @@ public class ExpansionTest : CSharpCCTestCase
         Assert.AreEqual(t.beginColumn, oom.Column);
         Assert.AreEqual(t.beginLine, oom.Line);
         Assert.AreEqual(rce, oom.expansion);
-        Assert.AreEqual(rce.parent, oom);
+        Assert.AreEqual(rce.Parent, oom);
     }
 
     [TestMethod]
