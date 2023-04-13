@@ -95,7 +95,7 @@ public class NfaState
     public int kind = int.MaxValue;
     private int lookingFor;
     private int usefulEpsilonMoves = 0;
-    int inNextOf;
+    public int inNextOf;
     private int lexState;
     private int nonAsciiMethod = -1;
     private int kindToPrint = int.MaxValue;
@@ -1315,7 +1315,7 @@ public class NfaState
         return retVal;
     }
 
-    static string GetStateSetString(List states)
+    public static string GetStateSetString(List<NfaState> states)
     {
         if (states == null || states.Count == 0)
             return "null;";

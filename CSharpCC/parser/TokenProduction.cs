@@ -48,7 +48,7 @@ public class TokenProduction
      * The image of the above constants.
      */
     public static readonly string[] kindImage = {
-        "TOKEN", "SKIP", "MORE", "SPECIAL"
+        nameof(TOKEN), nameof(SKIP), nameof(MORE), nameof(SPECIAL)
       };
 
     /**

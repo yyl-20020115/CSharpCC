@@ -45,7 +45,7 @@ public static class NodeFiles
      */
     static readonly string nodeVersion = Version.MajorDotMinor;
 
-    static HashSet<string> nodesGenerated = new ();
+    static HashSet<string> nodesGenerated = new();
 
     public static void ensure(IO io, string nodeType)
     {
@@ -90,15 +90,15 @@ public static class NodeFiles
 
             if (nodeType == ("Node"))
             {
-                generateNode_java(outputFile);
+                GenerateNodeJava(outputFile);
             }
             else if (nodeType == ("SimpleNode"))
             {
-                generateSimpleNode_java(outputFile);
+                GenerateSimpleNodeJava(outputFile);
             }
             else
             {
-                generateMULTINode_java(outputFile, nodeType);
+                GenerateMULTINodeJava(outputFile, nodeType);
             }
 
             outputFile.Close();
@@ -208,7 +208,7 @@ public static class NodeFiles
             ostr.WriteLine("public interface " + name);
             ostr.WriteLine("{");
 
-            string ve = mergeVisitorException();
+            string ve = MergeVisitorException();
 
             string argumentType = "Object";
             if (JJTreeOptions.GetVisitorDataType() != (""))
@@ -271,7 +271,7 @@ public static class NodeFiles
         }
 
         string className = defaultVisitorClass();
-        File file = new File(JJTreeOptions.GetJJTreeOutputDirectory(), className + ".java");
+        string file = System.IO.Path.Combine(JJTreeOptions.GetJJTreeOutputDirectory(), className + ".java");
 
         try
         {
@@ -283,10 +283,10 @@ public static class NodeFiles
             generatePrologue(ostr);
             ostr.WriteLine("public class " + className + " implements " + visitorClass() + "{");
 
-            string ve = mergeVisitorException();
+            string ve = MergeVisitorException();
 
             string argumentType = "Object";
-            if (!JJTreeOptions.GetVisitorDataType() == (""))
+            if (JJTreeOptions.GetVisitorDataType() != (""))
             {
                 argumentType = JJTreeOptions.GetVisitorDataType().Trim();
             }
@@ -357,10 +357,10 @@ public static class NodeFiles
         }
     }
 
-    private static string mergeVisitorException()
+    private static string MergeVisitorException()
     {
         string ve = JJTreeOptions.GetVisitorException();
-        if (!"" == (ve))
+        if ("" != (ve))
         {
             ve = " throws " + ve;
         }
@@ -368,13 +368,13 @@ public static class NodeFiles
     }
 
 
-    private static void generateNode_java(OutputFile outputFile)
+    private static void GenerateNodeJava(OutputFile outputFile)
     {
         TextWriter ostr = outputFile.GetPrintWriter();
 
         generatePrologue(ostr);
 
-        Dictionary options = new Dictionary(Options.getOptions());
+        var options = new Dictionary<string, object>(Options.getOptions());
         options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
 
         OutputFileGenerator generator = new OutputFileGenerator(
@@ -386,13 +386,13 @@ public static class NodeFiles
     }
 
 
-    private static void generateSimpleNode_java(OutputFile outputFile)
+    private static void GenerateSimpleNodeJava(OutputFile outputFile)
     {
         TextWriter ostr = outputFile.GetPrintWriter();
 
         generatePrologue(ostr);
 
-        Dictionary options = new Dictionary(Options.getOptions());
+        var options = new Dictionary<string, object>(Options.getOptions());
         options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
         options.Add("VISITOR_RETURN_TYPE_VOID", (JJTreeOptions.GetVisitorReturnType() == ("void")));
 
@@ -405,18 +405,18 @@ public static class NodeFiles
     }
 
 
-    private static void generateMULTINode_java(OutputFile outputFile, string nodeType)
+    private static void GenerateMULTINodeJava(OutputFile outputFile, string nodeType)
     {
-        TextWriter ostr = outputFile.GetPrintWriter();
+        var ostr = outputFile.GetPrintWriter();
 
         generatePrologue(ostr);
 
-        Dictionary options = new Dictionary(Options.getOptions());
+        var options = new Dictionary<string, object>(Options.getOptions());
         options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
         options.Add("NODE_TYPE", nodeType);
         options.Add("VISITOR_RETURN_TYPE_VOID", (JJTreeOptions.GetVisitorReturnType() == ("void")));
 
-        OutputFileGenerator generator = new OutputFileGenerator(
+        var generator = new OutputFileGenerator(
             "/templates/MultiNode.template", options);
 
         generator.Generate(ostr);
