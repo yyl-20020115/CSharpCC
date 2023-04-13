@@ -85,7 +85,7 @@ public class TokenizerData
     }
 
     // On match info indexed by the match kind.
-    public Dictionary<int, MatchInfo> allMatches = new Dictionary<int, MatchInfo>();
+    public Dictionary<int, MatchInfo> allMatches = new();
 
     // Initial nfa states indexed by lexical state.
     public Dictionary<int, int> initialStates;

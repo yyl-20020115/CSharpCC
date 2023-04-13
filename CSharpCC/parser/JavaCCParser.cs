@@ -263,9 +263,10 @@ public class JavaCCParser : JavaCCParserInternals
                     break;
                 default:
                     jj_la1[0] = jj_gen;
-                    break label_1;
+                    goto label_1_exit;
             }
         }
+        label_1_exit:
         jj_consume_token(0);
     }
 
@@ -289,10 +290,11 @@ public class JavaCCParser : JavaCCParserInternals
                         break;
                     default:
                         jj_la1[1] = jj_gen;
-                        break label_2;
+                        goto label_2_exit;
                 }
                 option_binding();
             }
+        label_2_exit:
             jj_consume_token(RBRACE);
         }
         else
@@ -378,12 +380,13 @@ public class JavaCCParser : JavaCCParserInternals
                     break;
                 default:
                     jj_la1[4] = jj_gen;
-                    break label_3;
+                    goto label_3_exit;
             }
             jj_consume_token(COMMA);
             s = StringLiteral();
             strings.Add(s);
         }
+        label_3_exit:
         jj_consume_token(RPAREN);
         { if (true) return strings; }
         throw new Error("Missing return statement in function");
@@ -436,7 +439,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void javacode_production()
     {
-        JavaCodeProduction p = new JavaCodeProduction();
+        var p = new JavaCodeProduction();
         String lhs;
         Token t = getToken(1);
         p.SetFirstToken(t);
@@ -467,13 +470,14 @@ public class JavaCCParser : JavaCCParserInternals
                             break;
                         default:
                             jj_la1[6] = jj_gen;
-                            break label_4;
+                            goto label_4_exit;
                     }
                     excName = new ();
                     jj_consume_token(COMMA);
                     Name(excName);
                     p.GetThrowsList().Add(excName);
                 }
+                label_4_exit:
                 break;
             default:
                 jj_la1[7] = jj_gen;
@@ -486,7 +490,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void cppcode_production()
     {
-        CppCodeProduction p = new CppCodeProduction();
+        var p = new CppCodeProduction();
         String lhs;
         Token t = getToken(1);
         p.SetFirstToken(t);
@@ -517,13 +521,14 @@ public class JavaCCParser : JavaCCParserInternals
                             break;
                         default:
                             jj_la1[8] = jj_gen;
-                            break label_5;
+                            goto label_5_exit;
                     }
                     excName = new ();
                     jj_consume_token(COMMA);
                     Name(excName);
                     p.GetThrowsList().Add(excName);
                 }
+            label_5_exit:
                 break;
             default:
                 jj_la1[9] = jj_gen;
@@ -537,8 +542,8 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void bnf_production()
     {
-        BNFProduction p = new BNFProduction();
-        Container c = new Container();
+        BNFProduction p = new();
+        Container c = new();
         Token t = getToken(1);
         p.SetFirstToken(t);
         List<Token> excName;
@@ -569,13 +574,14 @@ public class JavaCCParser : JavaCCParserInternals
                             break;
                         default:
                             jj_la1[10] = jj_gen;
-                            break label_6;
+                            goto label_6_exit;
                     }
                     excName = new ();
                     jj_consume_token(COMMA);
                     Name(excName);
                     p.GetThrowsList().Add(excName);
                 }
+            label_6_exit:
                 break;
             default:
                 jj_la1[11] = jj_gen;
@@ -630,7 +636,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void regular_expr_production()
     {
-        TokenProduction p = new TokenProduction();
+        var p = new TokenProduction();
         List<string> states;
         Token t = p.firstToken = getToken(1);
         p.SetLine(t.beginLine);
@@ -788,10 +794,10 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void regexpr_spec(TokenProduction p)
     {
-        Container c = new Container();
-        Action act = new Action();
+        var c = new Container();
+        var act = new Action();
         Token t = null;
-        RegExprSpec res = new RegExprSpec();
+        var res = new RegExprSpec();
         regular_expression(c);  
         res.rexp = (RegularExpression)c.Member;
         res.rexp.tpContext = p;
@@ -837,7 +843,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         bool morethanone = false;
         Choice ch = null; // unnecessary initialization to make Java compiler happy!
-        Container c2 = new Container();
+        var c2 = new Container();
         expansion(c1);
     label_9:
         while (true)
@@ -855,7 +861,7 @@ public class JavaCCParser : JavaCCParserInternals
             expansion(c2);
             if (morethanone)
             {
-                ch.GetChoices().Add(c2.Member);
+                ch.GetChoices().Add(c2.Member as Expansion);
                 ((Expansion)c2.Member).parent = ch;
             }
             else
@@ -863,7 +869,7 @@ public class JavaCCParser : JavaCCParserInternals
                 morethanone = true;
                 ch = new Choice((Expansion)c1.Member);
                 ((Expansion)c1.Member).parent = ch;
-                ch.GetChoices().Add(c2.Member);
+                ch.GetChoices().Add(c2.Member as Expansion);
                 ((Expansion)c2.Member).parent = ch;
             }
         }
@@ -875,10 +881,10 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void expansion(Container c1)
     {
-        Sequence seq = new Sequence();
-        Container c2 = new Container();
-        Lookahead la = new Lookahead();
-        Token t = getToken(1);
+        var seq = new Sequence();
+        var c2 = new Container();
+        var la = new Lookahead();
+        var t = getToken(1);
         seq.SetLine(t.beginLine);
         seq.SetColumn(t.beginColumn);
         la.SetLine(t.beginLine);
@@ -907,7 +913,7 @@ public class JavaCCParser : JavaCCParserInternals
         while (true)
         {
             expansion_unit(c2);
-            seq.units.Add(c2.Member);
+            seq.units.Add(c2.Member as Expansion);
             ((Expansion)c2.Member).parent = seq;
             ((Expansion)c2.Member).ordinal = seq.units.Count - 1;
             if (notTailOfExpansionUnit())
@@ -928,9 +934,9 @@ public class JavaCCParser : JavaCCParserInternals
 
     public Lookahead local_lookahead()
     {
-        Lookahead la = new Lookahead();
+        var la = new Lookahead();
         la.SetExplicit(true);
-        Token t = getToken(1);
+        var t = getToken(1);
         la.SetLine(t.beginLine);
         la.SetColumn(t.beginColumn);
         la.SetLaExpansion(null);
@@ -1063,7 +1069,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void expansion_unit(Container c)
     {
         String name;
-        List lhsTokens = new ();
+        List<Token> lhsTokens = new ();
         NonTerminal nt;
         Action act;
         Token t;
@@ -1083,8 +1089,8 @@ public class JavaCCParser : JavaCCParserInternals
                 // expansion (we use EOF).
                 la.SetLaExpansion(new REndOfFile());
                 // Create a singleton choice with an empty action.
-                Choice ch = new Choice(t);
-                Sequence seq = new Sequence(t, la);
+                var ch = new Choice(t);
+                var seq = new Sequence(t, la);
                 la.parent = seq; la.ordinal = 0;
                 act = new Action();
                 act.SetLine(t.beginLine);
@@ -1128,11 +1134,11 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             case TRY:
                 Container expch = new Container();
-                List types = new();
-                List ids = new();
-                List catchblks = new();
-                List finallyblk = null;
-                List vec = new();
+                List<List<Token>> types = new();
+                List<Token> ids = new();
+                List<List<Token>> catchblks = new();
+                List<Token> finallyblk = null;
+                List<Token> vec = new();
                 Token t0;
                 t0 = jj_consume_token(TRY);
                 jj_consume_token(LBRACE);
@@ -1221,7 +1227,7 @@ public class JavaCCParser : JavaCCParserInternals
                         nt = new NonTerminal();
                         nt.SetLine(t.beginLine);
                         nt.SetColumn(t.beginColumn);
-                        nt.setLhsTokens(lhsTokens);
+                        nt.SetLhsTokens(lhsTokens);
                         name = identifier();
                         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                         {
@@ -1423,7 +1429,7 @@ public class JavaCCParser : JavaCCParserInternals
             complex_regular_expression(c2);
             if (morethanone)
             {
-                ch.GetChoices().Add(c2.Member);
+                ch.GetChoices().Add(c2.Member as Expansion);
             }
             else
             {
@@ -1431,8 +1437,8 @@ public class JavaCCParser : JavaCCParserInternals
                 ch = new RChoice();
                 ch.SetLine(((RegularExpression)c1.Member).GetLine());
                 ch.SetColumn(((RegularExpression)c1.Member).GetColumn());
-                ch.GetChoices().Add(c1.Member);
-                ch.GetChoices().Add(c2.Member);
+                ch.GetChoices().Add(c1.Member as Expansion);
+                ch.GetChoices().Add(c2.Member as Expansion);
             }
         }
         if (morethanone)
@@ -1460,12 +1466,12 @@ public class JavaCCParser : JavaCCParserInternals
                 seq = new RSequence();
                 seq.SetLine(((RegularExpression)c1.Member).GetLine());
                 seq.SetColumn(((RegularExpression)c1.Member).GetColumn());
-                seq.units.Add(c1.Member);
-                seq.units.Add(c2.Member);
+                seq.units.Add(c1.Member as RegularExpression);
+                seq.units.Add(c2.Member as RegularExpression);
             }
             else
             {
-                seq.units.Add(c2.Member);
+                seq.units.Add(c2.Member as RegularExpression);
             }
             switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
@@ -1589,7 +1595,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void character_list(Container c1)
     {
-        RCharacterList chlist = new RCharacterList();
+        RCharacterList chlist = new();
         Token t = getToken(1);
         chlist.SetLine(t.beginLine);
         chlist.SetColumn(t.beginColumn);
@@ -1994,7 +2000,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
     }
 
-    public void ClassOrInterfaceDeclaration(int modifiers, List tokens)
+    public void ClassOrInterfaceDeclaration(int modifiers, List<Token> tokens)
     {
         bool isInterface = false;
         class_nesting++;
@@ -3326,7 +3332,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
     }
 
-    public void TypeArguments(List tokens)
+    public void TypeArguments(List<Token> tokens)
     {
         Token first, last;
         tokens ??= new ();
@@ -3619,7 +3625,7 @@ public class JavaCCParser : JavaCCParserInternals
     /*
      * Expression syntax follows.
      */
-    public void Expression(List tokens)
+    public void Expression(List<Token> tokens)
     {
         Token first = getToken(1);
         tokens ??= new ();
@@ -4538,7 +4544,7 @@ public class JavaCCParser : JavaCCParserInternals
         jj_consume_token(NULL);
     }
 
-    public void Arguments(List tokens)
+    public void Arguments(List<Token> tokens)
     {
         Token first, last;
         tokens ??= new ();
@@ -10349,7 +10355,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     /** Generated Token Manager. */
     public JavaCCParserTokenManager token_source;
-    JavaCharStream jj_input_stream;
+    readonly JavaCharStream jj_input_stream;
     /** Current token. */
     public Token token;
     /** Next token. */
@@ -10361,7 +10367,7 @@ public class JavaCCParser : JavaCCParserInternals
     private bool jj_lookingAhead = false;
     private bool jj_semLA;
     private int jj_gen;
-    private int[] jj_la1 = new int[198];
+    private readonly int[] jj_la1 = new int[198];
     static private uint[] jj_la1_0;
     static private uint[] jj_la1_1;
     static private uint[] jj_la1_2;
@@ -10395,7 +10401,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         jj_la1_4 = new uint[] { 0x800000, 0x800000, 0x800000, 0x0, 0x0, 0x800000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x400, 0x800400, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x400000, 0x0, 0x0, 0x400000, 0x400000, 0x400000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc1f800, 0x0, 0xc1f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc1f800, 0x0, 0x800000, 0xc1f800, 0x0, 0x0, 0x0, 0x81f800, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc00000, 0x0, 0x20000, 0x20000, 0x0, 0x0, 0xc1f800, 0x81f800, 0x0, 0x0, 0x0, 0x800000, 0x0, 0x20000, 0x0, 0x0, 0x0, 0x0, 0x20000, 0x800000, 0x0, 0x800000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x800000, 0x0, 0x1c007f, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x200, 0x200, 0x200000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x81f800, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x81f800, 0x0, 0xc1f800, 0x81f800, 0x0, 0x1c007f, 0x1c007f, 0x81f800, 0x0, 0xc1f800, 0x0, 0x0, 0xc1f800, 0x81f800, 0x81f800, 0xc1f800, 0x81f800, 0x0, 0x81f800, 0x81f800, 0x81f800, 0x0, 0x20000, 0x20000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x400000, 0x81f800, 0x0, 0xc1f800, 0x0, 0xc00000, 0x0, 0xc00000, 0xc00000, };
     }
-    private JJCalls[] jj_2_rtns = new JJCalls[49];
+    private readonly JJCalls[] jj_2_rtns = new JJCalls[49];
     private bool jj_rescan = false;
     private int jj_gc = 0;
 
@@ -10509,7 +10515,7 @@ public class JavaCCParser : JavaCCParserInternals
     }
 
     class LookaheadSuccess : Error { }
-    private LookaheadSuccess jj_ls = new LookaheadSuccess();
+    private readonly LookaheadSuccess jj_ls = new();
     private bool jj_scan_token(int kind)
     {
         if (jj_scanpos == jj_lastpos)
@@ -10570,10 +10576,10 @@ public class JavaCCParser : JavaCCParserInternals
             return (jj_ntk = jj_nt.kind);
     }
 
-    private List<int[]> jj_expentries = new ();
+    private readonly List<int[]> jj_expentries = new ();
     private int[] jj_expentry;
     private int jj_kind = -1;
-    private int[] jj_lasttokens = new int[100];
+    private readonly int[] jj_lasttokens = new int[100];
     private int jj_endpos;
 
     private void jj_add_error_token(int kind, int pos)

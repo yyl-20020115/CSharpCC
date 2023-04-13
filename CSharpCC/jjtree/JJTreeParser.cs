@@ -5,7 +5,7 @@ namespace org.javacc.jjtree;
 
 public class JJTreeParser : JJTreeParserConstants
 {
-    public JJTJJTreeParserState jjtree = new JJTJJTreeParserState();
+    public JJTJJTreeParserState jjtree = new();
     void jjtreeOpenNodeScope(Node n)
     {
         ((JJTreeNode)n).SetFirstToken(getToken(1));
@@ -47,7 +47,7 @@ public class JJTreeParser : JJTreeParserConstants
     public void javacc_input(Exception jjte001, Exception jjte000)
     {
         /*@bgen(jjtree) Grammar */
-        ASTGrammar jjtn000 = new ASTGrammar(JJTGRAMMAR);
+        ASTGrammar jjtn000 = new(JJTGRAMMAR);
         bool jjtc000 = true;
         jjtree.OpenNodeScope(jjtn000);
         jjtreeOpenNodeScope(jjtn000); Token t;
@@ -56,7 +56,7 @@ public class JJTreeParser : JJTreeParserConstants
             javacc_options();
             // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
             isJavaLanguage = JJTreeOptions.IsOutputLanguageJava();
-            ASTCompilationUnit jjtn001 = new ASTCompilationUnit(JJTCOMPILATIONUNIT);
+            ASTCompilationUnit jjtn001 = new(JJTCOMPILATIONUNIT);
             bool jjtc001 = true;
             jjtree.OpenNodeScope(jjtn001);
             jjtreeOpenNodeScope(jjtn001);
@@ -11196,7 +11196,7 @@ public class JJTreeParser : JJTreeParserConstants
             return (jj_ntk = jj_nt.kind);
     }
 
-    private List<int[]> jj_expentries = new();
+    private readonly List<int[]> jj_expentries = new();
     private int[] jj_expentry;
     private int jj_kind = -1;
     private int[] jj_lasttokens = new int[100];

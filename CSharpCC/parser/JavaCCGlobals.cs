@@ -208,8 +208,10 @@ public class JavaCCGlobals : JavaCCParserConstants
      */
     public static string GetIdString(string toolName, string fileName)
     {
-        List<string> toolNames = new();
-        toolNames.Add(toolName);
+        List<string> toolNames = new()
+        {
+            toolName
+        };
         return GetIdString(toolNames, fileName);
     }
 
@@ -279,9 +281,8 @@ public class JavaCCGlobals : JavaCCParserConstants
             return retVal;
 
         text = text[..text.IndexOf(':')];
-
-        int i = 0, j = 0;
-
+        int j = 0;
+        int i;
         while (j < text.Length && (i = text.IndexOf('&', j)) != -1)
         {
             retVal.Add(text[j..i]);
@@ -331,7 +332,7 @@ public class JavaCCGlobals : JavaCCParserConstants
         {
             if (stream != null)
                 try { stream.Close(); }
-                catch (Exception e3) { }
+                catch (Exception) { }
         }
 
         return new();

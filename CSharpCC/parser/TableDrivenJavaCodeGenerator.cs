@@ -55,7 +55,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
     private static void DumpDfaTables(
         CodeGenerator codeGenerator, TokenizerData tokenizerData)
     {
-        Dictionary<int, int[]> startAndSize = new Dictionary<int, int[]>();
+        Dictionary<int, int[]> startAndSize = new();
         int i = 0;
 
         codeGenerator.GenCodeLine(
@@ -122,7 +122,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
                 continue;
             }
             codeGenerator.GenCode("{");
-            BitSet bits = new BitSet();
+            BitSet bits = new();
             foreach (char c in tmp.characters)
             {
                 bits.Set(c);
@@ -256,10 +256,11 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
 
         // A bit ugly.
 
-        BitSet toSkip = new BitSet(allMatches.Count);
-        BitSet toSpecial = new BitSet(allMatches.Count);
-        BitSet toMore = new BitSet(allMatches.Count);
-        BitSet toToken = new BitSet(allMatches.Count);
+        BitSet bitSet = new(allMatches.Count);
+        BitSet toSkip = bitSet;
+        BitSet toSpecial = new(allMatches.Count);
+        BitSet toMore = new(allMatches.Count);
+        BitSet toToken = new(allMatches.Count);
         int[] newStates = new int[allMatches.Count];
         toSkip.Set(allMatches.Count + 1);
         toToken.Set(allMatches.Count + 1);

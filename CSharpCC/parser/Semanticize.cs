@@ -233,8 +233,10 @@ public class Semanticize : JavaCCGlobals
                             {
                                 sl.ordinal = tokenCount++;
                             }
-                            table2 = new ();
-                            table2.Add(sl.image, sl);
+                            table2 = new()
+                            {
+                                { sl.image, sl }
+                            };
                             table[i].Add(sl.image.ToUpper(), table2);
                         }
                         else if (HasIgnoreCase(table2, sl.image))
@@ -339,7 +341,7 @@ public class Semanticize : JavaCCGlobals
                 {
                     names_of_tokens.Add((res.rexp.ordinal), res.rexp.label);
                 }
-                if (!(res.rexp is RJustName))
+                if (res.rexp is not RJustName)
                 {
                     rexps_of_tokens.Add((res.rexp.ordinal), res.rexp);
                 }
@@ -397,10 +399,9 @@ public class Semanticize : JavaCCGlobals
                 List<RegExprSpec> respecs = tp.respecs;
                 foreach(var res in respecs)
                 {
-                    if (res.rexp is RJustName)
+                    if (res.rexp is RJustName jn)
                     {
-                        RJustName jn = (RJustName)res.rexp;
-                        if (named_tokens_table.TryGetValue(jn.label,out var rexp))
+                        if (named_tokens_table.TryGetValue(jn.label, out var rexp))
                         {
                             jn.ordinal = tokenCount++;
                             named_tokens_table.Add(jn.label, jn);
@@ -610,9 +611,9 @@ public class Semanticize : JavaCCGlobals
             }
             return true;
         }
-        else if (exp is TryBlock)
+        else if (exp is TryBlock block)
         {
-            return EmptyExpansionExists(((TryBlock)exp).exp);
+            return EmptyExpansionExists(block.exp);
         }
         else
         {
@@ -879,15 +880,15 @@ public class Semanticize : JavaCCGlobals
                     return;
                 }
                 // Create a singleton choice with an empty action.
-                Choice ch = new Choice();
+                Choice ch = new();
                 ch.SetLine(la.GetLine()); ch.SetColumn(la.GetColumn());
                 ch.parent = seq;
-                Sequence seq1 = new Sequence();
+                Sequence seq1 = new();
                 seq1.SetLine(la.GetLine()); seq1.SetColumn(la.GetColumn());
                 seq1.parent = ch;
                 seq1.units.Add(la);
                 la.parent = seq1;
-                Action act = new Action();
+                Action act = new();
                 act.SetLine(la.GetLine()); act.SetColumn(la.GetColumn());
                 act.parent = seq1;
                 seq1.units.Add(act);
@@ -906,7 +907,7 @@ public class Semanticize : JavaCCGlobals
                 }
                 // Now we have moved the lookahead into the singleton choice.  Now create
                 // a new dummy lookahead node to replace this one at its original location.
-                Lookahead la1 = new Lookahead();
+                Lookahead la1 = new();
                 la1.SetExplicit(false);
                 la1.SetLine(la.GetLine()); la1.SetColumn(la.GetColumn());
                 la1.parent = seq;

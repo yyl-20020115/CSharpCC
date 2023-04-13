@@ -1274,187 +1274,187 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
         catch (IOException e) { return pos + 1; }
         return jjMoveNfa_0((uint)state, pos + 1);
     }
-    static ulong[] jjbitVec0 = {
+    static readonly ulong[] jjbitVec0 = {
    0xfffffffffffffffeL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL
 };
-    static ulong[] jjbitVec2 = {
+    static readonly ulong[] jjbitVec2 = {
    0x0L, 0x0L, 0xffffffffffffffffL, 0xffffffffffffffffL
 };
-    static ulong[] jjbitVec3 = {
+    static readonly ulong[] jjbitVec3 = {
    0xfff0000000200002L, 0xffffffffffffdfffL, 0xfffff00f7fffffffL, 0x12000000007fffffL
 };
-    static ulong[] jjbitVec4 = {
+    static readonly ulong[] jjbitVec4 = {
    0x0L, 0x0L, 0x420043c00000000L, 0xff7fffffff7fffffL
 };
-    static ulong[] jjbitVec5 = {
+    static readonly ulong[] jjbitVec5 = {
    0xffffcffffffffL, 0xffffffffffff0000L, 0xf9ff3fffffffffffL, 0x401f00030003L
 };
-    static ulong[] jjbitVec6 = {
+    static readonly ulong[] jjbitVec6 = {
    0x0L, 0x400000000000000L, 0xfffffffbffffd740L, 0xffffffcff7fffL
 };
-    static ulong[] jjbitVec7 = {
+    static readonly ulong[] jjbitVec7 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0xfffffffffffff003L, 0x33fffffffff199fL
 };
-    static ulong[] jjbitVec8 = {
+    static readonly ulong[] jjbitVec8 = {
    0xfffe000000000000L, 0xfffffffe027fffffL, 0xffL, 0x707ffffff0000L
 };
-    static ulong[] jjbitVec9 = {
+    static readonly ulong[] jjbitVec9 = {
    0x7fffffe00000000L, 0xfffe0000000007ffL, 0xffffffffffffffffL, 0x1c000060002fffffL
 };
-    static ulong[] jjbitVec10 = {
+    static readonly ulong[] jjbitVec10 = {
    0x1ffffffd0000L, 0x0L, 0x3fffffffffL, 0x0L
 };
-    static ulong[] jjbitVec11 = {
+    static readonly ulong[] jjbitVec11 = {
    0x23ffffffffffffe0L, 0x3ff010000L, 0x3c5fdfffff99fe0L, 0xf0003b0000000L
 };
-    static ulong[] jjbitVec12 = {
+    static readonly ulong[] jjbitVec12 = {
    0x36dfdfffff987e0L, 0x1c00005e000000L, 0x23edfdfffffbafe0L, 0x100010000L
 };
-    static ulong[] jjbitVec13 = {
+    static readonly ulong[] jjbitVec13 = {
    0x23cdfdfffff99fe0L, 0x3b0000000L, 0x3bfc718d63dc7e0L, 0x0L
 };
-    static ulong[] jjbitVec14 = {
+    static readonly ulong[] jjbitVec14 = {
    0x3effdfffffddfe0L, 0x300000000L, 0x3effdfffffddfe0L, 0x340000000L
 };
-    static ulong[] jjbitVec15 = {
+    static readonly ulong[] jjbitVec15 = {
    0x3fffdfffffddfe0L, 0x300000000L, 0x2ffbfffffc7fffe0L, 0x7fL
 };
-    static ulong[] jjbitVec16 = {
+    static readonly ulong[] jjbitVec16 = {
    0x800dfffffffffffeL, 0x7fL, 0x200decaefef02596L, 0x3000005fL
 };
-    static ulong[] jjbitVec17 = {
+    static readonly ulong[] jjbitVec17 = {
    0x1L, 0x7fffffffeffL, 0xf00L, 0x0L
 };
-    static ulong[] jjbitVec18 = {
+    static readonly ulong[] jjbitVec18 = {
    0x6fbffffffffL, 0x3f0000L, 0xffffffff00000000L, 0x7fffffffff003fL
 };
-    static ulong[] jjbitVec19 = {
+    static readonly ulong[] jjbitVec19 = {
    0xffffffffffffffffL, 0xffffffff83ffffffL, 0xffffff07ffffffffL, 0x3ffffffffffffffL
 };
-    static ulong[] jjbitVec20 = {
+    static readonly ulong[] jjbitVec20 = {
    0xffffffffffffff7fL, 0xffffffff3d7f3d7fL, 0x7f3d7fffffff3d7fL, 0xffff7fffff7f7f3dL
 };
-    static ulong[] jjbitVec21 = {
+    static readonly ulong[] jjbitVec21 = {
    0xffffffff7f3d7fffL, 0x7ffff7fL, 0xffffffff00000000L, 0x1fffffffffffffL
 };
-    static ulong[] jjbitVec22 = {
+    static readonly ulong[] jjbitVec22 = {
    0xffffffffffffffffL, 0x7f9fffffffffffL, 0xffffffff07fffffeL, 0x7ffffffffffL
 };
-    static ulong[] jjbitVec23 = {
+    static readonly ulong[] jjbitVec23 = {
    0x0L, 0x0L, 0xfffffffffffffL, 0x8000000L
 };
-    static ulong[] jjbitVec24 = {
+    static readonly ulong[] jjbitVec24 = {
    0xffffffff00000000L, 0xffffffffffffffL, 0x1ffffffffffL, 0x0L
 };
-    static ulong[] jjbitVec25 = {
+    static readonly ulong[] jjbitVec25 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffff0fffffffL, 0x3ffffffffffffffL
 };
-    static ulong[] jjbitVec26 = {
+    static readonly ulong[] jjbitVec26 = {
    0xffffffff3f3fffffL, 0x3fffffffaaff3f3fL, 0x5fdfffffffffffffL, 0x1fdc1fff0fcf1fdcL
 };
-    static ulong[] jjbitVec27 = {
+    static readonly ulong[] jjbitVec27 = {
    0x8000000000000000L, 0x8000000000000001L, 0xffff00000000L, 0x0L
 };
-    static ulong[] jjbitVec28 = {
+    static readonly ulong[] jjbitVec28 = {
    0x3fbbd503e2ffc84L, 0xffffffff00000000L, 0xfL, 0x0L
 };
-    static ulong[] jjbitVec29 = {
+    static readonly ulong[] jjbitVec29 = {
    0x73e03fe000000e0L, 0xfffffffffffffffeL, 0xfffffffe601fffffL, 0x7fffffffffffffffL
 };
-    static ulong[] jjbitVec30 = {
+    static readonly ulong[] jjbitVec30 = {
    0xfffe1fffffffffe0L, 0xffffffffffffffffL, 0xffffff00007fffL, 0x0L
 };
-    static ulong[] jjbitVec31 = {
+    static readonly ulong[] jjbitVec31 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0x3fffffffffffffL, 0x0L
 };
-    static ulong[] jjbitVec32 = {
+    static readonly ulong[] jjbitVec32 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0x3fffffffffL, 0x0L
 };
-    static ulong[] jjbitVec33 = {
+    static readonly ulong[] jjbitVec33 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0x1fffL, 0x0L
 };
-    static ulong[] jjbitVec34 = {
+    static readonly ulong[] jjbitVec34 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0xfffffffffL, 0x0L
 };
-    static ulong[] jjbitVec35 = {
+    static readonly ulong[] jjbitVec35 = {
    0x3fffffffffffL, 0x0L, 0x0L, 0x0L
 };
-    static ulong[] jjbitVec36 = {
+    static readonly ulong[] jjbitVec36 = {
    0x5f7ffdffa0f8007fL, 0xffffffffffffffdbL, 0x3ffffffffffffL, 0xfffffffffff80000L
 };
-    static ulong[] jjbitVec37 = {
+    static readonly ulong[] jjbitVec37 = {
    0x3fffffffffffffffL, 0xffffffffffff0000L, 0xfffffffffffcffffL, 0xfff0000000000ffL
 };
-    static ulong[] jjbitVec38 = {
+    static readonly ulong[] jjbitVec38 = {
    0x18000000000000L, 0xffd702000000e000L, 0xffffffffffffffffL, 0x1fffffffffffffffL
 };
-    static ulong[] jjbitVec39 = {
+    static readonly ulong[] jjbitVec39 = {
    0x87fffffe00000010L, 0xffffffe007fffffeL, 0x7fffffffffffffffL, 0x631cfcfcfcL
 };
-    static ulong[] jjbitVec40 = {
+    static readonly ulong[] jjbitVec40 = {
    0x0L, 0x0L, 0x420043cffffffffL, 0xff7fffffff7fffffL
 };
-    static ulong[] jjbitVec41 = {
+    static readonly ulong[] jjbitVec41 = {
    0xffffffffffffffffL, 0x400000700007fffL, 0xfffffffbffffd740L, 0xffffffcff7fffL
 };
-    static ulong[] jjbitVec42 = {
+    static readonly ulong[] jjbitVec42 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0xfffffffffffff07bL, 0x33fffffffff199fL
 };
-    static ulong[] jjbitVec43 = {
+    static readonly ulong[] jjbitVec43 = {
    0xfffe000000000000L, 0xfffffffe027fffffL, 0xbbfffffbfffe00ffL, 0x707ffffff0016L
 };
-    static ulong[] jjbitVec44 = {
+    static readonly ulong[] jjbitVec44 = {
    0x7fffffe00000000L, 0xffff03ff003fffffL, 0xffffffffffffffffL, 0x1fff3dff9fefffffL
 };
-    static ulong[] jjbitVec45 = {
+    static readonly ulong[] jjbitVec45 = {
    0xffff1fffffff8000L, 0x7ffL, 0x1ffffffffffffL, 0x0L
 };
-    static ulong[] jjbitVec46 = {
+    static readonly ulong[] jjbitVec46 = {
    0xf3ffffffffffffeeL, 0xffcfff1f3fffL, 0xd3c5fdfffff99feeL, 0xfffcfb080399fL
 };
-    static ulong[] jjbitVec47 = {
+    static readonly ulong[] jjbitVec47 = {
    0xd36dfdfffff987e4L, 0x1fffc05e003987L, 0xf3edfdfffffbafeeL, 0xffc100013bbfL
 };
-    static ulong[] jjbitVec48 = {
+    static readonly ulong[] jjbitVec48 = {
    0xf3cdfdfffff99feeL, 0xffc3b0c0398fL, 0xc3bfc718d63dc7ecL, 0xff8000803dc7L
 };
-    static ulong[] jjbitVec49 = {
+    static readonly ulong[] jjbitVec49 = {
    0xc3effdfffffddfeeL, 0xffc300603ddfL, 0xc3effdfffffddfecL, 0xffc340603ddfL
 };
-    static ulong[] jjbitVec50 = {
+    static readonly ulong[] jjbitVec50 = {
    0xc3fffdfffffddfecL, 0xffc300803dcfL, 0x2ffbfffffc7fffecL, 0xc0000ff5f847fL
 };
-    static ulong[] jjbitVec51 = {
+    static readonly ulong[] jjbitVec51 = {
    0x87fffffffffffffeL, 0x3ff7fffL, 0x3bffecaefef02596L, 0x33ff3f5fL
 };
-    static ulong[] jjbitVec52 = {
+    static readonly ulong[] jjbitVec52 = {
    0xc2a003ff03000001L, 0xfffe07fffffffeffL, 0x1ffffffffeff0fdfL, 0x40L
 };
-    static ulong[] jjbitVec53 = {
+    static readonly ulong[] jjbitVec53 = {
    0x3c7f6fbffffffffL, 0x3ff03ffL, 0xffffffff00000000L, 0x7fffffffff003fL
 };
-    static ulong[] jjbitVec54 = {
+    static readonly ulong[] jjbitVec54 = {
    0xffffffff7f3d7fffL, 0x3fe0007ffff7fL, 0xffffffff00000000L, 0x1fffffffffffffL
 };
-    static ulong[] jjbitVec55 = {
+    static readonly ulong[] jjbitVec55 = {
    0x0L, 0x0L, 0xffffffffffffffffL, 0x3ff080fffffL
 };
-    static ulong[] jjbitVec56 = {
+    static readonly ulong[] jjbitVec56 = {
    0xffffffff03ff7800L, 0xffffffffffffffL, 0x3ffffffffffL, 0x0L
 };
-    static ulong[] jjbitVec57 = {
+    static readonly ulong[] jjbitVec57 = {
    0x80007c000000f000L, 0x8000fc0000000001L, 0xffff00000000L, 0x21fff0000L
 };
-    static ulong[] jjbitVec58 = {
+    static readonly ulong[] jjbitVec58 = {
    0x73efffe000000e0L, 0xfffffffffffffffeL, 0xfffffffe661fffffL, 0x7fffffffffffffffL
 };
-    static ulong[] jjbitVec59 = {
+    static readonly ulong[] jjbitVec59 = {
    0x5f7ffdffe0f8007fL, 0xffffffffffffffdbL, 0x3ffffffffffffL, 0xfffffffffff80000L
 };
-    static ulong[] jjbitVec60 = {
+    static readonly ulong[] jjbitVec60 = {
    0x18000f00000000L, 0xffd702000000e000L, 0xffffffffffffffffL, 0x9fffffffffffffffL
 };
-    static ulong[] jjbitVec61 = {
+    static readonly ulong[] jjbitVec61 = {
    0x87fffffe03ff0010L, 0xffffffe007fffffeL, 0x7fffffffffffffffL, 0xe0000631cfcfcfcL
 };
     private int jjMoveNfa_0(uint startState, int curPos)
@@ -2143,7 +2143,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
         }
         return 2;
     }
-    static uint[] jjnextStates = {
+    static readonly uint[] jjnextStates = {
    37, 38, 39, 15, 43, 44, 45, 49, 50, 51, 26, 27, 29, 17, 19, 5,
    6, 7, 59, 62, 63, 7, 64, 67, 77, 10, 9, 11, 15, 14, 13, 15,
    26, 27, 31, 29, 37, 38, 39, 15, 42, 41, 15, 43, 44, 45, 48, 47,
@@ -2511,22 +2511,22 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
    -1, -1, -1, -1, -1,
 };
-    static ulong[] jjtoToken = {
+    static readonly ulong[] jjtoToken = {
    0xfffffffff0001fffL, 0xffffffffe10fffffL, 0x4ffffffL,
 };
-    static ulong[] jjtoSkip = {
+    static readonly ulong[] jjtoSkip = {
    0x70fe000L, 0x0L, 0x0L,
 };
-    static ulong[] jjtoSpecial = {
+    static readonly ulong[] jjtoSpecial = {
    0x7000000L, 0x0L, 0x0L,
 };
-    static ulong[] jjtoMore = {
+    static readonly ulong[] jjtoMore = {
    0x8f00000L, 0x0L, 0x0L,
 };
     protected JavaCharStream input_stream;
-    private uint[] jjrounds = new uint[85];
-    private uint[] jjstateSet = new uint[170];
-    private StringBuilder jjimage = new StringBuilder();
+    private readonly uint[] jjrounds = new uint[85];
+    private readonly uint[] jjstateSet = new uint[170];
+    private readonly StringBuilder jjimage = new();
     private StringBuilder image;
     private int jjimageLen;
     private int lengthOfMatch;

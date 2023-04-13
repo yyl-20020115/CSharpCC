@@ -1204,10 +1204,12 @@ public class NfaState
             // TODO(sreeni) : Fix this
             if (Options.GetTokenManagerCodeGenerator() != null)
             {
-                NfaState dummyState = new NfaState();
-                dummyState.isComposite = true;
-                dummyState.compositeStates = nameSet;
-                dummyState.stateName = tmp;
+                NfaState dummyState = new()
+                {
+                    isComposite = true,
+                    compositeStates = nameSet,
+                    stateName = tmp
+                };
             }
         }
         else
@@ -3379,19 +3381,19 @@ public class NfaState
     }
 
     private static readonly Dictionary<int, NfaState> initialStates =
-        new Dictionary<int, NfaState>();
+        new();
     private static readonly Dictionary<int, List<NfaState>> statesForLexicalState =
-        new Dictionary<int, List<NfaState>>();
+        new();
     private static readonly Dictionary<int, int> nfaStateOffset =
-        new Dictionary<int, int>();
+        new();
     private static readonly Dictionary<int, int> matchAnyChar =
-        new Dictionary<int, int>();
+        new();
     public static void UpdateNfaData(
         int maxState, int startStateName, int lexicalStateIndex,
         int matchAnyCharKind)
     {
         // Cleanup the state set.
-        HashSet<int> done = new HashSet<int>();
+        HashSet<int> done = new();
         List<NfaState> cleanStates = new();
         NfaState startState = null;
         for (int i = 0; i < allStates.Count; i++)
@@ -3441,7 +3443,7 @@ public class NfaState
         {
             //assert(cleanStates[s.stateName] == null);
             cleanStates[s.stateName] = s;
-            HashSet<char> chars = new HashSet<char>();
+            HashSet<char> chars = new();
             for (int c = 0; c <= char.MaxValue; c++)
             {
                 if (s.CanMoveUsingChar((char)c))
@@ -3449,7 +3451,7 @@ public class NfaState
                     chars.Add((char)c);
                 }
             }
-            HashSet<int> nextStates = new HashSet<int>();
+            HashSet<int> nextStates = new();
             if (s.next != null)
             {
                 foreach (NfaState next in s.next.epsilonMoveArray)
@@ -3457,7 +3459,7 @@ public class NfaState
                     nextStates.Add(next.stateName);
                 }
             }
-            HashSet<int> composite = new HashSet<int>();
+            HashSet<int> composite = new();
             if (s.isComposite)
             {
                 foreach (int c in s.compositeStates) composite.Add(c);
