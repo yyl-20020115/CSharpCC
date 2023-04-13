@@ -83,10 +83,9 @@ public class ParseGenCPP : ParseGen
         if (cu_to_insertion_point_2.Count != 0)
         {
             JavaCCGlobals.PrintTokenSetup((cu_to_insertion_point_2[0]));
-            for (Iterator it = cu_to_insertion_point_2.iterator(); it.hasNext();)
+            foreach(var t3 in cu_to_insertion_point_2)
             {
-                t = (Token)it.next();
-                PrintToken(t);
+                PrintToken(t=t3);
             }
         }
 
@@ -140,13 +139,12 @@ public class ParseGenCPP : ParseGen
             SwitchToStaticsFile();
             for (int i = 0; i < tokenMaskSize; i++)
             { 
-                if (maskVals.Count > 0)
+                if (maskVals.Count > 0) 
                 {
                     GenCodeLine("  unsigned int jj_la1_" + i + "[] = {");
-                    for (Iterator it = maskVals.iterator(); it.hasNext();)
+                    foreach(var tokenMask in maskVals)
                     {
-                        int[] tokenMask = (int[])(it.next());
-                        GenCode("0x" + Integer.toHexString(tokenMask[i]) + ",");
+                        GenCode("0x" + Convert.ToString(tokenMask[i],16) + ",");
                     }
                     GenCodeLine("};");
                 }
@@ -736,10 +734,9 @@ public class ParseGenCPP : ParseGen
         if (cu_from_insertion_point_2.Count != 0)
         {
             JavaCCGlobals.PrintTokenSetup((cu_from_insertion_point_2[0])); this.ccol = 1;
-            for (Iterator it = cu_from_insertion_point_2.iterator(); it.hasNext();)
+            foreach(var t3 in cu_from_insertion_point_2)
             {
-                t = (Token)it.next();
-                PrintToken(t);
+                PrintToken(t=t3);
             }
             PrintTrailingComments(t);
         }
@@ -766,10 +763,10 @@ public class ParseGenCPP : ParseGen
 
         GenCodeLine("};");
 
-        saveOutput(Options.getOutputDirectory() + File.separator + CuName + GetFileExtension(Options.getOutputLanguage()));
+        SaveOutput(Options.getOutputDirectory() + Path.DirectorySeparatorChar + CuName + GetFileExtension(Options.getOutputLanguage()));
     }
 
-    public static void reInit()
+    public static new void ReInit()
     {
         lookaheadNeeded = false;
     }

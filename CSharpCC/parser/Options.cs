@@ -225,7 +225,7 @@ public class Options
      * This table is initialized by the main program. Its contents defines the
      * set of legal options. Its initial values define the default option
      * values, and the option types can be determined from these values too.
-     */
+     */ 
     protected static Dictionary<String, object> optionValues = new();
 
     /**

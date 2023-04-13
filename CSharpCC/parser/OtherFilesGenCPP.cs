@@ -82,7 +82,7 @@ public class OtherFilesGenCPP : JavaCCGlobals
                         t = (Token)(cu_to_insertion_point_1[j]);
                         PrintToken(t, ostr);
                     }
-                    PrintTrailingComments(t, ostr); 
+                    PrintTrailingComments(t, ostr);
                     ostr.WriteLine("");
                     ostr.WriteLine("");
                     break;
@@ -105,10 +105,10 @@ public class OtherFilesGenCPP : JavaCCGlobals
             ostr.WriteLine("namespace " + Options.stringValue("NAMESPACE_OPEN"));
         }
 
-        string constPrefix = "const"; 
+        string constPrefix = "const";
         ostr.WriteLine("  /** End of File. */");
         ostr.WriteLine(constPrefix + "  int _EOF = 0;");
-        foreach(var re in ordered_named_tokens)
+        foreach (var re in ordered_named_tokens)
         {
             ostr.WriteLine("  /** RegularExpression Id. */");
             ostr.WriteLine(constPrefix + "  int " + re.label + " = " + re.ordinal + ";");
@@ -130,12 +130,10 @@ public class OtherFilesGenCPP : JavaCCGlobals
         PrintCharArray(ostr, "<EOF>");
         ostr.WriteLine(";");
 
-        foreach(var tp in rexprlist)
+        foreach (var tp in rexprlist)
         {
-            List<RegExprSpec> respecs = tp.respecs;
-            for (Iterator<RegExprSpec> it2 = respecs.iterator(); it2.hasNext();)
+            foreach (var res in tp.respecs)
             {
-                RegExprSpec res = it2.next();
                 var re = res.rexp;
                 ostr.WriteLine("  static const JJChar tokenImage_arr_" + ++cnt + "[] = ");
                 if (re is RStringLiteral)
@@ -180,7 +178,7 @@ public class OtherFilesGenCPP : JavaCCGlobals
         ostr.Write("{");
         for (int i = 0; i < s.Length; i++)
         {
-            ostr.Write("0x" + Convert.ToString((int)s[i],16) + ", ");
+            ostr.Write("0x" + Convert.ToString((int)s[i], 16) + ", ");
         }
         ostr.Write("0}");
     }

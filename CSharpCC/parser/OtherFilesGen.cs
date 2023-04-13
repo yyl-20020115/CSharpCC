@@ -32,8 +32,6 @@ using org.javacc.jjtree;
 
 namespace org.javacc.parser;
 
-
-
 /**
  * Generates the Constants file.
  */
@@ -42,7 +40,7 @@ public class OtherFilesGen : JavaCCGlobals
 
     private static readonly string CONSTANTS_FILENAME_SUFFIX = "Constants.java";
 
-    static public void start(bool isJavaModern)
+    static public void Start(bool isJavaModern, RegularExpression re)
     {
 
         var templateLoc = isJavaModern ? JavaFiles.RESOURCES_JAVA_MODERN : JavaFiles.RESOURCES_JAVA_CLASSIC;
@@ -148,8 +146,9 @@ public class OtherFilesGen : JavaCCGlobals
 
         ostr.WriteLine("  /** End of File. */");
         ostr.WriteLine("  int EOF = 0;");
-        foreach(var re in ordered_named_tokens)
+        foreach(var re2 in ordered_named_tokens)
         {
+            re = re2;
             ostr.WriteLine("  /** RegularExpression Id. */");
             ostr.WriteLine("  int " + re.label + " = " + re.ordinal + ";");
         }
@@ -167,18 +166,15 @@ public class OtherFilesGen : JavaCCGlobals
         ostr.WriteLine("  String[] tokenImage = {");
         ostr.WriteLine("    \"<EOF>\",");
 
-        for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
+        foreach(var tp in rexprlist)
         {
-            TokenProduction tp = (TokenProduction)(it.next());
-            List<RegExprSpec> respecs = tp.respecs;
-            for (Iterator<RegExprSpec> it2 = respecs.iterator(); it2.hasNext();)
+            foreach(var res in tp.respecs)
             {
-                RegExprSpec res = (RegExprSpec)(it2.next());
                 re = res.rexp;
                 ostr.Write("    ");
-                if (re is RStringLiteral)
+                if (re is RStringLiteral literal)
                 { 
-                    ostr.WriteLine("\"\\\"" + AddEscapes(AddEscapes(((RStringLiteral)re).image)) + "\\\"\",");
+                    ostr.WriteLine("\"\\\"" + AddEscapes(AddEscapes(literal.image)) + "\\\"\",");
                 }
                 else if (re.label != (""))
                 { 
@@ -205,7 +201,7 @@ public class OtherFilesGen : JavaCCGlobals
 
     static private TextWriter ostr;
 
-    public static void reInit()
+    public static new void ReInit()
     {
         ostr = null;
     }

@@ -133,10 +133,7 @@ public class NonTerminal : Expansion
     /**
      * @param prod the prod to set
      */
-    public NormalProduction SetProd(NormalProduction prod)
-    {
-        return this.prod = prod;
-    }
+    public NormalProduction SetProd(NormalProduction prod) => this.prod = prod;
 
     /**
      * @return the prod

@@ -311,7 +311,7 @@ public class MainParser
                 new LexGen().start();
 
                 Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.CuName);
-                OtherFilesGen.start(isJavaModern);
+                OtherFilesGen.Start(isJavaModern, re);
             }
             else if (isCPPOutput)
             { // C++ for now
@@ -390,7 +390,7 @@ public class MainParser
         MatchInfo.ReInit();
         LookaheadWalk.reInit();
         Semanticize.ReInit();
-        OtherFilesGen.reInit();
+        OtherFilesGen.ReInit();
         LexGen.reInit();
     }
 
