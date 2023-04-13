@@ -1,7 +1,7 @@
-using org.javacc.parser;
+using CSharpCC.Parser;
 using System.IO;
 
-namespace org.javacc.utils;
+namespace CSharpCC.Utils;
 
 
 public class OutputFileGeneratorTest : CSharpCCTestCase

@@ -6,7 +6,7 @@
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 public class BitSet
 {
     private static readonly ulong[] EmptyBits = Array.Empty<ulong>();

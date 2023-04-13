@@ -1,13 +1,13 @@
 // Copyright 2011 Google Inc. All Rights Reserved.
 // Author: sreeni@google.com (Sreeni Viswanadha)
 
-using org.javacc.utils;
+using CSharpCC.Utils;
 using System.Text;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
-public class CodeGenerator : JavaCCGlobals
+public class CodeGenerator : CSharpCCGlobals
 {
     protected StringBuilder mainBuffer = new ();
     protected StringBuilder includeBuffer = new ();
@@ -135,7 +135,7 @@ public class CodeGenerator : JavaCCGlobals
         }
         catch (IOException ioe)
         {
-            JavaCCErrors.Fatal("Could not create output file: " + fileName);
+            CSharpCCErrors.Fatal("Could not create output file: " + fileName);
         }
         finally
         {
@@ -185,8 +185,8 @@ public class CodeGenerator : JavaCCGlobals
         {
             retval += " ";
         }
-        if (t.kind == JavaCCParserConstants.STRING_LITERAL ||
-            t.kind == JavaCCParserConstants.CHARACTER_LITERAL)
+        if (t.kind == CSharpCCParserConstants.STRING_LITERAL ||
+            t.kind == CSharpCCParserConstants.CHARACTER_LITERAL)
             retval += AddUnicodeEscapes(t.image);
         else
             retval += t.image;

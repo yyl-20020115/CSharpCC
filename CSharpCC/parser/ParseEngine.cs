@@ -30,7 +30,7 @@
  */
 using System.Text;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 public class ParseEngine
 {
@@ -196,9 +196,9 @@ public class ParseEngine
                 // the LOOKAHEAD is suitable).
                 if (unit is NonTerminal terminal1 && terminal1.GetProd() is CodeProduction)
                 {
-                    if (i > 0 && seq.units[i - 1] is Lookahead)
+                    if (i > 0 && seq.units[i - 1] is Lookahead lookahead1)
                     {
-                        Lookahead la = (Lookahead)seq.units[i - 1];
+                        Lookahead la = lookahead1;
                         GenFirstSet(la.GetLaExpansion());
                     }
                 }
@@ -237,16 +237,6 @@ public class ParseEngine
     const int OPENIF = 1;
     const int OPENSWITCH = 2;
 
-    private static void DumpLookaheads(Lookahead[] conds, String[] actions)
-    {
-        for (int i = 0; i < conds.Length; i++)
-        {
-            Console.Error.WriteLine("Lookahead: " + i);
-            Console.Error.WriteLine(conds[i].Dump(0, new()));
-            Console.Error.WriteLine();
-        }
-    }
-
     /**
      * This method takes two parameters - an array of Lookahead's
      * "conds", and an array of String's "actions".  "actions" contains
@@ -270,11 +260,11 @@ public class ParseEngine
         // The state variables.
         int state = NOOPENSTM;
         int indentAmt = 0;
-        bool[] casedValues = new bool[JavaCCGlobals.tokenCount];
+        bool[] casedValues = new bool[CSharpCCGlobals.tokenCount];
         string retval = "";
         Lookahead la;
         Token t = null;
-        int tokenMaskSize = (JavaCCGlobals.tokenCount - 1) / 32 + 1;
+        int tokenMaskSize = (CSharpCCGlobals.tokenCount - 1) / 32 + 1;
         int[] tokenMask = null;
 
         // Iterate over all the conditions.
@@ -323,15 +313,15 @@ public class ParseEngine
                             retval += "\u0002\n" + "default:" + "\u0001";
                             if (Options.GetErrorReporting())
                             {
-                                retval += "\njj_la1[" + JavaCCGlobals.maskindex + "] = jj_gen;";
-                                JavaCCGlobals.maskindex++;
+                                retval += "\njj_la1[" + CSharpCCGlobals.maskindex + "] = jj_gen;";
+                                CSharpCCGlobals.maskindex++;
                             }
-                            JavaCCGlobals.maskVals.Add(tokenMask);
+                            CSharpCCGlobals.maskVals.Add(tokenMask);
                             retval += "\n" + "if (";
                             indentAmt++;
                             break;
                     }
-                    JavaCCGlobals.PrintTokenSetup((la.GetActionTokens()[0]));
+                    CSharpCCGlobals.PrintTokenSetup((la.GetActionTokens()[0]));
                     foreach (var t2 in la.GetActionTokens())
                     {
                         retval += _CodeGenerator.GetStringToPrint(t = t2);
@@ -347,8 +337,8 @@ public class ParseEngine
                 // Special optimal processing when the lookahead is exactly 1, and there
                 // is no semantic lookahead.
 
-                firstSet ??= new bool[JavaCCGlobals.tokenCount];
-                for (int i = 0; i < JavaCCGlobals.tokenCount; i++)
+                firstSet ??= new bool[CSharpCCGlobals.tokenCount];
+                for (int i = 0; i < CSharpCCGlobals.tokenCount; i++)
                 {
                     firstSet[i] = false;
                 }
@@ -387,7 +377,7 @@ public class ParseEngine
                             {
                                 retval += "(jj_ntk==-1)?jj_ntk_f():jj_ntk) {\u0001";
                             }
-                            for (int i = 0; i < JavaCCGlobals.tokenCount; i++)
+                            for (int i = 0; i < CSharpCCGlobals.tokenCount; i++)
                             {
                                 casedValues[i] = false;
                             }
@@ -400,7 +390,7 @@ public class ParseEngine
                             break;
                             // Don't need to do anything if state is OPENSWITCH.
                     }
-                    for (int i = 0; i < JavaCCGlobals.tokenCount; i++)
+                    for (int i = 0; i < CSharpCCGlobals.tokenCount; i++)
                     {
                         if (firstSet[i])
                         {
@@ -412,7 +402,7 @@ public class ParseEngine
                                 int j2 = i % 32;
                                 tokenMask[j1] |= 1 << j2;
                                 //string s = (String)(names_of_tokens.get((i)));
-                                if (JavaCCGlobals.names_of_tokens.TryGetValue(i, out var s))
+                                if (CSharpCCGlobals.names_of_tokens.TryGetValue(i, out var s))
                                 {
                                     retval += i;
                                 }
@@ -458,18 +448,18 @@ public class ParseEngine
                         retval += "\u0002\n" + "default:" + "\u0001";
                         if (Options.GetErrorReporting())
                         {
-                            retval += "\njj_la1[" + JavaCCGlobals.maskindex + "] = jj_gen;";
-                            JavaCCGlobals.maskindex++;
+                            retval += "\njj_la1[" + CSharpCCGlobals.maskindex + "] = jj_gen;";
+                            CSharpCCGlobals.maskindex++;
                         }
-                        JavaCCGlobals.maskVals.Add(tokenMask);
+                        CSharpCCGlobals.maskVals.Add(tokenMask);
                         retval += "\n" + "if (";
                         indentAmt++;
                         break;
                 }
-                JavaCCGlobals.jj2index++;
+                CSharpCCGlobals.jj2index++;
                 // At this point, la.la_expansion.internal_name must be "".
-                la.GetLaExpansion().internal_name = "_" + JavaCCGlobals.jj2index;
-                la.GetLaExpansion().internal_index = JavaCCGlobals.jj2index;
+                la.GetLaExpansion().internal_name = "_" + CSharpCCGlobals.jj2index;
+                la.GetLaExpansion().internal_index = CSharpCCGlobals.jj2index;
                 phase2list.Add(la);
                 retval += "jj_2" + la.GetLaExpansion().internal_name + "(" + la.GetAmount() + ")";
                 if (la.GetActionTokens().Count != 0)
@@ -477,7 +467,7 @@ public class ParseEngine
                     // In addition, there is also a semantic lookahead.  So concatenate
                     // the semantic check with the syntactic one.
                     retval += " && (";
-                    JavaCCGlobals.PrintTokenSetup(la.GetActionTokens()[0]);
+                    CSharpCCGlobals.PrintTokenSetup(la.GetActionTokens()[0]);
                     foreach (var t2 in la.GetActionTokens())
                     {
                         retval += _CodeGenerator.GetStringToPrint(t = t2);
@@ -508,9 +498,9 @@ public class ParseEngine
                 retval += "\u0002\n" + "default:" + "\u0001";
                 if (Options.GetErrorReporting())
                 {
-                    retval += "\njj_la1[" + JavaCCGlobals.maskindex + "] = jj_gen;";
-                    JavaCCGlobals.maskVals.Add(tokenMask);
-                    JavaCCGlobals.maskindex++;
+                    retval += "\njj_la1[" + CSharpCCGlobals.maskindex + "] = jj_gen;";
+                    CSharpCCGlobals.maskVals.Add(tokenMask);
+                    CSharpCCGlobals.maskindex++;
                 }
                 retval += actions[index];
                 break;
@@ -597,20 +587,19 @@ public class ParseEngine
             string s = _CodeGenerator.GetStringToPrint(t);
             sig.Append(t.ToString());
             sig.Append(' ');
-            if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
-            if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
+            if (t.kind == CSharpCCParserConstants.VOID) void_ret = true;
+            if (t.kind == CSharpCCParserConstants.STAR) ptr_ret = true;
         }
 
-        string comment2 = "";
         if (t != null)
-            comment2 = _CodeGenerator.GetTrailingComments(t);
+            _ = _CodeGenerator.GetTrailingComments(t);
         ret = sig.ToString();
 
         sig.Capacity = 0;
         sig.Append('(');
         if (p.GetParameterListTokens().Count != 0)
         {
-            JavaCCGlobals.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
+            CSharpCCGlobals.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
             foreach (var t2 in p.GetParameterListTokens())
             {
                 sig.Append(_CodeGenerator.GetStringToPrint(t = t2));
@@ -621,7 +610,7 @@ public class ParseEngine
         _params = sig.ToString();
 
         // For now, just ignore comments
-        _CodeGenerator.GenerateMethodDefHeader(ret, JavaCCGlobals.CuName, p.GetLhs() + _params, sig.ToString());
+        _CodeGenerator.GenerateMethodDefHeader(ret, CSharpCCGlobals.CuName, p.GetLhs() + _params, sig.ToString());
 
         return "";
     }
@@ -629,7 +618,7 @@ public class ParseEngine
     // Print method header and return the ERROR_RETURN string.
     private string generateCPPMethodheader(BNFProduction p, Token t)
     {
-        StringBuilder sig = new StringBuilder();
+        StringBuilder sig = new();
         string ret, _params;
 
         string method_name = p.GetLhs();
@@ -640,11 +629,11 @@ public class ParseEngine
         {
             t = (Token)(p.GetReturnTypeTokens()[i]);
             sig.Append(_CodeGenerator.GetStringToPrint(t));
-            if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
-            if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
+            if (t.kind == CSharpCCParserConstants.VOID) void_ret = true;
+            if (t.kind == CSharpCCParserConstants.STAR) ptr_ret = true;
         }
 
-        string comment2 = _CodeGenerator.GetTrailingComments(t);
+        _ = _CodeGenerator.GetTrailingComments(t);
         ret = sig.ToString();
 
         sig.Capacity = 0;
@@ -662,7 +651,7 @@ public class ParseEngine
         _params = sig.ToString();
 
         // For now, just ignore comments
-        _CodeGenerator.GenerateMethodDefHeader(ret, JavaCCGlobals.CuName, p.GetLhs() + _params, sig.ToString());
+        _CodeGenerator.GenerateMethodDefHeader(ret, CSharpCCGlobals.CuName, p.GetLhs() + _params, sig.ToString());
 
         // Generate a default value for error return.
         string default_return;
@@ -671,7 +660,7 @@ public class ParseEngine
         else default_return = "0";  // 0 converts to most (all?) basic types.
 
         StringBuilder ret_val =
-            new StringBuilder("\n#if !defined ERROR_RET_" + method_name + "\n");
+            new("\n#if !defined ERROR_RET_" + method_name + "\n");
         ret_val.Append("#define ERROR_RET_" + method_name + " " +
                        default_return + "\n");
         ret_val.Append("#endif\n");
@@ -739,7 +728,7 @@ public class ParseEngine
         Token t;
         t = (Token)(p.GetReturnTypeTokens()[0]);
         bool voidReturn = false;
-        if (t.kind == JavaCCParserConstants.VOID)
+        if (t.kind == CSharpCCParserConstants.VOID)
         {
             voidReturn = true;
         }
@@ -747,11 +736,11 @@ public class ParseEngine
         if (isJavaDialect)
         {
             CodeGenerator.PrintTokenSetup(t);
-            JavaCCGlobals.ccol = 1;
+            CSharpCCGlobals.ccol = 1;
             _CodeGenerator.PrintLeadingComments(t);
-            _CodeGenerator.GenCode("  " + JavaCCGlobals.StaticOpt() + "final " + (p.GetAccessMod() ?? "public") + " ");
-            JavaCCGlobals.cline = t.beginLine;
-            JavaCCGlobals.ccol = t.beginColumn;
+            _CodeGenerator.GenCode("  " + CSharpCCGlobals.StaticOpt() + "final " + (p.GetAccessMod() ?? "public") + " ");
+            CSharpCCGlobals.cline = t.beginLine;
+            CSharpCCGlobals.ccol = t.beginColumn;
             _CodeGenerator.PrintTokenOnly(t);
             for (int i = 1; i < p.GetReturnTypeTokens().Count; i++)
             {
@@ -762,7 +751,7 @@ public class ParseEngine
             _CodeGenerator.GenCode(" " + p.GetLhs() + "(");
             if (p.GetParameterListTokens().Count != 0)
             {
-                JavaCCGlobals.PrintTokenSetup((p.GetParameterListTokens()[0]));
+                CSharpCCGlobals.PrintTokenSetup((p.GetParameterListTokens()[0]));
                 foreach (var t2 in p.GetParameterListTokens())
                 {
                     _CodeGenerator.PrintToken(t = t2);
@@ -807,12 +796,12 @@ public class ParseEngine
             _CodeGenerator.GenCodeLine("");
             if (isJavaDialect)
             {
-                _CodeGenerator.GenCodeLine("    trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\");");
+                _CodeGenerator.GenCodeLine("    trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\");");
             }
             else
             {
-                _CodeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\"); });");
-                _CodeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\"); });");
+                _CodeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + CSharpCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\"); });");
+                _CodeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\"); });");
             }
             _CodeGenerator.GenCodeLine("    try {");
             indentamt = 6;
@@ -821,8 +810,8 @@ public class ParseEngine
         if (!Options.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) &&
             p.GetDeclarationTokens().Count != 0)
         {
-            JavaCCGlobals.PrintTokenSetup((p.GetDeclarationTokens()[0])); 
-            JavaCCGlobals.cline--;
+            CSharpCCGlobals.PrintTokenSetup((p.GetDeclarationTokens()[0])); 
+            CSharpCCGlobals.cline--;
             foreach(var t2 in p.GetDeclarationTokens())
             {
                 _CodeGenerator.PrintToken(t  = t2);
@@ -851,7 +840,7 @@ public class ParseEngine
             if (isJavaDialect)
             {
                 _CodeGenerator.GenCodeLine("    } finally {");
-                _CodeGenerator.GenCodeLine("      trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\");");
+                _CodeGenerator.GenCodeLine("      trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\");");
             }
             else
             {
@@ -897,7 +886,7 @@ public class ParseEngine
             retval += "\n";
             if (e_nrw.lhsTokens.Count != 0)
             {
-                JavaCCGlobals.PrintTokenSetup((Token)(e_nrw.lhsTokens[0]));
+                CSharpCCGlobals.PrintTokenSetup((Token)(e_nrw.lhsTokens[0]));
                 foreach(var t2 in e_nrw.lhsTokens)
                 {
                     retval += _CodeGenerator.GetStringToPrint(t=t2);
@@ -909,7 +898,7 @@ public class ParseEngine
                       (isJavaDialect ? ")." : ")->") + e_nrw.rhsToken.image + ";";
             if (e_nrw.label == (""))
             {
-                if (JavaCCGlobals.names_of_tokens.TryGetValue(e_nrw.ordinal,out var label))
+                if (CSharpCCGlobals.names_of_tokens.TryGetValue(e_nrw.ordinal,out var label))
                 {
                     retval += "jj_consume_token(" + (String)label + tail;
                 }
@@ -934,7 +923,7 @@ public class ParseEngine
             retval += "\n";
             if (e_nrw6.GetLhsTokens().Count != 0)
             {
-                JavaCCGlobals.PrintTokenSetup(e_nrw6.GetLhsTokens()[0]);
+                CSharpCCGlobals.PrintTokenSetup(e_nrw6.GetLhsTokens()[0]);
                 foreach(var t2 in e_nrw6.GetLhsTokens())
                 {
                     retval += _CodeGenerator.GetStringToPrint(t = t2);
@@ -945,7 +934,7 @@ public class ParseEngine
             retval += e_nrw6.GetName() + "(";
             if (e_nrw6.GetArgumentTokens().Count != 0)
             {
-                JavaCCGlobals.PrintTokenSetup(e_nrw6.GetArgumentTokens()[0]);
+                CSharpCCGlobals.PrintTokenSetup(e_nrw6.GetArgumentTokens()[0]);
                 foreach(var t2 in e_nrw6.GetArgumentTokens())
                 {
                     retval += _CodeGenerator.GetStringToPrint(t = t2);
@@ -964,8 +953,8 @@ public class ParseEngine
             if (!Options.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) &&
                 e_nrw7.GetActionTokens().Count != 0)
             {
-                JavaCCGlobals.PrintTokenSetup((e_nrw7.GetActionTokens()[0]));
-                JavaCCGlobals.ccol = 1;
+                CSharpCCGlobals.PrintTokenSetup((e_nrw7.GetActionTokens()[0]));
+                CSharpCCGlobals.ccol = 1;
                 foreach(var t2 in e_nrw7.GetActionTokens())
                 {
                     retval += _CodeGenerator.GetStringToPrint(t = t2);
@@ -1004,7 +993,7 @@ public class ParseEngine
                 // For C++, since we are not using exceptions, we will protect all the
                 // expansion choices with if (!error)
                 bool wrap_in_block = false;
-                if (!JavaCCGlobals.JjtreeGenerated && !isJavaDialect)
+                if (!CSharpCCGlobals.JjtreeGenerated && !isJavaDialect)
                 {
                     // for the last one, if it's an action, we will not protect it.
                     Expansion elem = (Expansion)e_nrw9.units[i];
@@ -1027,9 +1016,9 @@ public class ParseEngine
         {
             Expansion nested_e = e_nrw12.expansion;
             Lookahead la;
-            if (nested_e is Sequence)
+            if (nested_e is Sequence sequence)
             {
-                la = (Lookahead)(((Sequence)nested_e).units[0]);
+                la = (Lookahead)(sequence.units[0]);
             }
             else
             {
@@ -1070,9 +1059,9 @@ public class ParseEngine
         {
             Expansion nested_e = e_nrw13.expansion;
             Lookahead la;
-            if (nested_e is Sequence)
+            if (nested_e is Sequence sequence)
             {
-                la = (Lookahead)(((Sequence)nested_e).units[0]);
+                la = (Lookahead)(sequence.units[0]);
             }
             else
             {
@@ -1142,7 +1131,7 @@ public class ParseEngine
                 list = (e_nrw15.types[i]);
                 if (list.Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup(list[0]);
+                    CSharpCCGlobals.PrintTokenSetup(list[0]);
                     foreach(var t2 in list)
                     {
                         retval += _CodeGenerator.GetStringToPrint(t=t2);
@@ -1151,15 +1140,15 @@ public class ParseEngine
                 }
                 retval += " ";
                 t = (e_nrw15.ids[i]);
-                JavaCCGlobals.PrintTokenSetup(t);
+                CSharpCCGlobals.PrintTokenSetup(t);
                 retval += _CodeGenerator.GetStringToPrint(t);
                 retval += _CodeGenerator.GetTrailingComments(t);
                 retval += ") {\u0003\n";
                 list = (e_nrw15.catchblks[i]);
                 if (list.Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup((list[0]));
-                    JavaCCGlobals.ccol = 1;
+                    CSharpCCGlobals.PrintTokenSetup((list[0]));
+                    CSharpCCGlobals.ccol = 1;
                     foreach(var t2 in list)
                     {
                         retval += _CodeGenerator.GetStringToPrint(t = t2);
@@ -1181,8 +1170,8 @@ public class ParseEngine
 
                 if (e_nrw15.finallyblk.Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup((Token)(e_nrw15.finallyblk[0])); 
-                    JavaCCGlobals.ccol = 1;
+                    CSharpCCGlobals.PrintTokenSetup((Token)(e_nrw15.finallyblk[0])); 
+                    CSharpCCGlobals.ccol = 1;
                     foreach(var t2 in e_nrw15.finallyblk)
                     {
                         retval += _CodeGenerator.GetStringToPrint(t=t2);
@@ -1200,7 +1189,7 @@ public class ParseEngine
         Expansion e = la.GetLaExpansion();
         if (isJavaDialect)
         {
-            _CodeGenerator.GenCodeLine("  " + JavaCCGlobals.StaticOpt() + "private " + Options.GetBooleanType() + " jj_2" + e.internal_name + "(int xla)");
+            _CodeGenerator.GenCodeLine("  " + CSharpCCGlobals.StaticOpt() + "private " + Options.GetBooleanType() + " jj_2" + e.internal_name + "(int xla)");
         }
         else
         {
@@ -1246,7 +1235,7 @@ public class ParseEngine
         string retval = (value ? "true" : "false");
         if (Options.GetDebugLookahead() && jj3_expansion != null)
         {
-            string tracecode = "trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(((NormalProduction)jj3_expansion.parent).GetLhs()) +
+            string tracecode = "trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(((NormalProduction)jj3_expansion.parent).GetLhs()) +
             "(LOOKAHEAD " + (value ? "FAILED" : "SUCCEEDED") + ")\");";
             if (Options.GetErrorReporting())
             {
@@ -1273,7 +1262,7 @@ public class ParseEngine
                 }
                 else if (seq is NonTerminal e_nrw)
                 {
-                    JavaCCGlobals.production_table.TryGetValue(e_nrw.GetName(), out var ntprod);
+                    CSharpCCGlobals.production_table.TryGetValue(e_nrw.GetName(), out var ntprod);
 
                     if (ntprod is CodeProduction)
                     {
@@ -1325,7 +1314,7 @@ public class ParseEngine
             // fact, we rely here on the fact that the "name" fields of both these
             // variables are the same.
 
-            JavaCCGlobals.production_table.TryGetValue(e_nrw.GetName(), out var ntprod);
+            CSharpCCGlobals.production_table.TryGetValue(e_nrw.GetName(), out var ntprod);
             if (ntprod is CodeProduction)
             {
                 ; // nothing to do here
@@ -1398,7 +1387,7 @@ public class ParseEngine
         {
             if (isJavaDialect)
             {
-                _CodeGenerator.GenCodeLine("  " + JavaCCGlobals.StaticOpt() + "private " + Options.GetBooleanType() + " jj_3" + e.internal_name + "()");
+                _CodeGenerator.GenCodeLine("  " + CSharpCCGlobals.StaticOpt() + "private " + Options.GetBooleanType() + " jj_3" + e.internal_name + "()");
             }
             else
             {
@@ -1416,14 +1405,14 @@ public class ParseEngine
             }
             genStackCheck(false);
             xsp_declared = false;
-            if (Options.GetDebugLookahead() && e.parent is NormalProduction)
+            if (Options.GetDebugLookahead() && e.parent is NormalProduction production)
             {
                 _CodeGenerator.GenCode("    ");
                 if (Options.GetErrorReporting())
                 {
                     _CodeGenerator.GenCode("if (!jj_rescan) ");
                 }
-                _CodeGenerator.GenCodeLine("trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(((NormalProduction)e.parent).GetLhs()) + "(LOOKING AHEAD...)\");");
+                _CodeGenerator.GenCodeLine("trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(production.GetLhs()) + "(LOOKING AHEAD...)\");");
                 jj3_expansion = e;
             }
             else
@@ -1436,7 +1425,7 @@ public class ParseEngine
             RegularExpression e_nrw = (RegularExpression)e;
             if (e_nrw.label == "")
             {
-                if (JavaCCGlobals.names_of_tokens.TryGetValue(e_nrw.ordinal,out var label))
+                if (CSharpCCGlobals.names_of_tokens.TryGetValue(e_nrw.ordinal,out var label))
                 {
                     _CodeGenerator.GenCodeLine("    if (jj_scan_token(" + (String)label + ")) " + genReturn(true));
                 }
@@ -1457,7 +1446,7 @@ public class ParseEngine
             // there's no need to check it below for "e_nrw" and "ntexp".  In
             // fact, we rely here on the fact that the "name" fields of both these
             // variables are the same.
-            JavaCCGlobals.production_table.TryGetValue(e_nrw.GetName(),out var ntprod);
+            CSharpCCGlobals.production_table.TryGetValue(e_nrw.GetName(),out var ntprod);
 
             if (ntprod is CodeProduction)
             {
@@ -1490,10 +1479,10 @@ public class ParseEngine
                 if (la.GetActionTokens().Count != 0)
                 {
                     // We have semantic lookahead that must be evaluated.
-                    JavaCCGlobals.lookaheadNeeded = true;
+                    CSharpCCGlobals.lookaheadNeeded = true;
                     _CodeGenerator.GenCodeLine("    jj_lookingAhead = true;");
                     _CodeGenerator.GenCode("    jj_semLA = ");
-                    JavaCCGlobals.PrintTokenSetup(la.GetActionTokens()[0]);
+                    CSharpCCGlobals.PrintTokenSetup(la.GetActionTokens()[0]);
                     foreach(var t2 in la.GetActionTokens())
                     {
                         _CodeGenerator.PrintToken(t=t2);
@@ -1629,7 +1618,7 @@ public class ParseEngine
         }
         else if (e is NonTerminal e_nrw6)
         {
-            if (JavaCCGlobals.production_table.TryGetValue(e_nrw6.GetName(), out var ntprod))
+            if (CSharpCCGlobals.production_table.TryGetValue(e_nrw6.GetName(), out var ntprod))
             {
 
 
@@ -1713,7 +1702,7 @@ public class ParseEngine
         Token t = null;
 
         this._CodeGenerator = codeGenerator;
-        foreach(var p in JavaCCGlobals.bnfproductions)
+        foreach(var p in CSharpCCGlobals.bnfproductions)
         {
             if (p is CppCodeProduction cp)
             {
@@ -1753,19 +1742,19 @@ public class ParseEngine
                     codeGenerator.GenCodeLine("");
                     if (isJavaDialect)
                     {
-                        codeGenerator.GenCodeLine("    trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(cp.GetLhs()) + "\");");
+                        codeGenerator.GenCodeLine("    trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(cp.GetLhs()) + "\");");
                     }
                     else
                     {
-                        codeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + JavaCCGlobals.AddUnicodeEscapes(cp.GetLhs()) + "\"); });");
-                        codeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(cp.GetLhs()) + "\"); });");
+                        codeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + CSharpCCGlobals.AddUnicodeEscapes(cp.GetLhs()) + "\"); });");
+                        codeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(cp.GetLhs()) + "\"); });");
                     }
                     codeGenerator.GenCodeLine("    try {");
                 }
                 if (cp.GetCodeTokens().Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup(cp.GetCodeTokens()[0]); 
-                    JavaCCGlobals.cline--;
+                    CSharpCCGlobals.PrintTokenSetup(cp.GetCodeTokens()[0]); 
+                    CSharpCCGlobals.cline--;
                     codeGenerator.PrintTokenList(cp.GetCodeTokens());
                 }
                 codeGenerator.GenCodeLine("");
@@ -1777,20 +1766,20 @@ public class ParseEngine
                 codeGenerator.GenCodeLine("");
             }
             else
-            if (p is JavaCodeProduction jp)
+            if (p is CSharpCodeProduction jp)
             {
                 if (!isJavaDialect)
                 {
-                    JavaCCErrors.SemanticError("Cannot use JAVACODE productions with C++ output (yet).");
+                    CSharpCCErrors.SemanticError("Cannot use JAVACODE productions with C++ output (yet).");
                     continue;
                 }
                 t = jp.GetReturnTypeTokens()[0];
-                JavaCCGlobals.PrintTokenSetup(t);
-                JavaCCGlobals.ccol = 1;
+                CSharpCCGlobals.PrintTokenSetup(t);
+                CSharpCCGlobals.ccol = 1;
                 codeGenerator.PrintLeadingComments(t);
-                codeGenerator.GenCode("  " + JavaCCGlobals.StaticOpt() + (p.GetAccessMod() != null ? p.GetAccessMod() + " " : ""));
-                JavaCCGlobals.cline = t.beginLine; 
-                JavaCCGlobals.ccol = t.beginColumn;
+                codeGenerator.GenCode("  " + CSharpCCGlobals.StaticOpt() + (p.GetAccessMod() != null ? p.GetAccessMod() + " " : ""));
+                CSharpCCGlobals.cline = t.beginLine; 
+                CSharpCCGlobals.ccol = t.beginColumn;
                 codeGenerator.PrintTokenOnly(t);
                 for (int i = 1; i < jp.GetReturnTypeTokens().Count; i++)
                 {
@@ -1801,7 +1790,7 @@ public class ParseEngine
                 codeGenerator.GenCode(" " + jp.GetLhs() + "(");
                 if (jp.GetParameterListTokens().Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup((jp.GetParameterListTokens()[0]));
+                    CSharpCCGlobals.PrintTokenSetup((jp.GetParameterListTokens()[0]));
                     foreach(var t2 in jp.GetParameterListTokens())
                     {
                         codeGenerator.PrintToken(t=t2);
@@ -1826,20 +1815,20 @@ public class ParseEngine
                 if (Options.GetDebugParser())
                 {
                     codeGenerator.GenCodeLine("");
-                    codeGenerator.GenCodeLine("    trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(jp.GetLhs()) + "\");");
+                    codeGenerator.GenCodeLine("    trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(jp.GetLhs()) + "\");");
                     codeGenerator.GenCode("    try {");
                 }
                 if (jp.GetCodeTokens().Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup((jp.GetCodeTokens()[0]));
-                    JavaCCGlobals.cline--;
+                    CSharpCCGlobals.PrintTokenSetup((jp.GetCodeTokens()[0]));
+                    CSharpCCGlobals.cline--;
                     codeGenerator.PrintTokenList(jp.GetCodeTokens());
                 }
                 codeGenerator.GenCodeLine("");
                 if (Options.GetDebugParser())
                 {
                     codeGenerator.GenCodeLine("    } finally {");
-                    codeGenerator.GenCodeLine("      trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(jp.GetLhs()) + "\");");
+                    codeGenerator.GenCodeLine("      trace_return(\"" + CSharpCCGlobals.AddUnicodeEscapes(jp.GetLhs()) + "\");");
                     codeGenerator.GenCodeLine("    }");
                 }
                 codeGenerator.GenCodeLine("  }");
@@ -1905,7 +1894,7 @@ public class ParseEngine
         }
         else if (e is NonTerminal e_nrw2)
         {
-            if (!JavaCCGlobals.production_table.TryGetValue(e_nrw2.GetName(), out var ntprod))
+            if (!CSharpCCGlobals.production_table.TryGetValue(e_nrw2.GetName(), out var ntprod))
                 return;
 
             if (ntprod is CodeProduction)
@@ -1961,7 +1950,7 @@ public class ParseEngine
                 var tmp = e_nrw5.units[1];
                 while (tmp is NonTerminal tx)
                 {
-                    if (!JavaCCGlobals.production_table.TryGetValue(tx.GetName(), out var ntprod))
+                    if (!CSharpCCGlobals.production_table.TryGetValue(tx.GetName(), out var ntprod))
                         break;
 
                     if (ntprod is CodeProduction) break;

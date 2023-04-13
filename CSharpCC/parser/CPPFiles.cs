@@ -2,17 +2,17 @@
 // Author: sreeni@google.com (Sreeni Viswanadha)
 
 
-using org.javacc.jjtree;
-using org.javacc.utils;
+using CSharpCC.CCTree;
+using CSharpCC.Utils;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 /**
  * Generate CharStream, TokenManager and Exceptions.
  */
-public partial class CPPFiles : JavaCCGlobals
+public partial class CPPFiles : CSharpCCGlobals
 {
     /**
     * ID of the latest version (of JavaCC) in which one of the CharStream classes
@@ -75,7 +75,7 @@ public partial class CPPFiles : JavaCCGlobals
      * @return The version as a double, eg 4.1
      * @since 4.1
      */
-    static Regex versionRegex = MyRegex();
+    static Regex versionRegex = new("[^0-9.]+.*");
     public static double GetVersion(string fileName)
     {
         string commentHeader = "/* " + GetIdString(ToolName, fileName) + " Version ";
@@ -149,7 +149,7 @@ public partial class CPPFiles : JavaCCGlobals
         catch (IOException e)
         {
             Console.Error.WriteLine("Failed to create file: " + file + e);
-            JavaCCErrors.SemanticError("Could not open file: " + file + " for writing.");
+            CSharpCCErrors.SemanticError("Could not open file: " + file + " for writing.");
             throw new Error();
         }
     }
@@ -204,6 +204,4 @@ public partial class CPPFiles : JavaCCGlobals
     {
     }
 
-    [GeneratedRegex("[^0-9.]+.*")]
-    private static partial Regex MyRegex();
 }

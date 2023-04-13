@@ -28,11 +28,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-using org.javacc.utils;
+using CSharpCC.Utils;
 using System.Security;
 using System.Text;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
 
@@ -195,9 +195,9 @@ public class MainParser
         // Initialize all static state
         ReInitAll();
 
-        JavaCCGlobals.BannerLine("Parser Generator", "");
+        CSharpCCGlobals.BannerLine("Parser Generator", "");
 
-        JavaCCParser parser = null;
+        CSharpCCParser parser = null;
         if (args.Length == 0)
         {
             Console.WriteLine("");
@@ -240,7 +240,7 @@ public class MainParser
                 Console.WriteLine(args[^1] + " is a directory. Please use a valid file name.");
                 return 1;
             }
-            parser = new JavaCCParser(new StreamReader(args[^1], Encoding.GetEncoding(Options.GetGrammarEncoding())));
+            parser = new CSharpCCParser(new StreamReader(args[^1], Encoding.GetEncoding(Options.GetGrammarEncoding())));
         }
         catch (SecurityException se)
         {
@@ -256,9 +256,9 @@ public class MainParser
         try
         {
             Console.WriteLine("Reading from file " + args[^1] + " . . .");
-            JavaCCGlobals.FileName = JavaCCGlobals.OrigFileName = args[^1];
-            JavaCCGlobals.JjtreeGenerated = JavaCCGlobals.IsGeneratedBy("JJTree", args[^1]);
-            JavaCCGlobals.ToolNames = JavaCCGlobals.GetToolNames(args[^1]);
+            CSharpCCGlobals.FileName = CSharpCCGlobals.OrigFileName = args[^1];
+            CSharpCCGlobals.JjtreeGenerated = CSharpCCGlobals.IsGeneratedBy("JJTree", args[^1]);
+            CSharpCCGlobals.ToolNames = CSharpCCGlobals.GetToolNames(args[^1]);
             parser.javacc_input();
 
             // 2012/05/02 - Moved this here as cannot evaluate output language
@@ -285,7 +285,7 @@ public class MainParser
                 return UnhandledLanguageExit(outputLanguage);
             }
 
-            JavaCCGlobals.CreateOutputDir(Options.GetOutputDirectory());
+            CSharpCCGlobals.CreateOutputDir(Options.GetOutputDirectory());
 
             if (Options.GetUnicodeInput())
             {
@@ -310,8 +310,8 @@ public class MainParser
                 // Must always create the lexer object even if not building a parser.
                 new LexGen().start();
 
-                Options.SetStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.CuName);
-                OtherFilesGen.Start(isJavaModern, re);
+                Options.SetStringOption(Options.NONUSER_OPTION__PARSER_NAME, CSharpCCGlobals.CuName);
+                OtherFilesGen.Start(isJavaModern);
             }
             else if (isCPPOutput)
             { // C++ for now
@@ -323,7 +323,7 @@ public class MainParser
                 {
                     new LexGenCPP().Start();
                 }
-                Options.SetStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.CuName);
+                Options.SetStringOption(Options.NONUSER_OPTION__PARSER_NAME, CSharpCCGlobals.CuName);
                 OtherFilesGenCPP.start();
             }
             else
@@ -333,9 +333,9 @@ public class MainParser
 
 
 
-            if ((JavaCCErrors.GetErrorCount() == 0) && (isBuildParser || Options.GetBuildTokenManager()))
+            if ((CSharpCCErrors.GetErrorCount() == 0) && (isBuildParser || Options.GetBuildTokenManager()))
             {
-                if (JavaCCErrors.GetWarningCount() == 0)
+                if (CSharpCCErrors.GetWarningCount() == 0)
                 {
                     if (isBuildParser)
                     {
@@ -345,28 +345,28 @@ public class MainParser
                 else
                 {
                     Console.WriteLine("Parser generated with 0 errors and "
-                                       + JavaCCErrors.GetWarningCount() + " warnings.");
+                                       + CSharpCCErrors.GetWarningCount() + " warnings.");
                 }
                 return 0;
             }
             else
             {
-                Console.WriteLine("Detected " + JavaCCErrors.GetErrorCount() + " errors and "
-                                   + JavaCCErrors.GetWarningCount() + " warnings.");
-                return (JavaCCErrors.GetErrorCount() == 0) ? 0 : 1;
+                Console.WriteLine("Detected " + CSharpCCErrors.GetErrorCount() + " errors and "
+                                   + CSharpCCErrors.GetWarningCount() + " warnings.");
+                return (CSharpCCErrors.GetErrorCount() == 0) ? 0 : 1;
             }
         }
         catch (MetaParseException e)
         {
-            Console.WriteLine("Detected " + JavaCCErrors.GetErrorCount() + " errors and "
-                               + JavaCCErrors.GetWarningCount() + " warnings.");
+            Console.WriteLine("Detected " + CSharpCCErrors.GetErrorCount() + " errors and "
+                               + CSharpCCErrors.GetWarningCount() + " warnings.");
             return 1;
         }
         catch (ParseException e)
         {
             Console.WriteLine(e.ToString());
-            Console.WriteLine("Detected " + (JavaCCErrors.GetErrorCount() + 1) + " errors and "
-                               + JavaCCErrors.GetWarningCount() + " warnings.");
+            Console.WriteLine("Detected " + (CSharpCCErrors.GetErrorCount() + 1) + " errors and "
+                               + CSharpCCErrors.GetWarningCount() + " warnings.");
             return 1;
         }
     }
@@ -380,12 +380,12 @@ public class MainParser
     public static void ReInitAll()
     {
         Expansion.ReInit();
-        JavaCCErrors.ReInit();
-        JavaCCGlobals.ReInit();
+        CSharpCCErrors.ReInit();
+        CSharpCCGlobals.ReInit();
         Options.Init();
-        JavaCCParserInternals.ReInit();
+        CSharpCCParserInternals.ReInit();
         RStringLiteral.reInit();
-        JavaFiles.ReInit();
+        CSharpFiles.ReInit();
         NfaState.reInit();
         MatchInfo.ReInit();
         LookaheadWalk.reInit();

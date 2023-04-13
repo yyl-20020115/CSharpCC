@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
 /**
@@ -42,15 +42,17 @@ public class ParseGen : CodeGenerator
 
         Token t = null;
 
-        if (JavaCCErrors.GetErrorCount() != 0)
+        if (CSharpCCErrors.GetErrorCount() != 0)
         {
             throw new MetaParseException();
         }
 
         if (Options.GetBuildParser())
         {
-            List<string> tn = new(ToolNames);
-            tn.Add(ToolName);
+            List<string> tn = new(ToolNames)
+            {
+                ToolName
+            };
 
             // This is the first line generated -- the the comment line at the top of the generated parser
             GenCodeLine("/* " + GetIdString(tn, CuName + ".java") + " */");
@@ -90,7 +92,7 @@ public class ParseGen : CodeGenerator
             GenCode(CuName + "Constants ");
             if (cu_to_insertion_point_2.Count != 0)
             {
-                JavaCCGlobals.PrintTokenSetup((cu_to_insertion_point_2[0]));
+                CSharpCCGlobals.PrintTokenSetup((cu_to_insertion_point_2[0]));
                 foreach (var t2 in cu_to_insertion_point_2)
                 {
                     PrintToken(t = t2);
@@ -1142,7 +1144,7 @@ public class ParseGen : CodeGenerator
 
             if (cu_from_insertion_point_2.Count != 0)
             {
-                JavaCCGlobals.PrintTokenSetup((cu_from_insertion_point_2[0]));
+                CSharpCCGlobals.PrintTokenSetup((cu_from_insertion_point_2[0]));
                 this.ccol = 1;
                 foreach (var t2 in cu_from_insertion_point_2)
                 {

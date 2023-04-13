@@ -28,10 +28,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-using org.javacc.jjtree;
-using System.Collections.Generic;
+using CSharpCC.CCTree;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
 /**
@@ -120,13 +119,14 @@ public class NfaState
 
     public NfaState CreateClone()
     {
-        var retVal = new NfaState();
-
-        retVal.isFinal = isFinal;
-        retVal.kind = kind;
-        retVal.lookingFor = lookingFor;
-        retVal.lexState = lexState;
-        retVal.inNextOf = inNextOf;
+        var retVal = new NfaState
+        {
+            isFinal = isFinal,
+            kind = kind,
+            lookingFor = lookingFor,
+            lexState = lexState,
+            inNextOf = inNextOf
+        };
 
         retVal.MergeMoves(this);
 
@@ -197,7 +197,7 @@ public class NfaState
             !Options.GetUserCharStream())
         {
             unicodeWarningGiven = true;
-            JavaCCErrors.Warning(LexGen.curRE, "Non-ASCII characters used in regular expression.\n" +
+            CSharpCCErrors.Warning(LexGen.curRE, "Non-ASCII characters used in regular expression.\n" +
                  "Please make sure you use the correct Reader when you create the parser, " +
                  "one that can handle your character set.");
         }
@@ -241,7 +241,7 @@ public class NfaState
             !Options.GetUserCharStream())
         {
             unicodeWarningGiven = true;
-            JavaCCErrors.Warning(LexGen.curRE, "Non-ASCII characters used in regular expression.\n" +
+            CSharpCCErrors.Warning(LexGen.curRE, "Non-ASCII characters used in regular expression.\n" +
                  "Please make sure you use the correct Reader when you create the parser, " +
                  "one that can handle your character set.");
         }
@@ -361,7 +361,7 @@ public class NfaState
         // Warning : This function does not merge epsilon moves
         if (asciiMoves == other.asciiMoves)
         {
-            JavaCCErrors.SemanticError("Bug in JavaCC : Please send " +
+            CSharpCCErrors.SemanticError("Bug in JavaCC : Please send " +
                       "a report along with the input that caused this. Thank you.");
             throw new Error();
         }
@@ -577,11 +577,10 @@ public class NfaState
                              EqualCharArr(tmp1.charMoves, tmp2.charMoves) &&
                              EqualCharArr(tmp1.rangeMoves, tmp2.rangeMoves)))
                         {
-                            if (equivStates == null)
-                            {
-                                equivStates = new();
-                                equivStates.Add(tmp1);
-                            }
+                            equivStates ??= new()
+                                {
+                                    tmp1
+                                };
 
                             InsertInOrder(equivStates, tmp2);
                             epsilonMoves.RemoveAt(j--);
@@ -957,14 +956,13 @@ public class NfaState
 
             if (common != null)
             {
-                int ind;
                 string tmp;
 
                 tmp = "{\n   0x" + Convert.ToString(common[0], 16) + "L, " +
                         "0x" + Convert.ToString(common[1], 16) + "L, " +
                         "0x" + Convert.ToString(common[2], 16) + "L, " +
                         "0x" + Convert.ToString(common[3], 16) + "L\n};";
-                if (!lohiByteTab.TryGetValue(tmp,out ind))
+                if (!lohiByteTab.TryGetValue(tmp,out int ind))
                 {
                     allBitVectors.Add(tmp);
 
@@ -1034,13 +1032,12 @@ public class NfaState
             {
                 //Console.Write(i + ", ");
                 string tmp;
-                int ind;
 
-                tmp = "{\n   0x" + Convert.ToString((long)loBytes[i][0],16) + "L, " +
-                        "0x" + Convert.ToString((long)loBytes[i][1],16) + "L, " +
-                        "0x" + Convert.ToString((long)loBytes[i][2],16) + "L, " +
-                        "0x" + Convert.ToString((long)loBytes[i][3],16) + "L\n};";
-                if (!lohiByteTab.TryGetValue(tmp,out ind))
+                tmp = "{\n   0x" + Convert.ToString((long)loBytes[i][0], 16) + "L, " +
+                        "0x" + Convert.ToString((long)loBytes[i][1], 16) + "L, " +
+                        "0x" + Convert.ToString((long)loBytes[i][2], 16) + "L, " +
+                        "0x" + Convert.ToString((long)loBytes[i][3], 16) + "L\n};";
+                if (!lohiByteTab.TryGetValue(tmp,out int ind))
                 {
                     allBitVectors.Add(tmp);
 
@@ -1143,9 +1140,8 @@ public class NfaState
 
     private static int AddCompositeStateSet(string stateSetString, bool starts)
     {
-        int stateNameToReturn;
 
-        if (stateNameForComposite.TryGetValue(stateSetString,out stateNameToReturn))
+        if (stateNameForComposite.TryGetValue(stateSetString, out int stateNameToReturn))
             return stateNameToReturn;
 
         int toRet = 0;
@@ -1251,10 +1247,9 @@ public class NfaState
     static int lastIndex = 0;
     private static int[] GetStateSetIndicesForUse(string arrayString)
     {
-        int[] ret;
         int[] set = (int[])allNextStates[arrayString];
 
-        if (!tableToDump.TryGetValue(arrayString, out ret))
+        if (!tableToDump.TryGetValue(arrayString, out int[] ret))
         {
             ret = new int[2];
             ret[0] = lastIndex;
@@ -1615,15 +1610,13 @@ public class NfaState
         for (i = 0; i < allStates.Count; i++)
         {
             NfaState tmpState = allStates[i];
-            int[] newSet;
-
             if (tmpState.next == null || tmpState.next.usefulEpsilonMoves == 0)
                 continue;
 
             /*if (compositeStateTable.get(tmpState.next.epsilonMovesString) != null)
                tmpState.next.usefulEpsilonMoves = 1;
             else*/
-            if (fixedSets.TryGetValue(tmpState.next.epsilonMovesString,out newSet))
+            if (fixedSets.TryGetValue(tmpState.next.epsilonMovesString, out int[] newSet))
                 tmpState.FixNextStates(newSet);
         }
     }
@@ -1735,8 +1728,10 @@ public class NfaState
             original.Remove(tmp);
 
             ulong bitVec = tmp.asciiMoves[byteNum];
-            List<NfaState> subSet = new();
-            subSet.Add(tmp);
+            List<NfaState> subSet = new()
+            {
+                tmp
+            };
 
             for (int j = 0; j < original.Count; j++)
             {
@@ -3293,8 +3288,6 @@ public class NfaState
             DumpStatesForStateCPP(codeGenerator);
         }
         bool moreThanOne = false;
-        int cnt = 0;
-
         if (CodeGenerator.IsJavaLanguage())
         {
             codeGenerator.GenCode("protected static final int[][] kindForState = ");
@@ -3323,7 +3316,7 @@ public class NfaState
                 codeGenerator.GenCodeLine("{}");
             else
             {
-                cnt = 0;
+                int cnt = 0;
                 codeGenerator.GenCode("{ ");
                 for (int j = 0; j < kinds[i].Length; j++)
                 {

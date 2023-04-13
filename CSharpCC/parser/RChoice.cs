@@ -25,7 +25,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 /**
  * Describes regular expressions which are choices from
@@ -149,10 +149,10 @@ public class RChoice : RegularExpression
                 LexGen.lexStates[curRE.ordinal] == LexGen.lexStates[ordinal])
             {
                 if (label != null)
-                    JavaCCErrors.Warning(this, "Regular Expression choice : " +
+                    CSharpCCErrors.Warning(this, "Regular Expression choice : " +
                        curRE.label + " can never be matched as : " + label);
                 else
-                    JavaCCErrors.Warning(this, "Regular Expression choice : " +
+                    CSharpCCErrors.Warning(this, "Regular Expression choice : " +
                        curRE.label + " can never be matched as token of kind : " + ordinal);
             }
 

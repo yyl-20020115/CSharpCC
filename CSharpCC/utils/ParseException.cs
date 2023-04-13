@@ -2,7 +2,7 @@
 /* JavaCCOptions:KEEP_LINE_COL=null */
 using System.Text;
 
-namespace org.javacc.utils;
+namespace CSharpCC.Utils;
 
 /**
  * This exception is thrown when parse errors are encountered.

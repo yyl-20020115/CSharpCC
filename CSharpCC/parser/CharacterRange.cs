@@ -25,7 +25,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 /**
  * Describes character range descriptors in a character list.
@@ -54,7 +54,7 @@ public class CharacterRange : Descriptor
     public CharacterRange(char l, char r)
     {
         if (l > r)
-            JavaCCErrors.SemanticError(this, "Invalid range : \"" + (int)l + "\" - \""
+            CSharpCCErrors.SemanticError(this, "Invalid range : \"" + (int)l + "\" - \""
                   + (int)r + "\". First character should be less than or equal to the second one in a range.");
 
         SetLeft(l);

@@ -2,13 +2,13 @@
 /* JavaCCOptions: */
 
 
-using org.javacc.jjtree;
+using CSharpCC.CCTree;
 using System.Text;
 /**
 * This file contains the code for JavaCCParser generated
 * by JavaCCParser itself.
 */
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 /** Token Manager Error. */
 public class TokenMgrError : Error

@@ -8,7 +8,7 @@ using System.Text;
  * by JavaCCParser itself.
  */
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 /**
  * This exception is thrown when parse errors are encountered.

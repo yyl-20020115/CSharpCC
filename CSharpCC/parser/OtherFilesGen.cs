@@ -28,26 +28,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-using org.javacc.jjtree;
+using CSharpCC.CCTree;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 /**
  * Generates the Constants file.
  */
-public class OtherFilesGen : JavaCCGlobals
+public class OtherFilesGen : CSharpCCGlobals
 {
 
     private static readonly string CONSTANTS_FILENAME_SUFFIX = "Constants.java";
 
-    static public void Start(bool isJavaModern, RegularExpression re)
+    static public void Start(bool isJavaModern)
     {
 
-        var templateLoc = isJavaModern ? JavaFiles.RESOURCES_JAVA_MODERN : JavaFiles.RESOURCES_JAVA_CLASSIC;
+        var templateLoc = isJavaModern ? CSharpFiles.RESOURCES_JAVA_MODERN : CSharpFiles.RESOURCES_JAVA_CLASSIC;
 
         Token t = null;
 
-        if (JavaCCErrors.GetErrorCount() != 0) throw new MetaParseException();
+        if (CSharpCCErrors.GetErrorCount() != 0) throw new MetaParseException();
 
         // Added this if condition -- 2012/10/17 -- cba
         if (Options.IsGenerateBoilerplateCode())
@@ -55,26 +55,26 @@ public class OtherFilesGen : JavaCCGlobals
 
             if (isJavaModern)
             {
-                JavaFiles.GenJavaModernFiles();
+                CSharpFiles.GenJavaModernFiles();
             }
 
-            JavaFiles.GenTokenMgrError(templateLoc);
-            JavaFiles.GenParseException(templateLoc);
-            JavaFiles.GenToken(templateLoc);
+            CSharpFiles.GenTokenMgrError(templateLoc);
+            CSharpFiles.GenParseException(templateLoc);
+            CSharpFiles.GenToken(templateLoc);
         }
 
 
         if (Options.GetUserTokenManager())
         {
             // CBA -- I think that Token managers are unique so will always be generated
-            JavaFiles.GenTokenManager(templateLoc);
+            CSharpFiles.GenTokenManager(templateLoc);
         }
         else if (Options.GetUserCharStream())
         {
             // Added this if condition -- 2012/10/17 -- cba
             if (Options.IsGenerateBoilerplateCode())
             {
-                JavaFiles.GenCharStream(templateLoc);
+                CSharpFiles.GenCharStream(templateLoc);
             }
         }
         else
@@ -85,11 +85,11 @@ public class OtherFilesGen : JavaCCGlobals
             {
                 if (Options.GetJavaUnicodeEscape()) 
                 { 
-                    JavaFiles.GenJavaCharStream(templateLoc);
+                    CSharpFiles.GenJavaCharStream(templateLoc);
                 }
                 else
                 {
-                    JavaFiles.GenSimpleCharStream(templateLoc);
+                    CSharpFiles.GenSimpleCharStream(templateLoc);
                 }
             }
         }
@@ -102,12 +102,14 @@ public class OtherFilesGen : JavaCCGlobals
         }
         catch (IOException e)
         {
-            JavaCCErrors.SemanticError("Could not open file " + CuName + "Constants.java for writing.");
+            CSharpCCErrors.SemanticError("Could not open file " + CuName + "Constants.java for writing.");
             throw new Error();
         }
 
-        List<string> tn = new(ToolNames);
-        tn.Add(ToolName);
+        List<string> tn = new(ToolNames)
+        {
+            ToolName
+        };
         ostr.WriteLine("/* " + GetIdString(tn, CuName + CONSTANTS_FILENAME_SUFFIX) + " */");
 
         if (cu_to_insertion_point_1.Count != 0 &&
@@ -148,7 +150,7 @@ public class OtherFilesGen : JavaCCGlobals
         ostr.WriteLine("  int EOF = 0;");
         foreach(var re2 in ordered_named_tokens)
         {
-            re = re2;
+            var re = re2;
             ostr.WriteLine("  /** RegularExpression Id. */");
             ostr.WriteLine("  int " + re.label + " = " + re.ordinal + ";");
         }
@@ -170,7 +172,7 @@ public class OtherFilesGen : JavaCCGlobals
         {
             foreach(var res in tp.respecs)
             {
-                re = res.rexp;
+                var re = res.rexp;
                 ostr.Write("    ");
                 if (re is RStringLiteral literal)
                 { 
@@ -184,7 +186,7 @@ public class OtherFilesGen : JavaCCGlobals
                 {
                     if (re.tpContext.kind == TokenProduction.TOKEN)
                     {
-                        JavaCCErrors.Warning(re, "Consider giving this non-string token a label for better error reporting.");
+                        CSharpCCErrors.Warning(re, "Consider giving this non-string token a label for better error reporting.");
                     }
                     ostr.WriteLine("\"<token of kind " + re.ordinal + ">\",");
                 }

@@ -23,9 +23,9 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using org.javacc.parser;
+using CSharpCC.Parser;
 
-namespace org.javacc.utils;
+namespace CSharpCC.Utils;
 
 
 

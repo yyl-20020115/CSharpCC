@@ -5,7 +5,7 @@
  * by JavaCCParser itself.
  */
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 /**
  * Describes the input token stream.
@@ -121,7 +121,7 @@ public class Token
      */
     public static Token NewToken(int ofKind, string? image) => ofKind switch
     {
-        JavaCCParserConstants.RUNSIGNEDSHIFT_VALUE or JavaCCParserConstants.RSIGNEDSHIFT_VALUE or JavaCCParserConstants.GT => new GTToken(ofKind, image),
+        CSharpCCParserConstants.RUNSIGNEDSHIFT_VALUE or CSharpCCParserConstants.RSIGNEDSHIFT_VALUE or CSharpCCParserConstants.GT => new GTToken(ofKind, image),
         _ => new Token(ofKind, image),
     };
 
@@ -135,6 +135,6 @@ public class Token
         public GTToken(int kind, string image)
                 : base(kind, image) { }
 
-        public int realKind = JavaCCParserConstants.GT;
+        public int realKind = CSharpCCParserConstants.GT;
     }
 }

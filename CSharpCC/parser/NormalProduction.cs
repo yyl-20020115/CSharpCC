@@ -28,7 +28,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
 /**
@@ -117,7 +117,7 @@ public class NormalProduction
     protected readonly string eol = Environment.NewLine;// System.getProperty("line.separator", "\n");
     protected StringBuilder DumpPrefix(int indent)
     {
-        StringBuilder sb = new StringBuilder(128);
+        StringBuilder sb = new(128);
         for (int i = 0; i < indent; i++)
             sb.Append("  ");
         return sb;

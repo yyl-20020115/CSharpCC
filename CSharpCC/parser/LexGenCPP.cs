@@ -29,9 +29,9 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using org.javacc.jjtree;
+using CSharpCC.CCTree;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 /**
  * Generate lexer. 
@@ -145,7 +145,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             GenCodeLine("");
 
             if (commonTokenActionNeeded && !commonTokenActionSeen)
-                JavaCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
+                CSharpCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
                     "But it appears you have not defined the method :\n" +
                     "      " + staticString + "void CommonTokenAction(Token *t)\n" +
                 "in your TOKEN_MGR_DECLS. The generated token manager will not compile.");
@@ -153,7 +153,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         }
         else if (Options.GetCommonTokenAction())
         {
-            JavaCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
+            CSharpCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
                 "But you have not defined the method :\n" +
                 "      " + staticString + "void CommonTokenAction(Token *t)\n" +
             "in your TOKEN_MGR_DECLS. The generated token manager will not compile.");
@@ -264,7 +264,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
     {
         if (!Options.GetBuildTokenManager() ||
             Options.GetUserTokenManager() ||
-            JavaCCErrors.GetErrorCount() > 0)
+            CSharpCCErrors.GetErrorCount() > 0)
             return;
 
         keepLineCol = Options.GetKeepLineColumn();
@@ -622,7 +622,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
     void DumpFillToken()
     {
-        double tokenVersion = JavaFiles.GetVersion("Token.java");
+        double tokenVersion = CSharpFiles.GetVersion("Token.java");
         bool hasBinaryNewToken = tokenVersion > 4.09;
 
         GenerateMethodDefHeader("Token *", tokMgrClassName, "jjFillToken()");

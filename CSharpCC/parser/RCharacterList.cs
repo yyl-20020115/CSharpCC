@@ -25,7 +25,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
 /**
@@ -364,7 +364,7 @@ public class RCharacterList : RegularExpression
 
         if (descriptors.Count == 0 && !negated_list)
         {
-            JavaCCErrors.SemanticError(this, "Empty character set is not allowed as it will not match any character.");
+            CSharpCCErrors.SemanticError(this, "Empty character set is not allowed as it will not match any character.");
             return new Nfa();
         }
 

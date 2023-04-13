@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace org.javacc.utils;
+namespace CSharpCC.Utils;
 
 
 /**

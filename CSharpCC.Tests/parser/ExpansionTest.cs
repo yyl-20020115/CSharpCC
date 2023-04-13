@@ -26,7 +26,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
 public class ExpansionTest: CSharpCCTestCase

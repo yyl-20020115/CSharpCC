@@ -25,10 +25,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
-public class LookaheadCalc : JavaCCGlobals
+public class LookaheadCalc : CSharpCCGlobals
 {
 
     static MatchInfo Overlap(List<MatchInfo> v1, List<MatchInfo> v2)
@@ -158,13 +158,13 @@ public class LookaheadCalc : JavaCCGlobals
                     Expansion exp = (Expansion)ch.GetChoices()[i];
                     if (Semanticize.EmptyExpansionExists(exp))
                     {
-                        JavaCCErrors.Warning(exp, "This choice can expand to the empty token sequence " +
+                        CSharpCCErrors.Warning(exp, "This choice can expand to the empty token sequence " +
                                 "and will therefore always be taken in favor of the choices appearing later.");
                         break;
                     }
                     else if (JavaCodeCheck(dbl[i]))
                     {
-                        JavaCCErrors.Warning(exp, "JAVACODE non-terminal will force this choice to be taken " +
+                        CSharpCCErrors.Warning(exp, "JAVACODE non-terminal will force this choice to be taken " +
                                 "in favor of the choices appearing later.");
                         break;
                     }
@@ -198,7 +198,7 @@ public class LookaheadCalc : JavaCCGlobals
             }
             if (minLA[i] > Options.GetChoiceAmbiguityCheck())
             {
-                JavaCCErrors.Warning("Choice conflict involving two expansions at");
+                CSharpCCErrors.Warning("Choice conflict involving two expansions at");
                 Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).GetLine());
                 Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).GetColumn());
                 Console.Error.Write(" and line " + ((Expansion)ch.GetChoices()[(other[i])]).GetLine());
@@ -209,7 +209,7 @@ public class LookaheadCalc : JavaCCGlobals
             }
             else if (minLA[i] > 1)
             {
-                JavaCCErrors.Warning("Choice conflict involving two expansions at");
+                CSharpCCErrors.Warning("Choice conflict involving two expansions at");
                 Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).GetLine());
                 Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).GetColumn());
                 Console.Error.Write(" and line " + ((Expansion)ch.GetChoices()[(other[i])]).GetLine());
@@ -295,7 +295,7 @@ public class LookaheadCalc : JavaCCGlobals
             {
                 if (JavaCodeCheck(first))
                 {
-                    JavaCCErrors.Warning(nested, "JAVACODE non-terminal within " + Image(exp) +
+                    CSharpCCErrors.Warning(nested, "JAVACODE non-terminal within " + Image(exp) +
                             " construct will force this construct to be entered in favor of " +
                             "expansions occurring after construct.");
                 }
@@ -308,7 +308,7 @@ public class LookaheadCalc : JavaCCGlobals
         }
         if (la > Options.GetOtherAmbiguityCheck())
         {
-            JavaCCErrors.Warning("Choice conflict in " + Image(exp) + " construct " +
+            CSharpCCErrors.Warning("Choice conflict in " + Image(exp) + " construct " +
                     "at line " + exp.GetLine() + ", column " + exp.GetColumn() + ".");
             Console.Error.WriteLine("         Expansion nested within construct and expansion following construct");
             Console.Error.WriteLine("         have common prefixes, one of which is: " + Image(m1));
@@ -316,7 +316,7 @@ public class LookaheadCalc : JavaCCGlobals
         }
         else if (la > 1)
         {
-            JavaCCErrors.Warning("Choice conflict in " + Image(exp) + " construct " +
+            CSharpCCErrors.Warning("Choice conflict in " + Image(exp) + " construct " +
                     "at line " + exp.GetLine() + ", column " + exp.GetColumn() + ".");
             Console.Error.WriteLine("         Expansion nested within construct and expansion following construct");
             Console.Error.WriteLine("         have common prefixes, one of which is: " + Image(m1));

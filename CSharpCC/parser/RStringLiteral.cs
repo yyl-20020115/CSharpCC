@@ -31,7 +31,7 @@
 
 using System.Text;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 /**
  * Describes string literals.
@@ -280,7 +280,6 @@ public class RStringLiteral : RegularExpression
     {
         string s;
         Dictionary<string, KindInfo> dict;
-        KindInfo info;
         int len;
 
         if (maxStrKind <= ordinal)
@@ -302,7 +301,7 @@ public class RStringLiteral : RegularExpression
                 !Options.GetUserCharStream())
             {
                 NfaState.unicodeWarningGiven = true;
-                JavaCCErrors.Warning(LexGen.curRE, "Non-ASCII characters used in regular expression." +
+                CSharpCCErrors.Warning(LexGen.curRE, "Non-ASCII characters used in regular expression." +
                    "Please make sure you use the correct Reader when you create the parser, " +
                    "one that can handle your character set.");
             }
@@ -312,7 +311,7 @@ public class RStringLiteral : RegularExpression
             else
                 dict = charPosKind[i];
 
-            if (!dict.TryGetValue(s, out info))
+            if (!dict.TryGetValue(s, out KindInfo info))
                 dict.Add(s, info = new KindInfo(LexGen.maxOrdinal));
 
             if (i + 1 == len)
@@ -368,11 +367,11 @@ public class RStringLiteral : RegularExpression
     {
         if (image.Length == 1)
         {
-            RCharacterList temp = new RCharacterList(image[0]);
+            RCharacterList temp = new(image[0]);
             return temp.GenerateNfa(ignoreCase);
         }
 
-        NfaState startState = new NfaState();
+        NfaState startState = new();
         NfaState theStartState = startState;
         NfaState finalState = null;
 
@@ -427,8 +426,8 @@ public class RStringLiteral : RegularExpression
             long[] actives = allStateSets[s2];
 
             var s = s2;
-            s = s.Substring(s.IndexOf(", ") + 2);
-            s = s.Substring(s.IndexOf(", ") + 2);
+            s = s[(s.IndexOf(", ") + 2)..];
+            s = s[(s.IndexOf(", ") + 2)..];
 
             if (s2 == ("null;"))
                 continue;
@@ -445,10 +444,10 @@ public class RStringLiteral : RegularExpression
 
     static string GetLabel(int kind)
     {
-        RegularExpression re = LexGen.rexprs[kind];
+        var re = LexGen.rexprs[kind];
 
-        if (re is RStringLiteral)
-            return " \"" + JavaCCGlobals.AddEscapes(((RStringLiteral)re).image) + "\"";
+        if (re is RStringLiteral literal)
+            return " \"" + CSharpCCGlobals.AddEscapes(literal.image) + "\"";
         else if (re.label != (""))
             return " <" + re.label + ">";
         else
@@ -720,7 +719,7 @@ public class RStringLiteral : RegularExpression
             tab = charPosKind[i];
             String[] keys = ReArrange(tab);
 
-            StringBuilder _params = new StringBuilder();
+            StringBuilder _params = new();
             _params.Append('(');
             if (i != 0)
             {
@@ -843,8 +842,8 @@ public class RStringLiteral : RegularExpression
                         codeGenerator.GenCodeLine("   fprintf(debugStream, \"   Possible string literal matches : { \");");
                     }
 
-                    StringBuilder fmt = new StringBuilder();
-                    StringBuilder args = new StringBuilder();
+                    StringBuilder fmt = new();
+                    StringBuilder args = new();
                     for (int vecs = 0; vecs < maxStrKind / 64 + 1; vecs++)
                     {
                         if (i <= maxLenForActive[vecs])
@@ -1085,8 +1084,8 @@ public class RStringLiteral : RegularExpression
                                 intermediateMatchedPos != null &&
                                 intermediateMatchedPos[(j * 64 + k)][i] == i)
                             {
-                                JavaCCErrors.Warning(" \"" +
-                                    JavaCCGlobals.AddEscapes(allImages[j * 64 + k]) +
+                                CSharpCCErrors.Warning(" \"" +
+                                    CSharpCCGlobals.AddEscapes(allImages[j * 64 + k]) +
                                     "\" cannot be matched as a string literal token " +
                                     "at line " + GetLine(j * 64 + k) + ", column " + GetColumn(j * 64 + k) +
                                     ". It will be matched as " +
@@ -1097,8 +1096,8 @@ public class RStringLiteral : RegularExpression
                                  LexGen.canMatchAnyChar[LexGen.lexStateIndex] >= 0 &&
                                  LexGen.canMatchAnyChar[LexGen.lexStateIndex] < (j * 64 + k))
                             {
-                                JavaCCErrors.Warning(" \"" +
-                                    JavaCCGlobals.AddEscapes(allImages[j * 64 + k]) +
+                                CSharpCCErrors.Warning(" \"" +
+                                    CSharpCCGlobals.AddEscapes(allImages[j * 64 + k]) +
                                     "\" cannot be matched as a string literal token " +
                                     "at line " + GetLine(j * 64 + k) + ", column " + GetColumn(j * 64 + k) +
                                     ". It will be matched as " +
@@ -1326,7 +1325,6 @@ public class RStringLiteral : RegularExpression
         string stateSetString = "";
         int i, j, kind, jjmatchedPos = 0;
         int maxKindsReqd = maxStrKind / 64 + 1;
-        long[] actives;
         List<NfaState> newStates = new();
         List<NfaState> oldStates = null, jjtmpStates;
 
@@ -1355,7 +1353,7 @@ public class RStringLiteral : RegularExpression
             }
             catch (Exception e)
             {
-                JavaCCErrors.SemanticError("Error cloning state vector");
+                CSharpCCErrors.SemanticError("Error cloning state vector");
             }
 
             intermediateKinds[i] = new int[image.Length];
@@ -1432,7 +1430,7 @@ public class RStringLiteral : RegularExpression
                     statesForPos[j] = new();
 
                 string nk = kind + ", " + jjmatchedPos + ", " + stateSetString;
-                if (!statesForPos[j].TryGetValue(nk,out actives))
+                if (!statesForPos[j].TryGetValue(nk,out long[] actives))
                 {
                     actives = new long[maxKindsReqd];
                     statesForPos[j].Add(kind + ", " + jjmatchedPos + ", " +
@@ -1463,7 +1461,7 @@ public class RStringLiteral : RegularExpression
         bool condGenerated = false;
         int ind = 0;
 
-        StringBuilder _params = new StringBuilder();
+        StringBuilder _params = new();
         for (i = 0; i < maxKindsReqd - 1; i++)
             _params.Append("" + Options.GetLongType() + " active" + i + ", ");
         _params.Append("" + Options.GetLongType() + " active" + i + ")");
@@ -1537,11 +1535,13 @@ public class RStringLiteral : RegularExpression
                 {
                     codeGenerator.GenCodeLine(")");
 
-                    string kindStr = stateSetString.Substring(0,
-                                             ind = stateSetString.IndexOf(", "));
-                    string afterKind = stateSetString.Substring(ind + 2);
+                    string kindStr = stateSetString[..(ind = stateSetString.IndexOf(", "))];
+                    string afterKind = stateSetString[(ind + 2)..];
 
-                    int.TryParse(afterKind[..afterKind.IndexOf(", ")],out var jjmatchedPos);
+                    if(!int.TryParse(afterKind[..afterKind.IndexOf(", ")],out var jjmatchedPos))
+                    {
+                        jjmatchedPos = 0;
+                    }
 
                     if (kindStr != (int.MaxValue).ToString())
                         codeGenerator.GenCodeLine("         {");
@@ -1733,13 +1733,13 @@ public class RStringLiteral : RegularExpression
     */
 
     static readonly Dictionary<int, List<string>> literalsByLength =
-        new Dictionary<int, List<string>>();
+        new();
     static readonly Dictionary<int, List<int>> literalKinds =
-        new Dictionary<int, List<int>>();
+        new();
     static readonly Dictionary<int, int> kindToLexicalState =
-        new Dictionary<int, int>();
+        new();
     static readonly Dictionary<int, NfaState> nfaStateMap =
-        new Dictionary<int, NfaState>();
+        new();
     public static void UpdateStringLiteralData(
         int generatedNfaStates, int lexStateIndex)
     {
@@ -1756,7 +1756,7 @@ public class RStringLiteral : RegularExpression
                 intermediateKinds[kind][s.Length - 1] != int.MaxValue &&
                 intermediateKinds[kind][s.Length - 1] < kind)
             {
-                JavaCCErrors.Warning("Token: " + s + " will not be matched as " +
+                CSharpCCErrors.Warning("Token: " + s + " will not be matched as " +
                                      "specified. It will be matched as token " +
                                      "of kind: " +
                                      intermediateKinds[kind][s.Length - 1] +
@@ -1800,7 +1800,7 @@ public class RStringLiteral : RegularExpression
 
     public static void BuildTokenizerData(TokenizerData tokenizerData)
     {
-        Dictionary<int, int> nfaStateIndices = new Dictionary<int, int>();
+        Dictionary<int, int> nfaStateIndices = new();
         foreach (int kind in nfaStateMap.Keys)
         {
             if (nfaStateMap.TryGetValue(kind,out var r))

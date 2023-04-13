@@ -2,7 +2,7 @@
 /* JavaCCOptions: */
 using System.Text;
 
-namespace org.javacc.utils;
+namespace CSharpCC.Utils;
 
 /** Token Manager Error. */
 public class TokenMgrError : Exception

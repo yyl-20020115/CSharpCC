@@ -23,11 +23,11 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using org.javacc.jjtree;
+using CSharpCC.CCTree;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 /**
  * This class handles the creation and maintenance of the boiler-plate classes,
@@ -59,7 +59,7 @@ public class OutputFile
 
     TrapClosePrintWriter writer;
     
-    string toolName = JavaCCGlobals.ToolName;
+    string toolName = CSharpCCGlobals.ToolName;
     readonly string file;
     readonly string compatibleVersion;
     readonly String[] options;
@@ -133,7 +133,7 @@ public class OutputFile
      */
     private void CheckVersion(string file, string versionId)
     { 
-        string firstLine = "/* " + JavaCCGlobals.GetIdString(toolName, file) + " Version ";
+        string firstLine = "/* " + CSharpCCGlobals.GetIdString(toolName, file) + " Version ";
 
         try
         {
@@ -146,10 +146,10 @@ public class OutputFile
                     string version = line.Replace(".*Version ", "").Replace(" \\*/", "");
                     if (version != versionId)
                     {
-                        JavaCCErrors.Warning(file
+                        CSharpCCErrors.Warning(file
                             + ": File is obsolete.  Please rename or delete this file so"
                             + " that a new one can be generated for you.");
-                        JavaCCErrors.Warning(file
+                        CSharpCCErrors.Warning(file
                             + " file   version: " + version
                             + " javacc version: " + versionId);
                     }
@@ -161,7 +161,7 @@ public class OutputFile
         catch (FileNotFoundException e1)
         {
             // This should never happen
-            JavaCCErrors.SemanticError("Could not open file " + file + " for writing.");
+            CSharpCCErrors.SemanticError("Could not open file " + file + " for writing.");
             throw new Error();
         }
         catch (IOException e2)
@@ -190,7 +190,7 @@ public class OutputFile
                     string currentOptions = Options.GetOptionsString(options);
                     if (!line.Contains(currentOptions, StringComparison.CurrentCulture))
                     {
-                        JavaCCErrors
+                        CSharpCCErrors
                         .Warning(file
                             + ": Generated using incompatible options. Please rename or delete this file so"
                             + " that a new one can be generated for you.");
@@ -202,7 +202,7 @@ public class OutputFile
         catch (FileNotFoundException e1)
         {
             // This should never happen
-            JavaCCErrors.SemanticError($"Could not open file {file} for writing.");
+            CSharpCCErrors.SemanticError($"Could not open file {file} for writing.");
             throw new Error();
         }
         catch (IOException e2)
@@ -228,7 +228,7 @@ public class OutputFile
             // Write the headers....
             string version = compatibleVersion ?? Version.VersionNumber;
             writer.WriteLine("/* "
-                + JavaCCGlobals.GetIdString(toolName, file)
+                + CSharpCCGlobals.GetIdString(toolName, file)
                 + " Version " + version + " */");
             if (options != null)
             {
@@ -249,11 +249,7 @@ public class OutputFile
 
         // Write the trailer (checksum).
         // Possibly rename the .java.tmp to .java??
-        if (writer != null)
-        {
-            writer.ClosePrintWriter();
-            //    file.renameTo(dest)
-        }
+        writer?.ClosePrintWriter();
     }
 
     public class TrapClosePrintWriter : StreamWriter

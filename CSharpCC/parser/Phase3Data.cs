@@ -29,7 +29,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 /**
  * This class stores information to pass from phase 2 to phase 3.

@@ -1,4 +1,4 @@
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 public interface TokenManagerCodeGenerator
 {

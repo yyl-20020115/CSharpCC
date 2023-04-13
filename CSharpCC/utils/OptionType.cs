@@ -1,4 +1,4 @@
-namespace org.javacc.utils;
+namespace CSharpCC.Utils;
 
 /**
  *

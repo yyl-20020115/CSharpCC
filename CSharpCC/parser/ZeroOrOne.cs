@@ -28,7 +28,7 @@
 
 using System.Text;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
 /**

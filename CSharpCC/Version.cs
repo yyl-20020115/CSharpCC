@@ -31,7 +31,7 @@
 
 using CSharpCC.Properties;
 
-namespace org.javacc;
+namespace CSharpCC;
 
 
 /**

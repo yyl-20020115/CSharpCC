@@ -28,10 +28,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-using org.javacc.utils;
+using CSharpCC.Utils;
 using System.Text;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
 public enum Language
@@ -263,7 +263,7 @@ public class Options
      */
     public static bool BooleanValue(string option)
     {
-        return optionValues.TryGetValue(option, out var b) && b is bool bx ? bx : false;
+        return optionValues.TryGetValue(option, out var b) && b is bool bx && bx;
     }
      
     /**
@@ -373,13 +373,13 @@ public class Options
         return value;
     }
 
-    public static void SetInputFileOption(object nameloc, object valueloc,
+    public static void SetInputFileOption(object? nameloc, object? valueloc,
             string name, object value)
     {
         string nameUpperCase = name.ToUpper();
         if (!optionValues.ContainsKey(nameUpperCase))
         {
-            JavaCCErrors.Warning(nameloc, "Bad option name \"" + name
+            CSharpCCErrors.Warning(nameloc, "Bad option name \"" + name
                     + "\".  Option setting will be ignored.");
             return;
         }
@@ -404,7 +404,7 @@ public class Options
             if (isIndirectProperty || (existingValue.GetType() != typeof(object))
                     || (isValidInteger))
             {
-                JavaCCErrors.Warning(valueloc, "Bad option value \"" + value
+                CSharpCCErrors.Warning(valueloc, "Bad option value \"" + value
                         + "\" for \"" + name
                         + "\".  Option setting will be ignored.");
                 return;
@@ -412,7 +412,7 @@ public class Options
 
             if (inputFileSetting.Contains(nameUpperCase))
             {
-                JavaCCErrors.Warning(nameloc, "Duplicate option setting for \""
+                CSharpCCErrors.Warning(nameloc, "Duplicate option setting for \""
                         + name + "\" will be ignored.");
                 return;
             }
@@ -421,7 +421,7 @@ public class Options
             {
                 if (existingValue != (value))
                 {
-                    JavaCCErrors.Warning(nameloc, "Command line setting of \"" + name + "\" modifies option value in file.");
+                    CSharpCCErrors.Warning(nameloc, "Command line setting of \"" + name + "\" modifies option value in file.");
                 }
                 return;
             }
@@ -437,7 +437,7 @@ public class Options
             string templateType = (String)value;
             if (!IsValidJavaTemplateType(templateType))
             {
-                JavaCCErrors.Warning(valueloc, "Bad option value \"" + value
+                CSharpCCErrors.Warning(valueloc, "Bad option value \"" + value
                         + "\" for \"" + name
                         + "\".  Option setting will be ignored. Valid options : " + GetAllValidJavaTemplateTypes());
                 return;
@@ -453,7 +453,7 @@ public class Options
             string outputLanguage = (String)value;
             if (!IsValidOutputLanguage(outputLanguage))
             {
-                JavaCCErrors.Warning(valueloc, "Bad option value \"" + value
+                CSharpCCErrors.Warning(valueloc, "Bad option value \"" + value
                         + "\" for \"" + name
                         + "\".  Option setting will be ignored. Valid options : " + GetAllValidLanguages());
                 return;
@@ -616,7 +616,7 @@ public class Options
             if (cmdLineSetting.Contains(USEROPTION__DEBUG_PARSER) 
                     || inputFileSetting.Contains(USEROPTION__DEBUG_PARSER))
             {
-                JavaCCErrors
+                CSharpCCErrors
                         .Warning("True setting of option DEBUG_LOOKAHEAD overrides " 
                                 + "false setting of option DEBUG_PARSER.");
             }
@@ -1034,13 +1034,13 @@ public class Options
 
     public static bool IsValidOutputLanguage(string language)
     {
-        return language == null ? false : supportedLanguages.Contains(language.ToLower());
+        return language != null && supportedLanguages.Contains(language.ToLower());
     }
 
 
     public static bool IsValidJavaTemplateType(string type)
     {
-        return type == null ? false : supportedJavaTemplateTypes.Contains(type.ToLower());
+        return type != null && supportedJavaTemplateTypes.Contains(type.ToLower());
     }
 
     /**

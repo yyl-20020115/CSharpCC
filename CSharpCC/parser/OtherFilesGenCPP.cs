@@ -28,22 +28,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-using org.javacc.jjtree;
+using CSharpCC.CCTree;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
 /**
  * Generates the Constants file.
  */
-public class OtherFilesGenCPP : JavaCCGlobals
+public class OtherFilesGenCPP : CSharpCCGlobals
 {
 
     static public void start()
     {
 
         Token t = null;
-        if (JavaCCErrors.GetErrorCount() != 0) throw new MetaParseException();
+        if (CSharpCCErrors.GetErrorCount() != 0) throw new MetaParseException();
 
         CPPFiles.GenJavaCCDefs();
         CPPFiles.GenCharStream();
@@ -60,7 +60,7 @@ public class OtherFilesGenCPP : JavaCCGlobals
         }
         catch (IOException e)
         {
-            JavaCCErrors.SemanticError("Could not open file " + CuName + "Constants.h for writing.");
+            CSharpCCErrors.SemanticError("Could not open file " + CuName + "Constants.h for writing.");
             throw new Error();
         }
 
@@ -148,7 +148,7 @@ public class OtherFilesGenCPP : JavaCCGlobals
                 {
                     if (re.tpContext.kind == TokenProduction.TOKEN)
                     {
-                        JavaCCErrors.Warning(re, "Consider giving this non-string token a label for better error reporting.");
+                        CSharpCCErrors.Warning(re, "Consider giving this non-string token a label for better error reporting.");
                     }
                     PrintCharArray(ostr, "\"<token of kind " + re.ordinal + ">\"");
                 }

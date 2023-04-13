@@ -1,7 +1,7 @@
 // Copyright 2011 Google Inc. All Rights Reserved.
 // Author: sreeni@google.com (Sreeni Viswanadha)
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
 
@@ -16,10 +16,12 @@ public class ParseGenCPP : ParseGen
 
         Token t = null;
 
-        if (JavaCCErrors.GetErrorCount() != 0) throw new MetaParseException();
+        if (CSharpCCErrors.GetErrorCount() != 0) throw new MetaParseException();
 
-        List<string> tn = new(ToolNames);
-        tn.Add(ToolName);
+        List<string> tn = new(ToolNames)
+        {
+            ToolName
+        };
         SwitchToStaticsFile();
 
         SwitchToIncludeFile();
@@ -82,7 +84,7 @@ public class ParseGenCPP : ParseGen
         SwitchToMainFile();
         if (cu_to_insertion_point_2.Count != 0)
         {
-            JavaCCGlobals.PrintTokenSetup((cu_to_insertion_point_2[0]));
+            CSharpCCGlobals.PrintTokenSetup((cu_to_insertion_point_2[0]));
             foreach(var t3 in cu_to_insertion_point_2)
             {
                 PrintToken(t=t3);
@@ -733,7 +735,7 @@ public class ParseGenCPP : ParseGen
 
         if (cu_from_insertion_point_2.Count != 0)
         {
-            JavaCCGlobals.PrintTokenSetup((cu_from_insertion_point_2[0])); this.ccol = 1;
+            CSharpCCGlobals.PrintTokenSetup((cu_from_insertion_point_2[0])); this.ccol = 1;
             foreach(var t3 in cu_from_insertion_point_2)
             {
                 PrintToken(t=t3);
@@ -746,8 +748,8 @@ public class ParseGenCPP : ParseGen
         SwitchToIncludeFile();
 
         // copy other stuff
-        Token t1 = JavaCCGlobals.otherLanguageDeclTokenBeg;
-        Token t2 = JavaCCGlobals.otherLanguageDeclTokenEnd;
+        Token t1 = CSharpCCGlobals.otherLanguageDeclTokenBeg;
+        Token t2 = CSharpCCGlobals.otherLanguageDeclTokenEnd;
         while (t1 != t2)
         {
             PrintToken(t1);

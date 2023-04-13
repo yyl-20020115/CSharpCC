@@ -29,11 +29,11 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using org.javacc.jjtree;
-using org.javacc.utils;
+using CSharpCC.CCTree;
+using CSharpCC.Utils;
 using System.Text;
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
 
 
@@ -185,7 +185,7 @@ public class LexGen : CodeGenerator
 
             GenCodeLine("");
             if (commonTokenActionNeeded && !commonTokenActionSeen)
-                JavaCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
+                CSharpCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
                     "But it appears you have not defined the method :\n" +
                     "      " + staticString + "void CommonTokenAction(Token t)\n" +
                 "in your TOKEN_MGR_DECLS. The generated token manager will not compile.");
@@ -193,7 +193,7 @@ public class LexGen : CodeGenerator
         }
         else if (Options.GetCommonTokenAction())
         {
-            JavaCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
+            CSharpCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
                 "But you have not defined the method :\n" +
                 "      " + staticString + "void CommonTokenAction(Token t)\n" +
             "in your TOKEN_MGR_DECLS. The generated token manager will not compile.");
@@ -353,7 +353,7 @@ public class LexGen : CodeGenerator
     {
         if (!Options.GetBuildTokenManager() ||
             Options.GetUserTokenManager() ||
-            JavaCCErrors.GetErrorCount() > 0)
+            CSharpCCErrors.GetErrorCount() > 0)
             return;
 
         string codeGeneratorClass = Options.GetTokenManagerCodeGenerator();
@@ -611,7 +611,7 @@ public class LexGen : CodeGenerator
             }
             catch (Exception ee)
             {
-                JavaCCErrors.SemanticError(
+                CSharpCCErrors.SemanticError(
                     "Could not load the token manager code generator class: " +
                     codeGeneratorClass + "\nError: " + ee.Message);
                 return;
@@ -731,7 +731,7 @@ public class LexGen : CodeGenerator
 
             hasLoop = true;
             if (len == 0)
-                JavaCCErrors.Warning(rexprs[initMatch[i]],
+                CSharpCCErrors.Warning(rexprs[initMatch[i]],
                     "Regular expression" + ((rexprs[initMatch[i]].label == (""))
                         ? "" : (" for " + rexprs[initMatch[i]].label)) +
                         " can be matched by the empty string (\"\") in lexical state " +
@@ -739,7 +739,7 @@ public class LexGen : CodeGenerator
                 "empty string matches.");
             else
             {
-                JavaCCErrors.Warning(rexprs[initMatch[i]],
+                CSharpCCErrors.Warning(rexprs[initMatch[i]],
                     "Regular expression" + ((rexprs[initMatch[i]].label == (""))
                         ? "" : (" for " + rexprs[initMatch[i]].label)) +
                         " can be matched by the empty string (\"\") in lexical state " +
@@ -850,7 +850,7 @@ public class LexGen : CodeGenerator
 
     void DumpFillToken()
     {
-        double tokenVersion = JavaFiles.GetVersion("Token.java");
+        double tokenVersion = CSharpFiles.GetVersion("Token.java");
         bool hasBinaryNewToken = tokenVersion > 4.09;
 
         GenCodeLine(staticString + "protected Token jjFillToken()");

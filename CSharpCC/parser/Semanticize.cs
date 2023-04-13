@@ -26,9 +26,9 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace org.javacc.parser;
+namespace CSharpCC.Parser;
 
-public class Semanticize : JavaCCGlobals
+public class Semanticize : CSharpCCGlobals
 {
 
     public static List<List<RegExprSpec>> removeList = new();
@@ -54,11 +54,11 @@ public class Semanticize : JavaCCGlobals
     public static void Start()
     {
 
-        if (JavaCCErrors.GetErrorCount() != 0) throw new MetaParseException();
+        if (CSharpCCErrors.GetErrorCount() != 0) throw new MetaParseException();
 
         if (Options.GetLookahead() > 1 && !Options.GetForceLaCheck() && Options.GetSanityCheck())
         {
-            JavaCCErrors.Warning("Lookahead adequacy checking not being performed since option LOOKAHEAD " +
+            CSharpCCErrors.Warning("Lookahead adequacy checking not being performed since option LOOKAHEAD " +
                     "is more than 1.  Set option FORCE_LA_CHECK to true to force checking.");
         }
 
@@ -81,7 +81,7 @@ public class Semanticize : JavaCCGlobals
         {
             if (production_table.ContainsKey(p.GetLhs()))
             {
-                JavaCCErrors.SemanticError(p, p.GetLhs() + " occurs on the left hand side of more than one production.");
+                CSharpCCErrors.SemanticError(p, p.GetLhs() + " occurs on the left hand side of more than one production.");
             }
             production_table.Add(p.GetLhs(), p);
         }
@@ -114,7 +114,7 @@ public class Semanticize : JavaCCGlobals
                 {
                     if (!lexstate_S2I.TryGetValue(res.nextState,out var _))
                     {
-                        JavaCCErrors.SemanticError(res.nsTok, "Lexical state \"" + res.nextState +
+                        CSharpCCErrors.SemanticError(res.nsTok, "Lexical state \"" + res.nextState +
                                                                "\" has not been defined.");
                     }
                 }
@@ -122,32 +122,32 @@ public class Semanticize : JavaCCGlobals
                 {
                     //JavaCCErrors.semantic_error(res.rexp, "Badly placed <EOF>.");
                     if (tp.lexStates != null)
-                        JavaCCErrors.SemanticError(res.rexp, "EOF action/state change must be specified for all states, " +
+                        CSharpCCErrors.SemanticError(res.rexp, "EOF action/state change must be specified for all states, " +
                                 "i.e., <*>TOKEN:.");
                     if (tp.kind != TokenProduction.TOKEN)
-                        JavaCCErrors.SemanticError(res.rexp, "EOF action/state change can be specified only in a " +
+                        CSharpCCErrors.SemanticError(res.rexp, "EOF action/state change can be specified only in a " +
                                 "TOKEN specification.");
                     if (nextStateForEof != null || actForEof != null)
-                        JavaCCErrors.SemanticError(res.rexp, "Duplicate action/state change specification for <EOF>.");
+                        CSharpCCErrors.SemanticError(res.rexp, "Duplicate action/state change specification for <EOF>.");
                     actForEof = res.act;
                     nextStateForEof = res.nextState;
                     PrepareToRemove(respecs, res);
                 }
                 else if (tp.isExplicit && Options.GetUserTokenManager())
                 {
-                    JavaCCErrors.Warning(res.rexp, "Ignoring regular expression specification since " +
+                    CSharpCCErrors.Warning(res.rexp, "Ignoring regular expression specification since " +
                             "option USER_TOKEN_MANAGER has been set to true.");
                 }
                 else if (tp.isExplicit && !Options.GetUserTokenManager() && res.rexp is RJustName)
                 {
-                    JavaCCErrors.Warning(res.rexp, "Ignoring free-standing regular expression reference.  " +
+                    CSharpCCErrors.Warning(res.rexp, "Ignoring free-standing regular expression reference.  " +
                             "If you really want this, you must give it a different label as <NEWLABEL:<"
                             + res.rexp.label + ">>.");
                     PrepareToRemove(respecs, res);
                 }
                 else if (!tp.isExplicit && res.rexp.private_rexp)
                 {
-                    JavaCCErrors.SemanticError(res.rexp, "Private (#) regular expression cannot be defined within " +
+                    CSharpCCErrors.SemanticError(res.rexp, "Private (#) regular expression cannot be defined within " +
                             "grammar productions.");
                 }
             }
@@ -172,7 +172,7 @@ public class Semanticize : JavaCCGlobals
                     named_tokens_table.Add(s, res.rexp);
                     if (b)
                     {
-                        JavaCCErrors.SemanticError(res.rexp, "Multiply defined lexical token name \"" + s + "\".");
+                        CSharpCCErrors.SemanticError(res.rexp, "Multiply defined lexical token name \"" + s + "\".");
                     }
                     else
                     {
@@ -180,7 +180,7 @@ public class Semanticize : JavaCCGlobals
                     }
                     if (!lexstate_S2I.TryGetValue(s,out var _))
                     {
-                        JavaCCErrors.SemanticError(res.rexp, "Lexical token name \"" + s + "\" is the same as " +
+                        CSharpCCErrors.SemanticError(res.rexp, "Lexical token name \"" + s + "\" is the same as " +
                                 "that of a lexical state.");
                     }
                 }
@@ -245,14 +245,14 @@ public class Semanticize : JavaCCGlobals
                             if (!sl.tpContext.isExplicit)
                             {
                                 // inline BNF string is used earlier with an IGNORE_CASE.
-                                JavaCCErrors.SemanticError(sl, "String \"" + sl.image + "\" can never be matched " +
+                                CSharpCCErrors.SemanticError(sl, "String \"" + sl.image + "\" can never be matched " +
                                         "due to presence of more general (IGNORE_CASE) regular expression " +
                                         "at line " + other.GetLine() + ", column " + other.GetColumn() + ".");
                             }
                             else
                             {
                                 // give the standard error message.
-                                JavaCCErrors.SemanticError(sl, "Duplicate definition of string token \"" + sl.image + "\" " +
+                                CSharpCCErrors.SemanticError(sl, "Duplicate definition of string token \"" + sl.image + "\" " +
                                         "can never be matched.");
                             }
                         }
@@ -269,11 +269,11 @@ public class Semanticize : JavaCCGlobals
                             }
                             if (count == 1)
                             {
-                                JavaCCErrors.Warning(sl, "String with IGNORE_CASE is partially superseded by string at" + pos + ".");
+                                CSharpCCErrors.Warning(sl, "String with IGNORE_CASE is partially superseded by string at" + pos + ".");
                             }
                             else
                             {
-                                JavaCCErrors.Warning(sl, "String with IGNORE_CASE is partially superseded by strings at" + pos + ".");
+                                CSharpCCErrors.Warning(sl, "String with IGNORE_CASE is partially superseded by strings at" + pos + ".");
                             }
                             // This entry is legitimate.  So insert it.
                             if (sl.ordinal == 0)
@@ -301,22 +301,22 @@ public class Semanticize : JavaCCGlobals
                                 // This is an error even if the first occurrence was implicit.
                                 if (tp.lexStates[i] == ("DEFAULT"))
                                 {
-                                    JavaCCErrors.SemanticError(sl, "Duplicate definition of string token \"" + sl.image + "\".");
+                                    CSharpCCErrors.SemanticError(sl, "Duplicate definition of string token \"" + sl.image + "\".");
                                 }
                                 else
                                 {
-                                    JavaCCErrors.SemanticError(sl, "Duplicate definition of string token \"" + sl.image +
+                                    CSharpCCErrors.SemanticError(sl, "Duplicate definition of string token \"" + sl.image +
                                             "\" in lexical state \"" + tp.lexStates[i] + "\".");
                                 }
                             }
                             else if (re.tpContext.kind != TokenProduction.TOKEN)
                             {
-                                JavaCCErrors.SemanticError(sl, "String token \"" + sl.image + "\" has been defined as a \"" +
+                                CSharpCCErrors.SemanticError(sl, "String token \"" + sl.image + "\" has been defined as a \"" +
                                         TokenProduction.kindImage[re.tpContext.kind] + "\" token.");
                             }
                             else if (re.private_rexp)
                             {
-                                JavaCCErrors.SemanticError(sl, "String token \"" + sl.image +
+                                CSharpCCErrors.SemanticError(sl, "String token \"" + sl.image +
                                         "\" has been defined as a private regular expression.");
                             }
                             else
@@ -437,14 +437,14 @@ public class Semanticize : JavaCCGlobals
                     int ii = (res.rexp.ordinal);
                     if (!names_of_tokens.TryGetValue(ii,out var _))
                     {
-                        JavaCCErrors.Warning(res.rexp, "Unlabeled regular expression cannot be referred to by " +
+                        CSharpCCErrors.Warning(res.rexp, "Unlabeled regular expression cannot be referred to by " +
                                 "user generated token manager.");
                     }
                 }
             }
         }
 
-        if (JavaCCErrors.GetErrorCount() != 0) throw new MetaParseException();
+        if (CSharpCCErrors.GetErrorCount() != 0) throw new MetaParseException();
 
         // The following code sets the value of the "emptyPossible" field of NormalProduction
         // nodes.  This field is initialized to false, and then the entire list of
@@ -466,7 +466,7 @@ public class Semanticize : JavaCCGlobals
             }
         }
 
-        if (Options.GetSanityCheck() && JavaCCErrors.GetErrorCount() == 0)
+        if (Options.GetSanityCheck() && CSharpCCErrors.GetErrorCount() == 0)
         {
 
             // The following code checks that all ZeroOrMore, ZeroOrOne, and OneOrMore nodes
@@ -514,7 +514,7 @@ public class Semanticize : JavaCCGlobals
                             if (RexpWalk(rexp))
                             {
                                 loopString = "..." + rexp.label + "... --> " + loopString;
-                                JavaCCErrors.SemanticError(rexp, "Loop in regular expression detected: \"" + loopString + "\"");
+                                CSharpCCErrors.SemanticError(rexp, "Loop in regular expression detected: \"" + loopString + "\"");
                             }
                             rexp.walkStatus = 1;
                         }
@@ -525,7 +525,7 @@ public class Semanticize : JavaCCGlobals
             /*
              * The following code performs the lookahead ambiguity checking.
              */
-            if (JavaCCErrors.GetErrorCount() == 0)
+            if (CSharpCCErrors.GetErrorCount() == 0)
             {
                 foreach(var tp in bnfproductions)
                 {
@@ -535,7 +535,7 @@ public class Semanticize : JavaCCGlobals
 
         } // matches "if (Options.getSanityCheck()) {"
 
-        if (JavaCCErrors.GetErrorCount() != 0) throw new MetaParseException();
+        if (CSharpCCErrors.GetErrorCount() != 0) throw new MetaParseException();
 
     }
 
@@ -694,7 +694,7 @@ public class Semanticize : JavaCCGlobals
                 if (prod.GetWalkStatus() == -2)
                 {
                     prod.SetWalkStatus(1);
-                    JavaCCErrors.SemanticError(prod, "Left recursion detected: \"" + loopString + "\"");
+                    CSharpCCErrors.SemanticError(prod, "Left recursion detected: \"" + loopString + "\"");
                     return false;
                 }
                 else
@@ -711,7 +711,7 @@ public class Semanticize : JavaCCGlobals
                     if (prod.GetWalkStatus() == -2)
                     {
                         prod.SetWalkStatus(1);
-                        JavaCCErrors.SemanticError(prod, "Left recursion detected: \"" + loopString + "\"");
+                        CSharpCCErrors.SemanticError(prod, "Left recursion detected: \"" + loopString + "\"");
                         return false;
                     }
                     else
@@ -750,7 +750,7 @@ public class Semanticize : JavaCCGlobals
                     if (jn.regexpr.walkStatus == -2)
                     {
                         jn.regexpr.walkStatus = 1;
-                        JavaCCErrors.SemanticError(jn.regexpr, "Loop in regular expression detected: \"" + loopString + "\"");
+                        CSharpCCErrors.SemanticError(jn.regexpr, "Loop in regular expression detected: \"" + loopString + "\"");
                         return false;
                     }
                     else
@@ -811,7 +811,7 @@ public class Semanticize : JavaCCGlobals
      * Objects of this class are created from class Semanticize to work on
      * references to regular expressions from RJustName's.
      */
-    class FixRJustNames : JavaCCGlobals, TreeWalkerOp
+    class FixRJustNames : CSharpCCGlobals, TreeWalkerOp
     {
 
         public RegularExpression root;
@@ -827,16 +827,16 @@ public class Semanticize : JavaCCGlobals
             {
                 if (!named_tokens_table.TryGetValue(jn.label,out var rexp))
                 {
-                    JavaCCErrors.SemanticError(e, "Undefined lexical token name \"" + jn.label + "\".");
+                    CSharpCCErrors.SemanticError(e, "Undefined lexical token name \"" + jn.label + "\".");
                 }
                 else if (jn == root && !jn.tpContext.isExplicit && rexp.private_rexp)
                 {
-                    JavaCCErrors.SemanticError(e, "Token name \"" + jn.label + "\" refers to a private " +
+                    CSharpCCErrors.SemanticError(e, "Token name \"" + jn.label + "\" refers to a private " +
                             "(with a #) regular expression.");
                 }
                 else if (jn == root && !jn.tpContext.isExplicit && rexp.tpContext.kind != TokenProduction.TOKEN)
                 {
-                    JavaCCErrors.SemanticError(e, "Token name \"" + jn.label + "\" refers to a non-token " +
+                    CSharpCCErrors.SemanticError(e, "Token name \"" + jn.label + "\" refers to a non-token " +
                             "(SKIP, MORE, IGNORE_IN_BNF) regular expression.");
                 }
                 else
@@ -849,7 +849,7 @@ public class Semanticize : JavaCCGlobals
 
     }
 
-    class LookaheadFixer : JavaCCGlobals, TreeWalkerOp
+    class LookaheadFixer : CSharpCCGlobals, TreeWalkerOp
     {
 
         public bool GoDeeper(Expansion e)
@@ -897,12 +897,12 @@ public class Semanticize : JavaCCGlobals
                 {
                     if (la.GetActionTokens().Count != 0)
                     {
-                        JavaCCErrors.Warning(la, "Encountered LOOKAHEAD(...) at a non-choice location.  " +
+                        CSharpCCErrors.Warning(la, "Encountered LOOKAHEAD(...) at a non-choice location.  " +
                                 "Only semantic lookahead will be considered here.");
                     }
                     else
                     {
-                        JavaCCErrors.Warning(la, "Encountered LOOKAHEAD(...) at a non-choice location.  This will be ignored.");
+                        CSharpCCErrors.Warning(la, "Encountered LOOKAHEAD(...) at a non-choice location.  This will be ignored.");
                     }
                 }
                 // Now we have moved the lookahead into the singleton choice.  Now create
@@ -921,7 +921,7 @@ public class Semanticize : JavaCCGlobals
 
     }
 
-    class ProductionDefinedChecker : JavaCCGlobals, TreeWalkerOp
+    class ProductionDefinedChecker : CSharpCCGlobals, TreeWalkerOp
     {
 
         public bool GoDeeper(Expansion e)
@@ -944,7 +944,7 @@ public class Semanticize : JavaCCGlobals
                 {
                     nt.SetProd(ret);
 
-                    JavaCCErrors.SemanticError(e, "Non-terminal " + nt.GetName() + " has not been defined.");
+                    CSharpCCErrors.SemanticError(e, "Non-terminal " + nt.GetName() + " has not been defined.");
                 }
                 else
                 {
@@ -955,7 +955,7 @@ public class Semanticize : JavaCCGlobals
 
     }
 
-    class EmptyChecker : JavaCCGlobals , TreeWalkerOp
+    class EmptyChecker : CSharpCCGlobals , TreeWalkerOp
     {
 
         public bool GoDeeper(Expansion e)
@@ -976,28 +976,28 @@ public class Semanticize : JavaCCGlobals
             {
                 if (Semanticize.EmptyExpansionExists(more1.expansion))
                 {
-                    JavaCCErrors.SemanticError(e, "Expansion within \"(...)+\" can be matched by empty string.");
+                    CSharpCCErrors.SemanticError(e, "Expansion within \"(...)+\" can be matched by empty string.");
                 }
             }
             else if (e is ZeroOrMore more)
             {
                 if (Semanticize.EmptyExpansionExists(more.expansion))
                 {
-                    JavaCCErrors.SemanticError(e, "Expansion within \"(...)*\" can be matched by empty string.");
+                    CSharpCCErrors.SemanticError(e, "Expansion within \"(...)*\" can be matched by empty string.");
                 }
             }
             else if (e is ZeroOrOne one)
             {
                 if (Semanticize.EmptyExpansionExists(one.expansion))
                 {
-                    JavaCCErrors.SemanticError(e, "Expansion within \"(...)?\" can be matched by empty string.");
+                    CSharpCCErrors.SemanticError(e, "Expansion within \"(...)?\" can be matched by empty string.");
                 }
             }
         }
 
     }
 
-    class LookaheadChecker : JavaCCGlobals, TreeWalkerOp
+    class LookaheadChecker : CSharpCCGlobals, TreeWalkerOp
     {
 
         public bool GoDeeper(Expansion e)
