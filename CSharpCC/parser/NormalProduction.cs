@@ -48,7 +48,7 @@ public class NormalProduction
     /**
      * The NonTerminal nodes which refer to this production.
      */
-    private List<NormalProduction> parents = new();
+    private List<Expansion> parents = new();
 
     /**
      * The access modifier of this production.
@@ -68,14 +68,14 @@ public class NormalProduction
     /**
      * The tokens that make up the parameters of this production.
      */
-    private List<Token> parameter_list_tokens = new ();
+    private List<Token> parameter_list_tokens = new();
 
     /**
      * Each entry in this list is a list of tokens that represents an
      * exception in the throws list of this production.  This list does not
      * include ParseException which is always thrown.
      */
-    private List<string> throws_list = new ();
+    private List<string> throws_list = new();
 
     /**
      * The RHS of this production.  Not used for JavaCodeProduction.
@@ -178,7 +178,7 @@ public class NormalProduction
     /**
      * @param parents the parents to set
      */
-    void setParents(List parents)
+    public void SetParents(List<Expansion> parents)
     {
         this.parents = parents;
     }
@@ -186,7 +186,7 @@ public class NormalProduction
     /**
      * @return the parents
      */
-    List getParents()
+    public List<Expansion> GetParents()
     {
         return parents;
     }

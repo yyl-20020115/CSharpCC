@@ -45,9 +45,9 @@ public class RCharacterList : RegularExpression
      * This is the list of descriptors of the character list.  Each list
      * entry will narrow to either SingleCharacter or to CharacterRange.
      */
-    public List descriptors = new ();
+    public List<Descriptor> descriptors = new();
 
-    static readonly char[] diffLowerCaseRanges = {
+    static readonly int[] diffLowerCaseRanges = {
 65, 90, 192, 214, 216, 222, 256, 256, 258, 258, 260, 260, 262, 262, 264, 264,
 266, 266, 268, 268, 270, 270, 272, 272, 274, 274, 276, 276, 278, 278, 280, 280,
 282, 282, 284, 284, 286, 286, 288, 288, 290, 290, 292, 292, 294, 294, 296, 296,
@@ -108,7 +108,7 @@ public class RCharacterList : RegularExpression
 8544, 8559, 9398, 9423, 65313, 65338, 65339, 0xfffe, 0xffff, 0xffff
 };
 
-    static readonly char[] diffUpperCaseRanges = {
+    static readonly int[] diffUpperCaseRanges = {
 97, 122, 224, 246, 248, 254, 255, 255, 257, 257, 259, 259, 261, 261, 263, 263,
 265, 265, 267, 267, 269, 269, 271, 271, 273, 273, 275, 275, 277, 277, 279, 279,
 281, 281, 283, 283, 285, 285, 287, 287, 289, 289, 291, 291, 293, 293, 295, 295,
@@ -207,27 +207,27 @@ public class RCharacterList : RegularExpression
 
                         if (r <= diffLowerCaseRanges[j + 1])
                         {
-                            descriptors.Add(new CharacterRange(char.ToLower(diffLowerCaseRanges[j]),
-                                 (char)(char.ToLower(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
+                            descriptors.Add(new CharacterRange(char.ToLower((char)diffLowerCaseRanges[j]),
+                                 (char)(char.ToLower((char)diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
                             break;
                         }
 
-                        descriptors.Add(new CharacterRange(char.ToLower(diffLowerCaseRanges[j]),
-                                                                   char.ToLower(diffLowerCaseRanges[j + 1])));
+                        descriptors.Add(new CharacterRange(char.ToLower((char)diffLowerCaseRanges[j]),
+                                                                   char.ToLower((char)diffLowerCaseRanges[j + 1])));
                     }
                     else
                     {
                         if (r <= diffLowerCaseRanges[j + 1])
                         {
                             descriptors.Add(new CharacterRange(
-                                            (char)(char.ToLower(diffLowerCaseRanges[j]) + l - diffLowerCaseRanges[j]),
-                                            (char)(char.ToLower(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
+                                            (char)(char.ToLower((char)diffLowerCaseRanges[j]) + l - diffLowerCaseRanges[j]),
+                                            (char)(char.ToLower((char)diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
                             break;
                         }
 
                         descriptors.Add(new CharacterRange(
-                                       (char)(char.ToLower(diffLowerCaseRanges[j]) + l - diffLowerCaseRanges[j]),
-                                       char.ToLower(diffLowerCaseRanges[j + 1])));
+                                       (char)(char.ToLower((char)diffLowerCaseRanges[j]) + l - diffLowerCaseRanges[j]),
+                                       char.ToLower((char)diffLowerCaseRanges[j + 1])));
                     }
 
                     j += 2;
@@ -235,13 +235,13 @@ public class RCharacterList : RegularExpression
                     {
                         if (r <= diffLowerCaseRanges[j + 1])
                         {
-                            descriptors.Add(new CharacterRange(char.ToLower(diffLowerCaseRanges[j]),
-                                            (char)(char.ToLower(diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
+                            descriptors.Add(new CharacterRange(char.ToLower((char)diffLowerCaseRanges[j]),
+                                            (char)(char.ToLower((char)diffLowerCaseRanges[j]) + r - diffLowerCaseRanges[j])));
                             break;
                         }
 
-                        descriptors.Add(new CharacterRange(char.ToLower(diffLowerCaseRanges[j]),
-                                                                   char.ToLower(diffLowerCaseRanges[j + 1])));
+                        descriptors.Add(new CharacterRange(char.ToLower((char)diffLowerCaseRanges[j]),
+                                                                   char.ToLower((char)diffLowerCaseRanges[j + 1])));
                         j += 2;
                     }
                     break;
@@ -259,27 +259,27 @@ public class RCharacterList : RegularExpression
 
                     if (r <= diffUpperCaseRanges[j + 1])
                     {
-                        descriptors.Add(new CharacterRange(char.ToUpper(diffUpperCaseRanges[j]),
-                             (char)(char.ToUpper(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
+                        descriptors.Add(new CharacterRange(char.ToUpper((char)diffUpperCaseRanges[j]),
+                             (char)(char.ToUpper((char)diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
                         continue;
                     }
 
-                    descriptors.Add(new CharacterRange(char.ToUpper(diffUpperCaseRanges[j]),
-                                                               char.ToUpper(diffUpperCaseRanges[j + 1])));
+                    descriptors.Add(new CharacterRange(char.ToUpper((char)diffUpperCaseRanges[j]),
+                                                               char.ToUpper((char)diffUpperCaseRanges[j + 1])));
                 }
                 else
                 {
                     if (r <= diffUpperCaseRanges[j + 1])
                     {
                         descriptors.Add(new CharacterRange(
-                                        (char)(char.ToUpper(diffUpperCaseRanges[j]) + l - diffUpperCaseRanges[j]),
-                                        (char)(char.ToUpper(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
+                                        (char)(char.ToUpper((char)diffUpperCaseRanges[j]) + l - diffUpperCaseRanges[j]),
+                                        (char)(char.ToUpper((char)diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
                         continue;
                     }
 
                     descriptors.Add(new CharacterRange(
-                                    (char)(char.ToUpper(diffUpperCaseRanges[j]) + l - diffUpperCaseRanges[j]),
-                                    char.ToUpper(diffUpperCaseRanges[j + 1])));
+                                    (char)(char.ToUpper((char)diffUpperCaseRanges[j]) + l - diffUpperCaseRanges[j]),
+                                    char.ToUpper((char)diffUpperCaseRanges[j + 1])));
                 }
 
                 j += 2;
@@ -287,13 +287,13 @@ public class RCharacterList : RegularExpression
                 {
                     if (r <= diffUpperCaseRanges[j + 1])
                     {
-                        descriptors.Add(new CharacterRange(char.ToUpper(diffUpperCaseRanges[j]),
-                                        (char)(char.ToUpper(diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
+                        descriptors.Add(new CharacterRange(char.ToUpper((char)diffUpperCaseRanges[j]),
+                                        (char)(char.ToUpper((char)diffUpperCaseRanges[j]) + r - diffUpperCaseRanges[j])));
                         break;
                     }
 
-                    descriptors.Add(new CharacterRange(char.ToUpper(diffUpperCaseRanges[j]),
-                                                               char.ToUpper(diffUpperCaseRanges[j + 1])));
+                    descriptors.Add(new CharacterRange(char.ToUpper((char)diffUpperCaseRanges[j]),
+                                                               char.ToUpper((char)diffUpperCaseRanges[j + 1])));
                     j += 2;
                 }
             }
@@ -301,7 +301,7 @@ public class RCharacterList : RegularExpression
     }
 
     bool transformed = false;
-    public Nfa GenerateNfa(bool ignoreCase)
+    public override Nfa GenerateNfa(bool ignoreCase)
     {
         if (!transformed)
         {
@@ -413,7 +413,7 @@ public class RCharacterList : RegularExpression
     {
         int j;
 
-        List newDesc = new List(descriptors.Count);
+        var newDesc = new List<Descriptor>(descriptors.Count);
         int cnt = 0;
 
     Outer:
@@ -446,7 +446,7 @@ public class RCharacterList : RegularExpression
                     }
                 }
 
-                newDesc.Add(j, s);
+                newDesc.Insert(j, s);
                 cnt++;
             }
             else
@@ -459,7 +459,7 @@ public class RCharacterList : RegularExpression
                     {
                         if (InRange(((SingleCharacter)newDesc[j]).ch, range))
                         {
-                            newDesc.remove(j--);
+                            newDesc.RemoveAt(j--);
                             cnt--;
                         }
                         else if (((SingleCharacter)newDesc[j]).ch > range.GetRight())
@@ -492,7 +492,7 @@ public class RCharacterList : RegularExpression
                     }
                 }
 
-                newDesc.Add(j, range);
+                newDesc.Insert(j, range);
                 cnt++;
             }
         }
@@ -526,7 +526,7 @@ public class RCharacterList : RegularExpression
              Console.WriteLine("");
         */
 
-        List newDescriptors = new ();
+        List<Descriptor> newDescriptors = new();
         int lastRemoved = -1; // One less than the first valid character.
 
         for (i = 0; i < descriptors.Count; i++)
@@ -607,7 +607,7 @@ public class RCharacterList : RegularExpression
 
     public RCharacterList(char c)
     {
-        descriptors = new ();
+        descriptors = new();
         descriptors.Add(new SingleCharacter(c));
         negated_list = false;
         ordinal = int.MaxValue;

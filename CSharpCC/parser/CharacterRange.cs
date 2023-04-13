@@ -31,7 +31,7 @@ namespace org.javacc.parser;
  * Describes character range descriptors in a character list.
  */
 
-public class CharacterRange
+public class CharacterRange : Descriptor
 {
 
     /**

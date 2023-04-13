@@ -1310,7 +1310,7 @@ public class RStringLiteral : RegularExpression
                            string literals are possible. So set the kind and state set
                            upto and including this position for the matched string. */
 
-                        codeGenerator.genCode("   return jjStartNfa" + MainParser.LexGenerator.lexStateSuffix + "(" + (i - 1) + ", ");
+                        codeGenerator.GenCode("   return jjStartNfa" + MainParser.LexGenerator.lexStateSuffix + "(" + (i - 1) + ", ");
                         for (k = 0; k < maxLongsReqd - 1; k++)
                             if (i <= maxLenForActive[k])
                                 codeGenerator.GenCode("active" + k + ", ");
@@ -1849,8 +1849,8 @@ public class RStringLiteral : RegularExpression
                 nfaStateIndices.Add(kind, -1);
             }
         }
-        tokenizerData.setLiteralSequence(literalsByLength);
-        tokenizerData.setLiteralKinds(literalKinds);
-        tokenizerData.setKindToNfaStartState(nfaStateIndices);
+        tokenizerData.SetLiteralSequence(literalsByLength);
+        tokenizerData.SetLiteralKinds(literalKinds);
+        tokenizerData.SetKindToNfaStartState(nfaStateIndices);
     }
 }

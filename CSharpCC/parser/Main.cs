@@ -63,14 +63,14 @@ public class MainParser
         Console.WriteLine("");
 
         // 2013/07/23 -- Changed this to auto-generate from metadata in Options so that help is always in-sync with codebase
-        printOptions();
+        PrintOptions();
 
         Console.WriteLine("EXAMPLE:");
         Console.WriteLine("    javacc -STATIC=false -LOOKAHEAD:2 -debug_parser mygrammar.jj");
         Console.WriteLine("");
     }
 
-    private static void printOptions()
+    private static void PrintOptions()
     {
 
         HashSet<OptionInfo> options = Options.getUserOptions();
@@ -109,7 +109,7 @@ public class MainParser
             Console.WriteLine("");
             foreach (OptionInfo i in options)
             {
-                printOptionInfo(OptionType.INTEGER, i, maxLengthInt);
+                PrintOptionInfo(OptionType.INTEGER, i, maxLengthInt);
             }
             Console.WriteLine("");
         }
@@ -121,7 +121,7 @@ public class MainParser
             Console.WriteLine("");
             foreach (OptionInfo i in options)
             {
-                printOptionInfo(OptionType.BOOLEAN, i, maxLengthBool);
+                PrintOptionInfo(OptionType.BOOLEAN, i, maxLengthBool);
             }
             Console.WriteLine("");
         }
@@ -132,22 +132,22 @@ public class MainParser
             Console.WriteLine("");
             foreach (OptionInfo i in options)
             {
-                printOptionInfo(OptionType.STRING, i, maxLengthString);
+                PrintOptionInfo(OptionType.STRING, i, maxLengthString);
             }
             Console.WriteLine("");
         }
     }
 
-    private static void printOptionInfo(OptionType filter, OptionInfo optionInfo, int padLength)
+    private static void PrintOptionInfo(OptionType filter, OptionInfo optionInfo, int padLength)
     {
         if (optionInfo.OptionType == filter)
         {
             object default1 = optionInfo.Default;
-            Console.WriteLine("    " + padRight(optionInfo.Name, padLength + 1) + (default1 == null ? "" : ("(default : " + (default1.ToString().Length == 0 ? "<<empty>>" : default1) + ")")));
+            Console.WriteLine("    " + PadRight(optionInfo.Name, padLength + 1) + (default1 == null ? "" : ("(default : " + (default1.ToString().Length == 0 ? "<<empty>>" : default1) + ")")));
         }
     }
 
-    private static string padRight(string name, int maxLengthInt)
+    private static string PadRight(string name, int maxLengthInt)
     {
         int nameLength = name.Length;
         if (nameLength == maxLengthInt)
@@ -157,7 +157,7 @@ public class MainParser
         else
         {
             int charsToPad = maxLengthInt - nameLength;
-            StringBuilder sb = new StringBuilder(charsToPad);
+            var sb = new StringBuilder(charsToPad);
             sb.Append(name);
 
             for (int i = 0; i < charsToPad; i++)
@@ -174,7 +174,7 @@ public class MainParser
        */
     public static void Main(string[] args)
     {
-        int errorcode = mainProgram(args);
+        int errorcode = MainProgram(args);
         Environment.Exit(errorcode);
     }
 
@@ -183,10 +183,10 @@ public class MainParser
      * It returns an error code.  See how the main program above uses
      * this method.
      */
-    public static int mainProgram(string[] args)
+    public static int MainProgram(string[] args)
     {
 
-        if (args.Length == 1 && args[args.Length - 1].Equals("-version", StringComparison.InvariantCultureIgnoreCase))
+        if (args.Length == 1 && args[^1].Equals("-version", StringComparison.InvariantCultureIgnoreCase))
         {
             Console.WriteLine(Version.VersionNumber);
             return 0;
@@ -209,7 +209,7 @@ public class MainParser
             Console.WriteLine("(type \"javacc\" with no arguments for help)");
         }
 
-        if (Options.isOption(args[args.Length - 1]))
+        if (Options.isOption(args[^1]))
         {
             Console.WriteLine("Last argument \"" + args[args.Length - 1] + "\" is not a filename.");
             return 1;
@@ -244,21 +244,21 @@ public class MainParser
         }
         catch (SecurityException se)
         {
-            Console.WriteLine("Security violation while trying to open " + args[args.Length - 1]);
+            Console.WriteLine("Security violation while trying to open " + args[^1]);
             return 1;
         }
         catch (FileNotFoundException e)
         {
-            Console.WriteLine("File " + args[args.Length - 1] + " not found.");
+            Console.WriteLine("File " + args[^1] + " not found.");
             return 1;
         }
 
         try
         {
-            Console.WriteLine("Reading from file " + args[args.Length - 1] + " . . .");
-            JavaCCGlobals.fileName = JavaCCGlobals.origFileName = args[args.Length - 1];
+            Console.WriteLine("Reading from file " + args[^1] + " . . .");
+            JavaCCGlobals.fileName = JavaCCGlobals.origFileName = args[^1];
             JavaCCGlobals.jjtreeGenerated = JavaCCGlobals.IsGeneratedBy("JJTree", args[args.Length - 1]);
-            JavaCCGlobals.toolNames = JavaCCGlobals.GetToolNames(args[args.Length - 1]);
+            JavaCCGlobals.toolNames = JavaCCGlobals.GetToolNames(args[^1]);
             parser.javacc_input();
 
             // 2012/05/02 - Moved this here as cannot evaluate output language
@@ -282,7 +282,7 @@ public class MainParser
             }
             else
             {
-                return unhandledLanguageExit(outputLanguage);
+                return UnhandledLanguageExit(outputLanguage);
             }
 
             JavaCCGlobals.CreateOutputDir(Options.getOutputDirectory());
@@ -294,7 +294,7 @@ public class MainParser
                      "Please make sure you create the parser/lexer using a Reader with the correct character encoding.");
             }
 
-            Semanticize.start();
+            Semanticize.Start();
             bool isBuildParser = Options.getBuildParser();
 
             // 2012/05/02 -- This is not the best way to add-in GWT support, really the code needs to turn supported languages into enumerations
@@ -328,7 +328,7 @@ public class MainParser
             }
             else
             {
-                unhandledLanguageExit(outputLanguage);
+                UnhandledLanguageExit(outputLanguage);
             }
 
 
@@ -371,7 +371,7 @@ public class MainParser
         }
     }
 
-    private static int unhandledLanguageExit(string outputLanguage)
+    private static int UnhandledLanguageExit(string outputLanguage)
     {
         Console.WriteLine("Invalid '" + Options.USEROPTION__OUTPUT_LANGUAGE + "' specified : " + outputLanguage);
         return 1;
@@ -379,19 +379,19 @@ public class MainParser
 
     public static void ReInitAll()
     {
-        org.javacc.parser.Expansion.ReInit();
-        org.javacc.parser.JavaCCErrors.ReInit();
-        org.javacc.parser.JavaCCGlobals.ReInit();
+        Expansion.ReInit();
+        JavaCCErrors.ReInit();
+        JavaCCGlobals.ReInit();
         Options.Init();
-        org.javacc.parser.JavaCCParserInternals.ReInit();
-        org.javacc.parser.RStringLiteral.reInit();
-        org.javacc.parser.JavaFiles.ReInit();
-        org.javacc.parser.NfaState.reInit();
-        org.javacc.parser.MatchInfo.ReInit();
-        org.javacc.parser.LookaheadWalk.reInit();
-        org.javacc.parser.Semanticize.reInit();
-        org.javacc.parser.OtherFilesGen.reInit();
-        org.javacc.parser.LexGen.reInit();
+        JavaCCParserInternals.ReInit();
+        RStringLiteral.reInit();
+        JavaFiles.ReInit();
+        NfaState.reInit();
+        MatchInfo.ReInit();
+        LookaheadWalk.reInit();
+        Semanticize.reInit();
+        OtherFilesGen.reInit();
+        LexGen.reInit();
     }
 
 }

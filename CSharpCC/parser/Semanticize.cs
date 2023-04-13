@@ -51,7 +51,7 @@ public class Semanticize : JavaCCGlobals
         itemList.Clear();
     }
 
-    static public void start()
+    static public void Start()
     {
 
         if (JavaCCErrors.GetErrorCount() != 0) throw new MetaParseException();
@@ -971,7 +971,7 @@ public class Semanticize : JavaCCGlobals
                 }
                 else
                 {
-                    nt.GetProd().getParents().Add(nt);
+                    nt.GetProd().GetParents().Add(nt);
                 }
             }
         }

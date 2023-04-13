@@ -78,10 +78,7 @@ public abstract class RegularExpression : Expansion
 
     public abstract Nfa GenerateNfa(bool ignoreCase);
 
-    public bool CanMatchAnyChar()
-    {
-        return false;
-    }
+    public bool CanMatchAnyChar() => false;
 
     /**
      * The following variable is used to maintain state information for the

@@ -3479,7 +3479,7 @@ public class NfaState
             {
                 for (int c : s.compositeStates) composite.Add(c);
             }
-            tokenizerData.addNfaState(
+            tokenizerData.AddNfaState(
                 s.stateName, chars, nextStates, composite, s.kindToPrint);
         }
         Dictionary<int, int> initStates = new Dictionary<int, int>();
@@ -3494,8 +3494,8 @@ public class NfaState
                 initStates.Add(l, initialStates.get(l).stateName);
             }
         }
-        tokenizerData.setInitialStates(initStates);
-        tokenizerData.setWildcardKind(matchAnyChar);
+        tokenizerData.SetInitialStates(initStates);
+        tokenizerData.SetWildcardKind(matchAnyChar);
     }
 
     static NfaState getNfaState(int index)

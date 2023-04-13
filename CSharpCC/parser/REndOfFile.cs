@@ -33,8 +33,5 @@ namespace org.javacc.parser;
 
 public class REndOfFile : RegularExpression
 {
-    public override Nfa GenerateNfa(bool ignoreCase)
-    {
-        return null;
-    }
+    public override Nfa GenerateNfa(bool ignoreCase) => null;
 }

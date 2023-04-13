@@ -137,7 +137,7 @@ public class LookaheadCalc : JavaCCGlobals
                 m.firstFreeLoc = 0;
                 v = new();
                 v.Add(m);
-                LookaheadWalk.genFirstSet(v, (Expansion)ch.GetChoices()[i]);
+                LookaheadWalk.GenFirstSet(v, (Expansion)ch.GetChoices()[i]);
                 dbl[i] = LookaheadWalk.sizeLimitedMatches;
             }
             LookaheadWalk.considerSemanticLA = false;
@@ -148,7 +148,7 @@ public class LookaheadCalc : JavaCCGlobals
                 m.firstFreeLoc = 0;
                 v = new();
                 v.Add(m);
-                LookaheadWalk.genFirstSet(v, (Expansion)ch.GetChoices()[i]);
+                LookaheadWalk.GenFirstSet(v, (Expansion)ch.GetChoices()[i]);
                 dbr[i] = LookaheadWalk.sizeLimitedMatches;
             }
             if (la == 1)
@@ -285,7 +285,7 @@ public class LookaheadCalc : JavaCCGlobals
             v = new();
             v.Add(m);
             LookaheadWalk.considerSemanticLA = !Options.GetForceLaCheck();
-            LookaheadWalk.genFirstSet(v, nested);
+            LookaheadWalk.GenFirstSet(v, nested);
             first = LookaheadWalk.sizeLimitedMatches;
             LookaheadWalk.sizeLimitedMatches = new();
             LookaheadWalk.considerSemanticLA = false;

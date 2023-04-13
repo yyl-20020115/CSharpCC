@@ -40,28 +40,28 @@ public class RSequence : RegularExpression
      * The list of units in this regular expression sequence.  Each
      * list component will narrow to RegularExpression.
      */
-    public List<Object> units = new ();
+    public List<RegularExpression> units = new ();
 
     public override Nfa GenerateNfa(bool ignoreCase)
     {
         if (units.Count == 1)
-            return ((RegularExpression)units[0]).GenerateNfa(ignoreCase);
+            return units[0].GenerateNfa(ignoreCase);
 
-        Nfa retVal = new Nfa();
-        NfaState startState = retVal.start;
-        NfaState finalState = retVal.end;
+        var retVal = new Nfa();
+        var startState = retVal.start;
+        var finalState = retVal.end;
         Nfa temp1;
         Nfa temp2 = null;
 
         RegularExpression curRE;
 
-        curRE = (RegularExpression)units[0];
+        curRE = units[0];
         temp1 = curRE.GenerateNfa(ignoreCase);
         startState.AddMove(temp1.start);
 
         for (int i = 1; i < units.Count; i++)
         {
-            curRE = (RegularExpression)units[i];
+            curRE = units[i];
 
             temp2 = curRE.GenerateNfa(ignoreCase);
             temp1.end.AddMove(temp2.start);
@@ -77,7 +77,7 @@ public class RSequence : RegularExpression
     {
     }
 
-    public RSequence(List<Object> seq)
+    public RSequence(List<RegularExpression> seq)
     {
         ordinal = int.MaxValue;
         units = seq;

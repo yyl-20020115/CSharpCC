@@ -481,7 +481,7 @@ public class ConditionParserTokenManager : ConditionParserConstants
 "", null, null, null, null, null, null, null, null, null, null, null, null,
 "\50", "\51", "\41", "\174\174", "\46\46", "\176", "\164\162\165\145",
 "\146\141\154\163\145", null, null, null, };
-
+     
     /** Lexer state names. */
     public static readonly String[] lexStateNames = {
    "DEFAULT",

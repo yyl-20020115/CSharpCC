@@ -98,7 +98,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
 
         // Static block to actually initialize the map from the int array above.
         codeGenerator.GenCodeLine("static {");
-        for (int key : tokenizerData.literalSequence.keySet())
+        for (int key : tokenizerData.literalSequence.keySet()) 
         {
             int[] arr = startAndSize.get(key);
             codeGenerator.GenCodeLine("startAndSize.Add(" + key + ", new int[]{" +

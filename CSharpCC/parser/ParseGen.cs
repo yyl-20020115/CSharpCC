@@ -49,7 +49,7 @@ public class ParseGen : CodeGenerator {
 			tn.Add(toolName);
 
 			// This is the first line generated -- the the comment line at the top of the generated parser
-			genCodeLine("/* " + GetIdString(tn, cu_name + ".java") + " */");
+			GenCodeLine("/* " + GetIdString(tn, cu_name + ".java") + " */");
 
 			bool implementsExists = false;
 			//bool extendsExists = false;

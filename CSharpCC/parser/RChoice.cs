@@ -32,134 +32,137 @@ namespace org.javacc.parser;
  * from among included regular expressions.
  */
 
-public class RChoice:RegularExpression {
+public class RChoice : RegularExpression
+{
 
-  /**
-   * The list of choices of this regular expression.  Each
-   * list component will narrow to RegularExpression.
-   */
-  private List choices = new ();
+    /**
+     * The list of choices of this regular expression.  Each
+     * list component will narrow to RegularExpression.
+     */
+    private List<Expansion> choices = new();
 
-  /**
-   * @param choices the choices to set
-   */
-  public void setChoices(List choices) {
-    this.choices = choices;
-  }
+    /**
+     * @param choices the choices to set
+     */
+    public void setChoices(List<Expansion> choices)
+    {
+        this.choices = choices;
+    }
 
-  /**
-   * @return the choices
-   */
-  public List getChoices() {
-    return choices;
-  }
+    /**
+     * @return the choices
+     */
+    public List<Expansion> getChoices()
+    {
+        return choices;
+    }
 
-  public Nfa GenerateNfa(bool ignoreCase)
-  {
-     CompressCharLists();
+    public override Nfa GenerateNfa(bool ignoreCase)
+    {
+        CompressCharLists();
 
-     if (getChoices().Count == 1)
-        return ((RegularExpression)getChoices()[0]).GenerateNfa(ignoreCase);
+        if (getChoices().Count == 1)
+            return ((RegularExpression)getChoices()[0]).GenerateNfa(ignoreCase);
 
-     Nfa retVal = new Nfa();
-     NfaState startState = retVal.start;
-     NfaState finalState = retVal.end;
+        Nfa retVal = new Nfa();
+        NfaState startState = retVal.start;
+        NfaState finalState = retVal.end;
 
-     for (int i = 0; i < getChoices().Count; i++)
-     {
-        Nfa temp;
-        RegularExpression curRE = (RegularExpression)getChoices()[i];
-
-        temp = curRE.GenerateNfa(ignoreCase);
-
-        startState.AddMove(temp.start);
-        temp.end.AddMove(finalState);
-     }
-
-     return retVal;
-  }
-
-  void CompressCharLists()
-  {
-     CompressChoices(); // Unroll nested choices
-     RegularExpression curRE;
-     RCharacterList curCharList = null;
-
-     for (int i = 0; i < getChoices().Count; i++)
-     {
-        curRE = (RegularExpression)getChoices()[i];
-
-        while (curRE is RJustName)
-           curRE = ((RJustName)curRE).regexpr;
-
-        if (curRE is RStringLiteral &&
-            ((RStringLiteral)curRE).image.Length == 1)
-           getChoices().set(i, curRE = new RCharacterList(
-                      ((RStringLiteral)curRE).image[0]));
-
-        if (curRE is RCharacterList)
+        for (int i = 0; i < getChoices().Count; i++)
         {
-           if (((RCharacterList)curRE).negated_list)
-              ((RCharacterList)curRE).RemoveNegation();
+            Nfa temp;
+            RegularExpression curRE = (RegularExpression)getChoices()[i];
 
-           List tmp = ((RCharacterList)curRE).descriptors;
+            temp = curRE.GenerateNfa(ignoreCase);
 
-           if (curCharList == null)
-              getChoices().set(i, curRE = curCharList = new RCharacterList());
-           else
-              getChoices().remove(i--);
-
-           for (int j = tmp.Count; j-- > 0;)
-              curCharList.descriptors.Add(tmp[j]);
-         }
-
-     }
-  }
-
-  void CompressChoices()
-  {
-     RegularExpression curRE;
-
-     for (int i = 0; i < getChoices().Count; i++)
-     {
-        curRE = (RegularExpression)getChoices()[i];
-
-        while (curRE is RJustName)
-           curRE = ((RJustName)curRE).regexpr;
-
-        if (curRE is RChoice)
-        {
-           getChoices().remove(i--);
-           for (int j = ((RChoice)curRE).getChoices().Count; j-- > 0;)
-              getChoices().Add(((RChoice)curRE).getChoices()[j]);
-        }
-     }
-  }
-
-  public void CheckUnmatchability()
-  {
-     RegularExpression curRE;
-     int numStrings = 0;
-
-     for (int i = 0; i < getChoices().Count; i++)
-     {
-        if (!(curRE = (RegularExpression)getChoices()[i]).private_rexp &&
-            //curRE is RJustName &&
-            curRE.ordinal > 0 && curRE.ordinal < ordinal &&
-            MainParser.LexGenerator.lexStates[curRE.ordinal] == MainParser.LexGenerator.lexStates[ordinal])
-        {
-           if (label != null)
-              JavaCCErrors.Warning(this, "Regular Expression choice : " +
-                 curRE.label + " can never be matched as : " + label);
-           else
-              JavaCCErrors.Warning(this, "Regular Expression choice : " +
-                 curRE.label + " can never be matched as token of kind : " +
-                                                                      ordinal);
+            startState.AddMove(temp.start);
+            temp.end.AddMove(finalState);
         }
 
-        if (!curRE.private_rexp && curRE is RStringLiteral)
-           numStrings++;
-     }
-  }
+        return retVal;
+    }
+
+    void CompressCharLists()
+    {
+        CompressChoices(); // Unroll nested choices
+        RegularExpression curRE;
+        RCharacterList curCharList = null;
+
+        for (int i = 0; i < getChoices().Count; i++)
+        {
+            curRE = (RegularExpression)getChoices()[i];
+
+            while (curRE is RJustName)
+                curRE = ((RJustName)curRE).regexpr;
+
+            if (curRE is RStringLiteral &&
+                ((RStringLiteral)curRE).image.Length == 1)
+                getChoices()[i] = curRE = new RCharacterList(
+                           ((RStringLiteral)curRE).image[0]);
+
+            if (curRE is RCharacterList)
+            {
+                if (((RCharacterList)curRE).negated_list)
+                    ((RCharacterList)curRE).RemoveNegation();
+
+                var tmp = ((RCharacterList)curRE).descriptors;
+
+                if (curCharList == null)
+                    getChoices()[i] = curRE = curCharList = new RCharacterList();
+                else
+                    getChoices().RemoveAt(i--);
+
+                for (int j = tmp.Count; j-- > 0;)
+                    curCharList.descriptors.Add(tmp[j]);
+            }
+
+        }
+    }
+
+    void CompressChoices()
+    {
+        RegularExpression curRE;
+
+        for (int i = 0; i < getChoices().Count; i++)
+        {
+            curRE = (RegularExpression)getChoices()[i];
+
+            while (curRE is RJustName)
+                curRE = ((RJustName)curRE).regexpr;
+
+            if (curRE is RChoice)
+            {
+                getChoices().RemoveAt(i--);
+                for (int j = ((RChoice)curRE).getChoices().Count; j-- > 0;)
+                    getChoices().Add(((RChoice)curRE).getChoices()[j]);
+            }
+        }
+    }
+
+    public void CheckUnmatchability()
+    {
+        RegularExpression curRE;
+        int numStrings = 0;
+
+        for (int i = 0; i < getChoices().Count; i++)
+        {
+            if (!(curRE = (RegularExpression)getChoices()[i]).private_rexp &&
+                //curRE is RJustName &&
+                curRE.ordinal > 0 && curRE.ordinal < ordinal &&
+                LexGen.lexStates[curRE.ordinal] == LexGen.lexStates[ordinal])
+            {
+                if (label != null)
+                    JavaCCErrors.Warning(this, "Regular Expression choice : " +
+                       curRE.label + " can never be matched as : " + label);
+                else
+                    JavaCCErrors.Warning(this, "Regular Expression choice : " +
+                       curRE.label + " can never be matched as token of kind : " +
+                                                                            ordinal);
+            }
+
+            if (!curRE.private_rexp && curRE is RStringLiteral)
+                numStrings++;
+        }
+    }
 
 }

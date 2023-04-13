@@ -563,7 +563,7 @@ public class LexGen : CodeGenerator
 
         if (generateDataOnly || codeGeneratorClass != null)
         {
-            tokenizerData.setParserName(cu_name);
+            tokenizerData.SetParserName(cu_name);
             NfaState.BuildTokenizerData(tokenizerData);
             RStringLiteral.BuildTokenizerData(tokenizerData);
             int[] newLexStateIndices = new int[maxOrdinal];
@@ -576,7 +576,7 @@ public class LexGen : CodeGenerator
                     tokenMgrDecls.Append(((Token)token_mgr_decls[j]).image + " ");
                 }
             }
-            tokenizerData.setDecls(tokenMgrDecls.ToString());
+            tokenizerData.SetDecls(tokenMgrDecls.ToString());
             Dictionary<int, String> actionStrings = new Dictionary<int, String>();
             for (i = 0; i < maxOrdinal; i++)
             {
@@ -600,9 +600,9 @@ public class LexGen : CodeGenerator
                 }
                 actionStrings.Add(i, sb.ToString());
             }
-            tokenizerData.setDefaultLexState(defaultLexState);
-            tokenizerData.setLexStateNames(lexStateName);
-            tokenizerData.updateMatchInfo(
+            tokenizerData.SetDefaultLexState(defaultLexState);
+            tokenizerData.SetLexStateNames(lexStateName);
+            tokenizerData.UpdateMatchInfo(
                 actionStrings, newLexStateIndices,
                 toSkip, toSpecial, toMore, toToken);
             if (generateDataOnly) return;

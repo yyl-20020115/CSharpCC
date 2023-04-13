@@ -34,21 +34,23 @@ namespace org.javacc.parser;
  * name has been declared earlier.
  */
 
-public class RJustName:RegularExpression {
+public class RJustName : RegularExpression
+{
 
-  /**
-   * "regexpr" points to the regular expression denoted by the name.
-   */
-  public RegularExpression regexpr;
+    /**
+     * "regexpr" points to the regular expression denoted by the name.
+     */
+    public RegularExpression regexpr;
 
-  public override Nfa GenerateNfa(bool ignoreCase)
-  {
-     return regexpr.GenerateNfa(ignoreCase);
-  }
+    public override Nfa GenerateNfa(bool ignoreCase)
+    {
+        return regexpr.GenerateNfa(ignoreCase);
+    }
 
-    public RJustName() {}
+    public RJustName() { }
 
-    public RJustName(Token token, string image) {
+    public RJustName(Token token, string image)
+    {
         this.SetLine(token.beginLine);
         this.SetColumn(token.beginColumn);
         this.label = image;

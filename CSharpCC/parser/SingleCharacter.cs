@@ -27,11 +27,18 @@
  */
 namespace org.javacc.parser;
 
+public interface Descriptor
+{
+    int GetLine();
+    void SetLine(int line);
+    int GetColumn();
+    void SetColumn(int column);
+}
 /**
  * Describes single character descriptors in a character list.
  */
 
-public class SingleCharacter
+public class SingleCharacter : Descriptor
 {
 
     /**

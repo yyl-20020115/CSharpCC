@@ -54,7 +54,7 @@ public class JavaCCInterpreter
         {
             var parser = new JavaCCParser(new StringReader(grammar));
             parser.javacc_input();
-            Semanticize.start();
+            Semanticize.Start();
             LexGen lg = new LexGen();
             lg.GenerateDataOnly = true;
             lg.start();
@@ -193,5 +193,5 @@ public class JavaCCInterpreter
             }
         }
         Console.Error.WriteLine("Matched EOF");
-    }
+    } 
 }
