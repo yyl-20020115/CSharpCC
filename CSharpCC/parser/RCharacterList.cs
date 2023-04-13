@@ -364,7 +364,7 @@ public class RCharacterList : RegularExpression
 
         if (descriptors.Count == 0 && !negated_list)
         {
-            JavaCCErrors.semantic_error(this, "Empty character set is not allowed as it will not match any character.");
+            JavaCCErrors.SemanticError(this, "Empty character set is not allowed as it will not match any character.");
             return new Nfa();
         }
 

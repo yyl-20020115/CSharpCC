@@ -41,7 +41,7 @@ public class OtherFilesGenCPP: JavaCCGlobals {
   static public void start() {
 
     Token t = null;
-    if (JavaCCErrors.get_error_count() != 0) throw new MetaParseException();
+    if (JavaCCErrors.GetErrorCount() != 0) throw new MetaParseException();
 
     CPPFiles.GenJavaCCDefs();
     CPPFiles.GenCharStream();
@@ -61,25 +61,25 @@ public class OtherFilesGenCPP: JavaCCGlobals {
                 )
              );
     } catch (IOException e) {
-      JavaCCErrors.semantic_error("Could not open file " + cu_name + "Constants.h for writing.");
+      JavaCCErrors.SemanticError("Could not open file " + cu_name + "Constants.h for writing.");
       throw new Error();
     }
 
     List<string> tn = new (toolNames);
     tn.Add(toolName);
-    ostr.WriteLine("/* " + getIdString(tn, cu_name + "Constants.java") + " */");
+    ostr.WriteLine("/* " + GetIdString(tn, cu_name + "Constants.java") + " */");
 
     if (cu_to_insertion_point_1.Count != 0 &&
         ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
        ) {
       for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
         if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
-          printTokenSetup((Token)(cu_to_insertion_point_1[0]));
+          PrintTokenSetup((Token)(cu_to_insertion_point_1[0]));
           for (int j = 0; j <= i; j++) {
             t = (Token)(cu_to_insertion_point_1[j]);
-            printToken(t, ostr);
+            PrintToken(t, ostr);
           }
-          printTrailingComments(t, ostr);
+          PrintTrailingComments(t, ostr);
           ostr.WriteLine("");
           ostr.WriteLine("");
           break;
@@ -138,7 +138,7 @@ public class OtherFilesGenCPP: JavaCCGlobals {
           printCharArray(ostr, "\"<" + re.label + ">\"");
         } else {
           if (re.tpContext.kind == TokenProduction.TOKEN) {
-            JavaCCErrors.warning(re, "Consider giving this non-string token a label for better error reporting.");
+            JavaCCErrors.Warning(re, "Consider giving this non-string token a label for better error reporting.");
           }
           printCharArray(ostr, "\"<token of kind " + re.ordinal + ">\"");
         }

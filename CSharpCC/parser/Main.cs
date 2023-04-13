@@ -259,8 +259,8 @@ public class MainParser
         {
             Console.WriteLine("Reading from file " + args[args.Length - 1] + " . . .");
             JavaCCGlobals.fileName = JavaCCGlobals.origFileName = args[args.Length - 1];
-            JavaCCGlobals.jjtreeGenerated = JavaCCGlobals.isGeneratedBy("JJTree", args[args.Length - 1]);
-            JavaCCGlobals.toolNames = JavaCCGlobals.getToolNames(args[args.Length - 1]);
+            JavaCCGlobals.jjtreeGenerated = JavaCCGlobals.IsGeneratedBy("JJTree", args[args.Length - 1]);
+            JavaCCGlobals.toolNames = JavaCCGlobals.GetToolNames(args[args.Length - 1]);
             parser.javacc_input();
 
             // 2012/05/02 - Moved this here as cannot evaluate output language
@@ -335,9 +335,9 @@ public class MainParser
 
 
 
-            if ((JavaCCErrors.get_error_count() == 0) && (isBuildParser || Options.getBuildTokenManager()))
+            if ((JavaCCErrors.GetErrorCount() == 0) && (isBuildParser || Options.getBuildTokenManager()))
             {
-                if (JavaCCErrors.get_warning_count() == 0)
+                if (JavaCCErrors.GetWarningCount() == 0)
                 {
                     if (isBuildParser)
                     {
@@ -347,28 +347,28 @@ public class MainParser
                 else
                 {
                     Console.WriteLine("Parser generated with 0 errors and "
-                                       + JavaCCErrors.get_warning_count() + " warnings.");
+                                       + JavaCCErrors.GetWarningCount() + " warnings.");
                 }
                 return 0;
             }
             else
             {
-                Console.WriteLine("Detected " + JavaCCErrors.get_error_count() + " errors and "
-                                   + JavaCCErrors.get_warning_count() + " warnings.");
-                return (JavaCCErrors.get_error_count() == 0) ? 0 : 1;
+                Console.WriteLine("Detected " + JavaCCErrors.GetErrorCount() + " errors and "
+                                   + JavaCCErrors.GetWarningCount() + " warnings.");
+                return (JavaCCErrors.GetErrorCount() == 0) ? 0 : 1;
             }
         }
         catch (MetaParseException e)
         {
-            Console.WriteLine("Detected " + JavaCCErrors.get_error_count() + " errors and "
-                               + JavaCCErrors.get_warning_count() + " warnings.");
+            Console.WriteLine("Detected " + JavaCCErrors.GetErrorCount() + " errors and "
+                               + JavaCCErrors.GetWarningCount() + " warnings.");
             return 1;
         }
         catch (ParseException e)
         {
             Console.WriteLine(e.ToString());
-            Console.WriteLine("Detected " + (JavaCCErrors.get_error_count() + 1) + " errors and "
-                               + JavaCCErrors.get_warning_count() + " warnings.");
+            Console.WriteLine("Detected " + (JavaCCErrors.GetErrorCount() + 1) + " errors and "
+                               + JavaCCErrors.GetWarningCount() + " warnings.");
             return 1;
         }
     }
@@ -382,8 +382,8 @@ public class MainParser
     public static void ReInitAll()
     {
         org.javacc.parser.Expansion.ReInit();
-        org.javacc.parser.JavaCCErrors.reInit();
-        org.javacc.parser.JavaCCGlobals.reInit();
+        org.javacc.parser.JavaCCErrors.ReInit();
+        org.javacc.parser.JavaCCGlobals.ReInit();
         Options.Init();
         org.javacc.parser.JavaCCParserInternals.reInit();
         org.javacc.parser.RStringLiteral.reInit();

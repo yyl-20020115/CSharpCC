@@ -52,7 +52,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
     {
         if (id2 != (id1))
         {
-            JavaCCErrors.parse_error(t, "Name " + id2 + " must be the same as that used at PARSER_BEGIN (" + id1 + ")");
+            JavaCCErrors.ParseError(t, "Name " + id2 + " must be the same as that used at PARSER_BEGIN (" + id1 + ")");
         }
     }
 
@@ -72,7 +72,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         {
             if (insertionpoint1set)
             {
-                JavaCCErrors.parse_error(t, "Multiple declaration of parser class.");
+                JavaCCErrors.ParseError(t, "Multiple declaration of parser class.");
             }
             else
             {
@@ -97,7 +97,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         }
         if (!insertionpoint1set || !insertionpoint2set)
         {
-            JavaCCErrors.parse_error(t, "Parser class has not been defined between PARSER_BEGIN and PARSER_END.");
+            JavaCCErrors.ParseError(t, "Parser class has not been defined between PARSER_BEGIN and PARSER_END.");
         }
     }
 
@@ -127,7 +127,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         {
             if (p.lexStates == null || p.lexStates.Length != 1 || p.lexStates[0] != ("DEFAULT"))
             {
-                JavaCCErrors.warning(p, "Ignoring lexical state specifications since option " +
+                JavaCCErrors.Warning(p, "Ignoring lexical state specifications since option " +
                                         "USER_TOKEN_MANAGER has been set to true.");
             }
         }
@@ -141,7 +141,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
             {
                 if (p.lexStates[i] == (p.lexStates[j]))
                 {
-                    JavaCCErrors.parse_error(p, "Multiple occurrence of \"" + p.lexStates[i] + "\" in lexical state list.");
+                    JavaCCErrors.ParseError(p, "Multiple occurrence of \"" + p.lexStates[i] + "\" in lexical state list.");
                 }
             }
             if (lexstate_S2I.get(p.lexStates[i]) == null)
@@ -158,14 +158,14 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
     {
         if (token_mgr_decls != null)
         {
-            JavaCCErrors.parse_error(t, "Multiple occurrence of \"TOKEN_MGR_DECLS\".");
+            JavaCCErrors.ParseError(t, "Multiple occurrence of \"TOKEN_MGR_DECLS\".");
         }
         else
         {
             token_mgr_decls = decls;
             if (Options.getUserTokenManager())
             {
-                JavaCCErrors.warning(t, "Ignoring declarations in \"TOKEN_MGR_DECLS\" since option " +
+                JavaCCErrors.Warning(t, "Ignoring declarations in \"TOKEN_MGR_DECLS\" since option " +
                                         "USER_TOKEN_MANAGER has been set to true.");
             }
         }
@@ -300,12 +300,12 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
                         }
                     }
                 }
-                JavaCCErrors.parse_error(t, "Encountered non-hex character '" + ch +
+                JavaCCErrors.ParseError(t, "Encountered non-hex character '" + ch +
                         "' at position " + index + " of string " +
                         "- Unicode escape must have 4 hex digits after it.");
                 return retval;
             }
-            JavaCCErrors.parse_error(t, "Illegal escape sequence '\\" + ch +
+            JavaCCErrors.ParseError(t, "Illegal escape sequence '\\" + ch +
                     "' at position " + index + " of string.");
             return retval;
         }
@@ -316,7 +316,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
     {
         if (s.Length != 1)
         {
-            JavaCCErrors.parse_error(t, "String in character list may contain only one character.");
+            JavaCCErrors.ParseError(t, "String in character list may contain only one character.");
             return ' ';
         }
         else
@@ -329,12 +329,12 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
     {
         if (s.Length != 1)
         {
-            JavaCCErrors.parse_error(t, "String in character list may contain only one character.");
+            JavaCCErrors.ParseError(t, "String in character list may contain only one character.");
             return ' ';
         }
         else if ((int)(left[0]) > (int)(s[0]))
         {
-            JavaCCErrors.parse_error(t, "Right end of character range \'" + s +
+            JavaCCErrors.ParseError(t, "Right end of character range \'" + s +
                     "\' has a lower ordinal value than the left end of character range \'" + left + "\'.");
             return left[0];
         }
@@ -356,7 +356,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
     {
         if (catchblks.Count == 0 && finallyblk == null)
         {
-            JavaCCErrors.parse_error(tryLoc, "Try block must contain at least one catch or finally block.");
+            JavaCCErrors.ParseError(tryLoc, "Try block must contain at least one catch or finally block.");
             return;
         }
         TryBlock tblk = new TryBlock();

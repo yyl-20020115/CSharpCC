@@ -49,7 +49,7 @@ public class OtherFilesGen : JavaCCGlobals, JavaCCParserConstants
 
         Token t = null;
 
-        if (JavaCCErrors.get_error_count() != 0) throw new MetaParseException();
+        if (JavaCCErrors.GetErrorCount() != 0) throw new MetaParseException();
 
         // Added this if condition -- 2012/10/17 -- cba
         if (Options.isGenerateBoilerplateCode())
@@ -109,13 +109,13 @@ public class OtherFilesGen : JavaCCGlobals, JavaCCParserConstants
         }
         catch (IOException e)
         {
-            JavaCCErrors.semantic_error("Could not open file " + cu_name + "Constants.java for writing.");
+            JavaCCErrors.SemanticError("Could not open file " + cu_name + "Constants.java for writing.");
             throw new Error();
         }
 
         List<string> tn = new(toolNames);
         tn.Add(toolName);
-        ostr.WriteLine("/* " + getIdString(tn, cu_name + CONSTANTS_FILENAME_SUFFIX) + " */");
+        ostr.WriteLine("/* " + GetIdString(tn, cu_name + CONSTANTS_FILENAME_SUFFIX) + " */");
 
         if (cu_to_insertion_point_1.Count != 0 &&
             ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
@@ -125,13 +125,13 @@ public class OtherFilesGen : JavaCCGlobals, JavaCCParserConstants
             {
                 if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
                 {
-                    printTokenSetup((Token)(cu_to_insertion_point_1[0]));
+                    PrintTokenSetup((Token)(cu_to_insertion_point_1[0]));
                     for (int j = 0; j <= i; j++)
                     {
                         t = (Token)(cu_to_insertion_point_1[j]);
-                        printToken(t, ostr);
+                        PrintToken(t, ostr);
                     }
-                    printTrailingComments(t, ostr);
+                    PrintTrailingComments(t, ostr);
                     ostr.WriteLine("");
                     ostr.WriteLine("");
                     break;
@@ -195,7 +195,7 @@ public class OtherFilesGen : JavaCCGlobals, JavaCCParserConstants
                 {
                     if (re.tpContext.kind == TokenProduction.TOKEN)
                     {
-                        JavaCCErrors.warning(re, "Consider giving this non-string token a label for better error reporting.");
+                        JavaCCErrors.Warning(re, "Consider giving this non-string token a label for better error reporting.");
                     }
                     ostr.WriteLine("\"<token of kind " + re.ordinal + ">\",");
                 }

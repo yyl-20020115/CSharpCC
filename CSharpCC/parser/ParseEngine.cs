@@ -351,9 +351,9 @@ public class ParseEngine
                     for (Iterator it = la.getActionTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
-                        retval += codeGenerator.getStringToPrint(t);
+                        retval += codeGenerator.GetStringToPrint(t);
                     }
-                    retval += codeGenerator.getTrailingComments(t);
+                    retval += codeGenerator.GetTrailingComments(t);
                     retval += ") {\u0001" + actions[index];
                     state = OPENIF;
                 }
@@ -499,9 +499,9 @@ public class ParseEngine
                     for (Iterator it = la.getActionTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
-                        retval += codeGenerator.getStringToPrint(t);
+                        retval += codeGenerator.GetStringToPrint(t);
                     }
-                    retval += codeGenerator.getTrailingComments(t);
+                    retval += codeGenerator.GetTrailingComments(t);
                     retval += ")";
                 }
                 retval += ") {\u0001" + actions[index];
@@ -612,7 +612,7 @@ public class ParseEngine
         for (int i = 0; i < p.getReturnTypeTokens().Count; i++)
         {
             t = (Token)(p.getReturnTypeTokens()[i]);
-            string s = codeGenerator.getStringToPrint(t);
+            string s = codeGenerator.GetStringToPrint(t);
             sig.Append(t.ToString());
             sig.Append(" ");
             if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
@@ -621,7 +621,7 @@ public class ParseEngine
 
         string comment2 = "";
         if (t != null)
-            comment2 = codeGenerator.getTrailingComments(t);
+            comment2 = codeGenerator.GetTrailingComments(t);
         ret = sig.ToString();
 
         sig.Capacity=0;
@@ -632,9 +632,9 @@ public class ParseEngine
             for (Iterator it = p.getParameterListTokens().iterator(); it.hasNext();)
             {
                 t = (Token)it.next();
-                sig.Append(codeGenerator.getStringToPrint(t));
+                sig.Append(codeGenerator.GetStringToPrint(t));
             }
-            sig.Append(codeGenerator.getTrailingComments(t));
+            sig.Append(codeGenerator.GetTrailingComments(t));
         }
         sig.Append(")");
         _params = sig.ToString();
@@ -656,7 +656,7 @@ public class ParseEngine
         bool ptr_ret = false;
 
         codeGenerator.PrintTokenSetup(t); ccol = 1;
-        string comment1 = codeGenerator.getLeadingComments(t);
+        string comment1 = codeGenerator.GetLeadingComments(t);
         cline = t.beginLine;
         ccol = t.beginColumn;
         sig.Append(t.image);
@@ -666,12 +666,12 @@ public class ParseEngine
         for (int i = 1; i < p.getReturnTypeTokens().Count; i++)
         {
             t = (Token)(p.getReturnTypeTokens()[i]);
-            sig.Append(codeGenerator.getStringToPrint(t));
+            sig.Append(codeGenerator.GetStringToPrint(t));
             if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
             if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
         }
 
-        string comment2 = codeGenerator.getTrailingComments(t);
+        string comment2 = codeGenerator.GetTrailingComments(t);
         ret = sig.ToString();
 
         sig.Capacity=0;
@@ -682,9 +682,9 @@ public class ParseEngine
             for (Iterator it = p.getParameterListTokens().iterator(); it.hasNext();)
             {
                 t = (Token)it.next();
-                sig.Append(codeGenerator.getStringToPrint(t));
+                sig.Append(codeGenerator.GetStringToPrint(t));
             }
-            sig.Append(codeGenerator.getTrailingComments(t));
+            sig.Append(codeGenerator.GetTrailingComments(t));
         }
         sig.Append(")");
         _params = sig.ToString();
@@ -775,16 +775,16 @@ public class ParseEngine
         if (isJavaDialect)
         {
             codeGenerator.PrintTokenSetup(t); ccol = 1;
-            codeGenerator.printLeadingComments(t);
+            codeGenerator.PrintLeadingComments(t);
             codeGenerator.genCode("  " + staticOpt() + "final " + (p.getAccessMod() != null ? p.getAccessMod() : "public") + " ");
             cline = t.beginLine; ccol = t.beginColumn;
             codeGenerator.PrintTokenOnly(t);
             for (int i = 1; i < p.getReturnTypeTokens().Count; i++)
             {
                 t = (Token)(p.getReturnTypeTokens()[i]);
-                codeGenerator.printToken(t);
+                codeGenerator.PrintToken(t);
             }
-            codeGenerator.printTrailingComments(t);
+            codeGenerator.PrintTrailingComments(t);
             codeGenerator.GenCode(" " + p.getLhs() + "(");
             if (p.getParameterListTokens().Count != 0)
             {
@@ -792,9 +792,9 @@ public class ParseEngine
                 for (Iterator it = p.getParameterListTokens().iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
-                    codeGenerator.printToken(t);
+                    codeGenerator.PrintToken(t);
                 }
-                codeGenerator.printTrailingComments(t);
+                codeGenerator.PrintTrailingComments(t);
             }
             codeGenerator.GenCode(")");
             codeGenerator.GenCode(" throws ParseException");
@@ -853,9 +853,9 @@ public class ParseEngine
             for (Iterator it = p.GetDeclarationTokens().iterator(); it.hasNext();)
             {
                 t = (Token)it.next();
-                codeGenerator.printToken(t);
+                codeGenerator.PrintToken(t);
             }
-            codeGenerator.printTrailingComments(t);
+            codeGenerator.PrintTrailingComments(t);
         }
 
         string code = phase1ExpansionGen(p.getExpansion());
@@ -930,9 +930,9 @@ public class ParseEngine
                 for (Iterator it = e_nrw.lhsTokens.iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
-                    retval += codeGenerator.getStringToPrint(t);
+                    retval += codeGenerator.GetStringToPrint(t);
                 }
-                retval += codeGenerator.getTrailingComments(t);
+                retval += codeGenerator.GetTrailingComments(t);
                 retval += " = ";
             }
             string tail = e_nrw.rhsToken == null ? ");" :
@@ -970,9 +970,9 @@ public class ParseEngine
                 for (Iterator it = e_nrw.getLhsTokens().iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
-                    retval += codeGenerator.getStringToPrint(t);
+                    retval += codeGenerator.GetStringToPrint(t);
                 }
-                retval += codeGenerator.getTrailingComments(t);
+                retval += codeGenerator.GetTrailingComments(t);
                 retval += " = ";
             }
             retval += e_nrw.getName() + "(";
@@ -982,9 +982,9 @@ public class ParseEngine
                 for (Iterator it = e_nrw.getArgumentTokens().iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
-                    retval += codeGenerator.getStringToPrint(t);
+                    retval += codeGenerator.GetStringToPrint(t);
                 }
-                retval += codeGenerator.getTrailingComments(t);
+                retval += codeGenerator.GetTrailingComments(t);
             }
             retval += ");";
             if (!isJavaDialect && Options.booleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR))
@@ -1003,9 +1003,9 @@ public class ParseEngine
                 for (Iterator it = e_nrw.GetActionTokens().iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
-                    retval += codeGenerator.getStringToPrint(t);
+                    retval += codeGenerator.GetStringToPrint(t);
                 }
-                retval += codeGenerator.getTrailingComments(t);
+                retval += codeGenerator.GetTrailingComments(t);
             }
             retval += "\u0004";
         }
@@ -1187,15 +1187,15 @@ public class ParseEngine
                     for (Iterator it = list.iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
-                        retval += codeGenerator.getStringToPrint(t);
+                        retval += codeGenerator.GetStringToPrint(t);
                     }
-                    retval += codeGenerator.getTrailingComments(t);
+                    retval += codeGenerator.GetTrailingComments(t);
                 }
                 retval += " ";
                 t = (Token)(e_nrw.ids[i]);
                 codeGenerator.PrintTokenSetup(t);
-                retval += codeGenerator.getStringToPrint(t);
-                retval += codeGenerator.getTrailingComments(t);
+                retval += codeGenerator.GetStringToPrint(t);
+                retval += codeGenerator.GetTrailingComments(t);
                 retval += ") {\u0003\n";
                 list = (List)(e_nrw.catchblks[i]);
                 if (list.Count != 0)
@@ -1204,9 +1204,9 @@ public class ParseEngine
                     for (Iterator it = list.iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
-                        retval += codeGenerator.getStringToPrint(t);
+                        retval += codeGenerator.GetStringToPrint(t);
                     }
-                    retval += codeGenerator.getTrailingComments(t);
+                    retval += codeGenerator.GetTrailingComments(t);
                 }
                 retval += "\u0004\n" + "}";
             }
@@ -1227,9 +1227,9 @@ public class ParseEngine
                     for (Iterator it = e_nrw.finallyblk.iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
-                        retval += codeGenerator.getStringToPrint(t);
+                        retval += codeGenerator.GetStringToPrint(t);
                     }
-                    retval += codeGenerator.getTrailingComments(t);
+                    retval += codeGenerator.GetTrailingComments(t);
                 }
                 retval += "\u0004\n" + "}";
             }
@@ -1547,9 +1547,9 @@ public class ParseEngine
                     for (Iterator it = la.getActionTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
-                        codeGenerator.printToken(t);
+                        codeGenerator.PrintToken(t);
                     }
-                    codeGenerator.printTrailingComments(t);
+                    codeGenerator.PrintTrailingComments(t);
                     codeGenerator.GenCodeLine(";");
                     codeGenerator.GenCodeLine("    jj_lookingAhead = false;");
                 }
@@ -1828,7 +1828,7 @@ public class ParseEngine
                 if (cp.GetCodeTokens().Count != 0)
                 {
                     codeGenerator.PrintTokenSetup((Token)(cp.GetCodeTokens()[0])); cline--;
-                    codeGenerator.printTokenList(cp.GetCodeTokens());
+                    codeGenerator.PrintTokenList(cp.GetCodeTokens());
                 }
                 codeGenerator.GenCodeLine("");
                 if (Options.getDebugParser())
@@ -1843,22 +1843,22 @@ public class ParseEngine
             {
                 if (!isJavaDialect)
                 {
-                    JavaCCErrors.semantic_error("Cannot use JAVACODE productions with C++ output (yet).");
+                    JavaCCErrors.SemanticError("Cannot use JAVACODE productions with C++ output (yet).");
                     continue;
                 }
                 jp = (JavaCodeProduction)p;
                 t = (Token)(jp.getReturnTypeTokens()[0]);
                 codeGenerator.PrintTokenSetup(t); ccol = 1;
-                codeGenerator.printLeadingComments(t);
+                codeGenerator.PrintLeadingComments(t);
                 codeGenerator.genCode("  " + staticOpt() + (p.getAccessMod() != null ? p.getAccessMod() + " " : ""));
                 cline = t.beginLine; ccol = t.beginColumn;
                 codeGenerator.PrintTokenOnly(t);
                 for (int i = 1; i < jp.getReturnTypeTokens().Count; i++)
                 {
                     t = (Token)(jp.getReturnTypeTokens()[i]);
-                    codeGenerator.printToken(t);
+                    codeGenerator.PrintToken(t);
                 }
-                codeGenerator.printTrailingComments(t);
+                codeGenerator.PrintTrailingComments(t);
                 codeGenerator.GenCode(" " + jp.getLhs() + "(");
                 if (jp.getParameterListTokens().Count != 0)
                 {
@@ -1866,9 +1866,9 @@ public class ParseEngine
                     for (Iterator it = jp.getParameterListTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
-                        codeGenerator.printToken(t);
+                        codeGenerator.PrintToken(t);
                     }
-                    codeGenerator.printTrailingComments(t);
+                    codeGenerator.PrintTrailingComments(t);
                 }
                 codeGenerator.GenCode(")");
                 if (isJavaDialect)
@@ -1895,7 +1895,7 @@ public class ParseEngine
                 if (jp.GetCodeTokens().Count != 0)
                 {
                     codeGenerator.PrintTokenSetup((Token)(jp.GetCodeTokens()[0])); cline--;
-                    codeGenerator.printTokenList(jp.GetCodeTokens());
+                    codeGenerator.PrintTokenList(jp.GetCodeTokens());
                 }
                 codeGenerator.GenCodeLine("");
                 if (Options.getDebugParser())
@@ -1913,7 +1913,7 @@ public class ParseEngine
             }
         }
 
-        codeGenerator.switchToIncludeFile();
+        codeGenerator.SwitchToIncludeFile();
         for (int phase2index = 0; phase2index < phase2list.Count; phase2index++)
         {
             buildPhase2Routine((Lookahead)(phase2list.get(phase2index)));
@@ -1940,7 +1940,7 @@ public class ParseEngine
         // Console.Error.WriteLine("**** END TABLE *********");
         // }
 
-        codeGenerator.switchToMainFile();
+        codeGenerator.SwitchToMainFile();
     }
 
     public void reInit()

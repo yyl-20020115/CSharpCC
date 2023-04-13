@@ -71,7 +71,7 @@ public class JJDoc : JJDocGlobals
             ccol = tok.beginColumn;
             while (tok != null)
             {
-                s += printTokenOnly(tok);
+                s += PrintTokenOnly(tok);
                 tok = tok.next;
             }
         }

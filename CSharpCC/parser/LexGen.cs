@@ -103,7 +103,7 @@ public class LexGen : CodeGenerator
         List<string> tn = new(toolNames);
         tn.Add(toolName);
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        genCodeLine("/* " + getIdString(tn, tokMgrClassName + getFileExtension(Options.getOutputLanguage())) + " */");
+        genCodeLine("/* " + getIdString(tn, tokMgrClassName + GetFileExtension(Options.getOutputLanguage())) + " */");
 
         int l = 0, kind;
         i = 1;
@@ -131,10 +131,10 @@ public class LexGen : CodeGenerator
                         ccol = ((Token)(cu_to_insertion_point_1.get(l))).beginColumn;
                         for (j = l; j < i; j++)
                         {
-                            printToken((Token)(cu_to_insertion_point_1[j]));
+                            PrintToken((Token)(cu_to_insertion_point_1[j]));
                         }
                         if (kind == SEMICOLON)
-                            printToken((Token)(cu_to_insertion_point_1[j]));
+                            PrintToken((Token)(cu_to_insertion_point_1[j]));
                         GenCodeLine("");
                         break;
                     }
@@ -155,12 +155,12 @@ public class LexGen : CodeGenerator
         if (Options.getSupportClassVisibilityPublic())
         {
             //genModifier("public ");
-            genModifier("public ");
+            GenModifier("public ");
         }
         //genCodeLine("class " + tokMgrClassName + " implements " +
         //cu_name + "Constants");
         //String superClass = Options.stringValue(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS);
-        genClassStart(null, tokMgrClassName, new String[] { }, new String[] { cu_name + "Constants" });
+        GenClassStart(null, tokMgrClassName, new String[] { }, new String[] { cu_name + "Constants" });
         //genCodeLine("{"); // }
 
         if (token_mgr_decls != null && token_mgr_decls.Count > 0)
@@ -180,12 +180,12 @@ public class LexGen : CodeGenerator
                     !commonTokenActionSeen)
                     commonTokenActionSeen = t.image == ("CommonTokenAction");
 
-                printToken(t);
+                PrintToken(t);
             }
 
             GenCodeLine("");
             if (commonTokenActionNeeded && !commonTokenActionSeen)
-                JavaCCErrors.warning("You have the COMMON_TOKEN_ACTION option set. " +
+                JavaCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
                     "But it appears you have not defined the method :\n" +
                     "      " + staticString + "void CommonTokenAction(Token t)\n" +
                 "in your TOKEN_MGR_DECLS. The generated token manager will not compile.");
@@ -193,7 +193,7 @@ public class LexGen : CodeGenerator
         }
         else if (Options.getCommonTokenAction())
         {
-            JavaCCErrors.warning("You have the COMMON_TOKEN_ACTION option set. " +
+            JavaCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
                 "But you have not defined the method :\n" +
                 "      " + staticString + "void CommonTokenAction(Token t)\n" +
             "in your TOKEN_MGR_DECLS. The generated token manager will not compile.");
@@ -353,7 +353,7 @@ public class LexGen : CodeGenerator
     {
         if (!Options.getBuildTokenManager() ||
             Options.getUserTokenManager() ||
-            JavaCCErrors.get_error_count() > 0)
+            JavaCCErrors.GetErrorCount() > 0)
             return;
 
         string codeGeneratorClass = Options.getTokenManagerCodeGenerator();
@@ -615,7 +615,7 @@ public class LexGen : CodeGenerator
             }
             catch (Exception ee)
             {
-                JavaCCErrors.semantic_error(
+                JavaCCErrors.SemanticError(
                     "Could not load the token manager code generator class: " +
                     codeGeneratorClass + "\nError: " + ee.Message);
                 return;
@@ -674,7 +674,7 @@ public class LexGen : CodeGenerator
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
         string fileName = Options.getOutputDirectory() + File.separator +
                           tokMgrClassName +
-                          getFileExtension(Options.getOutputLanguage());
+                          GetFileExtension(Options.getOutputLanguage());
 
         if (Options.getBuildParser())
         {
@@ -735,7 +735,7 @@ public class LexGen : CodeGenerator
 
             hasLoop = true;
             if (len == 0)
-                JavaCCErrors.warning(rexprs[initMatch[i]],
+                JavaCCErrors.Warning(rexprs[initMatch[i]],
                     "Regular expression" + ((rexprs[initMatch[i]].label == (""))
                         ? "" : (" for " + rexprs[initMatch[i]].label)) +
                         " can be matched by the empty string (\"\") in lexical state " +
@@ -743,7 +743,7 @@ public class LexGen : CodeGenerator
                 "empty string matches.");
             else
             {
-                JavaCCErrors.warning(rexprs[initMatch[i]],
+                JavaCCErrors.Warning(rexprs[initMatch[i]],
                     "Regular expression" + ((rexprs[initMatch[i]].label == (""))
                         ? "" : (" for " + rexprs[initMatch[i]].label)) +
                         " can be matched by the empty string (\"\") in lexical state " +
@@ -834,9 +834,9 @@ public class LexGen : CodeGenerator
 
         writeTemplate(DUMP_STATIC_VAR_DECLARATIONS_TEMPLATE_RESOURCE_URL,
           "charStreamName", charStreamName,
-          "protected", isJavaLanguage() ? "protected" : "",
-          "private", isJavaLanguage() ? "private" : "",
-          "final", isJavaLanguage() ? "final" : "",
+          "protected", IsJavaLanguage() ? "protected" : "",
+          "private", IsJavaLanguage() ? "private" : "",
+          "final", IsJavaLanguage() ? "final" : "",
           "lexStateNameLength", lexStateName.Length);
     }
 
@@ -1371,7 +1371,7 @@ public class LexGen : CodeGenerator
                 ccol = 1;
 
                 for (int j = 0; j < act.GetActionTokens().Count; j++)
-                    printToken((Token)act.GetActionTokens()[j]);
+                    PrintToken((Token)act.GetActionTokens()[j]);
                 GenCodeLine("");
 
                 break;
@@ -1446,7 +1446,7 @@ public class LexGen : CodeGenerator
                 ccol = 1;
 
                 for (int j = 0; j < act.GetActionTokens().Count; j++)
-                    printToken((Token)act.GetActionTokens()[j]);
+                    PrintToken((Token)act.GetActionTokens()[j]);
                 GenCodeLine("");
 
                 break;
@@ -1531,7 +1531,7 @@ public class LexGen : CodeGenerator
                 ccol = 1;
 
                 for (int j = 0; j < act.GetActionTokens().Count; j++)
-                    printToken((Token)act.GetActionTokens()[j]);
+                    PrintToken((Token)act.GetActionTokens()[j]);
                 GenCodeLine("");
 
                 break;

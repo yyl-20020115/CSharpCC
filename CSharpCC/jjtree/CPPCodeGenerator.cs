@@ -19,7 +19,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     {
         IO io = (IO)data;
         io.Println("/*@bgen(jjtree) " +
-            JavaCCGlobals.getIdString(JJTreeGlobals.ToolList,
+            JavaCCGlobals.GetIdString(JJTreeGlobals.ToolList,
             io.GetOutputFileName()) +
              (JJTreeOptions.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : " */"));
         io.Print((JJTreeOptions.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "/*") + "@egen*/");

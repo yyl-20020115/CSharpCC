@@ -197,7 +197,7 @@ public class NfaState
             !Options.getUserCharStream())
         {
             unicodeWarningGiven = true;
-            JavaCCErrors.warning(MainParser.lg.curRE, "Non-ASCII characters used in regular expression.\n" +
+            JavaCCErrors.Warning(MainParser.lg.curRE, "Non-ASCII characters used in regular expression.\n" +
                  "Please make sure you use the correct Reader when you create the parser, " +
                  "one that can handle your character set.");
         }
@@ -241,7 +241,7 @@ public class NfaState
             !Options.getUserCharStream())
         {
             unicodeWarningGiven = true;
-            JavaCCErrors.warning(MainParser.lg.curRE, "Non-ASCII characters used in regular expression.\n" +
+            JavaCCErrors.Warning(MainParser.lg.curRE, "Non-ASCII characters used in regular expression.\n" +
                  "Please make sure you use the correct Reader when you create the parser, " +
                  "one that can handle your character set.");
         }
@@ -365,7 +365,7 @@ public class NfaState
         // Warning : This function does not merge epsilon moves
         if (asciiMoves == other.asciiMoves)
         {
-            JavaCCErrors.semantic_error("Bug in JavaCC : Please send " +
+            JavaCCErrors.SemanticError("Bug in JavaCC : Please send " +
                       "a report along with the input that caused this. Thank you.");
             throw new Error();
         }
@@ -968,13 +968,13 @@ public class NfaState
 
                     if (!AllBitsSet(tmp))
                     {
-                        if (codeGenerator.isJavaLanguage())
+                        if (CodeGenerator.IsJavaLanguage())
                         {
                             codeGenerator.GenCodeLine("static final " + Options.getLongType() + "[] jjbitVec" + lohiByteCnt + " = " + tmp);
                         }
                         else
                         {
-                            codeGenerator.switchToStaticsFile();
+                            codeGenerator.SwitchToStaticsFile();
                             codeGenerator.GenCodeLine("static const " + Options.getLongType() + " jjbitVec" + lohiByteCnt + "[] = " + tmp);
                         }
                     }
@@ -992,15 +992,15 @@ public class NfaState
                     allBitVectors.Add(tmp);
 
                     if (!AllBitsSet(tmp))
-                        if (codeGenerator.isJavaLanguage())
+                        if (CodeGenerator.IsJavaLanguage())
                         {
                             codeGenerator.GenCodeLine("static final " + Options.getLongType() + "[] jjbitVec" + lohiByteCnt + " = " + tmp);
                         }
                         else
                         {
-                            codeGenerator.switchToStaticsFile();
+                            codeGenerator.SwitchToStaticsFile();
                             codeGenerator.GenCodeLine("static const " + Options.getLongType() + " jjbitVec" + lohiByteCnt + "[] = " + tmp);
-                            codeGenerator.switchToMainFile();
+                            codeGenerator.SwitchToMainFile();
                         }
                     lohiByteTab.Add(tmp, ind = (lohiByteCnt++));
                 }
@@ -1044,13 +1044,13 @@ public class NfaState
                     allBitVectors.Add(tmp);
 
                     if (!AllBitsSet(tmp))
-                        if (codeGenerator.isJavaLanguage())
+                        if (CodeGenerator.IsJavaLanguage())
                         {
                             codeGenerator.GenCodeLine("static final " + Options.getLongType() + "[] jjbitVec" + lohiByteCnt + " = " + tmp);
                         }
                         else
                         {
-                            codeGenerator.switchToStaticsFile();
+                            codeGenerator.SwitchToStaticsFile();
                             codeGenerator.GenCodeLine("static const " + Options.getLongType() + " jjbitVec" + lohiByteCnt + "[] = " + tmp);
                         }
                     lohiByteTab.Add(tmp, ind = (lohiByteCnt++));
@@ -1271,13 +1271,13 @@ public class NfaState
     {
         int cnt = 0;
 
-        if (codeGenerator.isJavaLanguage())
+        if (CodeGenerator.IsJavaLanguage())
         {
             codeGenerator.GenCode("static final int[] jjnextStates = {");
         }
         else
         {
-            codeGenerator.switchToStaticsFile();
+            codeGenerator.SwitchToStaticsFile();
             codeGenerator.GenCode("static const int jjnextStates[] = {");
         }
         if (orderedStateSet.Count > 0)
@@ -1297,9 +1297,9 @@ public class NfaState
             codeGenerator.GenCode("0");
 
         codeGenerator.GenCodeLine("\n};");
-        if (!codeGenerator.isJavaLanguage())
+        if (!CodeGenerator.IsJavaLanguage())
         {
-            codeGenerator.switchToMainFile();
+            codeGenerator.SwitchToMainFile();
         }
     }
 
@@ -1668,7 +1668,7 @@ public class NfaState
         if (byteNum == 0)
         {
             codeGenerator.GenCodeLine("         " + Options.getLongType() + " l = 1L << curChar;");
-            if (!codeGenerator.isJavaLanguage())
+            if (!CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("         (void)l;");
             }
@@ -1676,7 +1676,7 @@ public class NfaState
         else if (byteNum == 1)
         {
             codeGenerator.GenCodeLine("         " + Options.getLongType() + " l = 1L << (curChar & 077);");
-            if (!codeGenerator.isJavaLanguage())
+            if (!CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("         (void)l;");
             }
@@ -2599,14 +2599,14 @@ public class NfaState
     void DumpNonAsciiMoveMethod(CodeGenerator codeGenerator)
     {
         int j;
-        if (codeGenerator.isJavaLanguage())
+        if (CodeGenerator.IsJavaLanguage())
         {
             codeGenerator.GenCodeLine("private static final " + Options.getBooleanType() + " jjCanMove_" + nonAsciiMethod +
                            "(int hiByte, int i1, int i2, " + Options.getLongType() + " l1, " + Options.getLongType() + " l2)");
         }
         else
         {
-            codeGenerator.generateMethodDefHeader("" + Options.getBooleanType() + "", MainParser.lg.tokMgrClassName, "jjCanMove_" + nonAsciiMethod +
+            codeGenerator.GenerateMethodDefHeader("" + Options.getBooleanType() + "", MainParser.lg.tokMgrClassName, "jjCanMove_" + nonAsciiMethod +
                            "(int hiByte, int i1, int i2, " + Options.getLongType() + " l1, " + Options.getLongType() + " l2)");
         }
         codeGenerator.GenCodeLine("{");
@@ -2731,7 +2731,7 @@ public class NfaState
     //private static bool boilerPlateDumped = false;
     static void PrintBoilerPlateCPP(CodeGenerator codeGenerator)
     {
-        codeGenerator.switchToIncludeFile();
+        codeGenerator.SwitchToIncludeFile();
         codeGenerator.GenCodeLine("#define jjCheckNAdd(state)\\");
         codeGenerator.GenCodeLine("{\\");
         codeGenerator.GenCodeLine("   if (jjrounds[state] != jjround)\\");
@@ -2775,7 +2775,7 @@ public class NfaState
             codeGenerator.GenCodeLine("}");
             codeGenerator.GenCodeLine("");
         }
-        codeGenerator.switchToMainFile();
+        codeGenerator.SwitchToMainFile();
     }
 
     private static void FindStatesWithNoBreak()
@@ -2930,7 +2930,7 @@ public class NfaState
 
         kinds[MainParser.lg.lexStateIndex] = kindsForStates;
 
-        if (codeGenerator.isJavaLanguage())
+        if (CodeGenerator.IsJavaLanguage())
         {
             codeGenerator.genCodeLine((Options.getStatic() ? "static " : "") + "private int " +
                         "jjMoveNfa" + MainParser.lg.lexStateSuffix + "(int startState, int curPos)");
@@ -2952,7 +2952,7 @@ public class NfaState
             codeGenerator.GenCodeLine("   int strKind = jjmatchedKind;");
             codeGenerator.GenCodeLine("   int strPos = jjmatchedPos;");
             codeGenerator.GenCodeLine("   int seenUpto;");
-            if (codeGenerator.isJavaLanguage())
+            if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("   input_stream.backup(seenUpto = curPos + 1);");
                 codeGenerator.GenCodeLine("   try { curChar = input_stream.readChar(); }");
@@ -2974,7 +2974,7 @@ public class NfaState
 
         if (Options.getDebugTokenManager())
         {
-            if (codeGenerator.isJavaLanguage())
+            if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("      debugStream.println(\"   Starting NFA to match one of : \" + " +
                         "jjKindsForStateVector(curLexState, jjstateSet, 0, 1));");
@@ -2987,7 +2987,7 @@ public class NfaState
 
         if (Options.getDebugTokenManager())
         {
-            if (codeGenerator.isJavaLanguage())
+            if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("      debugStream.println(" + (LexGen.maxLexStates > 1 ?
                         "\"<\" + lexStateNames[curLexState] + \">\" + " :
@@ -3040,7 +3040,7 @@ public class NfaState
 
         if (Options.getDebugTokenManager())
         {
-            if (codeGenerator.isJavaLanguage())
+            if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.genCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" +
                       int.toHexString(int.MaxValue) + ")");
@@ -3056,7 +3056,7 @@ public class NfaState
             }
         }
 
-        if (codeGenerator.isJavaLanguage())
+        if (CodeGenerator.IsJavaLanguage())
         {
             codeGenerator.GenCodeLine("      if ((i = jjnewStateCnt) == (startsAt = " +
                        generatedStates + " - (jjnewStateCnt = startsAt)))");
@@ -3073,7 +3073,7 @@ public class NfaState
 
         if (Options.getDebugTokenManager())
         {
-            if (codeGenerator.isJavaLanguage())
+            if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("      debugStream.println(\"   Possible kinds of longer matches : \" + " +
                        "jjKindsForStateVector(curLexState, jjstateSet, startsAt, i));");
@@ -3084,7 +3084,7 @@ public class NfaState
             }
         }
 
-        if (codeGenerator.isJavaLanguage())
+        if (CodeGenerator.IsJavaLanguage())
         {
             codeGenerator.GenCodeLine("      try { curChar = input_stream.readChar(); }");
         }
@@ -3103,14 +3103,14 @@ public class NfaState
 
         if (MainParser.lg.mixed[MainParser.lg.lexStateIndex])
         {
-            if (codeGenerator.isJavaLanguage())
+            if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("      catch(java.io.IOException e) { break; }");
             }
         }
         else
         {
-            if (codeGenerator.isJavaLanguage())
+            if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("      catch(java.io.IOException e) { return curPos; }");
             }
@@ -3118,7 +3118,7 @@ public class NfaState
 
         if (Options.getDebugTokenManager())
         {
-            if (codeGenerator.isJavaLanguage())
+            if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("      debugStream.println(" + (LexGen.maxLexStates > 1 ?
                         "\"<\" + lexStateNames[curLexState] + \">\" + " :
@@ -3142,7 +3142,7 @@ public class NfaState
             codeGenerator.GenCodeLine("   if (jjmatchedPos > strPos)");
             codeGenerator.GenCodeLine("      return curPos;");
             codeGenerator.GenCodeLine("");
-            if (codeGenerator.isJavaLanguage())
+            if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("   int toRet = Math.max(curPos, seenUpto);");
             }
@@ -3152,7 +3152,7 @@ public class NfaState
             }
             codeGenerator.GenCodeLine("");
             codeGenerator.GenCodeLine("   if (curPos < toRet)");
-            if (codeGenerator.isJavaLanguage())
+            if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("      for (i = toRet - Math.min(curPos, seenUpto); i-- > 0; )");
                 codeGenerator.GenCodeLine("         try { curChar = input_stream.readChar(); }");
@@ -3190,7 +3190,7 @@ public class NfaState
             return;
         }
 
-        codeGenerator.switchToStaticsFile();
+        codeGenerator.SwitchToStaticsFile();
         for (int i = 0; i < MainParser.lg.maxLexStates; i++)
         {
             if (statesForState[i] == null)
@@ -3244,7 +3244,7 @@ public class NfaState
         }
 
         codeGenerator.GenCodeLine("\n};");
-        codeGenerator.switchToMainFile();
+        codeGenerator.SwitchToMainFile();
     }
 
 
@@ -3299,7 +3299,7 @@ public class NfaState
 
     public static void DumpStatesForKind(CodeGenerator codeGenerator)
     {
-        if (codeGenerator.isJavaLanguage())
+        if (CodeGenerator.IsJavaLanguage())
         {
             DumpStatesForState(codeGenerator);
         }
@@ -3310,13 +3310,13 @@ public class NfaState
         bool moreThanOne = false;
         int cnt = 0;
 
-        if (codeGenerator.isJavaLanguage())
+        if (CodeGenerator.IsJavaLanguage())
         {
             codeGenerator.GenCode("protected static final int[][] kindForState = ");
         }
         else
         {
-            codeGenerator.switchToStaticsFile();
+            codeGenerator.SwitchToStaticsFile();
             codeGenerator.genCode("static const int kindForState[" + MainParser.lg.stateSetSize + "][" + MainParser.lg.stateSetSize + "] = ");
         }
 
@@ -3356,7 +3356,7 @@ public class NfaState
             }
         }
         codeGenerator.GenCodeLine("\n};");
-        codeGenerator.switchToMainFile();
+        codeGenerator.SwitchToMainFile();
     }
 
     public static void reInit()

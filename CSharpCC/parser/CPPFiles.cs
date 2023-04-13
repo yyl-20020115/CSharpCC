@@ -78,7 +78,7 @@ public partial class CPPFiles : JavaCCGlobals
     static Regex versionRegex = MyRegex();
     static double GetVersion(string fileName)
     {
-        string commentHeader = "/* " + getIdString(toolName, fileName) + " Version ";
+        string commentHeader = "/* " + GetIdString(toolName, fileName) + " Version ";
         string file = Path.Combine(Options.getOutputDirectory(), ReplaceBackslash(fileName));
 
         if (!File.Exists(file))
@@ -149,7 +149,7 @@ public partial class CPPFiles : JavaCCGlobals
         catch (IOException e)
         {
             Console.Error.WriteLine("Failed to create file: " + file + e);
-            JavaCCErrors.semantic_error("Could not open file: " + file + " for writing.");
+            JavaCCErrors.SemanticError("Could not open file: " + file + " for writing.");
             throw new Error();
         }
     }
@@ -200,7 +200,7 @@ public partial class CPPFiles : JavaCCGlobals
         GenFile("ErrorHandler.h", ParseExceptionVersion, parameters);
     }
 
-    public static void ReInit()
+    public static new void ReInit()
     {
     }
 

@@ -116,7 +116,7 @@ public class Expansion
 
     public virtual StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        var value = DumpPrefix(indent).Append((this.GetHashCode())).Append(" ").Append(GetSimpleName());
+        var value = DumpPrefix(indent).Append((this.GetHashCode())).Append(' ').Append(GetSimpleName());
         return value;
     }
 

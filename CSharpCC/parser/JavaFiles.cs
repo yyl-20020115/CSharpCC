@@ -182,7 +182,7 @@ public class JavaFiles:JavaCCGlobals
    */
   public static double getVersion(string fileName)
   {
-    string commentHeader = "/* " + getIdString(toolName, fileName) + " Version ";
+    string commentHeader = "/* " + GetIdString(toolName, fileName) + " Version ";
     File file = new File(Options.getOutputDirectory(), replaceBackslash(fileName));
 
     if (!file.exists()) {
@@ -264,7 +264,7 @@ public class JavaFiles:JavaCCGlobals
             cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
             ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
+              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -284,7 +284,7 @@ public class JavaFiles:JavaCCGlobals
       ostr.Close();
     } catch (IOException e) {
       Console.Error.WriteLine("Failed to create JavaCharStream " + e);
-      JavaCCErrors.semantic_error("Could not open file JavaCharStream.java for writing.");
+      JavaCCErrors.SemanticError("Could not open file JavaCharStream.java for writing.");
       throw new Error();
     }
   }
@@ -311,7 +311,7 @@ public class JavaFiles:JavaCCGlobals
             cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
             ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
+              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -331,7 +331,7 @@ public class JavaFiles:JavaCCGlobals
       ostr.Close();
     } catch (IOException e) {
       Console.Error.WriteLine("Failed to create SimpleCharStream " + e);
-      JavaCCErrors.semantic_error("Could not open file SimpleCharStream.java for writing.");
+      JavaCCErrors.SemanticError("Could not open file SimpleCharStream.java for writing.");
       throw new Error();
     }
   }
@@ -358,7 +358,7 @@ public class JavaFiles:JavaCCGlobals
             cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
             ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
+              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -375,7 +375,7 @@ public class JavaFiles:JavaCCGlobals
       ostr.Close();
     } catch (IOException e) {
       Console.Error.WriteLine("Failed to create CharStream " + e);
-      JavaCCErrors.semantic_error("Could not open file CharStream.java for writing.");
+      JavaCCErrors.SemanticError("Could not open file CharStream.java for writing.");
       throw new Error();
     }
   }
@@ -410,7 +410,7 @@ public class JavaFiles:JavaCCGlobals
 	        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
 	        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
 	        for (int j = 0; j <= i; j++) {
-	          printToken((Token)(cu_to_insertion_point_1[j]), ostr);
+	          PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
 	        }
 	        ostr.WriteLine("");
 	        ostr.WriteLine("");
@@ -426,7 +426,7 @@ public class JavaFiles:JavaCCGlobals
 	  ostr.Close();
 	} catch (IOException e) {
 	  Console.Error.WriteLine("Failed to create " + fileName + " "+ e);
-	  JavaCCErrors.semantic_error("Could not open file "+fileName+" for writing.");
+	  JavaCCErrors.SemanticError("Could not open file "+fileName+" for writing.");
 	  throw new Error();
 	}
 }
@@ -452,7 +452,7 @@ public class JavaFiles:JavaCCGlobals
             cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
             ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
+              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -469,7 +469,7 @@ public class JavaFiles:JavaCCGlobals
       ostr.Close();
     } catch (IOException e) {
       Console.Error.WriteLine("Failed to create ParseException " + e);
-      JavaCCErrors.semantic_error("Could not open file ParseException.java for writing.");
+      JavaCCErrors.SemanticError("Could not open file ParseException.java for writing.");
       throw new Error();
     }
   }
@@ -501,7 +501,7 @@ public class JavaFiles:JavaCCGlobals
             cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
             ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
+              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -521,7 +521,7 @@ public class JavaFiles:JavaCCGlobals
 
     } catch (IOException e) {
       Console.Error.WriteLine("Failed to create "+filename+" " + e);
-      JavaCCErrors.semantic_error("Could not open file "+filename+" for writing.");
+      JavaCCErrors.SemanticError("Could not open file "+filename+" for writing.");
       throw new Error();
     }
   }
@@ -548,7 +548,7 @@ public class JavaFiles:JavaCCGlobals
             cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
             ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
+              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -565,7 +565,7 @@ public class JavaFiles:JavaCCGlobals
       ostr.Close();
     } catch (IOException e) {
       Console.Error.WriteLine("Failed to create Token " + e);
-      JavaCCErrors.semantic_error("Could not open file Token.java for writing.");
+      JavaCCErrors.SemanticError("Could not open file Token.java for writing.");
       throw new Error();
     }
   }
@@ -592,7 +592,7 @@ public class JavaFiles:JavaCCGlobals
             cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
             ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
             for (int j = 0; j <= i; j++) {
-              printToken((Token)(cu_to_insertion_point_1[j]), ostr);
+              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
             }
             ostr.WriteLine("");
             ostr.WriteLine("");
@@ -609,7 +609,7 @@ public class JavaFiles:JavaCCGlobals
       ostr.Close();
     } catch (IOException e) {
       Console.Error.WriteLine("Failed to create TokenManager " + e);
-      JavaCCErrors.semantic_error("Could not open file TokenManager.java for writing.");
+      JavaCCErrors.SemanticError("Could not open file TokenManager.java for writing.");
       throw new Error();
     }
   }

@@ -149,10 +149,10 @@ public class RChoice:RegularExpression {
             MainParser.lg.lexStates[curRE.ordinal] == MainParser.lg.lexStates[ordinal])
         {
            if (label != null)
-              JavaCCErrors.warning(this, "Regular Expression choice : " +
+              JavaCCErrors.Warning(this, "Regular Expression choice : " +
                  curRE.label + " can never be matched as : " + label);
            else
-              JavaCCErrors.warning(this, "Regular Expression choice : " +
+              JavaCCErrors.Warning(this, "Regular Expression choice : " +
                  curRE.label + " can never be matched as token of kind : " +
                                                                       ordinal);
         }

@@ -698,7 +698,7 @@ public class JavaCCParser : JavaCCParserInternals
         regexpr_kind(p);
         if (p.kind != TokenProduction.TOKEN && Options.getUserTokenManager())
         {
-            JavaCCErrors.warning(getToken(0), "Regular expression is being treated as if it were a TOKEN since option USER_TOKEN_MANAGER has been set to true.");
+            JavaCCErrors.Warning(getToken(0), "Regular expression is being treated as if it were a TOKEN since option USER_TOKEN_MANAGER has been set to true.");
         }
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
         {
@@ -709,7 +709,7 @@ public class JavaCCParser : JavaCCParserInternals
                 p.ignoreCase = true;
                 if (Options.getUserTokenManager())
                 {
-                    JavaCCErrors.warning(t, "Ignoring \u005c\"IGNORE_CASE\u005c\" specification since option USER_TOKEN_MANAGER has been set to true.");
+                    JavaCCErrors.Warning(t, "Ignoring \u005c\"IGNORE_CASE\u005c\" specification since option USER_TOKEN_MANAGER has been set to true.");
                 }
                 break;
             default:
@@ -806,11 +806,11 @@ public class JavaCCParser : JavaCCParserInternals
                 Block(act.GetActionTokens());
                 if (Options.getUserTokenManager())
                 {
-                    JavaCCErrors.warning(t, "Ignoring action in regular expression specification since option USER_TOKEN_MANAGER has been set to true.");
+                    JavaCCErrors.Warning(t, "Ignoring action in regular expression specification since option USER_TOKEN_MANAGER has been set to true.");
                 }
                 if (res.rexp.private_rexp)
                 {
-                    JavaCCErrors.parse_error(t, "Actions are not permitted on private (#) regular expressions.");
+                    JavaCCErrors.ParseError(t, "Actions are not permitted on private (#) regular expressions.");
                 }
                 break;
             default:
@@ -825,7 +825,7 @@ public class JavaCCParser : JavaCCParserInternals
                 res.nextState = t.image;
                 if (res.rexp.private_rexp)
                 {
-                    JavaCCErrors.parse_error(t, "Lexical state changes are not permitted after private (#) regular expressions.");
+                    JavaCCErrors.ParseError(t, "Lexical state changes are not permitted after private (#) regular expressions.");
                 }
                 break;
             default:
@@ -899,7 +899,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_consume_token(RPAREN);
                 if (inLocalLA != 0 && la.getAmount() != 0)
                 {
-                    JavaCCErrors.warning(t, "Only semantic lookahead specifications within other lookahead specifications is considered.  Syntactic lookahead is ignored.");
+                    JavaCCErrors.Warning(t, "Only semantic lookahead specifications within other lookahead specifications is considered.  Syntactic lookahead is ignored.");
                 }
                 break;
             default:
@@ -1101,11 +1101,11 @@ public class JavaCCParser : JavaCCParserInternals
                 {
                     if (la.getActionTokens().Count != 0)
                     {
-                        JavaCCErrors.warning(t, "Encountered LOOKAHEAD(...) at a non-choice location.  Only semantic lookahead will be considered here.");
+                        JavaCCErrors.Warning(t, "Encountered LOOKAHEAD(...) at a non-choice location.  Only semantic lookahead will be considered here.");
                     }
                     else
                     {
-                        JavaCCErrors.warning(t, "Encountered LOOKAHEAD(...) at a non-choice location.  This will be ignored.");
+                        JavaCCErrors.Warning(t, "Encountered LOOKAHEAD(...) at a non-choice location.  This will be ignored.");
                     }
                 }
                 c.Member = ch;
@@ -1120,7 +1120,7 @@ public class JavaCCParser : JavaCCParserInternals
                 inAction = false;
                 if (inLocalLA != 0)
                 {
-                    JavaCCErrors.warning(t, "Action within lookahead specification will be ignored.");
+                    JavaCCErrors.Warning(t, "Action within lookahead specification will be ignored.");
                 }
                 c.Member = act;
                 break;

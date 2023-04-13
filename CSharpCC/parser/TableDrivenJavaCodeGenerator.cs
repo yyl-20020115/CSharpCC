@@ -23,7 +23,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         options.Add("parserName", tokenizerData.parserName);
         options.Add("maxLongs", tokenizerData.allMatches.Count / 64 + 1);
         options.Add("parserName", tokenizerData.parserName);
-        options.Add("charStreamName", CodeGenerator.getCharStreamName());
+        options.Add("charStreamName", CodeGenerator.GetCharStreamName());
         options.Add("defaultLexState", tokenizerData.defaultLexState);
         options.Add("decls", tokenizerData.decls);
         options.Add("superClass", (superClass == null || superClass == (""))
@@ -32,7 +32,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         options.Add("generatedStates", tokenizerData.nfa.Count);
         try
         {
-            codeGenerator.writeTemplate(TokenManagerTemplate, options);
+            codeGenerator.WriteTemplate(TokenManagerTemplate, options);
             dumpDfaTables(codeGenerator, tokenizerData);
             dumpNfaTables(codeGenerator, tokenizerData);
             dumpMatchInfo(codeGenerator, tokenizerData);

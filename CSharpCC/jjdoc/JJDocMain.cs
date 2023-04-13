@@ -177,38 +177,38 @@ public class JJDocMain : JJDocGlobals
             parser.javacc_input();
             JJDoc.Start();
 
-            if (JavaCCErrors.get_error_count() == 0)
+            if (JavaCCErrors.GetErrorCount() == 0)
             {
-                if (JavaCCErrors.get_warning_count() == 0)
+                if (JavaCCErrors.GetWarningCount() == 0)
                 {
                     Info("Grammar documentation generated successfully in " + JJDocGlobals.output_file);
                 }
                 else
                 {
                     Info("Grammar documentation generated with 0 errors and "
-                                       + JavaCCErrors.get_warning_count() + " warnings.");
+                                       + JavaCCErrors.GetWarningCount() + " warnings.");
                 }
                 return 0;
             }
             else
             {
-                Error("Detected " + JavaCCErrors.get_error_count() + " errors and "
-                                   + JavaCCErrors.get_warning_count() + " warnings.");
-                return (JavaCCErrors.get_error_count() == 0) ? 0 : 1;
+                Error("Detected " + JavaCCErrors.GetErrorCount() + " errors and "
+                                   + JavaCCErrors.GetWarningCount() + " warnings.");
+                return (JavaCCErrors.GetErrorCount() == 0) ? 0 : 1;
             }
         }
         catch (org.javacc.parser.MetaParseException e)
         {
             Error(e.ToString());
-            Error("Detected " + JavaCCErrors.get_error_count() + " errors and "
-                               + JavaCCErrors.get_warning_count() + " warnings.");
+            Error("Detected " + JavaCCErrors.GetErrorCount() + " errors and "
+                               + JavaCCErrors.GetWarningCount() + " warnings.");
             return 1;
         }
         catch (org.javacc.parser.ParseException e)
         {
             Error(e.ToString());
-            Error("Detected " + (JavaCCErrors.get_error_count() + 1) + " errors and "
-                               + JavaCCErrors.get_warning_count() + " warnings.");
+            Error("Detected " + (JavaCCErrors.GetErrorCount() + 1) + " errors and "
+                               + JavaCCErrors.GetWarningCount() + " warnings.");
             return 1;
         }
     }

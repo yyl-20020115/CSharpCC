@@ -164,7 +164,7 @@ public class JJTree
             }
             Print("Reading from file " + io.GetInputFileName() + " . . .");
 
-            JJTreeGlobals.ToolList = JavaCCGlobals.getToolNames(fn);
+            JJTreeGlobals.ToolList = JavaCCGlobals.GetToolNames(fn);
             JJTreeGlobals.ToolList.Add("JJTree");
 
             try

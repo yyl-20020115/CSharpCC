@@ -54,7 +54,7 @@ public class CharacterRange
     public CharacterRange(char l, char r)
     {
         if (l > r)
-            JavaCCErrors.semantic_error(this, "Invalid range : \"" + (int)l + "\" - \""
+            JavaCCErrors.SemanticError(this, "Invalid range : \"" + (int)l + "\" - \""
                   + (int)r + "\". First character should be less than or equal to the second one in a range.");
 
         SetLeft(l);

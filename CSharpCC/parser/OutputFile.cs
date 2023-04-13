@@ -176,7 +176,7 @@ public class OutputFile
      */
     private void checkVersion(string file, string versionId)
     {
-        string firstLine = "/* " + JavaCCGlobals.getIdString(toolName, file) + " Version ";
+        string firstLine = "/* " + JavaCCGlobals.GetIdString(toolName, file) + " Version ";
 
         try
         {
@@ -190,10 +190,10 @@ public class OutputFile
                     string version = line.replaceFirst(".*Version ", "").replaceAll(" \\*/", "");
                     if (!version == (versionId))
                     {
-                        JavaCCErrors.warning(file
+                        JavaCCErrors.Warning(file
                             + ": File is obsolete.  Please rename or delete this file so"
                             + " that a new one can be generated for you.");
-                        JavaCCErrors.warning(file
+                        JavaCCErrors.Warning(file
                             + " file   version: " + version
                             + " javacc version: " + versionId);
                     }
@@ -205,7 +205,7 @@ public class OutputFile
         catch (FileNotFoundException e1)
         {
             // This should never happen
-            JavaCCErrors.semantic_error("Could not open file " + file + " for writing.");
+            JavaCCErrors.SemanticError("Could not open file " + file + " for writing.");
             throw new Error();
         }
         catch (IOException e2)
@@ -235,7 +235,7 @@ public class OutputFile
                     if (line.IndexOf(currentOptions) == -1)
                     {
                         JavaCCErrors
-                        .warning(file
+                        .Warning(file
                             + ": Generated using incompatible options. Please rename or delete this file so"
                             + " that a new one can be generated for you.");
                     }
@@ -246,7 +246,7 @@ public class OutputFile
         catch (FileNotFoundException e1)
         {
             // This should never happen
-            JavaCCErrors.semantic_error("Could not open file " + file
+            JavaCCErrors.SemanticError("Could not open file " + file
                 + " for writing.");
             throw new Error();
         }
@@ -285,7 +285,7 @@ public class OutputFile
             // Write the headers....
             string version = compatibleVersion == null ? Version.VersionNumber : compatibleVersion;
             pw.WriteLine("/* "
-                + JavaCCGlobals.getIdString(toolName, file)
+                + JavaCCGlobals.GetIdString(toolName, file)
                 + " Version " + version + " */");
             if (options != null)
             {

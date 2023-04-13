@@ -128,11 +128,11 @@ public class LookaheadCalc:JavaCCGlobals {
         for (int i = first; i < ch.GetChoices().Count-1; i++) {
           Expansion exp = (Expansion)ch.GetChoices()[i];
           if (Semanticize.emptyExpansionExists(exp)) {
-            JavaCCErrors.warning(exp, "This choice can expand to the empty token sequence " +
+            JavaCCErrors.Warning(exp, "This choice can expand to the empty token sequence " +
                     "and will therefore always be taken in favor of the choices appearing later.");
             break;
           } else if (javaCodeCheck(dbl[i])) {
-            JavaCCErrors.warning(exp, "JAVACODE non-terminal will force this choice to be taken " +
+            JavaCCErrors.Warning(exp, "JAVACODE non-terminal will force this choice to be taken " +
                     "in favor of the choices appearing later.");
             break;
           }
@@ -159,7 +159,7 @@ public class LookaheadCalc:JavaCCGlobals {
         continue;
       }
       if (minLA[i] > Options.getChoiceAmbiguityCheck()) {
-        JavaCCErrors.warning("Choice conflict involving two expansions at");
+        JavaCCErrors.Warning("Choice conflict involving two expansions at");
         Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).GetLine());
         Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).GetColumn());
         Console.Error.Write(" and line " + ((Expansion)ch.GetChoices().get(other[i])).GetLine());
@@ -168,7 +168,7 @@ public class LookaheadCalc:JavaCCGlobals {
         Console.Error.WriteLine("         A common prefix is: " + image(overlapInfo[i]));
         Console.Error.WriteLine("         Consider using a lookahead of " + minLA[i] + " or more for earlier expansion.");
       } else if (minLA[i] > 1) {
-        JavaCCErrors.warning("Choice conflict involving two expansions at");
+        JavaCCErrors.Warning("Choice conflict involving two expansions at");
         Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).GetLine());
         Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).GetColumn());
         Console.Error.Write(" and line " + ((Expansion)ch.GetChoices().get(other[i])).GetLine());
@@ -237,7 +237,7 @@ public class LookaheadCalc:JavaCCGlobals {
       follow = LookaheadWalk.sizeLimitedMatches;
       if (la == 1) {
         if (javaCodeCheck(first)) {
-          JavaCCErrors.warning(nested, "JAVACODE non-terminal within " + image(exp) +
+          JavaCCErrors.Warning(nested, "JAVACODE non-terminal within " + image(exp) +
                   " construct will force this construct to be entered in favor of " +
                   "expansions occurring after construct.");
         }
@@ -248,13 +248,13 @@ public class LookaheadCalc:JavaCCGlobals {
       m1 = m;
     }
     if (la > Options.getOtherAmbiguityCheck()) {
-      JavaCCErrors.warning("Choice conflict in " + image(exp) + " construct " +
+      JavaCCErrors.Warning("Choice conflict in " + image(exp) + " construct " +
               "at line " + exp.GetLine() + ", column " + exp.GetColumn() + ".");
       Console.Error.WriteLine("         Expansion nested within construct and expansion following construct");
       Console.Error.WriteLine("         have common prefixes, one of which is: " + image(m1));
       Console.Error.WriteLine("         Consider using a lookahead of " + la + " or more for nested expansion.");
     } else if (la > 1) {
-      JavaCCErrors.warning("Choice conflict in " + image(exp) + " construct " +
+      JavaCCErrors.Warning("Choice conflict in " + image(exp) + " construct " +
               "at line " + exp.GetLine() + ", column " + exp.GetColumn() + ".");
       Console.Error.WriteLine("         Expansion nested within construct and expansion following construct");
       Console.Error.WriteLine("         have common prefixes, one of which is: " + image(m1));

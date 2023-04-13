@@ -98,15 +98,15 @@ public class JJTreeOptions : Options
         {
             if (GetVisitorDataType().Length > 0)
             {
-                JavaCCErrors.warning("VISITOR_DATA_TYPE option will be ignored since VISITOR is false");
+                JavaCCErrors.Warning("VISITOR_DATA_TYPE option will be ignored since VISITOR is false");
             }
             if (GetVisitorReturnType().Length > 0 && GetVisitorReturnType() != ("Object"))
             {
-                JavaCCErrors.warning("VISITOR_RETURN_TYPE option will be ignored since VISITOR is false");
+                JavaCCErrors.Warning("VISITOR_RETURN_TYPE option will be ignored since VISITOR is false");
             }
             if (GetVisitorException().Length > 0)
             {
-                JavaCCErrors.warning("VISITOR_EXCEPTION option will be ignored since VISITOR is false");
+                JavaCCErrors.Warning("VISITOR_EXCEPTION option will be ignored since VISITOR is false");
             }
         }
     }

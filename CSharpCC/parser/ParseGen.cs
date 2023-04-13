@@ -42,7 +42,7 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 
 		Token t = null;
 
-		if (JavaCCErrors.get_error_count() != 0) {
+		if (JavaCCErrors.GetErrorCount() != 0) {
 			throw new MetaParseException();
 		}
 
@@ -51,7 +51,7 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 			tn.Add(toolName);
 
 			// This is the first line generated -- the the comment line at the top of the generated parser
-			genCodeLine("/* " + getIdString(tn, cu_name + ".java") + " */");
+			genCodeLine("/* " + GetIdString(tn, cu_name + ".java") + " */");
 
 			bool implementsExists = false;
 			//bool extendsExists = false;
@@ -68,7 +68,7 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 						implementsExists = false;
 					}
 
-					printToken(t);
+					PrintToken(t);
 				}
 			}
 
@@ -79,7 +79,7 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 			}
 			genCode(cu_name + "Constants ");
 			if (cu_to_insertion_point_2.Count != 0) {
-				printTokenSetup((cu_to_insertion_point_2[0]));
+                JavaCCGlobals.PrintTokenSetup((cu_to_insertion_point_2[0]));
 				for (Iterator<Token> it = cu_to_insertion_point_2.iterator(); it.hasNext();) {
 					printToken(it.next());
 				}
@@ -945,18 +945,18 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 			}
 
 			if (cu_from_insertion_point_2.Count != 0) {
-				printTokenSetup((cu_from_insertion_point_2[0]));
+                JavaCCGlobals.PrintTokenSetup((cu_from_insertion_point_2[0]));
 				this.ccol = 1;
 				for (Iterator<?> it = cu_from_insertion_point_2.iterator(); it.hasNext();) {
 					t = (Token) it.next();
-					printToken(t);
+					PrintToken(t);
 				}
-				printTrailingComments(t);
+				PrintTrailingComments(t);
 			}
 			GenCodeLine("");
 
 			saveOutput(Options.getOutputDirectory() + File.separator + cu_name
-					+ getFileExtension(Options.getOutputLanguage()));
+					+ GetFileExtension(Options.getOutputLanguage()));
 
 		} // matches "if (Options.getBuildParser())"
 

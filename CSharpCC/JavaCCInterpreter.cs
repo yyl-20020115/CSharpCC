@@ -59,24 +59,24 @@ public class JavaCCInterpreter
             lg.GenerateDataOnly = true;
             lg.start();
             TokenizerData td = LexGen.tokenizerData;
-            if (JavaCCErrors.get_error_count() == 0)
+            if (JavaCCErrors.GetErrorCount() == 0)
             {
                 Tokenize(td, input);
             }
         }
         catch (MetaParseException e)
         {
-            Console.WriteLine("Detected " + JavaCCErrors.get_error_count() +
+            Console.WriteLine("Detected " + JavaCCErrors.GetErrorCount() +
                                " errors and "
-                               + JavaCCErrors.get_warning_count() + " warnings.");
+                               + JavaCCErrors.GetWarningCount() + " warnings.");
             Environment.Exit(1);
         }
         catch (Exception e)
         {
             Console.WriteLine(e.ToString());
-            Console.WriteLine("Detected " + (JavaCCErrors.get_error_count() + 1) +
+            Console.WriteLine("Detected " + (JavaCCErrors.GetErrorCount() + 1) +
                                " errors and "
-                               + JavaCCErrors.get_warning_count() + " warnings.");
+                               + JavaCCErrors.GetWarningCount() + " warnings.");
             Environment.Exit(1);
         }
     }

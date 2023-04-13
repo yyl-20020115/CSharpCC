@@ -17,7 +17,7 @@ public class JavaCodeGenerator : DefaultJJTreeVisitor
     {
         IO io = (IO)data;
         io.Println("/*@bgen(jjtree) " +
-            JavaCCGlobals.getIdString(JJTreeGlobals.ToolList,
+            JavaCCGlobals.GetIdString(JJTreeGlobals.ToolList,
             io.GetOutputFileName()) +
              " */");
         io.Print("/*@egen*/");

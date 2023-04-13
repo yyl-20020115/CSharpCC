@@ -386,7 +386,7 @@ public class Options
         string nameUpperCase = name.ToUpper();
         if (!optionValues.ContainsKey(nameUpperCase))
         {
-            JavaCCErrors.warning(nameloc, "Bad option name \"" + name
+            JavaCCErrors.Warning(nameloc, "Bad option name \"" + name
                     + "\".  Option setting will be ignored.");
             return;
         }
@@ -412,7 +412,7 @@ public class Options
             if (isIndirectProperty || (existingValue.getClass() != object.getClass())
                     || (isValidInteger))
             {
-                JavaCCErrors.warning(valueloc, "Bad option value \"" + value
+                JavaCCErrors.Warning(valueloc, "Bad option value \"" + value
                         + "\" for \"" + name
                         + "\".  Option setting will be ignored.");
                 return;
@@ -420,7 +420,7 @@ public class Options
 
             if (inputFileSetting.Contains(nameUpperCase))
             {
-                JavaCCErrors.warning(nameloc, "Duplicate option setting for \""
+                JavaCCErrors.Warning(nameloc, "Duplicate option setting for \""
                         + name + "\" will be ignored.");
                 return;
             }
@@ -429,7 +429,7 @@ public class Options
             {
                 if (!existingValue == (value))
                 {
-                    JavaCCErrors.warning(nameloc, "Command line setting of \"" + name + "\" modifies option value in file.");
+                    JavaCCErrors.Warning(nameloc, "Command line setting of \"" + name + "\" modifies option value in file.");
                 }
                 return;
             }
@@ -445,7 +445,7 @@ public class Options
             string templateType = (String)value;
             if (!isValidJavaTemplateType(templateType))
             {
-                JavaCCErrors.warning(valueloc, "Bad option value \"" + value
+                JavaCCErrors.Warning(valueloc, "Bad option value \"" + value
                         + "\" for \"" + name
                         + "\".  Option setting will be ignored. Valid options : " + getAllValidJavaTemplateTypes());
                 return;
@@ -461,7 +461,7 @@ public class Options
             string outputLanguage = (String)value;
             if (!isValidOutputLanguage(outputLanguage))
             {
-                JavaCCErrors.warning(valueloc, "Bad option value \"" + value
+                JavaCCErrors.Warning(valueloc, "Bad option value \"" + value
                         + "\" for \"" + name
                         + "\".  Option setting will be ignored. Valid options : " + getAllValidLanguages());
                 return;
@@ -627,7 +627,7 @@ public class Options
                     || inputFileSetting.Contains(USEROPTION__DEBUG_PARSER))
             {
                 JavaCCErrors
-                        .warning("True setting of option DEBUG_LOOKAHEAD overrides "
+                        .Warning("True setting of option DEBUG_LOOKAHEAD overrides "
                                 + "false setting of option DEBUG_PARSER.");
             }
             optionValues.Add(USEROPTION__DEBUG_PARSER, true);
