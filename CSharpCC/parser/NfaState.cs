@@ -51,7 +51,7 @@ public class NfaState
     private static List<NfaState> allStates = new();
     private static List<NfaState> indexedAllStates = new();
     private static List<NfaState> nonAsciiTableForMethod = new();
-    private static Dictionary equivStatesTable = new();
+    private static Dictionary<string,NfaState> equivStatesTable = new();
     private static Dictionary allNextStates = new();
     private static Dictionary lohiByteTab = new();
     private static Dictionary stateNameForComposite = new();
@@ -320,26 +320,23 @@ public class NfaState
 
         // Recursively do closure
         for (i = 0; i < epsilonMoves.Count; i++)
-            ((NfaState)epsilonMoves[i]).EpsilonClosure();
+            epsilonMoves[i].EpsilonClosure();
 
-        Enumeration<NfaState> e = epsilonMoves.elements();
-
-        while (e.hasMoreElements())
+        
+        foreach(NfaState nfas1 in epsilonMoves)
         {
-            NfaState tmp = (NfaState)e.nextElement();
-
-            for (i = 0; i < tmp.epsilonMoves.Count; i++)
+            for (i = 0; i < nfas1.epsilonMoves.Count; i++)
             {
-                NfaState tmp1 = (NfaState)tmp.epsilonMoves[i];
-                if (tmp1.UsefulState() && !epsilonMoves.Contains(tmp1))
+                var nfas2 = nfas1.epsilonMoves[i];
+                if (nfas2.UsefulState() && !epsilonMoves.Contains(nfas2))
                 {
-                    InsertInOrder(epsilonMoves, tmp1);
+                    InsertInOrder(epsilonMoves, nfas2);
                     done = false;
                 }
             }
 
-            if (kind > tmp.kind)
-                kind = tmp.kind;
+            if (kind > nfas1.kind)
+                kind = nfas1.kind;
         }
 
         if (HasTransitions() && !epsilonMoves.Contains(this))
@@ -459,12 +456,14 @@ public class NfaState
                         for (int j = 0; j < next.epsilonMoves.Count; j++)
                             if (next.epsilonMoves[j] !=
                                   other.next.epsilonMoves[j])
-                                continue Outer;
+                                goto OuterExit;
 
                         return other;
                     }
                 }
             }
+        OuterExit:
+            ;
         }
 
         return null;
@@ -507,7 +506,7 @@ public class NfaState
     {
         for (int i = allStates.Count; i-- > 0;)
         {
-            NfaState tmp = (NfaState)allStates[i];
+            NfaState tmp = allStates[i];
 
             if (!tmp.closureDone)
                 tmp.OptimizeEpsilonMoves(true);
@@ -515,7 +514,7 @@ public class NfaState
 
         for (int i = 0; i < allStates.Count; i++)
         {
-            NfaState tmp = (NfaState)allStates[i];
+            NfaState tmp = allStates[i];
 
             if (!tmp.closureDone)
                 tmp.OptimizeEpsilonMoves(false);
@@ -525,7 +524,7 @@ public class NfaState
         {
             NfaState tmp = (NfaState)allStates[i];
             tmp.epsilonMoveArray = new NfaState[tmp.epsilonMoves.Count];
-            tmp.epsilonMoves.copyInto(tmp.epsilonMoveArray);
+            tmp.epsilonMoves.CopyTo(tmp.epsilonMoveArray);
         }
     }
 
@@ -548,8 +547,8 @@ public class NfaState
         }
 
         for (i = allStates.Count; i-- > 0;)
-            ((NfaState)allStates[i]).closureDone =
-                                     mark[((NfaState)allStates[i]).id];
+            allStates[i].closureDone =
+                                     mark[allStates[i].id];
 
         // Warning : The following piece of code is just an optimization.
         // in case of trouble, just remove this piece.
@@ -584,7 +583,7 @@ public class NfaState
                             }
 
                             InsertInOrder(equivStates, tmp2);
-                            epsilonMoves.removeElementAt(j--);
+                            epsilonMoves.RemoveAt(j--);
                         }
                     }
                 }
@@ -594,8 +593,7 @@ public class NfaState
                     sometingOptimized = true;
                     string tmp = "";
                     for (int l = 0; l < equivStates.Count; l++)
-                        tmp += String.valueOf(
-                                  ((NfaState)equivStates[l]).id) + ", ";
+                        tmp += equivStates[l].id + ", ";
 
                     if ((newState = (NfaState)equivStatesTable.get(tmp)) == null)
                     {

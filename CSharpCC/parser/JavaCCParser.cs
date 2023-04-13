@@ -10396,7 +10396,7 @@ public class JavaCCParser : JavaCCParserInternals
     /** Constructor with InputStream and supplied encoding */
     public JavaCCParser(Stream stream, Encoding encoding)
     {
-        try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (Exception e) { throw new Exception(e); }
+        try { jj_input_stream = new JavaCharStream(stream, encoding, 1, 1); } catch (Exception e) { throw new Exception(e.Message,e); }
         token_source = new JavaCCParserTokenManager(jj_input_stream);
         token = new Token();
         jj_ntk = -1;

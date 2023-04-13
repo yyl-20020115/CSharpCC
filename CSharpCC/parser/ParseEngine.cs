@@ -2013,26 +2013,22 @@ public class ParseEngine
             }
             Console.Error.WriteLine();
         }
-        else if (e is TryBlock)
+        else if (e is TryBlock e_nrw6)
         {
-            TryBlock e_nrw = (TryBlock)e;
-            buildPhase3Table(new Phase3Data(e_nrw.exp, inf.count));
+            buildPhase3Table(new Phase3Data(e_nrw6.exp, inf.count));
         }
-        else if (e is OneOrMore)
+        else if (e is OneOrMore e_nrw5)
         {
-            OneOrMore e_nrw = (OneOrMore)e;
-            Console.Error.WriteLine("SEQ PROD " + e_nrw.expansion.internal_index);
-            Console.Error.WriteLine("ZEROORMORE " + e_nrw.expansion.internal_index);
+            Console.Error.WriteLine("SEQ PROD " + e_nrw5.expansion.internal_index);
+            Console.Error.WriteLine("ZEROORMORE " + e_nrw5.expansion.internal_index);
         }
-        else if (e is ZeroOrMore)
+        else if (e is ZeroOrMore e_nrw4)
         {
-            ZeroOrMore e_nrw = (ZeroOrMore)e;
-            Console.Error.Write("ZEROORMORE, " + e_nrw.expansion.internal_index);
+            Console.Error.Write("ZEROORMORE, " + e_nrw4.expansion.internal_index);
         }
-        else if (e is ZeroOrOne)
+        else if (e is ZeroOrOne e_nrw3)
         {
-            ZeroOrOne e_nrw = (ZeroOrOne)e;
-            Console.Error.WriteLine("ZERORONE, " + e_nrw.expansion.internal_index);
+            Console.Error.WriteLine("ZERORONE, " + e_nrw3.expansion.internal_index);
         }
         else
         {

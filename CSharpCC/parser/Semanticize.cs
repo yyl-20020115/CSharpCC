@@ -25,35 +25,33 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-using System.Data.SqlTypes;
 
 namespace org.javacc.parser;
-
 
 public class Semanticize : JavaCCGlobals
 {
 
-    static List removeList = new();
-    static List itemList = new();
+    public static List<List<RegExprSpec>> removeList = new();
+    public static List<RegExprSpec> itemList = new();
 
-    static void PrepareToRemove(List vec, Object item) 
+    public static void PrepareToRemove(List<RegExprSpec> vec, RegExprSpec item) 
     {
         removeList.Add(vec);
         itemList.Add(item);
     }
 
-    static void RemovePreparedItems()
+    public static void RemovePreparedItems()
     {
         for (int i = 0; i < removeList.Count; i++)
         {
-            List list = (List)(removeList[i]);
-            list.remove(itemList[i]);
+            var list = removeList[i];
+            list.Remove(itemList[i]);
         }
         removeList.Clear();
         itemList.Clear(); 
     }
 
-    static public void Start()
+    public static void Start()
     {
 
         if (JavaCCErrors.GetErrorCount() != 0) throw new MetaParseException();
@@ -92,9 +90,9 @@ public class Semanticize : JavaCCGlobals
          * The following walks the entire parse tree to make sure that all
          * non-terminals on RHS's are defined on the LHS.
          */
-        for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
+        foreach(var np in bnfproductions)
         {
-            ExpansionTreeWalker.PreOrderWalk((it.next()).GetExpansion(), new ProductionDefinedChecker());
+            ExpansionTreeWalker.PreOrderWalk(np.GetExpansion(), new ProductionDefinedChecker());
         }
 
         /*
@@ -107,16 +105,14 @@ public class Semanticize : JavaCCGlobals
          * is set to true.  In this case, <name> occurrences are OK, while
          * regular expression specs generate a warning.
          */
-        for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
+        foreach(var tp in rexprlist)
         { 
-            TokenProduction tp = (TokenProduction)(it.next());
             List<RegExprSpec> respecs = tp.respecs;
-            for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();)
+            foreach(var res in respecs)
             {
-                RegExprSpec res = (RegExprSpec)(it1.next());
                 if (res.nextState != null)
                 {
-                    if (lexstate_S2I.get(res.nextState) == null)
+                    if (!lexstate_S2I.TryGetValue(res.nextState,out var _))
                     {
                         JavaCCErrors.SemanticError(res.nsTok, "Lexical state \"" + res.nextState +
                                                                "\" has not been defined.");
@@ -164,18 +160,17 @@ public class Semanticize : JavaCCGlobals
          * "named_tokens_table" and "ordered_named_tokens".
          * Duplications are flagged as errors.
          */
-        for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
+        foreach(var tp in rexprlist)
         {
-            TokenProduction tp = (TokenProduction)(it.next());
             List<RegExprSpec> respecs = tp.respecs;
-            for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();)
+            foreach(var res in respecs)
             {
-                RegExprSpec res = (RegExprSpec)(it1.next());
                 if (res.rexp is not RJustName && res.rexp.label != "")
                 {
                     string s = res.rexp.label;
-                    Object obj = named_tokens_table.Add(s, res.rexp);
-                    if (obj != null)
+                    var b = named_tokens_table.ContainsKey(s);
+                    named_tokens_table.Add(s, res.rexp);
+                    if (b)
                     {
                         JavaCCErrors.SemanticError(res.rexp, "Multiply defined lexical token name \"" + s + "\".");
                     }
@@ -183,7 +178,7 @@ public class Semanticize : JavaCCGlobals
                     {
                         ordered_named_tokens.Add(res.rexp);
                     }
-                    if (lexstate_S2I.get(s) != null)
+                    if (!lexstate_S2I.TryGetValue(s,out var _))
                     {
                         JavaCCErrors.SemanticError(res.rexp, "Lexical token name \"" + s + "\" is the same as " +
                                 "that of a lexical state.");
@@ -204,35 +199,33 @@ public class Semanticize : JavaCCGlobals
          */
 
         tokenCount = 1;
-        for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
+        foreach(var tp in rexprlist)
         {
-            TokenProduction tp = (TokenProduction)(it.next());
             List<RegExprSpec> respecs = tp.respecs;
             if (tp.lexStates == null)
             {
                 tp.lexStates = new String[lexstate_I2S.Count];
                 int i = 0;
-                for (Enumeration<string> enum1 = lexstate_I2S.elements(); enum1.hasMoreElements();)
+                foreach(var v in lexstate_I2S.Values)
                 {
-                    tp.lexStates[i++] = (String)(enum1.nextElement());
+                    tp.lexStates[i++] = v;
                 }
             }
-            Dictionary[] table = new Dictionary[tp.lexStates.Length];
+            var table = new Dictionary<string, Dictionary<string, RegularExpression>>[tp.lexStates.Length];
             for (int i = 0; i < tp.lexStates.Length; i++)
             {
-                table[i] = (Dictionary)simple_tokens_table.get(tp.lexStates[i]);
+                simple_tokens_table.TryGetValue(tp.lexStates[i], out table[i]);
             }
-            for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();)
+            foreach(var res in respecs)
             {
-                RegExprSpec res = (RegExprSpec)(it1.next());
                 if (res.rexp is RStringLiteral sl)
                 {
                     // This loop performs the checks and actions with respect to each lexical state.
                     for (int i = 0; i < table.Length; i++)
                     {
                         // Get table of all case variants of "sl.image" into table2.
-                        Dictionary table2 = (Dictionary)(table[i].get(sl.image.ToUpper()));
-                        if (table2 == null)
+                        //Dictionary table2 = (Dictionary)(table[i].get(sl.image.ToUpper()));
+                        if (table[i].TryGetValue(sl.image.ToUpper(),out var table2))
                         {
                             // There are no case variants of "sl.image" earlier than the current one.
                             // So go ahead and insert this item.
@@ -240,11 +233,11 @@ public class Semanticize : JavaCCGlobals
                             {
                                 sl.ordinal = tokenCount++;
                             }
-                            table2 = new Dictionary();
+                            table2 = new ();
                             table2.Add(sl.image, sl);
                             table[i].Add(sl.image.ToUpper(), table2);
                         }
-                        else if (hasIgnoreCase(table2, sl.image))
+                        else if (HasIgnoreCase(table2, sl.image))
                         { // hasIgnoreCase sets "other" if it is found.
                           // Since IGNORE_CASE version exists, current one is useless and bad.
                             if (!sl.tpContext.isExplicit)
@@ -266,9 +259,8 @@ public class Semanticize : JavaCCGlobals
                             // This has to be explicit.  A warning needs to be given with respect
                             // to all previous strings.
                             String pos = ""; int count = 0;
-                            for (Enumeration<RegularExpression> enum2 = table2.elements(); enum2.hasMoreElements();)
+                            foreach(RegularExpression rexp in table2.Values)
                             {
-                                RegularExpression rexp = (RegularExpression)(enum2.nextElement());
                                 if (count != 0) pos += ",";
                                 pos += " line " + rexp.GetLine();
                                 count++;
@@ -293,8 +285,8 @@ public class Semanticize : JavaCCGlobals
                         else
                         {
                             // The rest of the cases do not involve IGNORE_CASE.
-                            RegularExpression re = (RegularExpression)table2.get(sl.image);
-                            if (re == null)
+                            //RegularExpression re = (RegularExpression)table2.get(sl.image);
+                            if (table2.TryGetValue(sl.image,out var re))
                             {
                                 if (sl.ordinal == 0)
                                 {
@@ -369,14 +361,12 @@ public class Semanticize : JavaCCGlobals
 
         if (!Options.GetUserTokenManager())
         {
-            FixRJustNames frjn = new FixRJustNames();
-            for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
+            var frjn = new FixRJustNames();
+            foreach(var tp in rexprlist)
             {
-                TokenProduction tp = (TokenProduction)(it.next());
                 List<RegExprSpec> respecs = tp.respecs;
-                for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();)
+                foreach(var res in respecs)
                 {
-                    RegExprSpec res = (RegExprSpec)(it1.next());
                     frjn.root = res.rexp;
                     ExpansionTreeWalker.PreOrderWalk(res.rexp, frjn);
                     if (res.rexp is RJustName)
@@ -402,19 +392,15 @@ public class Semanticize : JavaCCGlobals
 
         if (Options.GetUserTokenManager())
         {
-            for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
+            foreach(var tp in rexprlist)
             {
-                TokenProduction tp = (TokenProduction)(it.next());
                 List<RegExprSpec> respecs = tp.respecs;
-                for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();)
+                foreach(var res in respecs)
                 {
-                    RegExprSpec res = (RegExprSpec)(it1.next());
                     if (res.rexp is RJustName)
                     {
-
                         RJustName jn = (RJustName)res.rexp;
-                        RegularExpression rexp = (RegularExpression)named_tokens_table.get(jn.label);
-                        if (rexp == null)
+                        if (named_tokens_table.TryGetValue(jn.label,out var rexp))
                         {
                             jn.ordinal = tokenCount++;
                             named_tokens_table.Add(jn.label, jn);
@@ -442,15 +428,13 @@ public class Semanticize : JavaCCGlobals
          */
         if (Options.GetUserTokenManager())
         {
-            for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
+            foreach(var tp in rexprlist)
             {
-                TokenProduction tp = (TokenProduction)(it.next());
                 List<RegExprSpec> respecs = tp.respecs;
-                for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();)
+                foreach(var res in respecs)
                 {
-                    RegExprSpec res = (RegExprSpec)(it1.next());
                     int ii = (res.rexp.ordinal);
-                    if (names_of_tokens.get(ii) == null)
+                    if (!names_of_tokens.TryGetValue(ii,out var _))
                     {
                         JavaCCErrors.Warning(res.rexp, "Unlabeled regular expression cannot be referred to by " +
                                 "user generated token manager.");
@@ -469,9 +453,8 @@ public class Semanticize : JavaCCGlobals
         while (emptyUpdate)
         {
             emptyUpdate = false;
-            for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
+            foreach(var prod in bnfproductions)
             {
-                NormalProduction prod = (NormalProduction)it.next();
                 if (EmptyExpansionExists(prod.GetExpansion()))
                 {
                     if (!prod.IsEmptyPossible())
@@ -487,17 +470,16 @@ public class Semanticize : JavaCCGlobals
 
             // The following code checks that all ZeroOrMore, ZeroOrOne, and OneOrMore nodes
             // do not contain expansions that can expand to the empty token list.
-            for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
+            foreach (var prod in bnfproductions)
             {
-                ExpansionTreeWalker.PreOrderWalk(((NormalProduction)it.next()).GetExpansion(), new EmptyChecker());
+                ExpansionTreeWalker.PreOrderWalk(prod.GetExpansion(), new EmptyChecker());
             }
 
             // The following code goes through the productions and adds pointers to other
             // productions that it can expand to without consuming any tokens.  Once this is
             // done, a left-recursion check can be performed.
-            for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
+            foreach(var prod in bnfproductions)
             {
-                NormalProduction prod = it.next();
                 AddLeftMost(prod, prod.GetExpansion());
             }
 
@@ -505,9 +487,8 @@ public class Semanticize : JavaCCGlobals
             // actual left recursions.  The way the algorithm is coded, once a node has
             // been determined to participate in a left recursive loop, it is not tried
             // in any other loop.
-            for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
+            foreach(var prod in bnfproductions)
             {
-                NormalProduction prod = it.next();
                 if (prod.GetWalkStatus() == 0)
                 {
                     ProdWalk(prod);
@@ -520,13 +501,11 @@ public class Semanticize : JavaCCGlobals
             // This is not done if option USER_TOKEN_MANAGER is set to true.
             if (!Options.GetUserTokenManager())
             {
-                for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
+                foreach(var tp in rexprlist)
                 {
-                    TokenProduction tp = (TokenProduction)(it.next());
                     List<RegExprSpec> respecs = tp.respecs;
-                    for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();)
+                    foreach( var res in respecs)    
                     {
-                        RegExprSpec res = (RegExprSpec)(it1.next());
                         RegularExpression rexp = res.rexp;
                         if (rexp.walkStatus == 0)
                         {
@@ -547,9 +526,9 @@ public class Semanticize : JavaCCGlobals
              */
             if (JavaCCErrors.GetErrorCount() == 0)
             {
-                for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
+                foreach(var tp in bnfproductions)
                 {
-                    ExpansionTreeWalker.PreOrderWalk((it.next()).getExpansion(), new LookaheadChecker());
+                    ExpansionTreeWalker.PreOrderWalk(tp.GetExpansion(), new LookaheadChecker());
                 }
             }
 
@@ -563,17 +542,16 @@ public class Semanticize : JavaCCGlobals
 
     // Checks to see if the "str" is superseded by another equal (except case) string
     // in table.
-    public static bool hasIgnoreCase(Dictionary<String, RegularExpression> table, string str)
+    public static bool HasIgnoreCase(Dictionary<string, RegularExpression> table, string str)
     {
-        RegularExpression rexp;
-        rexp = (RegularExpression)(table.get(str));
+        RegularExpression rexp = table[str];
         if (rexp != null && !rexp.tpContext.ignoreCase)
         {
             return false;
         }
-        for (Enumeration<RegularExpression> enumeration = table.elements(); enumeration.hasMoreElements();)
+        foreach(var ret in table.Values)
         {
-            rexp = (RegularExpression)(enumeration.nextElement());
+            rexp = ret;
             if (rexp.tpContext.ignoreCase)
             {
                 other = rexp;
