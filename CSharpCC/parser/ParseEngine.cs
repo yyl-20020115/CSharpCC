@@ -1142,11 +1142,10 @@ public class ParseEngine
                 list = (e_nrw15.types[i]);
                 if (list.Count != 0)
                 {
-                    JavaCCGlobals.PrintTokenSetup((Token)(list[0]));
-                    for (Iterator it = list.iterator(); it.hasNext();)
+                    JavaCCGlobals.PrintTokenSetup(list[0]);
+                    foreach(var t2 in list)
                     {
-                        t = (Token)it.next();
-                        retval += _CodeGenerator.GetStringToPrint(t);
+                        retval += _CodeGenerator.GetStringToPrint(t=t2);
                     }
                     retval += _CodeGenerator.GetTrailingComments(t);
                 }
@@ -1161,10 +1160,9 @@ public class ParseEngine
                 {
                     JavaCCGlobals.PrintTokenSetup((list[0]));
                     JavaCCGlobals.ccol = 1;
-                    for (Iterator it = list.iterator(); it.hasNext();)
+                    foreach(var t2 in list)
                     {
-                        t = (Token)it.next();
-                        retval += _CodeGenerator.GetStringToPrint(t);
+                        retval += _CodeGenerator.GetStringToPrint(t = t2);
                     }
                     retval += _CodeGenerator.GetTrailingComments(t);
                 }
@@ -1185,10 +1183,9 @@ public class ParseEngine
                 {
                     JavaCCGlobals.PrintTokenSetup((Token)(e_nrw15.finallyblk[0])); 
                     JavaCCGlobals.ccol = 1;
-                    for (Iterator it = e_nrw15.finallyblk.iterator(); it.hasNext();)
+                    foreach(var t2 in e_nrw15.finallyblk)
                     {
-                        t = (Token)it.next();
-                        retval += _CodeGenerator.GetStringToPrint(t);
+                        retval += _CodeGenerator.GetStringToPrint(t=t2);
                     }
                     retval += _CodeGenerator.GetTrailingComments(t);
                 }
@@ -1230,7 +1227,8 @@ public class ParseEngine
         }
         if (Options.GetErrorReporting())
         {
-            _CodeGenerator.GenCodeLine((isJavaDialect ? "    finally " : " ") + "{ jj_save(" + (int.parseInt(e.internal_name[1..]) - 1) + ", xla); }");
+            _CodeGenerator.GenCodeLine((isJavaDialect ? "    finally " : " ") + "{ jj_save(" + 
+                ((int.TryParse(e.internal_name[1..],out var ret)?ret:0) - 1) + ", xla); }");
         }
         _CodeGenerator.GenCodeLine("  }");
         _CodeGenerator.GenCodeLine("");
@@ -1262,21 +1260,21 @@ public class ParseEngine
         }
     }
 
-    private void generate3R(Expansion e, Phase3Data inf, Expansion seq)
+    private void generate3R(Expansion e, Phase3Data inf)
     {
         Expansion seq = e;
         if (e.internal_name == (""))
         {
             while (true)
             {
-                if (seq is Sequence && ((Sequence)seq).units.Count == 2)
+                if (seq is Sequence sequence && sequence.units.Count == 2)
                 {
-                    seq = (Expansion)((Sequence)seq).units.get(1);
+                    seq = sequence.units[1];
                 }
-                else if (seq is NonTerminal)
+                else if (seq is NonTerminal e_nrw)
                 {
-                    NonTerminal e_nrw = (NonTerminal)seq;
-                    NormalProduction ntprod = (NormalProduction)production_table.get(e_nrw.GetName());
+                    JavaCCGlobals.production_table.TryGetValue(e_nrw.GetName(), out var ntprod);
+
                     if (ntprod is CodeProduction)
                     {
                         break; // nothing to do here
@@ -1320,63 +1318,58 @@ public class ParseEngine
         {
             ; // nothing to here
         }
-        else if (e is NonTerminal)
+        else if (e is NonTerminal e_nrw)
         {
             // All expansions of non-terminals have the "name" fields set.  So
             // there's no need to check it below for "e_nrw" and "ntexp".  In
             // fact, we rely here on the fact that the "name" fields of both these
             // variables are the same.
-            NonTerminal e_nrw = (NonTerminal)e;
-            NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.GetName()));
+
+            JavaCCGlobals.production_table.TryGetValue(e_nrw.GetName(), out var ntprod);
             if (ntprod is CodeProduction)
             {
                 ; // nothing to do here
             }
             else
             {
-                generate3R(ntprod.GetExpansion(), inf, seq);
+                generate3R(ntprod.GetExpansion(), inf);
             }
         }
-        else if (e is Choice)
+        else if (e is Choice e_nrw2)
         {
-            Choice e_nrw = (Choice)e;
-            for (int i = 0; i < e_nrw.GetChoices().Count; i++)
+            for (int i = 0; i < e_nrw2.GetChoices().Count; i++)
             {
-                generate3R((Expansion)(e_nrw.GetChoices()[i]), inf, seq);
+                generate3R(e_nrw2.GetChoices()[i], inf);
             }
         }
-        else if (e is Sequence)
+        else if (e is Sequence e_nrw4)
         {
-            Sequence e_nrw = (Sequence)e;
             // We skip the first element in the following iteration since it is the
             // Lookahead object.
             int cnt = inf.count;
-            for (int i = 1; i < e_nrw.units.Count; i++)
+            for (int i = 1; i < e_nrw4.units.Count; i++)
             {
-                Expansion eseq = (Expansion)(e_nrw.units[i]);
+                Expansion eseq = e_nrw4.units[i];
                 setupPhase3Builds(new Phase3Data(eseq, cnt));
                 cnt -= minimumSize(eseq);
                 if (cnt <= 0) break;
             }
         }
-        else if (e is TryBlock)
+        else if (e is TryBlock e_nrw5)
         {
-            TryBlock e_nrw = (TryBlock)e;
-            setupPhase3Builds(new Phase3Data(e_nrw.exp, inf.count));
+            setupPhase3Builds(new Phase3Data(e_nrw5.exp, inf.count));
         }
-        else if (e is OneOrMore)
+        else if (e is OneOrMore e_nrw6)
         {
-            OneOrMore e_nrw = (OneOrMore)e;
-            generate3R(e_nrw.expansion, inf, seq);
+            generate3R(e_nrw6.expansion, inf);
         }
-        else if (e is ZeroOrMore)
+        else if (e is ZeroOrMore e_nrw7)
         {
-            ZeroOrMore e_nrw = (ZeroOrMore)e;
-            generate3R(e_nrw.expansion, inf, seq);
+            generate3R(e_nrw7.expansion, inf);
         }
-        else if (e is ZeroOrOne e_nrw)
+        else if (e is ZeroOrOne e_nrw8)
         {
-            generate3R(e_nrw.expansion, inf, seq);
+            generate3R(e_nrw8.expansion, inf);
         }
     }
 
@@ -1393,7 +1386,7 @@ public class ParseEngine
             return "jj_3" + e.internal_name + "()";
     }
 
-    Dictionary generated = new Dictionary();
+    //Dictionary generated = new Dictionary();
     void buildPhase3Routine(Phase3Data inf, bool recursive_call)
     {
         Expansion e = inf.exp;
@@ -1458,14 +1451,14 @@ public class ParseEngine
             }
             //codeGenerator.GenCodeLine("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
         }
-        else if (e is NonTerminal)
+        else if (e is NonTerminal e_nrw)
         {
             // All expansions of non-terminals have the "name" fields set.  So
             // there's no need to check it below for "e_nrw" and "ntexp".  In
             // fact, we rely here on the fact that the "name" fields of both these
             // variables are the same.
-            NonTerminal e_nrw = (NonTerminal)e;
-            NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.GetName()));
+            JavaCCGlobals.production_table.TryGetValue(e_nrw.GetName(),out var ntprod);
+
             if (ntprod is CodeProduction)
             {
                 _CodeGenerator.GenCodeLine("    if (true) { jj_la = 0; jj_scanpos = jj_lastpos; " + genReturn(false) + "}");
@@ -1478,11 +1471,10 @@ public class ParseEngine
                 //codeGenerator.GenCodeLine("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
             }
         }
-        else if (e is Choice)
+        else if (e is Choice e_nrw2)
         {
             Sequence nested_seq;
-            Choice e_nrw = (Choice)e;
-            if (e_nrw.GetChoices().Count != 1)
+            if (e_nrw2.GetChoices().Count != 1)
             {
                 if (!xsp_declared)
                 {
@@ -1491,21 +1483,20 @@ public class ParseEngine
                 }
                 _CodeGenerator.GenCodeLine("    xsp = jj_scanpos;");
             }
-            for (int i = 0; i < e_nrw.GetChoices().Count; i++)
+            for (int i = 0; i < e_nrw2.GetChoices().Count; i++)
             {
-                nested_seq = (Sequence)(e_nrw.GetChoices()[i]);
+                nested_seq = (Sequence)(e_nrw2.GetChoices()[i]);
                 Lookahead la = (Lookahead)(nested_seq.units[0]);
                 if (la.GetActionTokens().Count != 0)
                 {
                     // We have semantic lookahead that must be evaluated.
-                    lookaheadNeeded = true;
+                    JavaCCGlobals.lookaheadNeeded = true;
                     _CodeGenerator.GenCodeLine("    jj_lookingAhead = true;");
                     _CodeGenerator.GenCode("    jj_semLA = ");
-                    JavaCCGlobals.PrintTokenSetup((Token)(la.GetActionTokens()[0]));
-                    for (Iterator it = la.GetActionTokens().iterator(); it.hasNext();)
+                    JavaCCGlobals.PrintTokenSetup(la.GetActionTokens()[0]);
+                    foreach(var t2 in la.GetActionTokens())
                     {
-                        t = (Token)it.next();
-                        _CodeGenerator.PrintToken(t);
+                        _CodeGenerator.PrintToken(t=t2);
                     }
                     _CodeGenerator.PrintTrailingComments(t);
                     _CodeGenerator.GenCodeLine(";");
@@ -1516,7 +1507,7 @@ public class ParseEngine
                 {
                     _CodeGenerator.GenCode("!jj_semLA || ");
                 }
-                if (i != e_nrw.GetChoices().Count - 1)
+                if (i != e_nrw2.GetChoices().Count - 1)
                 {
                     //codeGenerator.GenCodeLine("jj_3" + nested_seq.internal_name + "()) {");
                     _CodeGenerator.GenCodeLine(genjj_3Call(nested_seq) + ") {");
@@ -1529,21 +1520,20 @@ public class ParseEngine
                     //codeGenerator.GenCodeLine("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
                 }
             }
-            for (int i = 1; i < e_nrw.GetChoices().Count; i++)
+            for (int i = 1; i < e_nrw2.GetChoices().Count; i++)
             {
                 //codeGenerator.GenCodeLine("    } else if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
                 _CodeGenerator.GenCodeLine("    }");
             }
         }
-        else if (e is Sequence)
+        else if (e is Sequence e_nrw23)
         {
-            Sequence e_nrw = (Sequence)e;
             // We skip the first element in the following iteration since it is the
             // Lookahead object.
             int cnt = inf.count;
-            for (int i = 1; i < e_nrw.units.Count; i++)
+            for (int i = 1; i < e_nrw23.units.Count; i++)
             {
-                Expansion eseq = (Expansion)(e_nrw.units[i]);
+                Expansion eseq = (Expansion)(e_nrw23.units[i]);
                 buildPhase3Routine(new Phase3Data(eseq, cnt), true);
 
                 //      Console.WriteLine("minimumSize: line: " + eseq.line + ", column: " + eseq.column + ": " +
@@ -1553,20 +1543,18 @@ public class ParseEngine
                 if (cnt <= 0) break;
             }
         }
-        else if (e is TryBlock)
+        else if (e is TryBlock e_nrw22)
         {
-            TryBlock e_nrw = (TryBlock)e;
-            buildPhase3Routine(new Phase3Data(e_nrw.exp, inf.count), true);
+            buildPhase3Routine(new Phase3Data(e_nrw22.exp, inf.count), true);
         }
-        else if (e is OneOrMore)
+        else if (e is OneOrMore e_nrw18)
         {
             if (!xsp_declared)
             {
                 xsp_declared = true;
                 _CodeGenerator.GenCodeLine("    " + getTypeForToken() + " xsp;");
             }
-            OneOrMore e_nrw = (OneOrMore)e;
-            Expansion nested_e = e_nrw.expansion;
+            Expansion nested_e = e_nrw18.expansion;
             //codeGenerator.GenCodeLine("    if (jj_3" + nested_e.internal_name + "()) " + genReturn(true));
             _CodeGenerator.GenCodeLine("    if (" + genjj_3Call(nested_e) + ") " + genReturn(true));
             //codeGenerator.GenCodeLine("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
@@ -1577,15 +1565,14 @@ public class ParseEngine
             //codeGenerator.GenCodeLine("      if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
             _CodeGenerator.GenCodeLine("    }");
         }
-        else if (e is ZeroOrMore)
+        else if (e is ZeroOrMore e_nrw19)
         {
             if (!xsp_declared)
             {
                 xsp_declared = true;
                 _CodeGenerator.GenCodeLine("    " + getTypeForToken() + " xsp;");
             }
-            ZeroOrMore e_nrw = (ZeroOrMore)e;
-            Expansion nested_e = e_nrw.expansion;
+            Expansion nested_e = e_nrw19.expansion;
             _CodeGenerator.GenCodeLine("    while (true) {");
             _CodeGenerator.GenCodeLine("      xsp = jj_scanpos;");
             //codeGenerator.GenCodeLine("      if (jj_3" + nested_e.internal_name + "()) { jj_scanpos = xsp; break; }");
@@ -1593,15 +1580,14 @@ public class ParseEngine
             //codeGenerator.GenCodeLine("      if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
             _CodeGenerator.GenCodeLine("    }");
         }
-        else if (e is ZeroOrOne)
+        else if (e is ZeroOrOne e_nrw20)
         {
             if (!xsp_declared)
             {
                 xsp_declared = true;
                 _CodeGenerator.GenCodeLine("    " + getTypeForToken() + " xsp;");
             }
-            ZeroOrOne e_nrw = (ZeroOrOne)e;
-            Expansion nested_e = e_nrw.expansion;
+            Expansion nested_e = e_nrw20.expansion;
             _CodeGenerator.GenCodeLine("    xsp = jj_scanpos;");
             //codeGenerator.GenCodeLine("    if (jj_3" + nested_e.internal_name + "()) jj_scanpos = xsp;");
             _CodeGenerator.GenCodeLine("    if (" + genjj_3Call(nested_e) + ") jj_scanpos = xsp;");
@@ -1643,24 +1629,27 @@ public class ParseEngine
         }
         else if (e is NonTerminal e_nrw6)
         {
-            NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw6.GetName()));
-            if (ntprod is CodeProduction)
+            if (JavaCCGlobals.production_table.TryGetValue(e_nrw6.GetName(), out var ntprod))
             {
-                retval = int.MaxValue;
-                // Make caller think this is unending (for we do not go beyond JAVACODE during
-                // phase3 execution).
-            }
-            else
-            {
-                Expansion ntexp = ntprod.GetExpansion();
-                retval = minimumSize(ntexp);
+
+
+                if (ntprod is CodeProduction)
+                {
+                    retval = int.MaxValue;
+                    // Make caller think this is unending (for we do not go beyond JAVACODE during
+                    // phase3 execution).
+                }
+                else
+                {
+                    Expansion ntexp = ntprod.GetExpansion();
+                    retval = minimumSize(ntexp);
+                }
             }
         }
-        else if (e is Choice)
+        else if (e is Choice e_nrw)
         {
             int min = oldMin;
             Expansion nested_e;
-            Choice e_nrw = (Choice)e;
             for (int i = 0; min > 1 && i < e_nrw.GetChoices().Count; i++)
             {
                 nested_e = e_nrw.GetChoices()[i];
