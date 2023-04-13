@@ -187,7 +187,7 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
         }
     }
 
-    static protected bool Hexchar(char ch)
+    public static bool IsHexchar(char ch)
     {
         if (ch >= '0' && ch <= '9') return true;
         if (ch >= 'A' && ch <= 'F') return true;
@@ -276,19 +276,19 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
             if (ch == 'u')
             {
                 index++; ch = str[index];
-                if (Hexchar(ch))
+                if (IsHexchar(ch))
                 {
                     ordinal = Hexval(ch);
                     index++; ch = str[index];
-                    if (Hexchar(ch))
+                    if (IsHexchar(ch))
                     {
                         ordinal = ordinal * 16 + Hexval(ch);
                         index++; ch = str[index];
-                        if (Hexchar(ch))
+                        if (IsHexchar(ch))
                         {
                             ordinal = ordinal * 16 + Hexval(ch);
                             index++; ch = str[index];
-                            if (Hexchar(ch))
+                            if (IsHexchar(ch))
                             {
                                 ordinal = ordinal * 16 + Hexval(ch);
                                 index++;

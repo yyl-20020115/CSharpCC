@@ -94,10 +94,7 @@ public class OutputFileGenerator
             return false;
         }
     }
-    public static bool IsJavaIdentifierPart(char t)
-    {
-        return t=='_'||char.IsLetterOrDigit(t);
-    }
+    public static bool IsJavaIdentifierPart(char t) => t == '_' || char.IsLetterOrDigit(t);
     private string Substitute(string text)
     {
         int startPos;
@@ -181,10 +178,9 @@ public class OutputFileGenerator
      */
     private string SubstituteWithDefault(string variableName, string defaultValue)
     {
-        if (!options.TryGetValue(variableName.Trim(),out var obj) || obj.ToString().Length == 0)
-            return Substitute(defaultValue);
-
-        return obj.ToString();
+        return !options.TryGetValue(variableName.Trim(),out var obj) || obj.ToString().Length == 0
+            ? Substitute(defaultValue)
+            : obj.ToString();
     }
 
     private void Write(TextWriter _out, string text)
@@ -264,12 +260,14 @@ public class OutputFileGenerator
     }
 
 
-    public static void main(String[] args)
+    public static void TestMain(string[] args)
     {
-        Dictionary<string, object> map = new ();
-        map.Add("falseArg", false);
-        map.Add("trueArg", true);
-        map.Add("stringValue", "someString");
+        Dictionary<string, object> map = new()
+        {
+            { "falseArg", false },
+            { "trueArg", true },
+            { "stringValue", "someString" }
+        };
 
         new OutputFileGenerator(args[0], map).Generate(new StreamWriter(args[1]));
     }

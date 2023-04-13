@@ -83,16 +83,16 @@ public class MainParser
         {
             int length = i.Name.Length;
 
-            if (i.OptionType == OptionType.INTEGER)
+            if (i.OptionType == OptionTypes.INTEGER)
             {
                 maxLengthInt = length > maxLengthInt ? length : maxLengthInt;
             }
-            else if (i.OptionType == OptionType.BOOLEAN)
+            else if (i.OptionType == OptionTypes.BOOLEAN)
             {
                 maxLengthBool = length > maxLengthBool ? length : maxLengthBool;
 
             }
-            else if (i.OptionType == OptionType.STRING)
+            else if (i.OptionType == OptionTypes.STRING)
             {
                 maxLengthString = length > maxLengthString ? length : maxLengthString;
 
@@ -109,7 +109,7 @@ public class MainParser
             Console.WriteLine("");
             foreach (OptionInfo i in options)
             {
-                PrintOptionInfo(OptionType.INTEGER, i, maxLengthInt);
+                PrintOptionInfo(OptionTypes.INTEGER, i, maxLengthInt);
             }
             Console.WriteLine("");
         }
@@ -121,7 +121,7 @@ public class MainParser
             Console.WriteLine("");
             foreach (OptionInfo i in options)
             {
-                PrintOptionInfo(OptionType.BOOLEAN, i, maxLengthBool);
+                PrintOptionInfo(OptionTypes.BOOLEAN, i, maxLengthBool);
             }
             Console.WriteLine("");
         }
@@ -132,13 +132,13 @@ public class MainParser
             Console.WriteLine("");
             foreach (OptionInfo i in options)
             {
-                PrintOptionInfo(OptionType.STRING, i, maxLengthString);
+                PrintOptionInfo(OptionTypes.STRING, i, maxLengthString);
             }
             Console.WriteLine("");
         }
     }
 
-    private static void PrintOptionInfo(OptionType filter, OptionInfo optionInfo, int padLength)
+    private static void PrintOptionInfo(OptionTypes filter, OptionInfo optionInfo, int padLength)
     {
         if (optionInfo.OptionType == filter)
         {

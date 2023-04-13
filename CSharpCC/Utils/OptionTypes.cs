@@ -1,12 +1,9 @@
 namespace CSharpCC.Utils;
 
 /**
- *
- *
  * @author Chris Ainsley
- *
  */
-public enum OptionType : int
+public enum OptionTypes : int
 {
     BOOLEAN,
     INTEGER,

@@ -195,7 +195,7 @@ public static class TokenUtils
     {
         if (ch >= '0' && ch <= '9') return ((int)ch) - ((int)'0');
         if (ch >= 'A' && ch <= 'F') return ((int)ch) - ((int)'A') + 10;
-        return ((int)ch) - ((int)'a') + 10;
+        return ch - 'a' + 10;
     }
 
 }

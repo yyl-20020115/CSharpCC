@@ -39,16 +39,14 @@ public class OptionInfo : IComparable<OptionInfo>
         return result;
     }
 
-    //@Override
-    public override bool Equals([NotNull] object? obj)
+    public override bool Equals([NotNull] object? o)
     {
-        if (this == obj)
+        if (this == o)
             return true;
-        if (obj == null)
+        if (o == null)
             return false;
-        if (this.GetType() != obj.GetType())
+        if (o is not OptionInfo other)
             return false;
-        OptionInfo other = (OptionInfo)obj;
         if (@default == null)
         {
             if (other.@default != null)
