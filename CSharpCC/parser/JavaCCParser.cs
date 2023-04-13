@@ -2,7 +2,6 @@
 
 
 using org.javacc.jjtree;
-using System.Collections.Generic;
 using System.Text;
 /**
 * This file contains the code for JavaCCParser generated
@@ -170,7 +169,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
     }
 
-    private void eatUptoCloseBrace(List tokens)
+    private void eatUptoCloseBrace(List<Token> tokens)
     {
         int b = 1;
         Token t;
@@ -184,7 +183,7 @@ public class JavaCCParser : JavaCCParserInternals
     }
 
 
-    private void eatUptoRParen(List tokens)
+    private void eatUptoRParen(List<Token> tokens)
     {
         int b = 1;
         Token t;
@@ -272,7 +271,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void javacc_options()
     {
-        if (getToken(1).image.equals("options"))
+        if (getToken(1).image.Equals("options"))
         {
             jj_consume_token(IDENTIFIER);
             jj_consume_token(LBRACE);
@@ -441,7 +440,7 @@ public class JavaCCParser : JavaCCParserInternals
         String lhs;
         Token t = getToken(1);
         p.SetFirstToken(t);
-        List excName;
+        List<Token> excName;
         p.SetThrowsList(new ());
         p.SetLine(t.beginLine);
         p.SetColumn(t.beginColumn);
@@ -478,7 +477,7 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             default:
                 jj_la1[7] = jj_gen;
-                ;
+                break;
         }
         Block(p.GetCodeTokens());
         p.SetLastToken(getToken(0));
@@ -491,7 +490,7 @@ public class JavaCCParser : JavaCCParserInternals
         String lhs;
         Token t = getToken(1);
         p.SetFirstToken(t);
-        List excName;
+        List<Token> excName;
         p.SetThrowsList(new ());
         p.SetLine(t.beginLine);
         p.SetColumn(t.beginColumn);
@@ -528,6 +527,7 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             default:
                 jj_la1[9] = jj_gen;
+                break;
                 ;
         }
         Block(p.GetCodeTokens());
@@ -541,7 +541,7 @@ public class JavaCCParser : JavaCCParserInternals
         Container c = new Container();
         Token t = getToken(1);
         p.SetFirstToken(t);
-        List excName;
+        List<Token> excName;
         String lhs;
         p.SetThrowsList(new ());
         p.SetLine(t.beginLine);
@@ -579,7 +579,8 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             default:
                 jj_la1[11] = jj_gen;
-                ;
+                break;
+                
         }
         jj_consume_token(COLON);
         Block(p.GetDeclarationTokens());
@@ -619,7 +620,7 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             default:
                 jj_la1[13] = jj_gen;
-                ;
+                break;
         }
         if (t != null)
         {
@@ -630,7 +631,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void regular_expr_production()
     {
         TokenProduction p = new TokenProduction();
-        List states;
+        List<string> states;
         Token t = p.firstToken = getToken(1);
         p.SetLine(t.beginLine);
         p.SetColumn(t.beginColumn);
@@ -688,7 +689,7 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             default:
                 jj_la1[16] = jj_gen;
-                ;
+                break;
         }
         regexpr_kind(p);
         if (p.kind != TokenProduction.TOKEN && Options.GetUserTokenManager())
@@ -709,7 +710,7 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             default:
                 jj_la1[17] = jj_gen;
-                ;
+                break;
         }
         jj_consume_token(COLON);
         jj_consume_token(LBRACE);
@@ -736,7 +737,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void token_manager_decls()
     {
-        List decls = new ();
+        List<Token> decls = new ();
         Token t;
         t = jj_consume_token(_TOKEN_MGR_DECLS);
         jj_consume_token(COLON);
@@ -753,7 +754,7 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             default:
                 jj_la1[19] = jj_gen;
-                ;
+                break;
         }
         AddTokenManagerDecls(t, decls);
     }
@@ -2040,7 +2041,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_la1[62] = jj_gen;
                 ;
         }
-        if (t.image.equals(parser_class_name) && class_nesting == 1 && processing_cu)
+        if (t.image.Equals(parser_class_name) && class_nesting == 1 && processing_cu)
         {
             is_parser_class = true;
             SetInsertionPoint(getToken(1), 1);
@@ -2336,7 +2337,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
     }
 
-    public void ClassOrInterfaceBody(bool isInterface, List tokens)
+    public void ClassOrInterfaceBody(bool isInterface, List<Token> tokens)
     {
         Token first, last;
         tokens ??= new ();
@@ -2568,7 +2569,7 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             default:
                 jj_la1[80] = jj_gen;
-                ;
+                break;
         }
     }
 
@@ -2799,7 +2800,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
     }
 
-    public void FormalParameters(List tokens)
+    public void FormalParameters(List<Token> tokens)
     {
         Token first, last;
         tokens ??= new ();
@@ -3476,7 +3477,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
     }
 
-    public void ResultType(List tokens)
+    public void ResultType(List<Token> tokens)
     {
         Token first = getToken(1);
         tokens ??= new ();
@@ -3562,7 +3563,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
     }
 
-    public void Name(List tokens)
+    public void Name(List<Token> tokens)
     {
         tokens ??= new ();
         Token first = getToken(1);
@@ -4653,6 +4654,7 @@ public class JavaCCParser : JavaCCParserInternals
                             break;
                         default:
                             jj_la1[154] = jj_gen;
+                            break;
                             ;
                     }
                     switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
@@ -4669,6 +4671,7 @@ public class JavaCCParser : JavaCCParserInternals
                                     break;
                                 default:
                                     jj_la1[155] = jj_gen;
+                                    break;
                                     ;
                             }
                             break;
@@ -4875,6 +4878,7 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             default:
                 jj_la1[161] = jj_gen;
+                break;
                 ;
         }
         jj_consume_token(SEMICOLON);
@@ -4887,7 +4891,7 @@ public class JavaCCParser : JavaCCParserInternals
         Statement();
     }
 
-    public void Block(List tokens)
+    public void Block(List<Token> tokens)
     {
         Token first, last;
         tokens ??= new ();

@@ -244,9 +244,9 @@ public class JJTreeParserConstants : JJTreeParserTreeConstants
     /** RegularExpression Id. */
     public const int REMASSIGN = 125;
     /** RegularExpression Id. */
-    public const int RUNSIGNEDSHIFT = 126;
+    public const int RUNSIGNEDSHIFT_VALUE = 126;
     /** RegularExpression Id. */
-    public const int RSIGNEDSHIFT = 127;
+    public const int RSIGNEDSHIFT_VALUE = 127;
     /** RegularExpression Id. */
     public const int GT = 128;
     /** RegularExpression Id. */

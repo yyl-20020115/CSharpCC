@@ -88,7 +88,7 @@ public class OutputFile
             // stored
             // in the file.
 
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            StreamReader reader = new StreamReader(file);
             MessageDigest digest;
             try
             {
