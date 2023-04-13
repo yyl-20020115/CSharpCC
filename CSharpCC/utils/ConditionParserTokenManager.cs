@@ -546,7 +546,7 @@ public class ConditionParserTokenManager : ConditionParserConstants
         int beginColumn;
         int endColumn;
         String im = jjstrLiteralImages[jjmatchedKind];
-        curTokenImage = (im == null) ? input_stream.GetImage() : im;
+        curTokenImage = im ?? input_stream.GetImage();
         beginLine = input_stream.getBeginLine();
         beginColumn = input_stream.getBeginColumn();
         endLine = input_stream.getEndLine();

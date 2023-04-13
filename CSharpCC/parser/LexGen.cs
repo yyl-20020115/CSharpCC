@@ -1088,7 +1088,7 @@ public class LexGen : CodeGenerator
             }
             else
             {
-                GenCodeLine(prefix + "jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
+                GenCodeLine(prefix + "jjmatchedKind = 0x" + Convert.ToString(int.MaxValue,16) + ";");
                 GenCodeLine(prefix + "jjmatchedPos = 0;");
             }
 

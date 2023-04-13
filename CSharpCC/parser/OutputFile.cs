@@ -264,7 +264,7 @@ public class OutputFile
             pw = new TrapClosePrintWriter(this.dos, this); ;
 
             // Write the headers....
-            string version = compatibleVersion == null ? Version.VersionNumber : compatibleVersion;
+            string version = compatibleVersion ?? Version.VersionNumber;
             pw.WriteLine("/* "
                 + JavaCCGlobals.GetIdString(toolName, file)
                 + " Version " + version + " */");

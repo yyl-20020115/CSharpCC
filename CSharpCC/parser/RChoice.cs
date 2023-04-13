@@ -59,7 +59,7 @@ public class RChoice : RegularExpression
 
     public override Nfa GenerateNfa(bool ignoreCase)
     {
-        CompressCharLists();
+        CompressCharLists(curRE);
 
         if (GetChoices().Count == 1)
             return ((RegularExpression)GetChoices()[0]).GenerateNfa(ignoreCase);
@@ -82,9 +82,9 @@ public class RChoice : RegularExpression
         return retVal;
     }
 
-    void CompressCharLists()
+    void CompressCharLists(RegularExpression curRE)
     {
-        CompressChoices(); // Unroll nested choices
+        CompressChoices(curRE); // Unroll nested choices
         RegularExpression curRE;
         RCharacterList curCharList = null;
 
@@ -95,10 +95,10 @@ public class RChoice : RegularExpression
             while (curRE is RJustName)
                 curRE = ((RJustName)curRE).regexpr;
 
-            if (curRE is RStringLiteral &&
-                ((RStringLiteral)curRE).image.Length == 1)
+            if (curRE is RStringLiteral literal &&
+                literal.image.Length == 1)
                 GetChoices()[i] = curRE = new RCharacterList(
-                           ((RStringLiteral)curRE).image[0]);
+                           literal.image[0]);
 
             if (curRE is RCharacterList)
             {
@@ -119,7 +119,7 @@ public class RChoice : RegularExpression
         }
     }
 
-    void CompressChoices()
+    void CompressChoices(RegularExpression curRE)
     {
         RegularExpression curRE;
 
@@ -128,7 +128,9 @@ public class RChoice : RegularExpression
             curRE = (RegularExpression)GetChoices()[i];
 
             while (curRE is RJustName)
+            {
                 curRE = ((RJustName)curRE).regexpr;
+            }
 
             if (curRE is RChoice)
             {

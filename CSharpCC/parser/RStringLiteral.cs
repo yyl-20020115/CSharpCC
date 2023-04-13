@@ -542,7 +542,7 @@ public class RStringLiteral : RegularExpression
         }
         else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
-            codeGenerator.generateMethodDefHeader("int", LexGen.tokMgrClassName, "jjStartNfaWithStates" + LexGen.lexStateSuffix + "(int pos, int kind, int state)");
+            codeGenerator.GenerateMethodDefHeader("int", LexGen.tokMgrClassName, "jjStartNfaWithStates" + LexGen.lexStateSuffix + "(int pos, int kind, int state)");
         }
         else
         {
@@ -699,7 +699,7 @@ public class RStringLiteral : RegularExpression
             }
             else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
             {
-                codeGenerator.generateMethodDefHeader(" int ", LexGen.tokMgrClassName, "jjMoveStringLiteralDfa0" + LexGen.lexStateSuffix + "()");
+                codeGenerator.GenerateMethodDefHeader(" int ", LexGen.tokMgrClassName, "jjMoveStringLiteralDfa0" + LexGen.lexStateSuffix + "()");
             }
             else
             {
@@ -776,7 +776,7 @@ public class RStringLiteral : RegularExpression
             }
             else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
             {
-                codeGenerator.generateMethodDefHeader(" int ", LexGen.tokMgrClassName, "jjMoveStringLiteralDfa" + i + LexGen.lexStateSuffix + _params);
+                codeGenerator.GenerateMethodDefHeader(" int ", LexGen.tokMgrClassName, "jjMoveStringLiteralDfa" + i + LexGen.lexStateSuffix + _params);
             }
             else
             {
@@ -1431,7 +1431,7 @@ public class RStringLiteral : RegularExpression
                 (newStates = jjtmpStates).Clear();
 
                 if (statesForPos[j] == null)
-                    statesForPos[j] = new Dictionary();
+                    statesForPos[j] = new ();
 
                 if ((actives = ((long[])statesForPos[j].get(kind + ", " +
                                          jjmatchedPos + ", " + stateSetString))) == null)
@@ -1627,7 +1627,7 @@ public class RStringLiteral : RegularExpression
         }
         else
         {
-            codeGenerator.generateMethodDefHeader("int ", LexGen.tokMgrClassName, "jjStartNfa" + LexGen.lexStateSuffix + _params);
+            codeGenerator.GenerateMethodDefHeader("int ", LexGen.tokMgrClassName, "jjStartNfa" + LexGen.lexStateSuffix + _params);
         }
         codeGenerator.GenCodeLine("{");
 

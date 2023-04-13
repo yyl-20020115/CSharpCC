@@ -759,7 +759,7 @@ public class ParseEngine
         {
             codeGenerator.PrintTokenSetup(t); ccol = 1;
             codeGenerator.PrintLeadingComments(t);
-            codeGenerator.GenCode("  " + staticOpt() + "final " + (p.GetAccessMod() != null ? p.GetAccessMod() : "public") + " ");
+            codeGenerator.GenCode("  " + staticOpt() + "final " + (p.GetAccessMod() ?? "public") + " ");
             cline = t.beginLine; ccol = t.beginColumn;
             codeGenerator.PrintTokenOnly(t);
             for (int i = 1; i < p.GetReturnTypeTokens().Count; i++)
@@ -1326,8 +1326,7 @@ public class ParseEngine
             e.internal_name = "R_" + e.GetProductionName() + "_" + e.GetLine() + "_" + e.GetColumn() + "_" + gensymindex;
             e.internal_index = gensymindex;
         }
-        Phase3Data p3d = (Phase3Data)(phase3table.get(e));
-        if (p3d == null || p3d.count < inf.count)
+        if (!phase3table.TryGetValue(e,out var p3d) || p3d.count < inf.count)
         {
             p3d = new Phase3Data(e, inf.count);
             phase3list.Add(p3d);

@@ -2463,7 +2463,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
         int beginColumn;
         int endColumn;
         String im = jjstrLiteralImages[jjmatchedKind];
-        curTokenImage = (im == null) ? input_stream.GetImage() : im;
+        curTokenImage = im ?? input_stream.GetImage();
         beginLine = input_stream.GetBeginLine();
         beginColumn = input_stream.GetBeginColumn();
         endLine = input_stream.GetEndLine();

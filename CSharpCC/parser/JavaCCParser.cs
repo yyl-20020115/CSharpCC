@@ -2,6 +2,7 @@
 
 
 using org.javacc.jjtree;
+using System.Collections.Generic;
 using System.Text;
 /**
 * This file contains the code for JavaCCParser generated
@@ -175,10 +176,7 @@ public class JavaCCParser : JavaCCParserInternals
         Token t;
         while ((t = getToken(1)).kind != RBRACE || --b != 0)
         {
-            if (tokens != null)
-            {
-                tokens.Add(t);
-            }
+            tokens?.Add(t);
             if (t.kind == EOF) break;
             if (t.kind == LBRACE) b++;
             getNextToken(); // eat it
@@ -192,10 +190,7 @@ public class JavaCCParser : JavaCCParserInternals
         Token t;
         while ((t = getToken(1)).kind != RPAREN || --b != 0)
         {
-            if (tokens != null)
-            {
-                tokens.Add(t);
-            }
+            tokens?.Add(t);
             if (t.kind == EOF) break;
             if (t.kind == LPAREN) b++;
             getNextToken(); // eat it
@@ -344,12 +339,12 @@ public class JavaCCParser : JavaCCParserInternals
         {
             case INTEGER_LITERAL:
                 int_val = IntegerLiteral();
-                Options.setInputFileOption(t, getToken(0), option_name, int.valueOf(int_val));
+                Options.SetInputFileOption(t, getToken(0), option_name, (int_val));
                 break;
             case FALSE:
             case TRUE:
                 bool_val = BooleanLiteral();
-                Options.setInputFileOption(t, getToken(0), option_name, Boolean.valueOf(bool_val));
+                Options.SetInputFileOption(t, getToken(0), option_name, Boolean.valueOf(bool_val));
                 break;
             case STRING_LITERAL:
                 string_val = StringLiteral();

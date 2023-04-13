@@ -139,10 +139,7 @@ public class CodeGenerator : JavaCCGlobals
         }
         finally
         {
-            if (fw != null)
-            {
-                fw.Close();
-            }
+            fw?.Close();
         }
     }
 

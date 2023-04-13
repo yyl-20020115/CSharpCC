@@ -105,9 +105,9 @@ public class JJTreeParser : JJTreeParserConstants
                 {
                     { if (true) throw exception; }
                 }
-                if (jjte001 is ParseException)
+                if (jjte001 is ParseException exception1)
                 {
-                    { if (true) throw (ParseException)jjte001; }
+                    { if (true) throw exception1; }
                 }
                 { if (true) throw (Error)jjte001; }
             }
@@ -274,9 +274,9 @@ public class JJTreeParser : JJTreeParserConstants
                 {
                     { if (true) throw exception; }
                 }
-                if (jjte001 is ParseException)
+                if (jjte001 is ParseException exception1)
                 {
-                    { if (true) throw (ParseException)jjte001; }
+                    { if (true) throw exception1; }
                 }
                 { if (true) throw (Error)jjte001; }
             }
@@ -335,8 +335,8 @@ public class JJTreeParser : JJTreeParserConstants
                 case FALSE:
                 case TRUE:
                     v = BooleanLiteral();
-                    JJTreeOptions.setInputFileOption(o, v, o.image,
-                                               Boolean.valueOf(v.image));
+                    JJTreeOptions.SetInputFileOption(o, v, o.image,
+                                               (v.image));
                     jjtn000.Initialize(o.image, v.image);
                     break;
                 case STRING_LITERAL:
@@ -363,9 +363,9 @@ public class JJTreeParser : JJTreeParserConstants
             {
                 jjtree.PopNode();
             }
-            if (jjte000 is RuntimeException)
+            if (jjte000 is RuntimeException exception)
             {
-                { if (true) throw (RuntimeException)jjte000; }
+                { if (true) throw exception; }
             }
             if (jjte000 is ParseException)
             {
@@ -600,9 +600,9 @@ public class JJTreeParser : JJTreeParserConstants
                 {
                     { if (true) throw (RuntimeException)jjte001; }
                 }
-                if (jjte001 is ParseException)
+                if (jjte001 is ParseException exception)
                 {
-                    { if (true) throw (ParseException)jjte001; }
+                    { if (true) throw exception; }
                 }
                 { if (true) throw (Error)jjte001; }
             }
@@ -1097,9 +1097,9 @@ public class JJTreeParser : JJTreeParserConstants
             {
                 jjtree.PopNode();
             }
-            if (jjte000 is RuntimeException)
+            if (jjte000 is RuntimeException exception)
             {
-                { if (true) throw (RuntimeException)jjte000; }
+                { if (true) throw exception; }
             }
             if (jjte000 is ParseException)
             {
@@ -1181,9 +1181,9 @@ public class JJTreeParser : JJTreeParserConstants
             {
                 jjtree.PopNode();
             }
-            if (jjte000 is RuntimeException)
+            if (jjte000 is RuntimeException exception)
             {
-                { if (true) throw (RuntimeException)jjte000; }
+                { if (true) throw exception; }
             }
             if (jjte000 is ParseException)
             {
@@ -1246,9 +1246,9 @@ public class JJTreeParser : JJTreeParserConstants
             {
                 { if (true) throw (RuntimeException)jjte000; }
             }
-            if (jjte000 is ParseException)
+            if (jjte000 is ParseException exception)
             {
-                { if (true) throw (ParseException)jjte000; }
+                { if (true) throw exception; }
             }
             { if (true) throw (Error)jjte000; }
         }
@@ -1364,9 +1364,9 @@ public class JJTreeParser : JJTreeParserConstants
                     {
                         { if (true) throw (RuntimeException)jjte002; }
                     }
-                    if (jjte002 is ParseException)
+                    if (jjte002 is ParseException exception)
                     {
-                        { if (true) throw (ParseException)jjte002; }
+                        { if (true) throw exception; }
                     }
                     { if (true) throw (Error)jjte002; }
                 }
@@ -2033,9 +2033,9 @@ public class JJTreeParser : JJTreeParserConstants
                         {
                             { if (true) throw (RuntimeException)jjte002; }
                         }
-                        if (jjte002 is ParseException)
+                        if (jjte002 is ParseException exception)
                         {
-                            { if (true) throw (ParseException)jjte002; }
+                            { if (true) throw exception; }
                         }
                         { if (true) throw (Error)jjte002; }
                     }
@@ -2071,9 +2071,9 @@ public class JJTreeParser : JJTreeParserConstants
                         {
                             jjtree.PopNode();
                         }
-                        if (jjte003 is RuntimeException)
+                        if (jjte003 is RuntimeException exception)
                         {
-                            { if (true) throw (RuntimeException)jjte003; }
+                            { if (true) throw exception; }
                         }
                         if (jjte003 is ParseException)
                         {
@@ -2164,9 +2164,9 @@ public class JJTreeParser : JJTreeParserConstants
             {
                 { if (true) throw (RuntimeException)jjte000; }
             }
-            if (jjte000 is ParseException)
+            if (jjte000 is ParseException exception)
             {
-                { if (true) throw (ParseException)jjte000; }
+                { if (true) throw exception; }
             }
             { if (true) throw (Error)jjte000; }
         }
@@ -2219,9 +2219,9 @@ public class JJTreeParser : JJTreeParserConstants
             {
                 jjtree.PopNode();
             }
-            if (jjte000 is RuntimeException)
+            if (jjte000 is RuntimeException exception)
             {
-                { if (true) throw (RuntimeException)jjte000; }
+                { if (true) throw exception; }
             }
             if (jjte000 is ParseException)
             {
@@ -2565,9 +2565,9 @@ public class JJTreeParser : JJTreeParserConstants
             {
                 jjtree.PopNode();
             }
-            if (jjte000 is RuntimeException)
+            if (jjte000 is RuntimeException exception)
             {
-                { if (true) throw (RuntimeException)jjte000; }
+                { if (true) throw exception; }
             }
             if (jjte000 is ParseException)
             {

@@ -225,9 +225,8 @@ public class Semanticize : JavaCCGlobals
             for (Iterator<RegExprSpec> it1 = respecs.iterator(); it1.hasNext();)
             {
                 RegExprSpec res = (RegExprSpec)(it1.next());
-                if (res.rexp is RStringLiteral)
+                if (res.rexp is RStringLiteral sl)
                 {
-                    RStringLiteral sl = (RStringLiteral)res.rexp;
                     // This loop performs the checks and actions with respect to each lexical state.
                     for (int i = 0; i < table.Length; i++)
                     {
@@ -286,8 +285,8 @@ public class Semanticize : JavaCCGlobals
                             if (sl.ordinal == 0)
                             {
                                 sl.ordinal = tokenCount++;
-                            } 
-                            table2.Add(sl.image, sl); 
+                            }
+                            table2.Add(sl.image, sl);
                             // The above "put" may override an existing entry (that is not IGNORE_CASE) and that's
                             // the desired behavior. 
                         }
@@ -326,7 +325,7 @@ public class Semanticize : JavaCCGlobals
                                 JavaCCErrors.SemanticError(sl, "String token \"" + sl.image +
                                         "\" has been defined as a private regular expression.");
                             }
-                            else 
+                            else
                             {
                                 // This is now a legitimate reference to an existing RStringLiteral.
                                 // So we assign it a number and take it out of "rexprlist".
@@ -340,11 +339,11 @@ public class Semanticize : JavaCCGlobals
                         }
                     }
                 }
-                else if (!(res.rexp is RJustName))
+                else if (res.rexp is not RJustName)
                 {
                     res.rexp.ordinal = tokenCount++;
                 }
-                if (!(res.rexp is RJustName) && !res.rexp.label == (""))
+                if (res.rexp is not RJustName && res.rexp.label != (""))
                 {
                     names_of_tokens.Add((res.rexp.ordinal), res.rexp.label);
                 }

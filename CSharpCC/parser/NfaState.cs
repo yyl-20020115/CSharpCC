@@ -2995,10 +2995,10 @@ public class NfaState
             }
         }
 
-        codeGenerator.GenCodeLine("   int kind = 0x" + int.toHexString(int.MaxValue) + ";");
+        codeGenerator.GenCodeLine("   int kind = 0x" + Convert.ToString(int.MaxValue,16) + ";");
         codeGenerator.GenCodeLine("   for (;;)");
         codeGenerator.GenCodeLine("   {");
-        codeGenerator.GenCodeLine("      if (++jjround == 0x" + int.toHexString(int.MaxValue) + ")");
+        codeGenerator.GenCodeLine("      if (++jjround == 0x" + Convert.ToString(int.MaxValue,16) + ")");
         codeGenerator.GenCodeLine("         ReInitRounds();");
         codeGenerator.GenCodeLine("      if (curChar < 64)");
         codeGenerator.GenCodeLine("      {");
@@ -3022,11 +3022,11 @@ public class NfaState
 
         codeGenerator.GenCodeLine("      }");
 
-        codeGenerator.GenCodeLine("      if (kind != 0x" + int.toHexString(int.MaxValue) + ")");
+        codeGenerator.GenCodeLine("      if (kind != 0x" + Convert.ToString(int.MaxValue,16) + ")");
         codeGenerator.GenCodeLine("      {");
         codeGenerator.GenCodeLine("         jjmatchedKind = kind;");
         codeGenerator.GenCodeLine("         jjmatchedPos = curPos;");
-        codeGenerator.GenCodeLine("         kind = 0x" + int.toHexString(int.MaxValue) + ";");
+        codeGenerator.GenCodeLine("         kind = 0x" + Convert.ToString(int.MaxValue,16) + ";");
         codeGenerator.GenCodeLine("      }");
         codeGenerator.GenCodeLine("      ++curPos;");
 
@@ -3035,7 +3035,7 @@ public class NfaState
             if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" +
-                      int.toHexString(int.MaxValue) + ")");
+                      Convert.ToString(int.MaxValue,16) + ")");
                 codeGenerator.GenCodeLine("         debugStream.println(" +
                        "\"   Currently matched the first \" + (jjmatchedPos + 1) + \" characters as" +
                        " a \" + tokenImage[jjmatchedKind] + \" token.\");");
@@ -3043,7 +3043,7 @@ public class NfaState
             else
             {
                 codeGenerator.GenCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" +
-                      int.toHexString(int.MaxValue) + ")");
+                      Convert.ToString(int.MaxValue,16) + ")");
                 codeGenerator.GenCodeLine("   fprintf(debugStream, \"   Currently matched the first %d characters as a \\\"%s\\\" token.\\n\",  (jjmatchedPos + 1),  addUnicodeEscapes(tokenImage[jjmatchedKind]).c_str());");
             }
         }

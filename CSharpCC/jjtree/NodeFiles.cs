@@ -394,7 +394,7 @@ public static class NodeFiles
 
         Dictionary options = new Dictionary(Options.getOptions());
         options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
-        options.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(JJTreeOptions.GetVisitorReturnType() == ("void")));
+        options.Add("VISITOR_RETURN_TYPE_VOID", (JJTreeOptions.GetVisitorReturnType() == ("void")));
 
         OutputFileGenerator generator = new OutputFileGenerator(
             "/templates/SimpleNode.template", options);
@@ -414,7 +414,7 @@ public static class NodeFiles
         Dictionary options = new Dictionary(Options.getOptions());
         options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
         options.Add("NODE_TYPE", nodeType);
-        options.Add("VISITOR_RETURN_TYPE_VOID", Boolean.valueOf(JJTreeOptions.GetVisitorReturnType() == ("void")));
+        options.Add("VISITOR_RETURN_TYPE_VOID", (JJTreeOptions.GetVisitorReturnType() == ("void")));
 
         OutputFileGenerator generator = new OutputFileGenerator(
             "/templates/MultiNode.template", options);

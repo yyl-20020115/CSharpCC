@@ -21,7 +21,7 @@ public static class CPPJJTreeState
         options.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
         string filePrefix = System.IO.Path.Combine(JJTreeOptions.GetJJTreeOutputDirectory(), "JJT" + JJTreeGlobals.ParserName + "State");
 
-        OutputFile outputFile = new OutputFile((filePrefix + ".h"), JJTStateVersion, new String[0]);
+        OutputFile outputFile = new((filePrefix + ".h"), JJTStateVersion, new String[0]);
         CPPNodeFiles.GenerateFile(outputFile, "/templates/cpp/JJTTreeState.h.template", options);
 
         outputFile = new OutputFile((filePrefix + ".cc"), JJTStateVersion, new String[0]);

@@ -79,8 +79,8 @@ public class JavaCCInterpreter
         int input_size = input.Length;
         int curPos = 0;
         int curLexState = td.defaultLexState;
-        HashSet<int> curStates = new HashSet<int>();
-        HashSet<int> newStates = new HashSet<int>();
+        HashSet<int> curStates = new();
+        HashSet<int> newStates = new();
         while (curPos < input_size)
         {
             int beg = curPos;

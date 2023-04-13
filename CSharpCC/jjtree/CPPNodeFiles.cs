@@ -102,7 +102,7 @@ public static class CPPNodeFiles
                 return;
             }
 
-            Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
+            Dictionary<String, Object> optionMap = new(Options.getOptions());
             optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
             optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
             optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
@@ -134,7 +134,7 @@ public static class CPPNodeFiles
                 return;
             }
 
-            Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
+            Dictionary<String, Object> optionMap = new(Options.getOptions());
             optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
             optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
             optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
@@ -166,7 +166,7 @@ public static class CPPNodeFiles
                 return;
             }
 
-            Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
+            Dictionary<String, Object> optionMap = new(Options.getOptions());
             optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
             optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
             optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
@@ -241,7 +241,7 @@ public static class CPPNodeFiles
                     return;
                 }
 
-                Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
+                Dictionary<String, Object> optionMap = new(Options.getOptions());
                 optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
                 optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
                 optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
@@ -280,7 +280,7 @@ public static class CPPNodeFiles
                 return;
             }
 
-            Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
+            Dictionary<String, Object> optionMap = new(Options.getOptions());
             optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
             optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
             optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
@@ -323,7 +323,7 @@ public static class CPPNodeFiles
                 return;
             }
 
-            Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
+            Dictionary<String, Object> optionMap = new(Options.getOptions());
             optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, JJTreeGlobals.ParserName);
             optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
             optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
@@ -376,7 +376,7 @@ public static class CPPNodeFiles
 
         try
         {
-            OutputFile outputFile = new OutputFile(file);
+            OutputFile outputFile = new(file);
             TextWriter ostr = outputFile.GetPrintWriter();
 
             List<string> nodeIds = ASTNodeDescriptor.GetNodeIds();
@@ -477,7 +477,7 @@ public static class CPPNodeFiles
         {
             string name = VisitorClass();
             string file = (VisitorIncludeFile());
-            OutputFile outputFile = new OutputFile(file);
+            OutputFile outputFile = new(file);
             TextWriter ostr = outputFile.GetPrintWriter();
 
             GeneratePrologue(ostr);
