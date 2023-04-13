@@ -640,7 +640,7 @@ public class ParseEngine
         _params = sig.ToString();
 
         // For now, just ignore comments
-        codeGenerator.GenerateMethodDefHeader(ret, cu_name, p.GetLhs() + _params, sig.ToString());
+        codeGenerator.GenerateMethodDefHeader(ret, CuName, p.GetLhs() + _params, sig.ToString());
 
         return "";
     }
@@ -659,7 +659,7 @@ public class ParseEngine
         string comment1 = codeGenerator.GetLeadingComments(t);
         cline = t.beginLine;
         ccol = t.beginColumn;
-        sig.Append(t.image);  
+        sig.Append(t.image); 
         if (t.kind == JavaCCParserConstants.VOID) void_ret = true; 
         if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
          
@@ -690,7 +690,7 @@ public class ParseEngine
         _params = sig.ToString();
 
         // For now, just ignore comments
-        codeGenerator.generateMethodDefHeader(ret, cu_name, p.GetLhs() + _params, sig.ToString());
+        codeGenerator.GenerateMethodDefHeader(ret, cu_name, p.GetLhs() + _params, sig.ToString());
 
         // Generate a default value for error return.
         string default_return;

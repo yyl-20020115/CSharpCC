@@ -275,10 +275,10 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             TokenizerData.MatchInfo matchInfo = allMatches[i];
             switch (matchInfo.matchType)
             {
-                case MatchType.SKIP: toSkip.Set(i); break;
-                case MatchType.SPECIAL_TOKEN: toSpecial.Set(i); break;
-                case MatchType.MORE: toMore.Set(i); break;
-                case MatchType.TOKEN: toToken.Set(i); break;
+                case MatchTypes.SKIP: toSkip.Set(i); break;
+                case MatchTypes.SPECIAL_TOKEN: toSpecial.Set(i); break;
+                case MatchTypes.MORE: toMore.Set(i); break;
+                case MatchTypes.TOKEN: toToken.Set(i); break;
             }
             newStates[i] = matchInfo.newLexState;
             string image = matchInfo.image;
@@ -330,7 +330,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         // Token actions.
         codeGenerator.GenCodeLine(
             staticString + "void TokenLexicalActions(Token matchedToken) {");
-        DumpLexicalActions(allMatches, MatchType.TOKEN,
+        DumpLexicalActions(allMatches, MatchTypes.TOKEN,
                            "matchedToken.kind", codeGenerator);
         codeGenerator.GenCodeLine("}");
 
@@ -339,9 +339,9 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
 
         codeGenerator.GenCodeLine(
             staticString + "void SkipLexicalActions(Token matchedToken) {");
-        DumpLexicalActions(allMatches, MatchType.SKIP,
+        DumpLexicalActions(allMatches, MatchTypes.SKIP,
                            "jjmatchedKind", codeGenerator);
-        DumpLexicalActions(allMatches, MatchType.SPECIAL_TOKEN,
+        DumpLexicalActions(allMatches, MatchTypes.SPECIAL_TOKEN,
                            "jjmatchedKind", codeGenerator);
         codeGenerator.GenCodeLine("}");
 
@@ -350,7 +350,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             staticString + "void MoreLexicalActions() {");
         codeGenerator.GenCodeLine(
             "jjimageLen += (lengthOfMatch = jjmatchedPos + 1);");
-        DumpLexicalActions(allMatches, MatchType.MORE,
+        DumpLexicalActions(allMatches, MatchTypes.MORE,
                            "jjmatchedKind", codeGenerator);
         codeGenerator.GenCodeLine("}");
 
@@ -365,7 +365,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
 
     private static void DumpLexicalActions(
         Dictionary<int, TokenizerData.MatchInfo> allMatches,
-        MatchType matchType, string kindString,
+        MatchTypes matchType, string kindString,
         CodeGenerator codeGenerator)
     {
         codeGenerator.GenCodeLine("  switch(" + kindString + ") {");

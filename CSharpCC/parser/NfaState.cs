@@ -597,7 +597,7 @@ public class NfaState
                     string tmp = "";
                     for (int l = 0; l < equivStates.Count; l++)
                         tmp += String.valueOf(
-                                  ((NfaState)equivStates.get(l)).id) + ", ";
+                                  ((NfaState)equivStates[l]).id) + ", ";
 
                     if ((newState = (NfaState)equivStatesTable.get(tmp)) == null)
                     {
@@ -1041,6 +1041,7 @@ public class NfaState
                 if ((ind = (int)lohiByteTab.get(tmp)) == null)
                 {
                     allBitVectors.Add(tmp);
+
 
                     if (!AllBitsSet(tmp))
                         if (CodeGenerator.IsJavaLanguage())
@@ -2670,12 +2671,12 @@ public class NfaState
         {
             NfaState tmp = (NfaState)v[j];
             if (tmp.stateName != -1 && !tmp.dummy)
-                allStates.set(tmp.stateName, tmp);
+                allStates[tmp.stateName]= tmp;
         }
     }
 
     //private static bool boilerPlateDumped = false;
-    static void PrintBoilerPlate(CodeGenerator codeGenerator)
+    public static void PrintBoilerPlate(CodeGenerator codeGenerator)
     {
         codeGenerator.GenCodeLine((Options.getStatic() ? "static " : "") + "private void " +
                      "jjCheckNAdd(int state)");
@@ -3442,8 +3443,8 @@ public class NfaState
         List<NfaState> cleanStateList = new();
         foreach (int l in statesForLexicalState.keySet())
         {
-            int offset = nfaStateOffset.get(l);
-            List<NfaState> states = statesForLexicalState.get(l);
+            int offset = nfaStateOffset[l];
+            List<NfaState> states = statesForLexicalState[l];
             for (int i = 0; i < states.Count; i++)
             {
                 NfaState state = states[i];
@@ -3476,21 +3477,21 @@ public class NfaState
             HashSet<int> composite = new HashSet<int>();
             if (s.isComposite)
             {
-                for (int c : s.compositeStates) composite.Add(c);
+                foreach (int c in s.compositeStates) composite.Add(c);
             }
             tokenizerData.AddNfaState(
                 s.stateName, chars, nextStates, composite, s.kindToPrint);
         }
-        Dictionary<int, int> initStates = new Dictionary<int, int>();
-        foreach (int l in initialStates.keySet())
+        var initStates = new Dictionary<int, int>();
+        foreach (int l in initialStates.Keys)
         {
-            if (initialStates.get(l) == null)
+            if (initialStates[l] == null)
             {
                 initStates.Add(l, -1);
             }
             else
             {
-                initStates.Add(l, initialStates.get(l).stateName);
+                initStates.Add(l, initialStates[l].stateName);
             }
         }
         tokenizerData.SetInitialStates(initStates);

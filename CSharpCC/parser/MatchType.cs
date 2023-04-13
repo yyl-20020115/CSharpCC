@@ -1,6 +1,6 @@
 ﻿namespace org.javacc.parser;
 
-public enum MatchType : int
+public enum MatchTypes : int
 {
     SKIP,
     SPECIAL_TOKEN,

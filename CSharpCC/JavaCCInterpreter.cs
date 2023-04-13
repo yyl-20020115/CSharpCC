@@ -177,7 +177,7 @@ public class JavaCCInterpreter
                     Console.Error.WriteLine(
                         "Actions not implemented (yet) in intererpreted mode");
                 }
-                if (matchInfo.matchType == TokenizerData.MatchType.TOKEN)
+                if (matchInfo.matchType == MatchTypes.TOKEN)
                 {
                     Console.Error.WriteLine("Token: " + matchedKind + "; image: \"" +
                                        input[beg.. (matchedPos + 1)] + "\"");

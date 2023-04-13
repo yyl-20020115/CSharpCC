@@ -333,6 +333,7 @@ public class OutputFile
         return sb.ToString();
     }
 
+
     private class NullOutputStream : Stream
     {
 

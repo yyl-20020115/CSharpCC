@@ -435,7 +435,7 @@ public class ConditionParserTokenManager : ConditionParserConstants
     }
     private int jjMoveStringLiteralDfa0_2()
     {
-        switch (curChar)
+        switch ((int)curChar)
         {
             case 42:
                 return jjMoveStringLiteralDfa1_2(0x400L);

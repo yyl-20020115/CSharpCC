@@ -11032,7 +11032,7 @@ public class JJTreeParser : JJTreeParserConstants
     {
         Token oldToken;
         if ((oldToken = token).next != null) token = token.next;
-        else token = token.next = token_source.getNextToken();
+        else token = token.next = token_source.GetNextToken();
         jj_ntk = -1;
         if (token.kind == kind)
         {
@@ -11066,7 +11066,7 @@ public class JJTreeParser : JJTreeParserConstants
             jj_la--;
             if (jj_scanpos.next == null)
             {
-                jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.getNextToken();
+                jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.GetNextToken();
             }
             else
             {
@@ -11093,7 +11093,7 @@ public class JJTreeParser : JJTreeParserConstants
     public Token getNextToken()
     {
         if (token.next != null) token = token.next;
-        else token = token.next = token_source.getNextToken();
+        else token = token.next = token_source.GetNextToken();
         jj_ntk = -1;
         jj_gen++;
         return token;
@@ -11106,7 +11106,7 @@ public class JJTreeParser : JJTreeParserConstants
         for (int i = 0; i < index; i++)
         {
             if (t.next != null) t = t.next;
-            else t = t.next = token_source.getNextToken();
+            else t = t.next = token_source.GetNextToken();
         }
         return t;
     }
@@ -11114,7 +11114,7 @@ public class JJTreeParser : JJTreeParserConstants
     private int jj_ntk_func()
     {
         if ((jj_nt = token.next) == null)
-            return (jj_ntk = (token.next = token_source.getNextToken()).kind);
+            return (jj_ntk = (token.next = token_source.GetNextToken()).kind);
         else
             return (jj_ntk = jj_nt.kind);
     }

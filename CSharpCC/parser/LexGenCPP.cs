@@ -80,14 +80,14 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
           if (cu_to_insertion_point_1.size() <= l)
             break;
 
-          kind = ((Token)cu_to_insertion_point_1.get(l)).kind;
+          kind = ((Token)cu_to_insertion_point_1[l]).kind;
           if(kind == PACKAGE || kind == IMPORT) {
             for (; i < cu_to_insertion_point_1.size(); i++) {
               kind = ((Token)cu_to_insertion_point_1[i]).kind;
               if (kind == CLASS)
               {
-                cline = ((Token)(cu_to_insertion_point_1.get(l))).beginLine;
-                ccol = ((Token)(cu_to_insertion_point_1.get(l))).beginColumn;
+                cline = ((Token)(cu_to_insertion_point_1[l])).beginLine;
+                ccol = ((Token)(cu_to_insertion_point_1[l])).beginColumn;
                 for (j = l; j < i; j++) {
                   printToken((Token)(cu_to_insertion_point_1[j]));
                 }
@@ -225,7 +225,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         actions[0] = actForEof;
         hasTokenActions = actForEof != null;
         initStates = new (); 
-        canMatchAnyChar = new int[maxLexStates];
+        canMatchAnyChar = new int[maxLexStates]; 
         canLoop = new bool[maxLexStates];
         stateHasActions = new bool[maxLexStates];
         lexStateName = new String[maxLexStates];

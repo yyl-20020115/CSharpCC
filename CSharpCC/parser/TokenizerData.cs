@@ -67,13 +67,13 @@ public class TokenizerData
         // Kind index.
         public int kind;
         // Type of match.
-        public MatchType matchType;
+        public MatchTypes matchType;
         // Any lexical state transition specified.
         public int newLexState;
         // Any lexical state transition specified.
         public string action;
 
-        public MatchInfo(string image, int kind, MatchType matchType,
+        public MatchInfo(string image, int kind, MatchTypes matchType,
                          int newLexState, string action)
         {
             this.image = image;
@@ -163,25 +163,25 @@ public class TokenizerData
         {
             int vectorIndex = i >> 6;
             long bits = (1L << (i & 077));
-            var matchType = MatchType.TOKEN;
+            var matchType = MatchTypes.TOKEN;
             if (toSkip.Length > vectorIndex && (toSkip[vectorIndex] & bits) != 0L)
             {
-                matchType = MatchType.SKIP;
+                matchType = MatchTypes.SKIP;
             }
             else if (toSpecial.Length > vectorIndex &&
                        (toSpecial[vectorIndex] & bits) != 0L)
             {
-                matchType = MatchType.SPECIAL_TOKEN;
+                matchType = MatchTypes.SPECIAL_TOKEN;
             }
             else if (toMore.Length > vectorIndex &&
                        (toMore[vectorIndex] & bits) != 0L)
             {
-                matchType = MatchType.MORE;
+                matchType = MatchTypes.MORE;
             }
             else
             {
                 //assert(toToken.Length > vectorIndex && (toToken[vectorIndex] & bits) != 0L);
-                matchType = MatchType.TOKEN;
+                matchType = MatchTypes.TOKEN;
             }
             var matchInfo =
                 new MatchInfo(Options.getIgnoreCase()

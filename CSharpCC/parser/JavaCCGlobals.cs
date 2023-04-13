@@ -455,7 +455,7 @@ public class JavaCCGlobals : JavaCCParserConstants
 
     static protected int cline, ccol;
 
-    static public void PrintTokenSetup(Token t)
+    public void PrintTokenSetup(Token t)
     {
         Token tt = t;
         while (tt.specialToken != null) tt = tt.specialToken;

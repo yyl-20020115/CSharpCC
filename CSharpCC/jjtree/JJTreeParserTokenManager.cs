@@ -11,7 +11,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
     public TextWriter debugStream = Console.Out;
     /** Set debug output. */
     public void setDebugStream(TextWriter ds) { debugStream = ds; }
-    private int jjStopStringLiteralDfa_0(int pos, long active0, long active1, long active2)
+    private int jjStopStringLiteralDfa_0(int pos, ulong active0, ulong active1, ulong active2)
     {
         switch (pos)
         {
@@ -169,7 +169,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
                 return -1;
         }
     }
-    private int jjStartNfa_0(int pos, long active0, long active1, long active2)
+    private int jjStartNfa_0(int pos, ulong active0, ulong active1, ulong active2)
     {
         return jjMoveNfa_0(jjStopStringLiteralDfa_0(pos, active0, active1, active2), pos + 1);
     }
@@ -311,7 +311,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
                 return jjMoveNfa_0(3, 0);
         }
     }
-    private int jjMoveStringLiteralDfa1_0(long active0, long active1, long active2)
+    private int jjMoveStringLiteralDfa1_0(ulong active0, ulong active1, ulong active2)
     {
         try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
@@ -447,7 +447,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(0, active0, active1, active2);
     }
-    private int jjMoveStringLiteralDfa2_0(long old0, long active0, long old1, long active1, long old2, long active2)
+    private int jjMoveStringLiteralDfa2_0(ulong old0, ulong active0, ulong old1, ulong active1, ulong old2, ulong active2)
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(0, old0, old1, old2);
@@ -544,7 +544,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(1, active0, active1, active2);
     }
-    private int jjMoveStringLiteralDfa3_0(long old0, long active0, long old1, long active1, long old2, long active2)
+    private int jjMoveStringLiteralDfa3_0(ulong old0, ulong active0, ulong old1, ulong active1, ulong old2, ulong active2)
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(1, old0, old1, old2);
@@ -641,7 +641,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(2, active0, active1, active2);
     }
-    private int jjMoveStringLiteralDfa4_0(long old0, long active0, long old1, long active1, long old2, long active2)
+    private int jjMoveStringLiteralDfa4_0(ulong old0, ulong active0, ulong old1, ulong active1, ulong old2, ulong active2)
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(2, old0, old1, old2);
@@ -731,7 +731,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(3, active0, active1, active2);
     }
-    private int jjMoveStringLiteralDfa5_0(long old0, long active0, long old1, long active1, long old2, long active2)
+    private int jjMoveStringLiteralDfa5_0(ulong old0, ulong active0, ulong old1, ulong active1, ulong old2, ulong active2)
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(3, old0, old1, old2);
@@ -806,7 +806,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(4, active0, active1, active2);
     }
-    private int jjMoveStringLiteralDfa6_0(long old0, long active0, long old1, long active1, long old2, long active2)
+    private int jjMoveStringLiteralDfa6_0(ulong old0, ulong active0, ulong old1, ulong active1, ulong old2, ulong active2)
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(4, old0, old1, old2);
@@ -869,7 +869,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(5, active0, active1, active2);
     }
-    private int jjMoveStringLiteralDfa7_0(long old0, long active0, long old1, long active1, long old2, long active2)
+    private int jjMoveStringLiteralDfa7_0(ulong old0, ulong active0, ulong old1, ulong active1, ulong old2, ulong active2)
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(5, old0, old1, old2);
@@ -922,7 +922,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(6, active0, active1, active2);
     }
-    private int jjMoveStringLiteralDfa8_0(long old0, long active0, long old1, long active1, long old2, long active2)
+    private int jjMoveStringLiteralDfa8_0(ulong old0, ulong active0, ulong old1, ulong active1, ulong old2, ulong active2)
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)
             return jjStartNfa_0(6, old0, old1, old2);
@@ -969,7 +969,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(7, active0, active1, 0L);
     }
-    private int jjMoveStringLiteralDfa9_0(long old0, long active0, long old1, long active1)
+    private int jjMoveStringLiteralDfa9_0(ulong old0, ulong active0, ulong old1, ulong active1)
     {
         if (((active0 &= old0) | (active1 &= old1)) == 0L)
             return jjStartNfa_0(7, old0, old1, 0L);
@@ -1008,7 +1008,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(8, active0, active1, 0L);
     }
-    private int jjMoveStringLiteralDfa10_0(long old0, long active0, long old1, long active1)
+    private int jjMoveStringLiteralDfa10_0(ulong old0, ulong active0, ulong old1, ulong active1)
     {
         if (((active0 &= old0) | (active1 &= old1)) == 0L)
             return jjStartNfa_0(8, old0, old1, 0L);
@@ -1037,7 +1037,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(9, active0, active1, 0L);
     }
-    private int jjMoveStringLiteralDfa11_0(long old0, long active0, long old1, long active1)
+    private int jjMoveStringLiteralDfa11_0(ulong old0, ulong active0, ulong old1, ulong active1)
     {
         if (((active0 &= old0) | (active1 &= old1)) == 0L)
             return jjStartNfa_0(9, old0, old1, 0L);
@@ -1064,7 +1064,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(10, active0, active1, 0L);
     }
-    private int jjMoveStringLiteralDfa12_0(long old0, long active0, long old1, long active1)
+    private int jjMoveStringLiteralDfa12_0(ulong old0, ulong active0, ulong old1, ulong active1)
     {
         if (((active0 &= old0) | (active1 &= old1)) == 0L)
             return jjStartNfa_0(10, old0, old1, 0L);
@@ -1087,7 +1087,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(11, active0, 0L, 0L);
     }
-    private int jjMoveStringLiteralDfa13_0(long old0, long active0)
+    private int jjMoveStringLiteralDfa13_0(ulong old0, ulong active0)
     {
         if (((active0 &= old0)) == 0L)
             return jjStartNfa_0(11, old0, 0L, 0L);
@@ -1106,7 +1106,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         }
         return jjStartNfa_0(12, active0, 0L, 0L);
     }
-    private int jjMoveStringLiteralDfa14_0(long old0, long active0)
+    private int jjMoveStringLiteralDfa14_0(ulong old0, ulong active0)
     {
         if (((active0 &= old0)) == 0L)
             return jjStartNfa_0(12, old0, 0L, 0L);
@@ -1135,187 +1135,187 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
         catch (IOException e) { return pos + 1; }
         return jjMoveNfa_0(state, pos + 1);
     }
-    static readonly long[] jjbitVec0 = {
+    static readonly ulong[] jjbitVec0 = {
    0xfffffffffffffffeL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL
 };
-    static readonly long[] jjbitVec2 = {
+    static readonly ulong[] jjbitVec2 = {
    0x0L, 0x0L, 0xffffffffffffffffL, 0xffffffffffffffffL
 };
-    static readonly long[] jjbitVec3 = {
+    static readonly ulong[] jjbitVec3 = {
    0xfff0000000200002L, 0xffffffffffffdfffL, 0xfffff00f7fffffffL, 0x12000000007fffffL
 };
-    static readonly long[] jjbitVec4 = {
+    static readonly ulong[] jjbitVec4 = {
    0x0L, 0x0L, 0x420043c00000000L, 0xff7fffffff7fffffL
 };
-    static readonly long[] jjbitVec5 = {
+    static readonly ulong[] jjbitVec5 = {
    0xffffcffffffffL, 0xffffffffffff0000L, 0xf9ff3fffffffffffL, 0x401f00030003L
 };
-    static readonly long[] jjbitVec6 = {
+    static readonly ulong[] jjbitVec6 = {
    0x0L, 0x400000000000000L, 0xfffffffbffffd740L, 0xffffffcff7fffL
 };
-    static readonly long[] jjbitVec7 = {
+    static readonly ulong[] jjbitVec7 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0xfffffffffffff003L, 0x33fffffffff199fL
 };
-    static readonly long[] jjbitVec8 = {
+    static readonly ulong[] jjbitVec8 = {
    0xfffe000000000000L, 0xfffffffe027fffffL, 0xffL, 0x707ffffff0000L
 };
-    static readonly long[] jjbitVec9 = {
+    static readonly ulong[] jjbitVec9 = {
    0x7fffffe00000000L, 0xfffe0000000007ffL, 0xffffffffffffffffL, 0x1c000060002fffffL
 };
-    static readonly long[] jjbitVec10 = {
+    static readonly ulong[] jjbitVec10 = {
    0x1ffffffd0000L, 0x0L, 0x3fffffffffL, 0x0L
 };
-    static readonly long[] jjbitVec11 = {
+    static readonly ulong[] jjbitVec11 = {
    0x23ffffffffffffe0L, 0x3ff010000L, 0x3c5fdfffff99fe0L, 0xf0003b0000000L
 };
-    static readonly long[] jjbitVec12 = {
+    static readonly ulong[] jjbitVec12 = {
    0x36dfdfffff987e0L, 0x1c00005e000000L, 0x23edfdfffffbafe0L, 0x100010000L
 };
-    static readonly long[] jjbitVec13 = {
+    static readonly ulong[] jjbitVec13 = {
    0x23cdfdfffff99fe0L, 0x3b0000000L, 0x3bfc718d63dc7e0L, 0x0L
 };
-    static readonly long[] jjbitVec14 = {
+    static readonly ulong[] jjbitVec14 = {
    0x3effdfffffddfe0L, 0x300000000L, 0x3effdfffffddfe0L, 0x340000000L
 };
-    static readonly long[] jjbitVec15 = {
+    static readonly ulong[] jjbitVec15 = {
    0x3fffdfffffddfe0L, 0x300000000L, 0x2ffbfffffc7fffe0L, 0x7fL
 };
-    static readonly long[] jjbitVec16 = {
+    static readonly ulong[] jjbitVec16 = {
    0x800dfffffffffffeL, 0x7fL, 0x200decaefef02596L, 0x3000005fL
 };
-    static readonly long[] jjbitVec17 = {
+    static readonly ulong[] jjbitVec17 = {
    0x1L, 0x7fffffffeffL, 0xf00L, 0x0L
 };
-    static readonly long[] jjbitVec18 = {
+    static readonly ulong[] jjbitVec18 = {
    0x6fbffffffffL, 0x3f0000L, 0xffffffff00000000L, 0x7fffffffff003fL
 };
-    static readonly long[] jjbitVec19 = {
+    static readonly ulong[] jjbitVec19 = {
    0xffffffffffffffffL, 0xffffffff83ffffffL, 0xffffff07ffffffffL, 0x3ffffffffffffffL
 };
-    static readonly long[] jjbitVec20 = {
+    static readonly ulong[] jjbitVec20 = {
    0xffffffffffffff7fL, 0xffffffff3d7f3d7fL, 0x7f3d7fffffff3d7fL, 0xffff7fffff7f7f3dL
 };
-    static readonly long[] jjbitVec21 = {
+    static readonly ulong[] jjbitVec21 = {
    0xffffffff7f3d7fffL, 0x7ffff7fL, 0xffffffff00000000L, 0x1fffffffffffffL
 };
-    static readonly long[] jjbitVec22 = {
+    static readonly ulong[] jjbitVec22 = {
    0xffffffffffffffffL, 0x7f9fffffffffffL, 0xffffffff07fffffeL, 0x7ffffffffffL
 };
-    static readonly long[] jjbitVec23 = {
+    static readonly ulong[] jjbitVec23 = {
    0x0L, 0x0L, 0xfffffffffffffL, 0x8000000L
 };
-    static readonly long[] jjbitVec24 = {
+    static readonly ulong[] jjbitVec24 = {
    0xffffffff00000000L, 0xffffffffffffffL, 0x1ffffffffffL, 0x0L
 };
-    static readonly long[] jjbitVec25 = {
+    static readonly ulong[] jjbitVec25 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffff0fffffffL, 0x3ffffffffffffffL
 };
-    static readonly long[] jjbitVec26 = {
+    static readonly ulong[] jjbitVec26 = {
    0xffffffff3f3fffffL, 0x3fffffffaaff3f3fL, 0x5fdfffffffffffffL, 0x1fdc1fff0fcf1fdcL
 };
-    static readonly long[] jjbitVec27 = {
+    static readonly ulong[] jjbitVec27 = {
    0x8000000000000000L, 0x8000000000000001L, 0xffff00000000L, 0x0L
 };
-    static readonly long[] jjbitVec28 = {
+    static readonly ulong[] jjbitVec28 = {
    0x3fbbd503e2ffc84L, 0xffffffff00000000L, 0xfL, 0x0L
 };
-    static readonly long[] jjbitVec29 = {
+    static readonly ulong[] jjbitVec29 = {
    0x73e03fe000000e0L, 0xfffffffffffffffeL, 0xfffffffe601fffffL, 0x7fffffffffffffffL
 };
-    static readonly long[] jjbitVec30 = {
+    static readonly ulong[] jjbitVec30 = {
    0xfffe1fffffffffe0L, 0xffffffffffffffffL, 0xffffff00007fffL, 0x0L
 };
-    static readonly long[] jjbitVec31 = {
+    static readonly ulong[] jjbitVec31 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0x3fffffffffffffL, 0x0L
 };
-    static readonly long[] jjbitVec32 = {
+    static readonly ulong[] jjbitVec32 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0x3fffffffffL, 0x0L
 };
-    static readonly long[] jjbitVec33 = {
+    static readonly ulong[] jjbitVec33 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0x1fffL, 0x0L
 };
-    static readonly long[] jjbitVec34 = {
+    static readonly ulong[] jjbitVec34 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0xfffffffffL, 0x0L
 };
-    static readonly long[] jjbitVec35 = {
+    static readonly ulong[] jjbitVec35 = {
    0x3fffffffffffL, 0x0L, 0x0L, 0x0L
 };
-    static readonly long[] jjbitVec36 = {
+    static readonly ulong[] jjbitVec36 = {
    0x5f7ffdffa0f8007fL, 0xffffffffffffffdbL, 0x3ffffffffffffL, 0xfffffffffff80000L
 };
-    static readonly long[] jjbitVec37 = {
+    static readonly ulong[] jjbitVec37 = {
    0x3fffffffffffffffL, 0xffffffffffff0000L, 0xfffffffffffcffffL, 0xfff0000000000ffL
 };
-    static readonly long[] jjbitVec38 = {
+    static readonly ulong[] jjbitVec38 = {
    0x18000000000000L, 0xffd702000000e000L, 0xffffffffffffffffL, 0x1fffffffffffffffL
 };
-    static readonly long[] jjbitVec39 = {
+    static readonly ulong[] jjbitVec39 = {
    0x87fffffe00000010L, 0xffffffe007fffffeL, 0x7fffffffffffffffL, 0x631cfcfcfcL
 };
-    static readonly long[] jjbitVec40 = {
+    static readonly ulong[] jjbitVec40 = {
    0x0L, 0x0L, 0x420043cffffffffL, 0xff7fffffff7fffffL
 };
-    static readonly long[] jjbitVec41 = {
+    static readonly ulong[] jjbitVec41 = {
    0xffffffffffffffffL, 0x400000700007fffL, 0xfffffffbffffd740L, 0xffffffcff7fffL
 };
-    static readonly long[] jjbitVec42 = {
+    static readonly ulong[] jjbitVec42 = {
    0xffffffffffffffffL, 0xffffffffffffffffL, 0xfffffffffffff07bL, 0x33fffffffff199fL
 };
-    static readonly long[] jjbitVec43 = {
+    static readonly ulong[] jjbitVec43 = {
    0xfffe000000000000L, 0xfffffffe027fffffL, 0xbbfffffbfffe00ffL, 0x707ffffff0016L
 };
-    static readonly long[] jjbitVec44 = {
+    static readonly ulong[] jjbitVec44 = {
    0x7fffffe00000000L, 0xffff03ff003fffffL, 0xffffffffffffffffL, 0x1fff3dff9fefffffL
 };
-    static readonly long[] jjbitVec45 = {
+    static readonly ulong[] jjbitVec45 = {
    0xffff1fffffff8000L, 0x7ffL, 0x1ffffffffffffL, 0x0L
 };
-    static readonly long[] jjbitVec46 = {
+    static readonly ulong[] jjbitVec46 = {
    0xf3ffffffffffffeeL, 0xffcfff1f3fffL, 0xd3c5fdfffff99feeL, 0xfffcfb080399fL
 };
-    static readonly long[] jjbitVec47 = {
+    static readonly ulong[] jjbitVec47 = {
    0xd36dfdfffff987e4L, 0x1fffc05e003987L, 0xf3edfdfffffbafeeL, 0xffc100013bbfL
 };
-    static readonly long[] jjbitVec48 = {
+    static readonly ulong[] jjbitVec48 = {
    0xf3cdfdfffff99feeL, 0xffc3b0c0398fL, 0xc3bfc718d63dc7ecL, 0xff8000803dc7L
 };
-    static readonly long[] jjbitVec49 = {
+    static readonly ulong[] jjbitVec49 = {
    0xc3effdfffffddfeeL, 0xffc300603ddfL, 0xc3effdfffffddfecL, 0xffc340603ddfL
 };
-    static readonly long[] jjbitVec50 = {
+    static readonly ulong[] jjbitVec50 = {
    0xc3fffdfffffddfecL, 0xffc300803dcfL, 0x2ffbfffffc7fffecL, 0xc0000ff5f847fL
 };
-    static readonly long[] jjbitVec51 = {
+    static readonly ulong[] jjbitVec51 = {
    0x87fffffffffffffeL, 0x3ff7fffL, 0x3bffecaefef02596L, 0x33ff3f5fL
 };
-    static readonly long[] jjbitVec52 = {
+    static readonly ulong[] jjbitVec52 = {
    0xc2a003ff03000001L, 0xfffe07fffffffeffL, 0x1ffffffffeff0fdfL, 0x40L
 };
-    static readonly long[] jjbitVec53 = {
+    static readonly ulong[] jjbitVec53 = {
    0x3c7f6fbffffffffL, 0x3ff03ffL, 0xffffffff00000000L, 0x7fffffffff003fL
 };
-    static readonly long[] jjbitVec54 = {
+    static readonly ulong[] jjbitVec54 = {
    0xffffffff7f3d7fffL, 0x3fe0007ffff7fL, 0xffffffff00000000L, 0x1fffffffffffffL
 };
-    static readonly long[] jjbitVec55 = {
+    static readonly ulong[] jjbitVec55 = {
    0x0L, 0x0L, 0xffffffffffffffffL, 0x3ff080fffffL
 };
-    static readonly long[] jjbitVec56 = {
+    static readonly ulong[] jjbitVec56 = {
    0xffffffff03ff7800L, 0xffffffffffffffL, 0x3ffffffffffL, 0x0L
 };
-    static readonly long[] jjbitVec57 = {
+    static readonly ulong[] jjbitVec57 = {
    0x80007c000000f000L, 0x8000fc0000000001L, 0xffff00000000L, 0x21fff0000L
 };
-    static readonly long[] jjbitVec58 = {
+    static readonly ulong[] jjbitVec58 = {
    0x73efffe000000e0L, 0xfffffffffffffffeL, 0xfffffffe661fffffL, 0x7fffffffffffffffL
 };
-    static readonly long[] jjbitVec59 = {
+    static readonly ulong[] jjbitVec59 = {
    0x5f7ffdffe0f8007fL, 0xffffffffffffffdbL, 0x3ffffffffffffL, 0xfffffffffff80000L
 };
-    static readonly long[] jjbitVec60 = {
+    static readonly ulong[] jjbitVec60 = {
    0x18000f00000000L, 0xffd702000000e000L, 0xffffffffffffffffL, 0x9fffffffffffffffL
 };
-    static readonly long[] jjbitVec61 = {
+    static readonly ulong[] jjbitVec61 = {
    0x87fffffe03ff0010L, 0xffffffe007fffffeL, 0x7fffffffffffffffL, 0xe0000631cfcfcfcL
 };
     private int jjMoveNfa_0(int startState, int curPos)
@@ -1331,7 +1331,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
                 ReInitRounds();
             if (curChar < 64)
             {
-                long l = 1L << curChar;
+                ulong l = 1UL << curChar;
                 do
                 {
                     switch (jjstateSet[--i])
@@ -1621,7 +1621,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
             }
             else if (curChar < 128)
             {
-                long l = 1L << (curChar & 077);
+                ulong l = 1UL << (curChar & 077);
                 do
                 {
                     switch (jjstateSet[--i])
@@ -1739,9 +1739,9 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
             {
                 int hiByte = (int)(curChar >> 8);
                 int i1 = hiByte >> 6;
-                long l1 = 1L << (hiByte & 077);
+                ulong l1 = 1UL << (hiByte & 077);
                 int i2 = (curChar & 0xff) >> 6;
-                long l2 = 1L << (curChar & 077);
+                ulong l2 = 1UL << (curChar & 077);
                 do
                 {
                     switch (jjstateSet[--i])
@@ -1799,7 +1799,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
                 return 1;
         }
     }
-    private int jjMoveStringLiteralDfa1_3(long active0)
+    private int jjMoveStringLiteralDfa1_3(ulong active0)
     {
         try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
@@ -1834,7 +1834,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
                 ReInitRounds();
             if (curChar < 64)
             {
-                long l = 1L << curChar;
+                ulong l = 1UL << curChar;
                 do
                 {
                     switch (jjstateSet[--i])
@@ -1862,7 +1862,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
             }
             else if (curChar < 128)
             {
-                long l = 1L << (curChar & 077);
+                ulong l = 1UL << (curChar & 077);
                 do
                 {
                     switch (jjstateSet[--i])
@@ -1875,9 +1875,9 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
             {
                 int hiByte = (int)(curChar >> 8);
                 int i1 = hiByte >> 6;
-                long l1 = 1L << (hiByte & 077);
+                ulong l1 = 1UL << (hiByte & 077);
                 int i2 = (curChar & 0xff) >> 6;
-                long l2 = 1L << (curChar & 077);
+                ulong l2 = 1UL << (curChar & 077);
                 do
                 {
                     switch (jjstateSet[--i])
@@ -1909,7 +1909,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
                 return 1;
         }
     }
-    private int jjMoveStringLiteralDfa1_2(long active0)
+    private int jjMoveStringLiteralDfa1_2(ulong active0)
     {
         try { curChar = input_stream.ReadChar(); }
         catch (IOException e)
@@ -1933,7 +1933,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
    60, 61, 62, 10, 11, 17, 18, 20, 25, 27, 29, 36, 37, 40, 41, 46,
    47, 55, 56, 57, 58, 63, 64,
 };
-    private static bool jjCanMove_0(int hiByte, int i1, int i2, long l1, long l2)
+    private static bool jjCanMove_0(int hiByte, int i1, int i2, ulong l1, ulong l2)
     {
         switch (hiByte)
         {
@@ -1945,7 +1945,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
                 return false;
         }
     }
-    private static bool jjCanMove_1(int hiByte, int i1, int i2, long l1, long l2)
+    private static bool jjCanMove_1(int hiByte, int i1, int i2, ulong l1, ulong l2)
     {
         switch (hiByte)
         {
@@ -2029,7 +2029,7 @@ public class JJTreeParserTokenManager : JJTreeParserConstants
                 return false;
         }
     }
-    private static bool jjCanMove_2(int hiByte, int i1, int i2, long l1, long l2)
+    private static bool jjCanMove_2(int hiByte, int i1, int i2, ulong l1, ulong l2)
     {
         switch (hiByte)
         {
@@ -2163,23 +2163,23 @@ null, null, "\141\142\163\164\162\141\143\164", "\142\157\157\154\145\141\156",
    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 };
-    static readonly long[] jjtoToken = {
-   unchecked((long)0xffffffffff000fffL), unchecked((long)0xfffffffffff847ffL), 0x1fffL,
+    static readonly ulong[] jjtoToken = {
+   unchecked((ulong)0xffffffffff000fffL), unchecked((ulong)0xfffffffffff847ffL), 0x1fffL,
 };
-    static readonly long[] jjtoSkip = {
+    static readonly ulong[] jjtoSkip = {
    0x71f000L, 0x0L, 0x0L,
 };
-    static readonly long[] jjtoSpecial = {
+    static readonly ulong[] jjtoSpecial = {
    0x71f000L, 0x0L, 0x0L,
 };
-    static readonly long[] jjtoMore = {
+    static readonly ulong[] jjtoMore = {
    0x8e0000L, 0x0L, 0x0L,
 };
     protected JavaCharStream input_stream;
     private int[] jjrounds = new int[65];
     private int[] jjstateSet = new int[130];
     private StringBuilder jjimage = new ();
-    private StringBuilder image = jjimage;
+    private StringBuilder image;// = jjimage;
     private int jjimageLen;
     private int lengthOfMatch;
     protected char curChar;
@@ -2230,7 +2230,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\142\157\157\154\145\141\156",
             curLexState = lexState;
     }
 
-    protected Token jjFillToken()
+    protected Token JjFillToken()
     {
         Token t;
         String curTokenImage;
@@ -2262,7 +2262,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\142\157\157\154\145\141\156",
     int jjmatchedKind;
 
     /** Get the next Token. */
-    public Token getNextToken()
+    public Token GetNextToken()
     {
         Token specialToken = null;
         Token matchedToken;
@@ -2278,7 +2278,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\142\157\157\154\145\141\156",
             catch (IOException e)
             {
                 jjmatchedKind = 0;
-                matchedToken = jjFillToken();
+                matchedToken = JjFillToken();
                 matchedToken.specialToken = specialToken;
                 return matchedToken;
             }
@@ -2327,20 +2327,20 @@ null, null, "\141\142\163\164\162\141\143\164", "\142\157\157\154\145\141\156",
                 {
                     if (jjmatchedPos + 1 < curPos)
                         input_stream.Backup(curPos - jjmatchedPos - 1);
-                    if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
+                    if ((jjtoToken[jjmatchedKind >> 6] & (1UL << (jjmatchedKind & 077))) != 0L)
                     {
-                        matchedToken = jjFillToken();
+                        matchedToken = JjFillToken();
                         matchedToken.specialToken = specialToken;
                         TokenLexicalActions(matchedToken);
                         if (jjnewLexState[jjmatchedKind] != -1)
                             curLexState = jjnewLexState[jjmatchedKind];
                         return matchedToken;
                     }
-                    else if ((jjtoSkip[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
+                    else if ((jjtoSkip[jjmatchedKind >> 6] & (1UL << (jjmatchedKind & 077))) != 0L)
                     {
-                        if ((jjtoSpecial[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
+                        if ((jjtoSpecial[jjmatchedKind >> 6] & (1UL << (jjmatchedKind & 077))) != 0L)
                         {
-                            matchedToken = jjFillToken();
+                            matchedToken = JjFillToken();
                             if (specialToken == null)
                                 specialToken = matchedToken;
                             else
@@ -2354,7 +2354,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\142\157\157\154\145\141\156",
                             SkipLexicalActions(null);
                         if (jjnewLexState[jjmatchedKind] != -1)
                             curLexState = jjnewLexState[jjmatchedKind];
-                        continue EOFLoop;
+                        goto EOFLoop;
                     }
                     MoreLexicalActions();
                     if (jjnewLexState[jjmatchedKind] != -1)

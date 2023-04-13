@@ -152,7 +152,7 @@ public class RStringLiteral : RegularExpression
             allImages[0] = "";
             for (i = 0; i < allImages.Length; i++)
             {
-                if ((image = allImages[i]) == null ||  
+                if ((image = allImages[i]) == null || 
                     ((MainParser.LexGenerator.toSkip[i / 64] & (1UL << (i % 64))) == 0L &&
                      (MainParser.LexGenerator.toMore[i / 64] & (1L << (i % 64))) == 0L &&
                      (MainParser.LexGenerator.toToken[i / 64] & (1L << (i % 64))) == 0L) ||
