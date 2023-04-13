@@ -888,10 +888,10 @@ public class CSharpCCParser : CSharpCCParserInternals
         var c2 = new Container();
         var la = new Lookahead();
         var t = GetToken(1);
-        seq.SetLine(t.beginLine);
-        seq.SetColumn(t.beginColumn);
-        la.SetLine(t.beginLine);
-        la.SetColumn(t.beginColumn);
+        seq.        Line = t.beginLine;
+        seq.        Column = t.beginColumn;
+        la.        Line = t.beginLine;
+        la.        Column = t.beginColumn;
         la.SetAmount(Options.GetLookahead());
         la.SetLaExpansion(null);
         la.SetExplicit(false);
@@ -941,8 +941,8 @@ public class CSharpCCParser : CSharpCCParserInternals
         var la = new Lookahead();
         la.SetExplicit(true);
         var t = GetToken(1);
-        la.SetLine(t.beginLine);
-        la.SetColumn(t.beginColumn);
+        la.        Line = t.beginLine;
+        la.        Column = t.beginColumn;
         la.SetLaExpansion(null);
         Container c = new();
         bool commaAtEnd = false, emptyLA = true;
@@ -1097,8 +1097,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                 var seq = new Sequence(t, la);
                 la.parent = seq; la.ordinal = 0;
                 act = new Action();
-                act.SetLine(t.beginLine);
-                act.SetColumn(t.beginColumn);
+                act.                Line = t.beginLine;
+                act.                Column = t.beginColumn;
                 seq.units.Add(act);
                 act.parent = seq; act.ordinal = 1;
                 ch.GetChoices().Add(seq);
@@ -1119,8 +1119,8 @@ public class CSharpCCParser : CSharpCCParserInternals
             case LBRACE:
                 act = new Action();
                 t = GetToken(1);
-                act.SetLine(t.beginLine);
-                act.SetColumn(t.beginColumn);
+                act.                Line = t.beginLine;
+                act.                Column = t.beginColumn;
                 inAction = true;
                 Block(act.GetActionTokens());
                 inAction = false;
@@ -1230,8 +1230,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                     {
                         t = GetToken(1);
                         nt = new NonTerminal();
-                        nt.SetLine(t.beginLine);
-                        nt.SetColumn(t.beginColumn);
+                        nt.                        Line = t.beginLine;
+                        nt.                        Column = t.beginColumn;
                         nt.SetLhsTokens(lhsTokens);
                         name = identifier();
                         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
@@ -1377,8 +1377,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                     }
                     re.label = image;
                     re.private_rexp = private_rexp;
-                    re.SetLine(t.beginLine);
-                    re.SetColumn(t.beginColumn);
+                    re.                    Line = t.beginLine;
+                    re.                    Column = t.beginColumn;
                     c.Member = re;
                 }
                 else if (jj_2_6(2))
@@ -1397,8 +1397,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                             jj_consume_token(_EOF);
                             jj_consume_token(RANGLE);
                             ef = new REndOfFile();
-                            ef.SetLine(t.beginLine);
-                            ef.SetColumn(t.beginColumn);
+                            ef.                            Line = t.beginLine;
+                            ef.                            Column = t.beginColumn;
                             ef.ordinal = 0;
                             c.Member = ef;
                             break;
@@ -1440,8 +1440,8 @@ public class CSharpCCParser : CSharpCCParserInternals
             {
                 morethanone = true;
                 ch = new RChoice();
-                ch.SetLine(((RegularExpression)c1.Member).GetLine());
-                ch.SetColumn(((RegularExpression)c1.Member).GetColumn());
+                ch.                Line = ((RegularExpression)c1.Member).Line;
+                ch.                Column = ((RegularExpression)c1.Member).Column;
                 ch.GetChoices().Add(c1.Member as Expansion);
                 ch.GetChoices().Add(c2.Member as Expansion);
             }
@@ -1471,8 +1471,8 @@ public class CSharpCCParser : CSharpCCParserInternals
             else if (count == 2)
             { // more than 1, so create a sequence.
                 seq = new RSequence();
-                seq.SetLine(((RegularExpression)c1.Member).GetLine());
-                seq.SetColumn(((RegularExpression)c1.Member).GetColumn());
+                seq.                Line = ((RegularExpression)c1.Member).Line;
+                seq.                Column = ((RegularExpression)c1.Member).Column;
                 seq.units.Add(c1.Member as RegularExpression);
                 seq.units.Add(c2.Member as RegularExpression);
             }
@@ -1546,8 +1546,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                             case HOOK:
                                 jj_consume_token(HOOK);
                                 RZeroOrOne zorexp = new();
-                                zorexp.SetLine(t.beginLine);
-                                zorexp.SetColumn(t.beginColumn);
+                                zorexp.                                Line = t.beginLine;
+                                zorexp.                                Column = t.beginColumn;
                                 zorexp.regexpr = (RegularExpression)c.Member;
                                 c.Member = zorexp;
                                 break;
@@ -1575,8 +1575,8 @@ public class CSharpCCParser : CSharpCCParserInternals
                                 }
                                 jj_consume_token(RBRACE);
                                 RRepetitionRange rrrexp = new();
-                                rrrexp.SetLine(t.beginLine);
-                                rrrexp.SetColumn(t.beginColumn);
+                                rrrexp.                                Line = t.beginLine;
+                                rrrexp.                                Column = t.beginColumn;
                                 rrrexp.min = r1;
                                 rrrexp.max = r2;
                                 rrrexp.hasMax = hasMax;
@@ -1605,8 +1605,8 @@ public class CSharpCCParser : CSharpCCParserInternals
     {
         RCharacterList chlist = new();
         Token t = GetToken(1);
-        chlist.SetLine(t.beginLine);
-        chlist.SetColumn(t.beginColumn);
+        chlist.        Line = t.beginLine;
+        chlist.        Column = t.beginColumn;
         Container c2 = new();
         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
@@ -1674,8 +1674,8 @@ public class CSharpCCParser : CSharpCCParserInternals
         if (isrange)
         {
             var cr = new CharacterRange();
-            cr.SetLine(t.beginLine);
-            cr.SetColumn(t.beginColumn);
+            cr.            Line = t.beginLine;
+            cr.            Column = t.beginColumn;
             cr.SetLeft(c1);
             cr.SetRight(c2);
             c.Member = cr;
@@ -1683,8 +1683,8 @@ public class CSharpCCParser : CSharpCCParserInternals
         else
         {
             var sc = new SingleCharacter();
-            sc.SetLine(t.beginLine);
-            sc.SetColumn(t.beginColumn);
+            sc.            Line = t.beginLine;
+            sc.            Column = t.beginColumn;
             sc.ch = c1;
             c.Member = sc;
         }

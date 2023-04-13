@@ -36,18 +36,17 @@ namespace CSharpCC.CCTree;
 
 public class CCTree
 {
-
     private IO io;
 
     private void Print(string s)
     {
-        io.GetMsg().WriteLine(s);
+        io.        Msg.WriteLine(s);
     }
 
     private void HelpMessage()
     {
         Print("Usage:");
-        Print("    jjtree option-settings inputfile");
+        Print("    cctree option-settings inputfile");
         Print("");
         Print("\"option-settings\" is a sequence of settings separated by spaces.");
         Print("Each option setting must be of one of the following forms:");
@@ -88,14 +87,14 @@ public class CCTree
         Print("    VISITOR_RETURN_TYPE      (default \"Object\")");
         Print("    VISITOR_EXCEPTION        (default \"\")");
         Print("");
-        Print("JJTree also accepts JavaCC options, which it inserts into the generated file.");
+        Print("CCTree also accepts CSharpCC options, which it inserts into the generated file.");
         Print("");
 
         Print("EXAMPLES:");
-        Print("    jjtree -STATIC=false mygrammar.jjt");
+        Print("    cctree -STATIC=false mygrammar.jjt");
         Print("");
-        Print("ABOUT JJTree:");
-        Print("    JJTree is a preprocessor for JavaCC that inserts actions into a");
+        Print("ABOUT CCTree:");
+        Print("    CCTree is a preprocessor for JavaCC that inserts actions into a");
         Print("    JavaCC grammar to build parse trees for the input.");
         Print("");
         Print("    For more information, see the online JJTree documentation at ");
@@ -108,11 +107,10 @@ public class CCTree
      */
     public int Main(string[] args)
     {
-
         // initialize static state for allowing repeat runs without exiting
         ASTNodeDescriptor.NodeIds = new ();
         ASTNodeDescriptor.NodeNames = new ();
-        ASTNodeDescriptor.nodeSeen = new ();
+        ASTNodeDescriptor.NodeSeen = new ();
         global::CSharpCC.Parser.MainParser.ReInitAll();
 
         CSharpCCGlobals.BannerLine("Tree Builder", "");
@@ -131,21 +129,21 @@ public class CCTree
             }
             else
             {
-                Print("(type \"jjtree\" with no arguments for help)");
+                Print("(type \"cctree\" with no arguments for help)");
             }
 
             string fn = args[^1];
 
             if (CCTreeOptions.IsOption(fn))
             {
-                Print("Last argument \"" + fn + "\" is not a filename");
+                Print($"Last argument \"{fn}\" is not a filename");
                 return 1;
             }
             for (int arg = 0; arg < args.Length - 1; arg++)
             {
                 if (!CCTreeOptions.IsOption(args[arg]))
                 {
-                    Print("Argument \"" + args[arg] + "\" must be an option setting.");
+                    Print($"Argument \"{args[arg]}\" must be an option setting.");
                     return 1;
                 }
                 CCTreeOptions.SetCmdLineOption(args[arg]);
@@ -162,17 +160,17 @@ public class CCTree
                 Print("Error setting input: " + ioe.Message);
                 return 1;
             }
-            Print("Reading from file " + io.GetInputFileName() + " . . .");
+            Print("Reading from file " + io.InputFileName + " . . .");
 
             CCTreeGlobals.ToolList = CSharpCCGlobals.GetToolNames(fn);
             CCTreeGlobals.ToolList.Add("JJTree");
 
             try
             {
-                var parser = new CCTreeParser(io.GetIn());
-                parser.javacc_input();
+                var parser = new CCTreeParser(io.In);
+                parser.CSharpCCInput();
 
-                ASTGrammar root = (ASTGrammar)parser.jjtree.RootNode();
+                ASTGrammar root = (ASTGrammar)parser.cctree.RootNode();
                 if (bool.TryParse(Environment.GetEnvironmentVariable("jjtree-dump"),out var b) && b)
                 {
                     root.Dump(" ");
@@ -187,7 +185,7 @@ public class CCTree
                     return 1;
                 }
                 root.Generate(io);
-                io.GetOut().Close();
+                io.                Out.Close();
 
                 string outputLanguage = CCTreeOptions.GetOutputLanguage();
 
@@ -195,9 +193,9 @@ public class CCTree
 
                 if (CCTreeOptions.IsOutputLanguageJava())
                 {
-                    NodeFiles.generateTreeConstants_java();
-                    NodeFiles.generateVisitor_java();
-                    NodeFiles.generateDefaultVisitor_java();
+                    NodeFiles.GenerateTreeConstantsJava();
+                    NodeFiles.GenerateVisitorJava();
+                    NodeFiles.GenerateDefaultVisitorJava();
                     CCTreeState.GenerateTreeStateJava();
                 }
                 else if (CCTreeOptions.IsOutputLanguageCpp())
@@ -210,22 +208,21 @@ public class CCTree
                 }
                 else
                 {
-                    Print("Unsupported JJTree output language : " + outputLanguage);
+                    Print($"Unsupported CCTree output language : {outputLanguage}");
                     return 1;
                 }
 
-                Print("Annotated grammar generated successfully in " +
-                      io.GetOutputFileName());
+                Print($"Annotated grammar generated successfully in {io.OutputFileName}");
 
             }
             catch (ParseException pe)
             {
-                Print("Error parsing input: " + pe.ToString());
+                Print($"Error parsing input: {pe}");
                 return 1;
             }
             catch (Exception e)
             {
-                Print("Error parsing input: " + e.ToString());
+                Print($"Error parsing input: {e}");
                 //e.printStackTrace(io.GetMsg());
                 return 1;
             }
@@ -239,17 +236,12 @@ public class CCTree
         }
     }
 
-
     /**
-     * Initialize for JJTree
+     * Initialize for CCTree
      */
     private void InitializeOptions()
     {
         CCTreeOptions.Init();
         CCTreeGlobals.Initialize();
     }
-
-
 }
-
-/*end*/

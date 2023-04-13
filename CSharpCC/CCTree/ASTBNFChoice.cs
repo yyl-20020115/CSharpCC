@@ -2,19 +2,14 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=true,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 namespace CSharpCC.CCTree;
 
-public class ASTBNFChoice : CCTreeNode
+public class ASTBNFChoice : TreeNode
 {
-    public ASTBNFChoice(int id) : base(id)
-    {
-    }
+    public ASTBNFChoice(int id) : base(id) { }
 
-    public ASTBNFChoice(CCTreeParser p, int id) : base(p, id)
-    {
-    }
-
+    public ASTBNFChoice(CCTreeParser p, int id) : base(p, id) { }
 
     /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data) 
+    public override object Accept(TreeParserVisitor visitor, object data) 
         => visitor.Visit(this, data);
 }
 /* JavaCC - OriginalChecksum=c6136f2093e7bd7093fb5ebfc93097da (do not edit this line) */

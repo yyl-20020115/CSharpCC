@@ -38,60 +38,6 @@ public class TokenMgrError : Exception
     public int errorCode;
 
     /**
-     * Replaces unprintable characters by their escaped (or unicode escaped)
-     * equivalents in the given string
-     */
-    protected static string AddEscapes(string str)
-    {
-        var retval = new StringBuilder();
-        char ch;
-        for (int i = 0; i < str.Length; i++)
-        {
-            switch (str[i])
-            {
-                case '\0':
-                    continue;
-                case '\b':
-                    retval.Append("\\b");
-                    continue;
-                case '\t':
-                    retval.Append("\\t");
-                    continue;
-                case '\n':
-                    retval.Append("\\n");
-                    continue;
-                case '\f':
-                    retval.Append("\\f");
-                    continue;
-                case '\r':
-                    retval.Append("\\r");
-                    continue;
-                case '\"':
-                    retval.Append("\\\"");
-                    continue;
-                case '\'':
-                    retval.Append("\\\'");
-                    continue;
-                case '\\':
-                    retval.Append("\\\\");
-                    continue;
-                default:
-                    if ((ch = str[i]) < 0x20 || ch > 0x7e)
-                    {
-                        var s = "0000" + Convert.ToString(ch, 16);
-                        retval.Append("\\u" + s[^4..]);
-                    }
-                    else
-                    {
-                        retval.Append(ch);
-                    }
-                    continue;
-            }
-        }
-        return retval.ToString();
-    }
-
-    /**
      * Returns a detailed message for the Error when it is thrown by the
      * token manager to indicate a lexical error.
      * Parameters :
@@ -104,7 +50,7 @@ public class TokenMgrError : Exception
      * Note: You can customize the lexical error message by modifying this method.
      */
     protected static string LexicalError(bool EOFSeen, int lexState, int errorLine, int errorColumn, string errorAfter, char curChar) 
-        => $"Lexical error at line {errorLine}, column {errorColumn}.  Encountered: {(EOFSeen ? "<EOF> " : "\"" + AddEscapes(curChar.ToString()) + "\"" + " (" + (int)curChar + "), ")}after : \"{AddEscapes(errorAfter)}\"";
+        => $"Lexical error at line {errorLine}, column {errorColumn}.  Encountered: {(EOFSeen ? "<EOF> " : "\"" + StringEscapeHelpers.AddEscapes(curChar.ToString()) + "\"" + " (" + (int)curChar + "), ")}after : \"{StringEscapeHelpers.AddEscapes(errorAfter)}\"";
 
     /**
      * You can also modify the body of this method to customize your error messages.

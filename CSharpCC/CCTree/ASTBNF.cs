@@ -25,27 +25,23 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 namespace CSharpCC.CCTree;
-
 
 public class ASTBNF : ASTProduction
 {
     public ASTBNF(int id) : base(id)
     {
 
-        throws_list.Add("ParseException");
-        throws_list.Add("RuntimeException");
+        ThrowsList.Add("ParseException");
+        ThrowsList.Add("RuntimeException");
     }
 
-    public Token declBeginLoc;
+    public Token DeclarationBeginLocation;
 
-    public override string ToString() => $"{base.ToString()}: {name}";
+    public override string ToString() => $"{base.ToString()}: {Name}";
 
     /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data) 
+    public override object Accept(TreeParserVisitor visitor, object data) 
         => visitor.Visit(this, data);
 
 }
-
-/*end*/

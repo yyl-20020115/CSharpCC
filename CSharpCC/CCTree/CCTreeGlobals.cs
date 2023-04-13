@@ -40,28 +40,30 @@ public class CCTreeGlobals
         ParserImports = null;
         Productions = new ();
 
-        jjtreeOptions = new ();
-        jjtreeOptions.Add("JJTREE_OUTPUT_DIRECTORY");
-        jjtreeOptions.Add("MULTI");
-        jjtreeOptions.Add("NODE_PREFIX");
-        jjtreeOptions.Add("NODE_PACKAGE");
-        jjtreeOptions.Add("NODE_EXTENDS");
-        jjtreeOptions.Add("NODE_CLASS");
-        jjtreeOptions.Add("NODE_STACK_SIZE");
-        jjtreeOptions.Add("NODE_DEFAULT_VOID");
-        jjtreeOptions.Add("OUTPUT_FILE");
-        jjtreeOptions.Add("CHECK_DEFINITE_NODE");
-        jjtreeOptions.Add("NODE_SCOPE_HOOK");
-        jjtreeOptions.Add("TRACK_TOKENS");
-        jjtreeOptions.Add("NODE_FACTORY");
-        jjtreeOptions.Add("NODE_USES_PARSER");
-        jjtreeOptions.Add("BUILD_NODE_FILES");
-        jjtreeOptions.Add("VISITOR");
-        jjtreeOptions.Add("VISITOR_EXCEPTION");
-        jjtreeOptions.Add("VISITOR_DATA_TYPE");
-        jjtreeOptions.Add("VISITOR_RETURN_TYPE");
-        jjtreeOptions.Add("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME");
-        jjtreeOptions.Add("NODE_INCLUDES");
+        cctreeOptions = new()
+        {
+            "JJTREE_OUTPUT_DIRECTORY",
+            "MULTI",
+            "NODE_PREFIX",
+            "NODE_PACKAGE",
+            "NODE_EXTENDS",
+            "NODE_CLASS",
+            "NODE_STACK_SIZE",
+            "NODE_DEFAULT_VOID",
+            "OUTPUT_FILE",
+            "CHECK_DEFINITE_NODE",
+            "NODE_SCOPE_HOOK",
+            "TRACK_TOKENS",
+            "NODE_FACTORY",
+            "NODE_USES_PARSER",
+            "BUILD_NODE_FILES",
+            "VISITOR",
+            "VISITOR_EXCEPTION",
+            "VISITOR_DATA_TYPE",
+            "VISITOR_RETURN_TYPE",
+            "VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME",
+            "NODE_INCLUDES"
+        };
     }
 
     static CCTreeGlobals()
@@ -73,11 +75,11 @@ public class CCTreeGlobals
      * This set stores the JJTree-specific options that should not be
      * passed down to JavaCC
      */
-    private static HashSet<string> jjtreeOptions;
+    private static HashSet<string> cctreeOptions;
 
     public static bool IsOptionJJTreeOnly(string optionName)
     {
-        return jjtreeOptions.Contains(optionName.ToUpper());
+        return cctreeOptions.Contains(optionName.ToUpper());
     }
 
     public static List<string> ToolList = new();

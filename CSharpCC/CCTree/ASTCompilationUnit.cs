@@ -27,17 +27,9 @@
  */
 namespace CSharpCC.CCTree;
 
-
-public class ASTCompilationUnit : CCTreeNode
+public class ASTCompilationUnit : TreeNode
 {
-    public ASTCompilationUnit(int id) : base(id)
-    {
-    }
-
-    /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data) 
+    public ASTCompilationUnit(int id) : base(id) { }
+    public override object Accept(TreeParserVisitor visitor, object data) 
         => visitor.Visit(this, data);
-
 }
-
-/*end*/

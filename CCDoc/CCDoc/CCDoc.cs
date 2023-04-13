@@ -27,6 +27,7 @@
  */
 
 using CSharpCC.Parser;
+using CSharpCC.Utils;
 using Action = CSharpCC.Parser.Action;
 using Token = CSharpCC.Parser.Token;
 
@@ -384,17 +385,17 @@ public class CCDoc : CCDocGlobals
                 {
                     returnString += "\"";
                     char[] s = { character.ch };
-                    returnString += AddEscapes(new String(s));
+                    returnString += StringEscapeHelpers.AddEscapes(new string(s));
                     returnString += "\"";
                 }
                 else if (o is CharacterRange range)
                 {
                     returnString += "\"";
                     char[] s = { range.GetLeft() };
-                    returnString += AddEscapes(new String(s));
+                    returnString += StringEscapeHelpers.AddEscapes(new string(s));
                     returnString += "\"-\"";
                     s[0] = range.GetRight();
-                    returnString += AddEscapes(new String(s));
+                    returnString += StringEscapeHelpers.AddEscapes(new string(s));
                     returnString += "\"";
                 }
                 else
@@ -459,7 +460,7 @@ public class CCDoc : CCDocGlobals
         }
         else if (re is RStringLiteral sl)
         {
-            returnString += ("\"" + CSharpCCParserInternals.AddEscapes(sl.image) + "\"");
+            returnString += ("\"" + StringEscapeHelpers.AddEscapes(sl.image) + "\"");
         }
         else if (re is RZeroOrMore zm)
         {

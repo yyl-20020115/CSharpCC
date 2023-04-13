@@ -247,7 +247,7 @@ public class Semanticize : CSharpCCGlobals
                                 // inline BNF string is used earlier with an IGNORE_CASE.
                                 CSharpCCErrors.SemanticError(sl, "String \"" + sl.image + "\" can never be matched " +
                                         "due to presence of more general (IGNORE_CASE) regular expression " +
-                                        "at line " + other.GetLine() + ", column " + other.GetColumn() + ".");
+                                        "at line " + other.Line + ", column " + other.Column + ".");
                             }
                             else
                             {
@@ -264,7 +264,7 @@ public class Semanticize : CSharpCCGlobals
                             foreach(RegularExpression rexp in table2.Values)
                             {
                                 if (count != 0) pos += ",";
-                                pos += " line " + rexp.GetLine();
+                                pos += " line " + rexp.Line;
                                 count++;
                             }
                             if (count == 1)
@@ -881,15 +881,15 @@ public class Semanticize : CSharpCCGlobals
                 }
                 // Create a singleton choice with an empty action.
                 Choice ch = new();
-                ch.SetLine(la.GetLine()); ch.SetColumn(la.GetColumn());
+                ch.                Line = la.Line; ch.Column = la.Column;
                 ch.parent = seq;
                 Sequence seq1 = new();
-                seq1.SetLine(la.GetLine()); seq1.SetColumn(la.GetColumn());
+                seq1.                Line = la.Line; seq1.Column = la.Column;
                 seq1.parent = ch;
                 seq1.units.Add(la);
                 la.parent = seq1;
                 Action act = new();
-                act.SetLine(la.GetLine()); act.SetColumn(la.GetColumn());
+                act.                Line = la.Line; act.Column = la.Column;
                 act.parent = seq1;
                 seq1.units.Add(act);
                 ch.GetChoices().Add(seq1);
@@ -909,7 +909,7 @@ public class Semanticize : CSharpCCGlobals
                 // a new dummy lookahead node to replace this one at its original location.
                 Lookahead la1 = new();
                 la1.SetExplicit(false);
-                la1.SetLine(la.GetLine()); la1.SetColumn(la.GetColumn());
+                la1.                Line = la.Line; la1.Column = la.Column;
                 la1.parent = seq;
                 // Now set the la_expansion field of la and la1 with a dummy expansion (we use EOF).
                 la.SetLaExpansion(new REndOfFile());

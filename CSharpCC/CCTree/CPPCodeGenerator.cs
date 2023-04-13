@@ -7,25 +7,25 @@ namespace CSharpCC.CCTree;
 
 public class CPPCodeGenerator : DefaultCCTreeVisitor
 {
-    public override Object DefaultVisit(SimpleNode node, Object data)
+    public override object DefaultVisit(SimpleNode node, object data)
     {
-        Visit((CCTreeNode)node, data);
+        Visit(node as TreeNode, data);
         return null;
     }
 
-    public override Object Visit(ASTGrammar node, Object data)
+    public override object Visit(ASTGrammar node, object data)
     {
         IO io = (IO)data;
-        io.Println("/*@bgen(jjtree) " +
+        io.WriteLine("/*@bgen(jjtree) " +
             CSharpCCGlobals.GetIdString(CCTreeGlobals.ToolList,
-            io.GetOutputFileName()) +
+            io.            OutputFileName) +
              (CCTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : " */"));
-        io.Print((CCTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "/*") + "@egen*/");
+        io.Write((CCTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "/*") + "@egen*/");
 
-        return node.childrenAccept(this, io);
+        return node.ChildrenAccept(this, io);
     }
 
-    public override Object Visit(ASTBNFAction node, Object data)
+    public override object Visit(ASTBNFAction node, object data)
     {
         IO io = (IO)data;
         /* Assume that this action requires an early node close, and then
@@ -41,13 +41,13 @@ public class CPPCodeGenerator : DefaultCCTreeVisitor
             bool needClose = true;
             Node sp = node.GetScopingParent(ns);
 
-            CCTreeNode n = node;
+            TreeNode n = node;
             while (true)
             {
-                Node p = n.jjtGetParent();
+                Node p = n.Parent;
                 if (p is ASTBNFSequence || p is ASTBNFTryBlock)
                 {
-                    if (n.GetOrdinal() != p.jjtGetNumChildren() - 1)
+                    if (n.Ordinal != p.ChildrenCount - 1)
                     {
                         /* We're not the final unit in the sequence. */
                         needClose = false;
@@ -66,21 +66,21 @@ public class CPPCodeGenerator : DefaultCCTreeVisitor
                     /* No more parents to look at. */
                     break;
                 }
-                n = (CCTreeNode)p;
+                n = (TreeNode)p;
             }
             if (needClose)
             {
                 OpenJJTreeComment(io, null);
-                io.Println();
+                io.WriteLine();
                 InsertCloseNodeAction(ns, io, GetIndentation(node));
                 CloseJJTreeComment(io);
             }
         }
 
-        return Visit((CCTreeNode)node, io);
+        return Visit((TreeNode)node, io);
     }
 
-    public override Object Visit(ASTBNFDeclaration node, Object data)
+    public override object Visit(ASTBNFDeclaration node, object data)
     {
         IO io = (IO)data;
         if (!node.NodeScope.IsVoid)
@@ -88,7 +88,7 @@ public class CPPCodeGenerator : DefaultCCTreeVisitor
             string indent = "";
             if (TokenUtils.HasTokens(node))
             {
-                for (int i = 1; i < node.GetFirstToken().beginColumn; ++i)
+                for (int i = 1; i < node.FirstToken.BeginColumn; ++i)
                 {
                     indent += " ";
                 }
@@ -99,99 +99,99 @@ public class CPPCodeGenerator : DefaultCCTreeVisitor
             }
 
             OpenJJTreeComment(io, node.NodeScope.NodeDescriptorText);
-            io.Println();
+            io.WriteLine();
             InsertOpenNodeCode(node.NodeScope, io, indent);
             CloseJJTreeComment(io);
         }
 
-        return Visit((CCTreeNode)node, io);
+        return Visit((TreeNode)node, io);
     }
 
-    public override Object Visit(ASTBNFNodeScope node, Object data)
+    public override object Visit(ASTBNFNodeScope node, object data)
     {
         IO io = (IO)data;
         if (node.NodeScope.IsVoid)
         {
-            return Visit((CCTreeNode)node, io);
+            return Visit((TreeNode)node, io);
         }
 
         string indent = GetIndentation(node.expansion_unit);
 
         OpenJJTreeComment(io, node.NodeScope.NodeDescriptor.GetDescriptor());
-        io.Println();
+        io.WriteLine();
         TryExpansionUnit(node.NodeScope, io, indent, node.expansion_unit);
         return null;
     }
 
-    public override Object Visit(ASTCompilationUnit node, Object data)
+    public override object Visit(ASTCompilationUnit node, object data)
     {
         IO io = (IO)data;
-        Token t = node.GetFirstToken();
+        Token t = node.FirstToken;
         while (true)
         {
             node.Print(t, io);
-            if (t == node.GetLastToken()) break;
-            if (t.kind == CCTreeParserConstants._PARSER_BEGIN)
+            if (t == node.LastToken) break;
+            if (t.Kind == CCTreeParserConstants._PARSER_BEGIN)
             {
                 // eat PARSER_BEGIN "(" <ID> ")"
-                node.Print(t.next, io);
-                node.Print(t.next.next, io);
-                node.Print(t = t.next.next.next, io);
+                node.Print(t.Next, io);
+                node.Print(t.Next.Next, io);
+                node.Print(t = t.Next.Next.Next, io);
             }
 
-            t = t.next;
+            t = t.Next;
         }
         return null;
     }
 
-    public override Object Visit(ASTExpansionNodeScope node, Object data)
+    public override object Visit(ASTExpansionNodeScope node, object data)
     {
         IO io = (IO)data;
         string indent = GetIndentation(node.ExpansionUnit);
         OpenJJTreeComment(io, node.NodeScope.NodeDescriptor.GetDescriptor());
-        io.Println();
+        io.WriteLine();
         InsertOpenNodeAction(node.NodeScope, io, indent);
         TryExpansionUnit(node.NodeScope, io, indent, node.ExpansionUnit);
 
         // Print the "whiteOut" equivalent of the Node descriptor to preserve
         // line numbers in the generated file.
-        ((ASTNodeDescriptor)node.jjtGetChild(1)).jjtAccept(this, io);
+        ((ASTNodeDescriptor)node.GetChild(1)).Accept(this, io);
         return null;
     }
 
-    public override Object Visit(ASTJavacodeBody node, Object data)
+    public override object Visit(ASTJavacodeBody node, object data)
     {
         IO io = (IO)data;
         if (node.NodeScope.IsVoid)
         {
-            return Visit((CCTreeNode)node, io);
+            return Visit((TreeNode)node, io);
         }
 
-        Token first = node.GetFirstToken();
+        Token first = node.FirstToken;
 
         string indent = "";
-        for (int i = 4; i < first.beginColumn; ++i)
+        for (int i = 4; i < first.BeginColumn; ++i)
         {
             indent += " ";
         }
 
         OpenJJTreeComment(io, node.NodeScope.NodeDescriptorText);
-        io.Println();
+        io.WriteLine();
         InsertOpenNodeCode(node.NodeScope, io, indent);
-        TryTokenSequence(node.NodeScope, io, indent, first, node.GetLastToken());
+        TryTokenSequence(node.NodeScope, io, indent, first, node.LastToken);
         return null;
     }
 
-    public override Object Visit(ASTLHS node, Object data)
+    public override object Visit(ASTLHS node, object data)
     {
         IO io = (IO)data;
-        NodeScope ns = NodeScope.GetEnclosingNodeScope(node);
+        var ns = NodeScope.GetEnclosingNodeScope(node);
 
         /* Print out all the tokens, converting all references to
            `jjtThis' into the current node variable. */
-        Token first = node.GetFirstToken();
-        Token last = node.GetLastToken();
-        for (Token t = first; t != last.next; t = t.next)
+        Token first = node.FirstToken;
+        Token last = node.LastToken;
+        for (Token t = first; t != last.Next; t = t.Next)
         {
             TokenUtils.Print(t, io, "jjtThis", ns.NodeVariable);
         }
@@ -204,37 +204,37 @@ public class CPPCodeGenerator : DefaultCCTreeVisitor
        Overriding this print method in appropriate nodes gives the
        output the added stuff not in the input.  */
 
-    public override Object Visit(CCTreeNode node, Object data)
+    public override object Visit(TreeNode node, object data)
     {
         IO io = (IO)data;
         /* Some productions do not consume any tokens.  In that case their
            first and last tokens are a bit strange. */
-        if (node.GetLastToken().next == node.GetFirstToken())
+        if (node.LastToken.Next == node.FirstToken)
         {
             return null;
         }
 
-        Token t1 = node.GetFirstToken();
+        Token t1 = node.FirstToken;
         Token t = new()
         {
-            next = t1
+            Next = t1
         };
-        CCTreeNode n;
-        for (int ord = 0; ord < node.jjtGetNumChildren(); ord++)
+        TreeNode n;
+        for (int ord = 0; ord < node.ChildrenCount; ord++)
         {
-            n = (CCTreeNode)node.jjtGetChild(ord);
+            n = (TreeNode)node.GetChild(ord);
             while (true)
             {
-                t = t.next;
-                if (t == n.GetFirstToken()) break;
+                t = t.Next;
+                if (t == n.FirstToken) break;
                 node.Print(t, io);
             }
-            n.jjtAccept(this, io);
-            t = n.GetLastToken();
+            n.Accept(this, io);
+            t = n.LastToken;
         }
-        while (t != node.GetLastToken())
+        while (t != node.LastToken)
         {
-            t = t.next;
+            t = t.Next;
             node.Print(t, io);
         }
 
@@ -246,31 +246,31 @@ public class CPPCodeGenerator : DefaultCCTreeVisitor
     {
         if (arg != null)
         {
-            io.Print("/*@bgen(jjtree) " + arg + (CCTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : " */"));
+            io.Write("/*@bgen(jjtree) " + arg + (CCTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : " */"));
         }
         else
         {
-            io.Print("/*@bgen(jjtree)" + (CCTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "*/"));
+            io.Write("/*@bgen(jjtree)" + (CCTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "*/"));
         }
     }
 
 
     private static void CloseJJTreeComment(IO io)
     {
-        io.Print((CCTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "/*") + "@egen*/");
+        io.Write((CCTreeOptions.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) ? "" : "/*") + "@egen*/");
     }
 
 
-    string GetIndentation(CCTreeNode n)
+    string GetIndentation(TreeNode n)
     {
         return GetIndentation(n, 0);
     }
 
 
-    string GetIndentation(CCTreeNode n, int offset)
+    string GetIndentation(TreeNode n, int offset)
     {
         string s = "";
-        for (int i = offset + 1; i < n.GetFirstToken().beginColumn; ++i)
+        for (int i = offset + 1; i < n.FirstToken.BeginColumn; ++i)
         {
             s += " ";
         }
@@ -284,7 +284,7 @@ public class CPPCodeGenerator : DefaultCCTreeVisitor
 
     void InsertOpenNodeCode(NodeScope ns, IO io, string indent)
     {
-        string type = ns.node_descriptor.GetNodeType();
+        string type = ns.nodeDescriptor.GetNodeType();
         string nodeClass;
         if (CCTreeOptions.GetNodeClass().Length > 0 && !CCTreeOptions.GetMulti())
         {
@@ -297,76 +297,76 @@ public class CPPCodeGenerator : DefaultCCTreeVisitor
 
         CPPNodeFiles.AddType(type);
 
-        io.Print(indent + nodeClass + " *" + ns.nodeVar + " = ");
+        io.Write(indent + nodeClass + " *" + ns.nodeVar + " = ");
         string p = CCTreeOptions.GetStatic() ? "null" : "this";
         string parserArg = CCTreeOptions.GetNodeUsesParser() ? (p + ", ") : "";
 
         if (CCTreeOptions.GetNodeFactory() == ("*"))
         {
             // Old-style multiple-implementations.
-            io.Println("(" + nodeClass + "*)" + nodeClass + "::jjtCreate(" + parserArg +
-                ns.node_descriptor.GetNodeId() + ");");
+            io.WriteLine("(" + nodeClass + "*)" + nodeClass + "::jjtCreate(" + parserArg +
+                ns.nodeDescriptor.GetNodeId() + ");");
         }
         else if (CCTreeOptions.GetNodeFactory().Length > 0)
         {
-            io.Println("(" + nodeClass + "*)nodeFactory->jjtCreate(" + parserArg +
-             ns.node_descriptor.GetNodeId() + ");");
+            io.WriteLine("(" + nodeClass + "*)nodeFactory->jjtCreate(" + parserArg +
+             ns.nodeDescriptor.GetNodeId() + ");");
         }
         else
         {
-            io.Println("new " + nodeClass + "(" + parserArg + ns.node_descriptor.GetNodeId() + ");");
+            io.WriteLine("new " + nodeClass + "(" + parserArg + ns.nodeDescriptor.GetNodeId() + ");");
         }
 
         if (ns.UsesCloseNodeVar)
         {
-            io.Println(indent + "bool " + ns.closedVar + " = true;");
+            io.WriteLine(indent + "bool " + ns.closedVar + " = true;");
         }
-        io.Println(indent + ns.node_descriptor.OpenNode(ns.nodeVar));
+        io.WriteLine(indent + ns.nodeDescriptor.OpenNode(ns.nodeVar));
         if (CCTreeOptions.GetNodeScopeHook())
         {
-            io.Println(indent + "jjtreeOpenNodeScope(" + ns.nodeVar + ");");
+            io.WriteLine(indent + "jjtreeOpenNodeScope(" + ns.nodeVar + ");");
         }
 
         if (CCTreeOptions.GetTrackTokens())
         {
-            io.Println(indent + ns.nodeVar + "->jjtSetFirstToken(getToken(1));");
+            io.WriteLine(indent + ns.nodeVar + "->jjtSetFirstToken(getToken(1));");
         }
     }
 
     void InsertCloseNodeCode(NodeScope ns, IO io, string indent, bool isFinal)
     {
-        string closeNode = ns.node_descriptor.CloseNode(ns.nodeVar);
-        io.Println(indent + closeNode);
+        string closeNode = ns.nodeDescriptor.CloseNode(ns.nodeVar);
+        io.WriteLine(indent + closeNode);
         if (ns.UsesCloseNodeVar && !isFinal)
         {
-            io.Println(indent + ns.closedVar + " = false;");
+            io.WriteLine(indent + ns.closedVar + " = false;");
         }
         if (CCTreeOptions.GetNodeScopeHook())
         {
-            io.Println(indent + "if (jjtree.nodeCreated()) {");
-            io.Println(indent + " jjtreeCloseNodeScope(" + ns.nodeVar + ");");
-            io.Println(indent + "}");
+            io.WriteLine(indent + "if (jjtree.nodeCreated()) {");
+            io.WriteLine(indent + " jjtreeCloseNodeScope(" + ns.nodeVar + ");");
+            io.WriteLine(indent + "}");
         }
 
         if (CCTreeOptions.GetTrackTokens())
         {
-            io.Println(indent + ns.nodeVar + "->jjtSetLastToken(getToken(0));");
+            io.WriteLine(indent + ns.nodeVar + "->jjtSetLastToken(getToken(0));");
         }
     }
 
     void InsertOpenNodeAction(NodeScope ns, IO io, string indent)
     {
-        io.Println(indent + "{");
+        io.WriteLine(indent + "{");
         InsertOpenNodeCode(ns, io, indent + "  ");
-        io.Println(indent + "}");
+        io.WriteLine(indent + "}");
     }
 
 
     void InsertCloseNodeAction(NodeScope ns, IO io, string indent)
     {
-        io.Println(indent + "{");
+        io.WriteLine(indent + "{");
         InsertCloseNodeCode(ns, io, indent + "  ", false);
-        io.Println(indent + "}");
+        io.WriteLine(indent + "}");
     }
 
 
@@ -375,16 +375,16 @@ public class CPPCodeGenerator : DefaultCCTreeVisitor
     {
         string thrown;
         //if (thrown_names.hasMoreElements()) {
-        io.Println(indent + "} catch (...) {"); // " +  ns.exceptionVar + ") {");
+        io.WriteLine(indent + "} catch (...) {"); // " +  ns.exceptionVar + ") {");
 
         if (ns.UsesCloseNodeVar)
         {
-            io.Println(indent + "  if (" + ns.closedVar + ") {");
-            io.Println(indent + "    jjtree.clearNodeScope(" + ns.nodeVar + ");");
-            io.Println(indent + "    " + ns.closedVar + " = false;");
-            io.Println(indent + "  } else {");
-            io.Println(indent + "    jjtree.popNode();");
-            io.Println(indent + "  }");
+            io.WriteLine(indent + "  if (" + ns.closedVar + ") {");
+            io.WriteLine(indent + "    jjtree.clearNodeScope(" + ns.nodeVar + ");");
+            io.WriteLine(indent + "    " + ns.closedVar + " = false;");
+            io.WriteLine(indent + "  } else {");
+            io.WriteLine(indent + "    jjtree.popNode();");
+            io.WriteLine(indent + "  }");
         }
         //}
 
@@ -392,81 +392,81 @@ public class CPPCodeGenerator : DefaultCCTreeVisitor
 
     void TryTokenSequence(NodeScope ns, IO io, string indent, Token first, Token last)
     {
-        io.Println(indent + "try {");
+        io.WriteLine(indent + "try {");
         CloseJJTreeComment(io);
 
         /* Print out all the tokens, converting all references to
            `jjtThis' into the current node variable. */
-        for (Token t = first; t != last.next; t = t.next)
+        for (Token t = first; t != last.Next; t = t.Next)
         {
             TokenUtils.Print(t, io, "jjtThis", ns.nodeVar);
         }
 
         OpenJJTreeComment(io, null);
-        io.Println();
+        io.WriteLine();
 
-        var thrown_names = ns.production.throws_list;
+        var thrown_names = ns.production.ThrowsList;
         InsertCatchBlocks(ns, io, thrown_names, indent);
 
-        io.Println(indent + "} {");
+        io.WriteLine(indent + "} {");
         if (ns.UsesCloseNodeVar)
         {
-            io.Println(indent + "  if (" + ns.closedVar + ") {");
+            io.WriteLine(indent + "  if (" + ns.closedVar + ") {");
             InsertCloseNodeCode(ns, io, indent + "    ", true);
-            io.Println(indent + "  }");
+            io.WriteLine(indent + "  }");
         }
-        io.Println(indent + "}");
+        io.WriteLine(indent + "}");
         CloseJJTreeComment(io);
     }
 
 
     private static void FindThrown(NodeScope ns, Dictionary<string, string> thrown_set,
-        CCTreeNode expansion_unit)
+        TreeNode expansion_unit)
     {
         if (expansion_unit is ASTBNFNonTerminal)
         {
             /* Should really make the nonterminal explicitly maintain its
                name. */
-            string nt = expansion_unit.GetFirstToken().image;
+            string nt = expansion_unit.FirstToken.Image;
             if (CCTreeGlobals.Productions.TryGetValue(nt, out var prod))
             {
-                foreach (var t in prod.throws_list)
+                foreach (var t in prod.ThrowsList)
                 {
                     thrown_set.Add(t, t);
                 }
             }
         }
-        for (int i = 0; i < expansion_unit.jjtGetNumChildren(); ++i)
+        for (int i = 0; i < expansion_unit.ChildrenCount; ++i)
         {
-            CCTreeNode n = (CCTreeNode)expansion_unit.jjtGetChild(i);
+            TreeNode n = (TreeNode)expansion_unit.GetChild(i);
             FindThrown(ns, thrown_set, n);
         }
     }
 
 
-    void TryExpansionUnit(NodeScope ns, IO io, string indent, CCTreeNode expansion_unit)
+    void TryExpansionUnit(NodeScope ns, IO io, string indent, TreeNode expansion_unit)
     {
-        io.Println(indent + "try {");
+        io.WriteLine(indent + "try {");
         CloseJJTreeComment(io);
 
-        expansion_unit.jjtAccept(this, io);
+        expansion_unit.Accept(this, io);
 
         OpenJJTreeComment(io, null);
-        io.Println();
+        io.WriteLine();
 
         Dictionary<string,string> thrown_set = new ();
         FindThrown(ns, thrown_set, expansion_unit);
         var thrown_names = thrown_set;
         InsertCatchBlocks(ns, io, thrown_names, indent);
 
-        io.Println(indent + "} {");
+        io.WriteLine(indent + "} {");
         if (ns.UsesCloseNodeVar)
         {
-            io.Println(indent + "  if (" + ns.closedVar + ") {");
+            io.WriteLine(indent + "  if (" + ns.closedVar + ") {");
             InsertCloseNodeCode(ns, io, indent + "    ", true);
-            io.Println(indent + "  }");
+            io.WriteLine(indent + "  }");
         }
-        io.Println(indent + "}");
+        io.WriteLine(indent + "}");
         CloseJJTreeComment(io);
     }
 }

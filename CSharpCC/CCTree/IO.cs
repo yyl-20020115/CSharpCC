@@ -50,51 +50,24 @@ public class IO
         err = Console.Error;
     }
 
-    public string GetInputFileName()
-    {
-        return ifn;
-    }
+    public string InputFileName => ifn;
 
-    public TextReader GetIn()
-    {
-        return _in;
-    }
+    public TextReader In => _in;
 
-    public string GetOutputFileName()
-    {
-        return ofn;
-    }
+    public string OutputFileName => ofn;
 
-    public TextWriter GetOut()
-    {
-        return _out;
-    }
+    public TextWriter Out => _out;
 
-    public TextWriter GetMsg()
-    {
-        return msg;
-    }
+    public TextWriter Msg => msg;
 
-    public TextWriter GetErr()
-    {
-        return err;
-    }
+    public TextWriter Err => err;
 
 
-    public void Print(string s)
-    {
-        _out.Write(s);
-    }
+    public void Write(string s) => _out.Write(s);
 
-    public void Println(string s)
-    {
-        _out.WriteLine(s);
-    }
+    public void WriteLine(string s) => _out.WriteLine(s);
 
-    public void Println()
-    {
-        _out.WriteLine();
-    }
+    public void WriteLine() => _out.WriteLine();
 
 
     public void CloseAll()
@@ -104,11 +77,11 @@ public class IO
         err?.Flush();
     }
 
-    private string Create_output_file_name(string i)
+    private string CreateOutputFileName(string i)
     {
-        string o = CCTreeOptions.GetOutputFile();
+        var o = CCTreeOptions.GetOutputFile();
 
-        if (o == (""))
+        if (o == "")
         {
             int s = i.LastIndexOf(Path.DirectorySeparatorChar);
             if (s >= 0)
@@ -184,16 +157,14 @@ public class IO
         try
         {
             CSharpCCGlobals.CreateOutputDir(CCTreeOptions.GetJJTreeOutputDirectory());
-            string ofile = Path.Combine(CCTreeOptions.GetJJTreeOutputDirectory(), Create_output_file_name(ifn));
+            string ofile = Path.Combine(CCTreeOptions.GetJJTreeOutputDirectory(), CreateOutputFileName(ifn));
             ofn = ofile.ToString();
             _out = new StreamWriter(ofile);
         }
-        catch (IOException ioe)
+        catch (IOException)
         {
             throw new CCTreeIOException("Can't create output file " + ofn);
         }
     }
 
 }
-
-/*end*/

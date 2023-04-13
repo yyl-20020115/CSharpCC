@@ -5,15 +5,15 @@ namespace CSharpCC.CCTree;
 
 public class CCTreeParser : CCTreeParserConstants
 {
-    public CCTreeParserState jjtree = new();
-    void jjtreeOpenNodeScope(Node n)
+    public CCTreeParserState cctree = new();
+    void CCTreeOpenNodeScope(Node n)
     {
-        ((CCTreeNode)n).SetFirstToken(getToken(1));
+        ((TreeNode)n).FirstToken = GetToken(1);
     }
 
-    void jjtreeCloseNodeScope(Node n)
+    void CCTCloseNodeScope(Node n)
     {
-        ((CCTreeNode)n).SetLastToken(getToken(0));
+        ((TreeNode)n).LastToken = GetToken(0);
     }
 
 
@@ -24,8 +24,8 @@ public class CCTreeParser : CCTreeParserConstants
     private bool NotTailOfExpansionUnit()
     {
         Token t;
-        t = getToken(1);
-        if (t.kind == BIT_OR || t.kind == COMMA || t.kind == RPAREN || t.kind == RBRACE || t.kind == RBRACKET) return false;
+        t = GetToken(1);
+        if (t.Kind == BIT_OR || t.Kind == COMMA || t.Kind == RPAREN || t.Kind == RBRACE || t.Kind == RBRACKET) return false;
         return true;
     }
 
@@ -34,23 +34,23 @@ public class CCTreeParser : CCTreeParserConstants
     private void EatUptoCloseBrace()
     {
         int b = 1;
-        while (getToken(1).kind != RBRACE || --b != 0)
+        while (GetToken(1).Kind != RBRACE || --b != 0)
         {
-            if (getToken(1).kind == EOF) break;
-            if (getNextToken().kind == LBRACE) b++;
+            if (GetToken(1).Kind == EOF) break;
+            if (getNextToken().Kind == LBRACE) b++;
         }
     }
 
     /************************************************
      * THE JAVACC GRAMMAR SPECIFICATION STARTS HERE *
      ************************************************/
-    public void javacc_input()
+    public void CSharpCCInput()
     {
         /*@bgen(jjtree) Grammar */
         ASTGrammar jjtn000 = new(JJTGRAMMAR);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000); Token t;
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000); Token t;
         try
         {
             javacc_options();
@@ -58,19 +58,19 @@ public class CCTreeParser : CCTreeParserConstants
             isJavaLanguage = CCTreeOptions.IsOutputLanguageJava();
             ASTCompilationUnit jjtn001 = new(JJTCOMPILATIONUNIT);
             bool jjtc001 = true;
-            jjtree.OpenNodeScope(jjtn001);
-            jjtreeOpenNodeScope(jjtn001);
+            cctree.OpenNodeScope(jjtn001);
+            CCTreeOpenNodeScope(jjtn001);
             try
             {
                 jj_consume_token(_PARSER_BEGIN);
                 jj_consume_token(LPAREN);
                 t = identifier();
                 jj_consume_token(RPAREN);
-                CCTreeGlobals.ParserName = t.image;
+                CCTreeGlobals.ParserName = t.Image;
 
                 if (!isJavaLanguage)
                 {
-                    while (getToken(1).kind != _PARSER_END)
+                    while (GetToken(1).Kind != _PARSER_END)
                     {
                         getNextToken();
                     }
@@ -80,9 +80,9 @@ public class CCTreeParser : CCTreeParserConstants
                 jj_consume_token(LPAREN);
                 identifier();
                 jj_consume_token(RPAREN);
-                jjtree.CloseNodeScope(jjtn001, true);
+                cctree.CloseNodeScope(jjtn001, true);
                 jjtc001 = false;
-                jjtreeCloseNodeScope(jjtn001);
+                CCTCloseNodeScope(jjtn001);
                 if (CCTreeOptions.GetNodePackage().Equals(""))
                 {
                     CCTreeGlobals.NodePackageName = CCTreeGlobals.PackageName;
@@ -96,12 +96,12 @@ public class CCTreeParser : CCTreeParserConstants
             {
                 if (jjtc001)
                 {
-                    jjtree.ClearNodeScope(jjtn001);
+                    cctree.ClearNodeScope(jjtn001);
                     jjtc001 = false;
                 }
                 else
                 {
-                    jjtree.PopNode();
+                    cctree.PopNode();
                 }
                 if (_jjte001 is RuntimeException exception)
                 {
@@ -117,14 +117,14 @@ public class CCTreeParser : CCTreeParserConstants
             {
                 if (jjtc001)
                 {
-                    jjtree.CloseNodeScope(jjtn001, true);
-                    jjtreeCloseNodeScope(jjtn001);
+                    cctree.CloseNodeScope(jjtn001, true);
+                    CCTCloseNodeScope(jjtn001);
                 }
             }
             ASTProductions jjtn002 = new(JJTPRODUCTIONS);
             bool jjtc002 = true;
-            jjtree.OpenNodeScope(jjtn002);
-            jjtreeOpenNodeScope(jjtn002);
+            cctree.OpenNodeScope(jjtn002);
+            CCTreeOpenNodeScope(jjtn002);
             try
             {
             label_1:
@@ -175,12 +175,12 @@ public class CCTreeParser : CCTreeParserConstants
             {
                 if (jjtc002)
                 {
-                    jjtree.ClearNodeScope(jjtn002);
+                    cctree.ClearNodeScope(jjtn002);
                     jjtc002 = false;
                 }
                 else
                 {
-                    jjtree.PopNode();
+                    cctree.PopNode();
                 }
                 if (jjte002 is RuntimeException exception)
                 {
@@ -196,8 +196,8 @@ public class CCTreeParser : CCTreeParserConstants
             {
                 if (jjtc002)
                 {
-                    jjtree.CloseNodeScope(jjtn002, true);
-                    jjtreeCloseNodeScope(jjtn002);
+                    cctree.CloseNodeScope(jjtn002, true);
+                    CCTCloseNodeScope(jjtn002);
                 }
             }
             jj_consume_token(0);
@@ -206,12 +206,12 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (_jjte000 is RuntimeException exception1)
             {
@@ -227,20 +227,20 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, true);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, true);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
 
     public void javacc_options()
     {
-        if (getToken(1).image.Equals("options"))
+        if (GetToken(1).Image.Equals("options"))
         {
             ASTOptions jjtn001 = new(JJTOPTIONS);
             bool jjtc001 = true;
-            jjtree.OpenNodeScope(jjtn001);
-            jjtreeOpenNodeScope(jjtn001);
+            cctree.OpenNodeScope(jjtn001);
+            CCTreeOpenNodeScope(jjtn001);
             try
             {
                 jj_consume_token(IDENTIFIER);
@@ -262,19 +262,19 @@ public class CCTreeParser : CCTreeParserConstants
                     }
                     option_binding();
                 }
-                label_2_exit:
+            label_2_exit:
                 jj_consume_token(RBRACE);
             }
             catch (Exception jjte001)
             {
                 if (jjtc001)
                 {
-                    jjtree.ClearNodeScope(jjtn001);
+                    cctree.ClearNodeScope(jjtn001);
                     jjtc001 = false;
                 }
                 else
                 {
-                    jjtree.PopNode();
+                    cctree.PopNode();
                 }
                 if (jjte001 is RuntimeException exception)
                 {
@@ -290,8 +290,8 @@ public class CCTreeParser : CCTreeParserConstants
             {
                 if (jjtc001)
                 {
-                    jjtree.CloseNodeScope(jjtn001, true);
-                    jjtreeCloseNodeScope(jjtn001);
+                    cctree.CloseNodeScope(jjtn001, true);
+                    CCTCloseNodeScope(jjtn001);
                 }
             }
         }
@@ -307,8 +307,8 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) OptionBinding */
         ASTOptionBinding jjtn000 = new(JJTOPTIONBINDING);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000); Token o, v;
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000); Token o, v;
         try
         {
             switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
@@ -335,21 +335,21 @@ public class CCTreeParser : CCTreeParserConstants
             {
                 case INTEGER_LITERAL:
                     v = IntegerLiteral();
-                    CCTreeOptions.SetInputFileOption(o, v, o.image, (v.image));
-                    jjtn000.Initialize(o.image, v.image);
+                    CCTreeOptions.SetInputFileOption(o, v, o.Image, (v.Image));
+                    jjtn000.Initialize(o.Image, v.Image);
                     break;
                 case FALSE:
                 case TRUE:
                     v = BooleanLiteral();
-                    CCTreeOptions.SetInputFileOption(o, v, o.image,
-                                               (v.image));
-                    jjtn000.Initialize(o.image, v.image);
+                    CCTreeOptions.SetInputFileOption(o, v, o.Image,
+                                               (v.Image));
+                    jjtn000.Initialize(o.Image, v.Image);
                     break;
                 case STRING_LITERAL:
                     v = StringLiteral();
-                    String vs = TokenUtils.RemoveEscapesAndQuotes(v, v.image);
-                    CCTreeOptions.SetInputFileOption(o, v, o.image, (Object)vs);
-                    jjtn000.Initialize(o.image, vs);
+                    String vs = TokenUtils.RemoveEscapesAndQuotes(v, v.Image);
+                    CCTreeOptions.SetInputFileOption(o, v, o.Image, (Object)vs);
+                    jjtn000.Initialize(o.Image, vs);
                     break;
                 default:
                     jj_la1[3] = jj_gen;
@@ -362,12 +362,12 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception)
             {
@@ -383,8 +383,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, true);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, true);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
@@ -440,8 +440,8 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) Javacode */
         ASTJavacode jjtn000 = new(JJTJAVACODE);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000); Token t1, t2;
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000); Token t1, t2;
         ASTJavacode prod;
         ASTNodeDescriptor nd = null;
         String n;
@@ -455,7 +455,7 @@ public class CCTreeParser : CCTreeParserConstants
             FormalParameters();
             if (!isJavaLanguage)
             {
-                while (getToken(1).kind != LBRACE)
+                while (GetToken(1).Kind != LBRACE)
                 {
                     getNextToken();
                 }
@@ -465,7 +465,7 @@ public class CCTreeParser : CCTreeParserConstants
                 case THROWS:
                     jj_consume_token(THROWS);
                     n = Name();
-                    prod.throws_list.Add(n);
+                    prod.ThrowsList.Add(n);
                 label_3:
                     while (true)
                     {
@@ -480,7 +480,7 @@ public class CCTreeParser : CCTreeParserConstants
                         }
                         jj_consume_token(COMMA);
                         n = Name();
-                        prod.throws_list.Add(n);
+                        prod.ThrowsList.Add(n);
                     }
                 label3_exit:
                     break;
@@ -499,7 +499,7 @@ public class CCTreeParser : CCTreeParserConstants
             }
             // This is really a Block()
             t2 = jj_consume_token(LBRACE);
-            prod.name = t1.image;
+            prod.Name = t1.Image;
             prod.StatementBeginLocation = t2;
             if (!isJavaLanguage)
             {
@@ -507,8 +507,8 @@ public class CCTreeParser : CCTreeParserConstants
             }
             ASTJavacodeBody jjtn001 = new(JJTJAVACODEBODY);
             bool jjtc001 = true;
-            jjtree.OpenNodeScope(jjtn001);
-            jjtreeOpenNodeScope(jjtn001);
+            cctree.OpenNodeScope(jjtn001);
+            CCTreeOpenNodeScope(jjtn001);
             try
             {
             label_4:
@@ -588,21 +588,21 @@ public class CCTreeParser : CCTreeParserConstants
                     BlockStatement();
                 }
             label_4_exit:
-                jjtree.CloseNodeScope(jjtn001, true);
+                cctree.CloseNodeScope(jjtn001, true);
                 jjtc001 = false;
-                jjtreeCloseNodeScope(jjtn001);
+                CCTCloseNodeScope(jjtn001);
                 jjtn001.NodeScope = new NodeScope(prod, nd);
             }
             catch (Exception jjte001)
             {
                 if (jjtc001)
                 {
-                    jjtree.ClearNodeScope(jjtn001);
+                    cctree.ClearNodeScope(jjtn001);
                     jjtc001 = false;
                 }
                 else
                 {
-                    jjtree.PopNode();
+                    cctree.PopNode();
                 }
                 if (jjte001 is RuntimeException exception1)
                 {
@@ -618,26 +618,26 @@ public class CCTreeParser : CCTreeParserConstants
             {
                 if (jjtc001)
                 {
-                    jjtree.CloseNodeScope(jjtn001, true);
-                    jjtreeCloseNodeScope(jjtn001);
+                    cctree.CloseNodeScope(jjtn001, true);
+                    CCTCloseNodeScope(jjtn001);
                 }
             }
             jj_consume_token(RBRACE);
-            jjtree.CloseNodeScope(jjtn000, true);
+            cctree.CloseNodeScope(jjtn000, true);
             jjtc000 = false;
-            jjtreeCloseNodeScope(jjtn000);
-            CCTreeGlobals.Productions.Add(prod.name, prod);
+            CCTCloseNodeScope(jjtn000);
+            CCTreeGlobals.Productions.Add(prod.Name, prod);
         }
         catch (Exception jjte000)
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception)
             {
@@ -653,8 +653,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, true);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, true);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
@@ -664,12 +664,12 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) BNF */
         ASTBNF jjtn000 = new(JJTBNF);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000); Token t1, t2;
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000); Token t1, t2;
         ASTBNF prod;
         ASTNodeDescriptor nd = null;
         NodeScope ns;
-        CCTreeNode eu;
+        TreeNode eu;
         String n;
         try
         {
@@ -683,7 +683,7 @@ public class CCTreeParser : CCTreeParserConstants
                 case THROWS:
                     jj_consume_token(THROWS);
                     n = Name();
-                    prod.throws_list.Add(n);
+                    prod.ThrowsList.Add(n);
                 label_5:
                     while (true)
                     {
@@ -698,14 +698,14 @@ public class CCTreeParser : CCTreeParserConstants
                         }
                         jj_consume_token(COMMA);
                         n = Name();
-                        prod.throws_list.Add(n);
+                        prod.ThrowsList.Add(n);
                     }
                 label_5_exit:
                     break;
                 default:
                     jj_la1[10] = jj_gen;
                     break;
-                    
+
             }
             switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
@@ -720,8 +720,8 @@ public class CCTreeParser : CCTreeParserConstants
             jj_consume_token(COLON);
             // This is really a Block()
             t2 = jj_consume_token(LBRACE);
-            prod.name = t1.image;
-            prod.declBeginLoc = t2;
+            prod.Name = t1.Image;
+            prod.DeclarationBeginLocation = t2;
             ns = new NodeScope(prod, nd);
             if (!isJavaLanguage)
             {
@@ -729,8 +729,8 @@ public class CCTreeParser : CCTreeParserConstants
             }
             ASTBNFDeclaration jjtn001 = new(JJTBNFDECLARATION);
             bool jjtc001 = true;
-            jjtree.OpenNodeScope(jjtn001);
-            jjtreeOpenNodeScope(jjtn001);
+            cctree.OpenNodeScope(jjtn001);
+            CCTreeOpenNodeScope(jjtn001);
             try
             {
             label_6:
@@ -810,21 +810,21 @@ public class CCTreeParser : CCTreeParserConstants
                     BlockStatement();
                 }
             label_6_exit:
-                jjtree.CloseNodeScope(jjtn001, true);
+                cctree.CloseNodeScope(jjtn001, true);
                 jjtc001 = false;
-                jjtreeCloseNodeScope(jjtn001);
+                CCTCloseNodeScope(jjtn001);
                 jjtn001.NodeScope = ns;
             }
             catch (Exception jjte001)
             {
                 if (jjtc001)
                 {
-                    jjtree.ClearNodeScope(jjtn001);
+                    cctree.ClearNodeScope(jjtn001);
                     jjtc001 = false;
                 }
                 else
                 {
-                    jjtree.PopNode();
+                    cctree.PopNode();
                 }
                 if (jjte001 is RuntimeException exception)
                 {
@@ -840,22 +840,22 @@ public class CCTreeParser : CCTreeParserConstants
             {
                 if (jjtc001)
                 {
-                    jjtree.CloseNodeScope(jjtn001, true);
-                    jjtreeCloseNodeScope(jjtn001);
+                    cctree.CloseNodeScope(jjtn001, true);
+                    CCTCloseNodeScope(jjtn001);
                 }
             }
             jj_consume_token(RBRACE);
             jj_consume_token(LBRACE);
             var jjtn002 = new ASTBNFNodeScope(JJTBNFNODESCOPE);
             bool jjtc002 = true;
-            jjtree.OpenNodeScope(jjtn002);
-            jjtreeOpenNodeScope(jjtn002);
+            cctree.OpenNodeScope(jjtn002);
+            CCTreeOpenNodeScope(jjtn002);
             try
             {
                 eu = expansion_choices(prod);
-                jjtree.CloseNodeScope(jjtn002, true);
+                cctree.CloseNodeScope(jjtn002, true);
                 jjtc002 = false;
-                jjtreeCloseNodeScope(jjtn002);
+                CCTCloseNodeScope(jjtn002);
                 jjtn002.NodeScope = ns;
                 jjtn002.expansion_unit = eu;
             }
@@ -863,12 +863,12 @@ public class CCTreeParser : CCTreeParserConstants
             {
                 if (jjtc002)
                 {
-                    jjtree.ClearNodeScope(jjtn002);
+                    cctree.ClearNodeScope(jjtn002);
                     jjtc002 = false;
                 }
                 else
                 {
-                    jjtree.PopNode();
+                    cctree.PopNode();
                 }
                 if (jjte002 is RuntimeException exception
                     )
@@ -885,26 +885,26 @@ public class CCTreeParser : CCTreeParserConstants
             {
                 if (jjtc002)
                 {
-                    jjtree.CloseNodeScope(jjtn002, true);
-                    jjtreeCloseNodeScope(jjtn002);
+                    cctree.CloseNodeScope(jjtn002, true);
+                    CCTCloseNodeScope(jjtn002);
                 }
             }
             jj_consume_token(RBRACE);
-            jjtree.CloseNodeScope(jjtn000, true);
+            cctree.CloseNodeScope(jjtn000, true);
             jjtc000 = false;
-            jjtreeCloseNodeScope(jjtn000);
-            CCTreeGlobals.Productions.Add(prod.name, prod);
+            CCTCloseNodeScope(jjtn000);
+            CCTreeGlobals.Productions.Add(prod.Name, prod);
         }
         catch (Exception jjte000)
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception)
             {
@@ -920,8 +920,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, true);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, true);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
@@ -962,8 +962,8 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) RE */
         ASTRE jjtn000 = new(JJTRE);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000);
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000);
         try
         {
             switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
@@ -1050,12 +1050,12 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception)
             {
@@ -1071,8 +1071,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, true);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, true);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
@@ -1082,8 +1082,8 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) TokenDecls */
         ASTTokenDecls jjtn000 = new(JJTTOKENDECLS);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000);
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000);
         try
         {
             jj_consume_token(_TOKEN_MGR_DECLS);
@@ -1109,12 +1109,12 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception)
             {
@@ -1130,8 +1130,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, true);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, true);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
@@ -1164,8 +1164,8 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) RESpec */
         ASTRESpec jjtn000 = new(JJTRESPEC);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000);
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000);
         try
         {
             regular_expression();
@@ -1195,12 +1195,12 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception)
             {
@@ -1216,19 +1216,19 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, true);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, true);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
 
-    public CCTreeNode expansion_choices(ASTProduction p)
+    public TreeNode expansion_choices(ASTProduction p)
     {
         /*@bgen(jjtree) #BNFChoice(> 1) */
         ASTBNFChoice jjtn000 = new(JJTBNFCHOICE);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000);
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000);
         try
         {
             expansion(p);
@@ -1248,21 +1248,21 @@ public class CCTreeParser : CCTreeParserConstants
                 expansion(p);
             }
         label_9_exit:
-            jjtree.CloseNodeScope(jjtn000, jjtree.NodeArity() > 1);
+            cctree.CloseNodeScope(jjtn000, cctree.NodeArity() > 1);
             jjtc000 = false;
-            jjtreeCloseNodeScope(jjtn000);
-            { if (true) return (CCTreeNode)jjtree.PeekNode(); }
+            CCTCloseNodeScope(jjtn000);
+            { if (true) return (TreeNode)cctree.PeekNode(); }
         }
         catch (Exception jjte000_)
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000_ is RuntimeException exception1)
             {
@@ -1278,8 +1278,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, jjtree.NodeArity() > 1);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, cctree.NodeArity() > 1);
+                CCTCloseNodeScope(jjtn000);
             }
         }
         throw new Error("Missing return statement in function");
@@ -1290,8 +1290,8 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) #BNFSequence(> 1) */
         ASTBNFSequence jjtn000 = new(JJTBNFSEQUENCE);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000); CCTreeNode eu;
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000); TreeNode eu;
         ASTNodeDescriptor nd = null;
         try
         {
@@ -1300,8 +1300,8 @@ public class CCTreeParser : CCTreeParserConstants
                 case _LOOKAHEAD:
                     ASTBNFLookahead jjtn001 = new(JJTBNFLOOKAHEAD);
                     bool jjtc001 = true;
-                    jjtree.OpenNodeScope(jjtn001);
-                    jjtreeOpenNodeScope(jjtn001);
+                    cctree.OpenNodeScope(jjtn001);
+                    CCTreeOpenNodeScope(jjtn001);
                     try
                     {
                         jj_consume_token(_LOOKAHEAD);
@@ -1313,12 +1313,12 @@ public class CCTreeParser : CCTreeParserConstants
                     {
                         if (jjtc001)
                         {
-                            jjtree.ClearNodeScope(jjtn001);
+                            cctree.ClearNodeScope(jjtn001);
                             jjtc001 = false;
                         }
                         else
                         {
-                            jjtree.PopNode();
+                            cctree.PopNode();
                         }
                         if (jjte001 is RuntimeException exception1)
                         {
@@ -1334,8 +1334,8 @@ public class CCTreeParser : CCTreeParserConstants
                     {
                         if (jjtc001)
                         {
-                            jjtree.CloseNodeScope(jjtn001, true);
-                            jjtreeCloseNodeScope(jjtn001);
+                            cctree.CloseNodeScope(jjtn001, true);
+                            CCTCloseNodeScope(jjtn001);
                         }
                     }
                     break;
@@ -1349,8 +1349,8 @@ public class CCTreeParser : CCTreeParserConstants
             {
                 ASTExpansionNodeScope jjtn002 = new(JJTEXPANSIONNODESCOPE);
                 bool jjtc002 = true;
-                jjtree.OpenNodeScope(jjtn002);
-                jjtreeOpenNodeScope(jjtn002);
+                cctree.OpenNodeScope(jjtn002);
+                CCTreeOpenNodeScope(jjtn002);
                 try
                 {
                     eu = expansion_unit(p);
@@ -1364,10 +1364,10 @@ public class CCTreeParser : CCTreeParserConstants
                             break;
 
                     }
-                    jjtree.CloseNodeScope(jjtn002, jjtree.NodeArity() > 1);
+                    cctree.CloseNodeScope(jjtn002, cctree.NodeArity() > 1);
                     jjtc002 = false;
-                    jjtreeCloseNodeScope(jjtn002);
-                    if (jjtree.NodeCreated)
+                    CCTCloseNodeScope(jjtn002);
+                    if (cctree.NodeCreated)
                     {
                         jjtn002.NodeScope = new NodeScope(p, nd);
                         jjtn002.ExpansionUnit = eu;
@@ -1377,12 +1377,12 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc002)
                     {
-                        jjtree.ClearNodeScope(jjtn002);
+                        cctree.ClearNodeScope(jjtn002);
                         jjtc002 = false;
                     }
                     else
                     {
-                        jjtree.PopNode();
+                        cctree.PopNode();
                     }
                     if (jjte002 is RuntimeException exception1)
                     {
@@ -1398,8 +1398,8 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc002)
                     {
-                        jjtree.CloseNodeScope(jjtn002, jjtree.NodeArity() > 1);
-                        jjtreeCloseNodeScope(jjtn002);
+                        cctree.CloseNodeScope(jjtn002, cctree.NodeArity() > 1);
+                        CCTCloseNodeScope(jjtn002);
                     }
                 }
                 if (NotTailOfExpansionUnit())
@@ -1418,12 +1418,12 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception)
             {
@@ -1439,8 +1439,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, jjtree.NodeArity() > 1);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, cctree.NodeArity() > 1);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
@@ -1459,7 +1459,7 @@ public class CCTreeParser : CCTreeParserConstants
                 break;
 
         }
-        if (!emptyLA && (getToken(1).kind != RPAREN))
+        if (!emptyLA && (GetToken(1).Kind != RPAREN))
         {
             jj_consume_token(COMMA);
             commaAtEnd = true;
@@ -1468,7 +1468,7 @@ public class CCTreeParser : CCTreeParserConstants
         {
             ;
         }
-        if (getToken(1).kind != RPAREN && getToken(1).kind != LBRACE)
+        if (GetToken(1).Kind != RPAREN && GetToken(1).Kind != LBRACE)
         {
             expansion_choices(p);
             emptyLA = false; commaAtEnd = false;
@@ -1477,7 +1477,7 @@ public class CCTreeParser : CCTreeParserConstants
         {
             ;
         }
-        if (!emptyLA && !commaAtEnd && (getToken(1).kind != RPAREN))
+        if (!emptyLA && !commaAtEnd && (GetToken(1).Kind != RPAREN))
         {
             jj_consume_token(COMMA);
             commaAtEnd = true;
@@ -1550,7 +1550,7 @@ public class CCTreeParser : CCTreeParserConstants
         }
     }
 
-    public CCTreeNode expansion_unit(ASTProduction p)
+    public TreeNode expansion_unit(ASTProduction p)
     {
         Token t;
         switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
@@ -1558,8 +1558,8 @@ public class CCTreeParser : CCTreeParserConstants
             case _LOOKAHEAD:
                 ASTBNFLookahead jjtn001 = new(JJTBNFLOOKAHEAD);
                 bool jjtc001 = true;
-                jjtree.OpenNodeScope(jjtn001);
-                jjtreeOpenNodeScope(jjtn001);
+                cctree.OpenNodeScope(jjtn001);
+                CCTreeOpenNodeScope(jjtn001);
                 try
                 {
                     jj_consume_token(_LOOKAHEAD);
@@ -1571,12 +1571,12 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc001)
                     {
-                        jjtree.ClearNodeScope(jjtn001);
+                        cctree.ClearNodeScope(jjtn001);
                         jjtc001 = false;
                     }
                     else
                     {
-                        jjtree.PopNode();
+                        cctree.PopNode();
                     }
                     if (jjte001 is RuntimeException exception)
                     {
@@ -1592,16 +1592,16 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc001)
                     {
-                        jjtree.CloseNodeScope(jjtn001, true);
-                        jjtreeCloseNodeScope(jjtn001);
+                        cctree.CloseNodeScope(jjtn001, true);
+                        CCTCloseNodeScope(jjtn001);
                     }
                 }
                 break;
             case LBRACE:
                 ASTBNFAction jjtn002 = new(JJTBNFACTION);
                 bool jjtc002 = true;
-                jjtree.OpenNodeScope(jjtn002);
-                jjtreeOpenNodeScope(jjtn002);
+                cctree.OpenNodeScope(jjtn002);
+                CCTreeOpenNodeScope(jjtn002);
                 try
                 {
                     Block();
@@ -1610,12 +1610,12 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc002)
                     {
-                        jjtree.ClearNodeScope(jjtn002);
+                        cctree.ClearNodeScope(jjtn002);
                         jjtc002 = false;
                     }
                     else
                     {
-                        jjtree.PopNode();
+                        cctree.PopNode();
                     }
                     if (jjte002 is RuntimeException exception)
                     {
@@ -1631,16 +1631,16 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc002)
                     {
-                        jjtree.CloseNodeScope(jjtn002, true);
-                        jjtreeCloseNodeScope(jjtn002);
+                        cctree.CloseNodeScope(jjtn002, true);
+                        CCTCloseNodeScope(jjtn002);
                     }
                 }
                 break;
             case LBRACKET:
                 ASTBNFZeroOrOne jjtn003 = new(JJTBNFZEROORONE);
                 bool jjtc003 = true;
-                jjtree.OpenNodeScope(jjtn003);
-                jjtreeOpenNodeScope(jjtn003);
+                cctree.OpenNodeScope(jjtn003);
+                CCTreeOpenNodeScope(jjtn003);
                 try
                 {
                     jj_consume_token(LBRACKET);
@@ -1651,12 +1651,12 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc003)
                     {
-                        jjtree.ClearNodeScope(jjtn003);
+                        cctree.ClearNodeScope(jjtn003);
                         jjtc003 = false;
                     }
                     else
                     {
-                        jjtree.PopNode();
+                        cctree.PopNode();
                     }
                     if (jjte003 is RuntimeException exception1)
                     {
@@ -1672,16 +1672,16 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc003)
                     {
-                        jjtree.CloseNodeScope(jjtn003, true);
-                        jjtreeCloseNodeScope(jjtn003);
+                        cctree.CloseNodeScope(jjtn003, true);
+                        CCTCloseNodeScope(jjtn003);
                     }
                 }
                 break;
             case TRY:
                 ASTBNFTryBlock jjtn004 = new(JJTBNFTRYBLOCK);
                 bool jjtc004 = true;
-                jjtree.OpenNodeScope(jjtn004);
-                jjtreeOpenNodeScope(jjtn004);
+                cctree.OpenNodeScope(jjtn004);
+                CCTreeOpenNodeScope(jjtn004);
                 try
                 {
                     jj_consume_token(TRY);
@@ -1735,12 +1735,12 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc004)
                     {
-                        jjtree.ClearNodeScope(jjtn004);
+                        cctree.ClearNodeScope(jjtn004);
                         jjtc004 = false;
                     }
                     else
                     {
-                        jjtree.PopNode();
+                        cctree.PopNode();
                     }
                     if (jjte004 is RuntimeException exception1)
                     {
@@ -1756,8 +1756,8 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc004)
                     {
-                        jjtree.CloseNodeScope(jjtn004, true);
-                        jjtreeCloseNodeScope(jjtn004);
+                        cctree.CloseNodeScope(jjtn004, true);
+                        CCTCloseNodeScope(jjtn004);
                     }
                 }
                 break;
@@ -1767,8 +1767,8 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     ASTBNFAssignment jjtn006 = new(JJTBNFASSIGNMENT);
                     bool jjtc006 = true;
-                    jjtree.OpenNodeScope(jjtn006);
-                    jjtreeOpenNodeScope(jjtn006);
+                    cctree.OpenNodeScope(jjtn006);
+                    CCTreeOpenNodeScope(jjtn006);
                     try
                     {
                         if (jj_2_3(2147483647))
@@ -1800,8 +1800,8 @@ public class CCTreeParser : CCTreeParserConstants
                             case IDENTIFIER:
                                 ASTBNFNonTerminal jjtn005 = new(JJTBNFNONTERMINAL);
                                 bool jjtc005 = true;
-                                jjtree.OpenNodeScope(jjtn005);
-                                jjtreeOpenNodeScope(jjtn005);
+                                cctree.OpenNodeScope(jjtn005);
+                                CCTreeOpenNodeScope(jjtn005);
                                 try
                                 {
                                     identifier();
@@ -1811,12 +1811,12 @@ public class CCTreeParser : CCTreeParserConstants
                                 {
                                     if (jjtc005)
                                     {
-                                        jjtree.ClearNodeScope(jjtn005);
+                                        cctree.ClearNodeScope(jjtn005);
                                         jjtc005 = false;
                                     }
                                     else
                                     {
-                                        jjtree.PopNode();
+                                        cctree.PopNode();
                                     }
                                     if (jjte005 is RuntimeException exception)
                                     {
@@ -1832,8 +1832,8 @@ public class CCTreeParser : CCTreeParserConstants
                                 {
                                     if (jjtc005)
                                     {
-                                        jjtree.CloseNodeScope(jjtn005, true);
-                                        jjtreeCloseNodeScope(jjtn005);
+                                        cctree.CloseNodeScope(jjtn005, true);
+                                        CCTCloseNodeScope(jjtn005);
                                     }
                                 }
                                 break;
@@ -1847,12 +1847,12 @@ public class CCTreeParser : CCTreeParserConstants
                     {
                         if (jjtc006)
                         {
-                            jjtree.ClearNodeScope(jjtn006);
+                            cctree.ClearNodeScope(jjtn006);
                             jjtc006 = false;
                         }
                         else
                         {
-                            jjtree.PopNode();
+                            cctree.PopNode();
                         }
                         if (jjte006 is RuntimeException exception)
                         {
@@ -1868,8 +1868,8 @@ public class CCTreeParser : CCTreeParserConstants
                     {
                         if (jjtc006)
                         {
-                            jjtree.CloseNodeScope(jjtn006, jjtree.NodeArity() > 1);
-                            jjtreeCloseNodeScope(jjtn006);
+                            cctree.CloseNodeScope(jjtn006, cctree.NodeArity() > 1);
+                            CCTCloseNodeScope(jjtn006);
                         }
                     }
                 }
@@ -1886,8 +1886,8 @@ public class CCTreeParser : CCTreeParserConstants
                                 case PLUS:
                                     ASTBNFOneOrMore jjtn007 = new(JJTBNFONEORMORE);
                                     bool jjtc007 = true;
-                                    jjtree.OpenNodeScope(jjtn007);
-                                    jjtreeOpenNodeScope(jjtn007);
+                                    cctree.OpenNodeScope(jjtn007);
+                                    CCTreeOpenNodeScope(jjtn007);
                                     try
                                     {
                                         jj_consume_token(PLUS);
@@ -1896,16 +1896,16 @@ public class CCTreeParser : CCTreeParserConstants
                                     {
                                         if (jjtc007)
                                         {
-                                            jjtree.CloseNodeScope(jjtn007, 1);
-                                            jjtreeCloseNodeScope(jjtn007);
+                                            cctree.CloseNodeScope(jjtn007, 1);
+                                            CCTCloseNodeScope(jjtn007);
                                         }
                                     }
                                     break;
                                 case STAR:
                                     ASTBNFZeroOrMore jjtn008 = new(JJTBNFZEROORMORE);
                                     bool jjtc008 = true;
-                                    jjtree.OpenNodeScope(jjtn008);
-                                    jjtreeOpenNodeScope(jjtn008);
+                                    cctree.OpenNodeScope(jjtn008);
+                                    CCTreeOpenNodeScope(jjtn008);
                                     try
                                     {
                                         jj_consume_token(STAR);
@@ -1914,16 +1914,16 @@ public class CCTreeParser : CCTreeParserConstants
                                     {
                                         if (jjtc008)
                                         {
-                                            jjtree.CloseNodeScope(jjtn008, 1);
-                                            jjtreeCloseNodeScope(jjtn008);
+                                            cctree.CloseNodeScope(jjtn008, 1);
+                                            CCTCloseNodeScope(jjtn008);
                                         }
                                     }
                                     break;
                                 case HOOK:
                                     ASTBNFZeroOrOne jjtn009 = new(JJTBNFZEROORONE);
                                     bool jjtc009 = true;
-                                    jjtree.OpenNodeScope(jjtn009);
-                                    jjtreeOpenNodeScope(jjtn009);
+                                    cctree.OpenNodeScope(jjtn009);
+                                    CCTreeOpenNodeScope(jjtn009);
                                     try
                                     {
                                         jj_consume_token(HOOK);
@@ -1932,8 +1932,8 @@ public class CCTreeParser : CCTreeParserConstants
                                     {
                                         if (jjtc009)
                                         {
-                                            jjtree.CloseNodeScope(jjtn009, 1);
-                                            jjtreeCloseNodeScope(jjtn009);
+                                            cctree.CloseNodeScope(jjtn009, 1);
+                                            CCTCloseNodeScope(jjtn009);
                                         }
                                     }
                                     break;
@@ -1941,27 +1941,27 @@ public class CCTreeParser : CCTreeParserConstants
                                     jj_la1[33] = jj_gen;
                                     ASTBNFParenthesized jjtn010 = new(JJTBNFPARENTHESIZED);
                                     bool jjtc010 = true;
-                                    jjtree.OpenNodeScope(jjtn010);
-                                    jjtreeOpenNodeScope(jjtn010);
+                                    cctree.OpenNodeScope(jjtn010);
+                                    CCTreeOpenNodeScope(jjtn010);
                                     try
                                     {
-                                        jjtree.CloseNodeScope(jjtn010, 1);
+                                        cctree.CloseNodeScope(jjtn010, 1);
                                         jjtc010 = false;
-                                        jjtreeCloseNodeScope(jjtn010);
+                                        CCTCloseNodeScope(jjtn010);
 
                                     }
                                     finally
                                     {
                                         if (jjtc010)
                                         {
-                                            jjtree.CloseNodeScope(jjtn010, 1);
-                                            jjtreeCloseNodeScope(jjtn010);
+                                            cctree.CloseNodeScope(jjtn010, 1);
+                                            CCTCloseNodeScope(jjtn010);
                                         }
                                     }
                                     break;
 
                             }
-                      ((CCTreeNode)jjtree.PeekNode()).SetFirstToken(t);
+                      ((TreeNode)cctree.PeekNode()).FirstToken = t;
                             break;
                         default:
                             jj_la1[35] = jj_gen;
@@ -1971,7 +1971,7 @@ public class CCTreeParser : CCTreeParserConstants
                 }
                 break;
         }
-        { if (true) return (CCTreeNode)jjtree.PeekNode(); }
+        { if (true) return (TreeNode)cctree.PeekNode(); }
         throw new Error("Missing return statement in function");
     }
 
@@ -1982,8 +1982,8 @@ public class CCTreeParser : CCTreeParserConstants
             case STRING_LITERAL:
                 ASTREStringLiteral jjtn001 = new(JJTRESTRINGLITERAL);
                 bool jjtc001 = true;
-                jjtree.OpenNodeScope(jjtn001);
-                jjtreeOpenNodeScope(jjtn001);
+                cctree.OpenNodeScope(jjtn001);
+                CCTreeOpenNodeScope(jjtn001);
                 try
                 {
                     StringLiteral();
@@ -1992,12 +1992,12 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc001)
                     {
-                        jjtree.ClearNodeScope(jjtn001);
+                        cctree.ClearNodeScope(jjtn001);
                         jjtc001 = false;
                     }
                     else
                     {
-                        jjtree.PopNode();
+                        cctree.PopNode();
                     }
                     if (jjte001 is RuntimeException exception1)
                     {
@@ -2013,8 +2013,8 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc001)
                     {
-                        jjtree.CloseNodeScope(jjtn001, true);
-                        jjtreeCloseNodeScope(jjtn001);
+                        cctree.CloseNodeScope(jjtn001, true);
+                        CCTCloseNodeScope(jjtn001);
                     }
                 }
                 break;
@@ -2024,8 +2024,8 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     ASTRENamed jjtn002 = new(JJTRENAMED);
                     bool jjtc002 = true;
-                    jjtree.OpenNodeScope(jjtn002);
-                    jjtreeOpenNodeScope(jjtn002);
+                    cctree.OpenNodeScope(jjtn002);
+                    CCTreeOpenNodeScope(jjtn002);
                     try
                     {
                         jj_consume_token(LT);
@@ -2058,12 +2058,12 @@ public class CCTreeParser : CCTreeParserConstants
                     {
                         if (jjtc002)
                         {
-                            jjtree.ClearNodeScope(jjtn002);
+                            cctree.ClearNodeScope(jjtn002);
                             jjtc002 = false;
                         }
                         else
                         {
-                            jjtree.PopNode();
+                            cctree.PopNode();
                         }
                         if (jjte002 is RuntimeException exception1)
                         {
@@ -2079,8 +2079,8 @@ public class CCTreeParser : CCTreeParserConstants
                     {
                         if (jjtc002)
                         {
-                            jjtree.CloseNodeScope(jjtn002, true);
-                            jjtreeCloseNodeScope(jjtn002);
+                            cctree.CloseNodeScope(jjtn002, true);
+                            CCTCloseNodeScope(jjtn002);
                         }
                     }
                 }
@@ -2088,8 +2088,8 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     ASTREReference jjtn003 = new(JJTREREFERENCE);
                     bool jjtc003 = true;
-                    jjtree.OpenNodeScope(jjtn003);
-                    jjtreeOpenNodeScope(jjtn003);
+                    cctree.OpenNodeScope(jjtn003);
+                    CCTreeOpenNodeScope(jjtn003);
                     try
                     {
                         jj_consume_token(LT);
@@ -2100,12 +2100,12 @@ public class CCTreeParser : CCTreeParserConstants
                     {
                         if (jjtc003)
                         {
-                            jjtree.ClearNodeScope(jjtn003);
+                            cctree.ClearNodeScope(jjtn003);
                             jjtc003 = false;
                         }
                         else
                         {
-                            jjtree.PopNode();
+                            cctree.PopNode();
                         }
                         if (jjte003 is RuntimeException exception)
                         {
@@ -2121,8 +2121,8 @@ public class CCTreeParser : CCTreeParserConstants
                     {
                         if (jjtc003)
                         {
-                            jjtree.CloseNodeScope(jjtn003, true);
-                            jjtreeCloseNodeScope(jjtn003);
+                            cctree.CloseNodeScope(jjtn003, true);
+                            CCTCloseNodeScope(jjtn003);
                         }
                     }
                 }
@@ -2133,8 +2133,8 @@ public class CCTreeParser : CCTreeParserConstants
                         case LT:
                             ASTREEOF jjtn004 = new(JJTREEOF);
                             bool jjtc004 = true;
-                            jjtree.OpenNodeScope(jjtn004);
-                            jjtreeOpenNodeScope(jjtn004);
+                            cctree.OpenNodeScope(jjtn004);
+                            CCTreeOpenNodeScope(jjtn004);
                             try
                             {
                                 jj_consume_token(LT);
@@ -2145,8 +2145,8 @@ public class CCTreeParser : CCTreeParserConstants
                             {
                                 if (jjtc004)
                                 {
-                                    jjtree.CloseNodeScope(jjtn004, true);
-                                    jjtreeCloseNodeScope(jjtn004);
+                                    cctree.CloseNodeScope(jjtn004, true);
+                                    CCTCloseNodeScope(jjtn004);
                                 }
                             }
                             break;
@@ -2166,8 +2166,8 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) #REChoice(> 1) */
         ASTREChoice jjtn000 = new(JJTRECHOICE);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000);
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000);
         try
         {
             complex_regular_expression();
@@ -2193,12 +2193,12 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception1)
             {
@@ -2214,8 +2214,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, jjtree.NodeArity() > 1);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, cctree.NodeArity() > 1);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
@@ -2225,8 +2225,8 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) #RESequence(> 1) */
         ASTRESequence jjtn000 = new(JJTRESEQUENCE);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000);
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000);
         try
         {
         label_13:
@@ -2254,12 +2254,12 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception)
             {
@@ -2275,8 +2275,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, jjtree.NodeArity() > 1);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, cctree.NodeArity() > 1);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
@@ -2289,8 +2289,8 @@ public class CCTreeParser : CCTreeParserConstants
             case STRING_LITERAL:
                 ASTREStringLiteral jjtn001 = new(JJTRESTRINGLITERAL);
                 bool jjtc001 = true;
-                jjtree.OpenNodeScope(jjtn001);
-                jjtreeOpenNodeScope(jjtn001);
+                cctree.OpenNodeScope(jjtn001);
+                CCTreeOpenNodeScope(jjtn001);
                 try
                 {
                     StringLiteral();
@@ -2299,12 +2299,12 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc001)
                     {
-                        jjtree.ClearNodeScope(jjtn001);
+                        cctree.ClearNodeScope(jjtn001);
                         jjtc001 = false;
                     }
                     else
                     {
-                        jjtree.PopNode();
+                        cctree.PopNode();
                     }
                     if (jjte001 is RuntimeException exception)
                     {
@@ -2320,16 +2320,16 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc001)
                     {
-                        jjtree.CloseNodeScope(jjtn001, true);
-                        jjtreeCloseNodeScope(jjtn001);
+                        cctree.CloseNodeScope(jjtn001, true);
+                        CCTCloseNodeScope(jjtn001);
                     }
                 }
                 break;
             case LT:
                 var jjtn002 = new ASTREReference(JJTREREFERENCE);
                 bool jjtc002 = true;
-                jjtree.OpenNodeScope(jjtn002);
-                jjtreeOpenNodeScope(jjtn002);
+                cctree.OpenNodeScope(jjtn002);
+                CCTreeOpenNodeScope(jjtn002);
                 try
                 {
                     jj_consume_token(LT);
@@ -2340,12 +2340,12 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc002)
                     {
-                        jjtree.ClearNodeScope(jjtn002);
+                        cctree.ClearNodeScope(jjtn002);
                         jjtc002 = false;
                     }
                     else
                     {
-                        jjtree.PopNode();
+                        cctree.PopNode();
                     }
                     if (jjte002 is RuntimeException exception1)
                     {
@@ -2361,8 +2361,8 @@ public class CCTreeParser : CCTreeParserConstants
                 {
                     if (jjtc002)
                     {
-                        jjtree.CloseNodeScope(jjtn002, true);
-                        jjtreeCloseNodeScope(jjtn002);
+                        cctree.CloseNodeScope(jjtn002, true);
+                        CCTCloseNodeScope(jjtn002);
                     }
                 }
                 break;
@@ -2379,8 +2379,8 @@ public class CCTreeParser : CCTreeParserConstants
                     case PLUS:
                         var jjtn003 = new ASTREOneOrMore(JJTREONEORMORE);
                         bool jjtc003 = true;
-                        jjtree.OpenNodeScope(jjtn003);
-                        jjtreeOpenNodeScope(jjtn003);
+                        cctree.OpenNodeScope(jjtn003);
+                        CCTreeOpenNodeScope(jjtn003);
                         try
                         {
                             jj_consume_token(PLUS);
@@ -2389,16 +2389,16 @@ public class CCTreeParser : CCTreeParserConstants
                         {
                             if (jjtc003)
                             {
-                                jjtree.CloseNodeScope(jjtn003, 1);
-                                jjtreeCloseNodeScope(jjtn003);
+                                cctree.CloseNodeScope(jjtn003, 1);
+                                CCTCloseNodeScope(jjtn003);
                             }
                         }
                         break;
                     case STAR:
                         var jjtn004 = new ASTREZeroOrMore(JJTREZEROORMORE);
                         bool jjtc004 = true;
-                        jjtree.OpenNodeScope(jjtn004);
-                        jjtreeOpenNodeScope(jjtn004);
+                        cctree.OpenNodeScope(jjtn004);
+                        CCTreeOpenNodeScope(jjtn004);
                         try
                         {
                             jj_consume_token(STAR);
@@ -2407,16 +2407,16 @@ public class CCTreeParser : CCTreeParserConstants
                         {
                             if (jjtc004)
                             {
-                                jjtree.CloseNodeScope(jjtn004, 1);
-                                jjtreeCloseNodeScope(jjtn004);
+                                cctree.CloseNodeScope(jjtn004, 1);
+                                CCTCloseNodeScope(jjtn004);
                             }
                         }
                         break;
                     case HOOK:
                         ASTREZeroOrOne jjtn005 = new(JJTREZEROORONE);
                         bool jjtc005 = true;
-                        jjtree.OpenNodeScope(jjtn005);
-                        jjtreeOpenNodeScope(jjtn005);
+                        cctree.OpenNodeScope(jjtn005);
+                        CCTreeOpenNodeScope(jjtn005);
                         try
                         {
                             jj_consume_token(HOOK);
@@ -2425,8 +2425,8 @@ public class CCTreeParser : CCTreeParserConstants
                         {
                             if (jjtc005)
                             {
-                                jjtree.CloseNodeScope(jjtn005, 1);
-                                jjtreeCloseNodeScope(jjtn005);
+                                cctree.CloseNodeScope(jjtn005, 1);
+                                CCTCloseNodeScope(jjtn005);
                             }
                         }
                         break;
@@ -2455,8 +2455,8 @@ public class CCTreeParser : CCTreeParserConstants
                         }
                         ASTRRepetitionRange jjtn006 = new(JJTRREPETITIONRANGE);
                         bool jjtc006 = true;
-                        jjtree.OpenNodeScope(jjtn006);
-                        jjtreeOpenNodeScope(jjtn006);
+                        cctree.OpenNodeScope(jjtn006);
+                        CCTreeOpenNodeScope(jjtn006);
                         try
                         {
                             jj_consume_token(RBRACE);
@@ -2465,8 +2465,8 @@ public class CCTreeParser : CCTreeParserConstants
                         {
                             if (jjtc006)
                             {
-                                jjtree.CloseNodeScope(jjtn006, 1);
-                                jjtreeCloseNodeScope(jjtn006);
+                                cctree.CloseNodeScope(jjtn006, 1);
+                                CCTCloseNodeScope(jjtn006);
                             }
                         }
                         break;
@@ -2475,27 +2475,27 @@ public class CCTreeParser : CCTreeParserConstants
                         ASTREParenthesized aSTREParenthesized = new(JJTREPARENTHESIZED);
                         ASTREParenthesized jjtn007 = aSTREParenthesized;
                         bool jjtc007 = true;
-                        jjtree.OpenNodeScope(jjtn007);
-                        jjtreeOpenNodeScope(jjtn007);
+                        cctree.OpenNodeScope(jjtn007);
+                        CCTreeOpenNodeScope(jjtn007);
                         try
                         {
-                            jjtree.CloseNodeScope(jjtn007, 1);
+                            cctree.CloseNodeScope(jjtn007, 1);
                             jjtc007 = false;
-                            jjtreeCloseNodeScope(jjtn007);
+                            CCTCloseNodeScope(jjtn007);
 
                         }
                         finally
                         {
                             if (jjtc007)
                             {
-                                jjtree.CloseNodeScope(jjtn007, 1);
-                                jjtreeCloseNodeScope(jjtn007);
+                                cctree.CloseNodeScope(jjtn007, 1);
+                                CCTCloseNodeScope(jjtn007);
                             }
                         }
                         break;
 
                 }
-              ((CCTreeNode)jjtree.PeekNode()).SetFirstToken(t);
+              ((TreeNode)cctree.PeekNode()).FirstToken = t;
                 break;
             default:
                 jj_la1[45] = jj_gen;
@@ -2509,8 +2509,8 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) RECharList */
         ASTRECharList jjtn000 = new(JJTRECHARLIST);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000);
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000);
         try
         {
             switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
@@ -2556,12 +2556,12 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception)
             {
@@ -2577,8 +2577,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, true);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, true);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
@@ -2588,8 +2588,8 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) CharDescriptor */
         ASTCharDescriptor jjtn000 = new(JJTCHARDESCRIPTOR);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000);
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000);
         try
         {
             StringLiteral();
@@ -2609,12 +2609,12 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception)
             {
@@ -2630,8 +2630,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, true);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, true);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
@@ -2652,8 +2652,8 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) NodeDescriptor */
         ASTNodeDescriptor jjtn000 = new(JJTNODEDESCRIPTOR);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000); Token t = null;
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000); Token t = null;
         String s = null;
         try
         {
@@ -2677,7 +2677,7 @@ public class CCTreeParser : CCTreeParserConstants
                     break;
                 case VOID:
                     t = jj_consume_token(VOID);
-                    jjtn000.name = t.image;
+                    jjtn000.name = t.Image;
                     break;
                 default:
                     jj_la1[50] = jj_gen;
@@ -2701,7 +2701,7 @@ public class CCTreeParser : CCTreeParserConstants
                     }
                     node_descriptor_expression();
                     jjtn000.expression =
-                      (ASTNodeDescriptorExpression)jjtree.PeekNode();
+                      (ASTNodeDescriptorExpression)cctree.PeekNode();
                     jj_consume_token(RPAREN);
                     break;
                 default:
@@ -2709,9 +2709,9 @@ public class CCTreeParser : CCTreeParserConstants
                     break;
 
             }
-            jjtree.CloseNodeScope(jjtn000, true);
+            cctree.CloseNodeScope(jjtn000, true);
             jjtc000 = false;
-            jjtreeCloseNodeScope(jjtn000);
+            CCTCloseNodeScope(jjtn000);
             jjtn000.SetNodeIdValue();
             { if (true) return jjtn000; }
         }
@@ -2719,12 +2719,12 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception)
             {
@@ -2740,8 +2740,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, true);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, true);
+                CCTCloseNodeScope(jjtn000);
             }
         }
         throw new Error("Missing return statement in function");
@@ -2752,21 +2752,21 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) NodeDescriptorExpression */
         ASTNodeDescriptorExpression jjtn000 = new(JJTNODEDESCRIPTOREXPRESSION);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000);
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000);
         try
         {
             Token tok;
             int nesting = 1;
             while (true)
             {
-                tok = getToken(1);
-                if (tok.kind == 0)
+                tok = GetToken(1);
+                if (tok.Kind == 0)
                 {
                     throw new ParseException();
                 }
-                if (tok.kind == LPAREN) nesting++;
-                if (tok.kind == RPAREN)
+                if (tok.Kind == LPAREN) nesting++;
+                if (tok.Kind == RPAREN)
                 {
                     nesting--;
                     if (nesting == 0) break;
@@ -2778,8 +2778,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, true);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, true);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
@@ -2842,7 +2842,7 @@ public class CCTreeParser : CCTreeParserConstants
                 jj_consume_token(-1);
                 throw new ParseException();
         }
-        { if (true) return token.image; }
+        { if (true) return token.Image; }
         throw new Error("Missing return statement in function");
     }
 
@@ -2859,7 +2859,7 @@ public class CCTreeParser : CCTreeParserConstants
         {
             ;
         }
-        CCTreeGlobals.ParserImports = getToken(1);
+        CCTreeGlobals.ParserImports = GetToken(1);
     label_15:
         while (true)
         {
@@ -3106,7 +3106,7 @@ public class CCTreeParser : CCTreeParserConstants
         switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
             case IMPLEMENTS:
-                t = getToken(1);
+                t = GetToken(1);
                 ImplementsList();
                 break;
             default:
@@ -3122,9 +3122,9 @@ public class CCTreeParser : CCTreeParserConstants
             }
             else
             {
-                CCTreeGlobals.ParserImplements = getToken(1);
+                CCTreeGlobals.ParserImplements = GetToken(1);
             }
-            CCTreeGlobals.ParserClassBodyStart = getToken(1);
+            CCTreeGlobals.ParserClassBodyStart = GetToken(1);
         }
         ClassOrInterfaceBody();
     }
@@ -5321,8 +5321,8 @@ public class CCTreeParser : CCTreeParserConstants
         /*@bgen(jjtree) PrimaryExpression */
         ASTPrimaryExpression jjtn000 = new(JJTPRIMARYEXPRESSION);
         bool jjtc000 = true;
-        jjtree.OpenNodeScope(jjtn000);
-        jjtreeOpenNodeScope(jjtn000);
+        cctree.OpenNodeScope(jjtn000);
+        CCTreeOpenNodeScope(jjtn000);
         try
         {
             PrimaryPrefix();
@@ -5346,12 +5346,12 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.ClearNodeScope(jjtn000);
+                cctree.ClearNodeScope(jjtn000);
                 jjtc000 = false;
             }
             else
             {
-                jjtree.PopNode();
+                cctree.PopNode();
             }
             if (jjte000 is RuntimeException exception1)
             {
@@ -5367,8 +5367,8 @@ public class CCTreeParser : CCTreeParserConstants
         {
             if (jjtc000)
             {
-                jjtree.CloseNodeScope(jjtn000, true);
-                jjtreeCloseNodeScope(jjtn000);
+                cctree.CloseNodeScope(jjtn000, true);
+                CCTCloseNodeScope(jjtn000);
             }
         }
     }
@@ -6821,8 +6821,8 @@ public class CCTreeParser : CCTreeParserConstants
      */
     public void RUNSIGNEDSHIFT()
     {
-        if (getToken(1).kind == GT &&
-                        ((Token.GTToken)getToken(1)).realKind == RUNSIGNEDSHIFT_VALUE)
+        if (GetToken(1).Kind == GT &&
+                        ((Token.GTToken)GetToken(1)).RealKind == RUNSIGNEDSHIFT_VALUE)
         {
 
         }
@@ -6838,8 +6838,8 @@ public class CCTreeParser : CCTreeParserConstants
 
     public void RSIGNEDSHIFT()
     {
-        if (getToken(1).kind == GT &&
-                        ((Token.GTToken)getToken(1)).realKind == RSIGNEDSHIFT_VALUE)
+        if (GetToken(1).Kind == GT &&
+                        ((Token.GTToken)GetToken(1)).RealKind == RSIGNEDSHIFT_VALUE)
         {
 
         }
@@ -8945,8 +8945,8 @@ public class CCTreeParser : CCTreeParserConstants
     private bool jj_3R_85()
     {
         jj_lookingAhead = true;
-        jj_semLA = getToken(1).kind == GT &&
-                    ((Token.GTToken)getToken(1)).realKind == RSIGNEDSHIFT_VALUE;
+        jj_semLA = GetToken(1).Kind == GT &&
+                    ((Token.GTToken)GetToken(1)).RealKind == RSIGNEDSHIFT_VALUE;
         jj_lookingAhead = false;
         if (!jj_semLA || jj_3R_116()) return true;
         if (jj_scan_token(GT)) return true;
@@ -8987,8 +8987,8 @@ public class CCTreeParser : CCTreeParserConstants
     private bool jj_3R_86()
     {
         jj_lookingAhead = true;
-        jj_semLA = getToken(1).kind == GT &&
-                    ((Token.GTToken)getToken(1)).realKind == RSIGNEDSHIFT_VALUE;
+        jj_semLA = GetToken(1).Kind == GT &&
+                    ((Token.GTToken)GetToken(1)).RealKind == RSIGNEDSHIFT_VALUE;
         jj_lookingAhead = false;
         if (!jj_semLA || jj_3R_117()) return true;
         if (jj_scan_token(GT)) return true;
@@ -11124,7 +11124,7 @@ public class CCTreeParser : CCTreeParserConstants
     /** Constructor with InputStream and supplied encoding */
     public CCTreeParser(Stream stream, String encoding)
     {
-        try { jj_input_stream = new CSharpCharStream(stream,Encoding.GetEncoding(encoding), 1, 1); } catch (Exception e) { throw new RuntimeException(e.Message,e); }
+        try { jj_input_stream = new CSharpCharStream(stream, Encoding.GetEncoding(encoding), 1, 1); } catch (Exception e) { throw new RuntimeException(e.Message, e); }
         token_source = new CCTreeParserTokenManager(jj_input_stream);
         token = new Token();
         jj_ntk = -1;
@@ -11141,11 +11141,11 @@ public class CCTreeParser : CCTreeParserConstants
     /** Reinitialise. */
     public void ReInit(Stream stream, String encoding)
     {
-        try { jj_input_stream.ReInit(stream,Encoding.GetEncoding(encoding), 1, 1); } catch (Exception e) { throw new RuntimeException(e.Message,e); }
+        try { jj_input_stream.ReInit(stream, Encoding.GetEncoding(encoding), 1, 1); } catch (Exception e) { throw new RuntimeException(e.Message, e); }
         token_source.ReInit(jj_input_stream);
         token = new Token();
         jj_ntk = -1;
-        jjtree.Reset();
+        cctree.Reset();
         jj_gen = 0;
         for (int i = 0; i < 191; i++) jj_la1[i] = -1;
         for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
@@ -11170,7 +11170,7 @@ public class CCTreeParser : CCTreeParserConstants
         token_source.ReInit(jj_input_stream);
         token = new Token();
         jj_ntk = -1;
-        jjtree.Reset();
+        cctree.Reset();
         jj_gen = 0;
         for (int i = 0; i < 191; i++) jj_la1[i] = -1;
         for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
@@ -11193,7 +11193,7 @@ public class CCTreeParser : CCTreeParserConstants
         token_source = tm;
         token = new Token();
         jj_ntk = -1;
-        jjtree.Reset();
+        cctree.Reset();
         jj_gen = 0;
         for (int i = 0; i < 191; i++) jj_la1[i] = -1;
         for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
@@ -11202,10 +11202,10 @@ public class CCTreeParser : CCTreeParserConstants
     private Token jj_consume_token(int kind)
     {
         Token oldToken;
-        if ((oldToken = token).next != null) token = token.next;
-        else token = token.next = token_source.GetNextToken();
+        if ((oldToken = token).Next != null) token = token.Next;
+        else token = token.Next = token_source.GetNextToken();
         jj_ntk = -1;
-        if (token.kind == kind)
+        if (token.Kind == kind)
         {
             jj_gen++;
             if (++jj_gc > 100)
@@ -11235,26 +11235,26 @@ public class CCTreeParser : CCTreeParserConstants
         if (jj_scanpos == jj_lastpos)
         {
             jj_la--;
-            if (jj_scanpos.next == null)
+            if (jj_scanpos.Next == null)
             {
-                jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.GetNextToken();
+                jj_lastpos = jj_scanpos = jj_scanpos.Next = token_source.GetNextToken();
             }
             else
             {
-                jj_lastpos = jj_scanpos = jj_scanpos.next;
+                jj_lastpos = jj_scanpos = jj_scanpos.Next;
             }
         }
         else
         {
-            jj_scanpos = jj_scanpos.next;
+            jj_scanpos = jj_scanpos.Next;
         }
         if (jj_rescan)
         {
             int i = 0; Token tok = token;
-            while (tok != null && tok != jj_scanpos) { i++; tok = tok.next; }
+            while (tok != null && tok != jj_scanpos) { i++; tok = tok.Next; }
             if (tok != null) jj_add_error_token(kind, i);
         }
-        if (jj_scanpos.kind != kind) return true;
+        if (jj_scanpos.Kind != kind) return true;
         if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;
         return false;
     }
@@ -11263,31 +11263,31 @@ public class CCTreeParser : CCTreeParserConstants
     /** Get the next Token. */
     public Token getNextToken()
     {
-        if (token.next != null) token = token.next;
-        else token = token.next = token_source.GetNextToken();
+        if (token.Next != null) token = token.Next;
+        else token = token.Next = token_source.GetNextToken();
         jj_ntk = -1;
         jj_gen++;
         return token;
     }
 
     /** Get the specific Token. */
-    public Token getToken(int index)
+    public Token GetToken(int index)
     {
         Token t = jj_lookingAhead ? jj_scanpos : token;
         for (int i = 0; i < index; i++)
         {
-            if (t.next != null) t = t.next;
-            else t = t.next = token_source.GetNextToken();
+            if (t.Next != null) t = t.Next;
+            else t = t.Next = token_source.GetNextToken();
         }
         return t;
     }
 
     private int jj_ntk_func()
     {
-        if ((jj_nt = token.next) == null)
-            return (jj_ntk = (token.next = token_source.GetNextToken()).kind);
+        if ((jj_nt = token.Next) == null)
+            return (jj_ntk = (token.Next = token_source.GetNextToken()).Kind);
         else
-            return (jj_ntk = jj_nt.kind);
+            return (jj_ntk = jj_nt.Kind);
     }
 
     private readonly List<int[]> jj_expentries = new();
@@ -11310,7 +11310,7 @@ public class CCTreeParser : CCTreeParserConstants
             {
                 jj_expentry[i] = jj_lasttokens[i];
             }
-        jj_entries_loop: 
+        jj_entries_loop:
             foreach (var oldentry in jj_expentries)
             {
                 if (oldentry.Length == jj_expentry.Length)

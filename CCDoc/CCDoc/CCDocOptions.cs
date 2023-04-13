@@ -52,13 +52,13 @@ public class CCDocOptions : Options
     {
         Options.Init();
 
-        Options.optionValues.Add("ONE_TABLE", true);
-        Options.optionValues.Add("TEXT", false);
-        Options.optionValues.Add("XTEXT", false);
-        Options.optionValues.Add("BNF", false);
+        Options.OptionValues.Add("ONE_TABLE", true);
+        Options.OptionValues.Add("TEXT", false);
+        Options.OptionValues.Add("XTEXT", false);
+        Options.OptionValues.Add("BNF", false);
 
-        Options.optionValues.Add("OUTPUT_FILE", "");
-        Options.optionValues.Add("CSS", "");
+        Options.OptionValues.Add("OUTPUT_FILE", "");
+        Options.OptionValues.Add("CSS", "");
     }
 
     /**

@@ -36,6 +36,6 @@ public static class CCTreeEntry
 {
     public static void Main(string[] args)
     {
-        MainClass.Main(args);
+        TreeMainClass.Main(args);
     }
 }

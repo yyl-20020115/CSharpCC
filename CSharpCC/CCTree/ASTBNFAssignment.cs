@@ -2,8 +2,7 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=true,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 namespace CSharpCC.CCTree;
 
-public
-class ASTBNFAssignment : CCTreeNode
+public class ASTBNFAssignment : TreeNode
 {
     public ASTBNFAssignment(int id) : base(id)
     {
@@ -15,7 +14,6 @@ class ASTBNFAssignment : CCTreeNode
 
 
     /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data)
+    public override object Accept(TreeParserVisitor visitor, object data)
         => visitor.Visit(this, data);
 }
-/* JavaCC - OriginalChecksum=abf306a83b75e794e7006b68a9512e78 (do not edit this line) */

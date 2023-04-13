@@ -29,8 +29,7 @@ namespace CSharpCC.Parser;
 
 public interface Descriptor
 {
-    int GetLine();
-    void SetLine(int line);
-    int GetColumn();
-    void SetColumn(int column);
+    int Line { get; set; }
+
+    int Column { get; set; }
 }

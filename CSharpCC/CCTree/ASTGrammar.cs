@@ -33,12 +33,9 @@ using CSharpCC.Parser;
 
 namespace CSharpCC.CCTree;
 
-public class ASTGrammar : CCTreeNode
+public class ASTGrammar : TreeNode
 {
-    public ASTGrammar(int id):base(id)
-    {
-    }
-
+    public ASTGrammar(int id) : base(id) { }
     public void Generate(IO io)
     {
         Console.WriteLine("opt:" + CCTreeOptions.GetOutputLanguage());
@@ -58,10 +55,6 @@ public class ASTGrammar : CCTreeNode
             throw new Exception("Language type not supported for JJTree : " + CCTreeOptions.GetOutputLanguage());
         }
     }
-
-    /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data) 
+    public override object Accept(TreeParserVisitor visitor, object data) 
         => visitor.Visit(this, data);
 }
-
-/*end*/

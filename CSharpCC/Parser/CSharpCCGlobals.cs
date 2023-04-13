@@ -369,57 +369,7 @@ public class CSharpCCGlobals : CSharpCCParserConstants
         return Options.GetStatic() ? "static " : "";
     }
 
-    static public string AddEscapes(string str)
-    {
-        string retval = "";
-        char ch;
-        for (int i = 0; i < str.Length; i++)
-        {
-            ch = str[i];
-            if (ch == '\b')
-            {
-                retval += "\\b";
-            }
-            else if (ch == '\t')
-            {
-                retval += "\\t";
-            }
-            else if (ch == '\n')
-            {
-                retval += "\\n";
-            }
-            else if (ch == '\f')
-            {
-                retval += "\\f";
-            }
-            else if (ch == '\r')
-            {
-                retval += "\\r";
-            }
-            else if (ch == '\"')
-            {
-                retval += "\\\"";
-            }
-            else if (ch == '\'')
-            {
-                retval += "\\\'";
-            }
-            else if (ch == '\\')
-            {
-                retval += "\\\\";
-            }
-            else if (ch < 0x20 || ch > 0x7e)
-            {
-                string s = "0000" + Convert.ToString(ch, 16);
-                retval += "\\u" + s[^4..];
-            }
-            else
-            {
-                retval += ch;
-            }
-        }
-        return retval;
-    }
+  
 
     static public string AddUnicodeEscapes(string str)
     {

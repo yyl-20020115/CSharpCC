@@ -31,7 +31,7 @@ namespace CSharpCC.CCTree;
 public class NodeScope
 {
     public ASTProduction production;
-    public ASTNodeDescriptor node_descriptor;
+    public ASTNodeDescriptor nodeDescriptor;
 
     public string closedVar;
     public string exceptionVar;
@@ -44,16 +44,16 @@ public class NodeScope
 
         if (n == null)
         {
-            string nm = production.name;
+            string nm = production.Name;
             if (CCTreeOptions.GetNodeDefaultVoid())
             {
                 nm = "void";
             }
-            node_descriptor = ASTNodeDescriptor.Indefinite(nm);
+            nodeDescriptor = ASTNodeDescriptor.Indefinite(nm);
         }
         else
         {
-            node_descriptor = n;
+            nodeDescriptor = n;
         }
 
         scopeNumber = production.GetNodeScopeNumber(this);
@@ -63,13 +63,13 @@ public class NodeScope
     }
 
 
-    public bool IsVoid => node_descriptor.IsVoid;
+    public bool IsVoid => nodeDescriptor.IsVoid;
 
 
-    public ASTNodeDescriptor NodeDescriptor => node_descriptor;
+    public ASTNodeDescriptor NodeDescriptor => nodeDescriptor;
 
 
-    public string NodeDescriptorText => node_descriptor.GetDescriptor();
+    public string NodeDescriptorText => nodeDescriptor.GetDescriptor();
 
 
     public string NodeVariable => nodeVar;
@@ -90,7 +90,7 @@ public class NodeScope
         {
             return declaration.NodeScope;
         }
-        for (var n = node.jjtGetParent(); n != null; n = n.jjtGetParent())
+        for (var n = node.Parent; n != null; n = n.Parent)
         {
             if (n is ASTBNFDeclaration declaration2)
             {
@@ -107,7 +107,4 @@ public class NodeScope
         }
         return null;
     }
-
 }
-
-/*end*/

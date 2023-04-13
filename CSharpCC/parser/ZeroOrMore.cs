@@ -47,8 +47,8 @@ public class ZeroOrMore : Expansion
 
     public ZeroOrMore(Token token, Expansion expansion)
     {
-        this.SetLine(token.beginLine);
-        this.SetColumn(token.beginColumn);
+        this.        Line = token.beginLine;
+        this.        Column = token.beginColumn;
         this.expansion = expansion;
         this.expansion.parent = this;
     }

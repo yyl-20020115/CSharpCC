@@ -48,8 +48,8 @@ public class Sequence : Expansion
 
     public Sequence(Token token, Lookahead lookahead)
     {
-        this.SetLine(token.beginLine);
-        this.SetColumn(token.beginColumn);
+        this.        Line = token.beginLine;
+        this.        Column = token.beginColumn;
         this.units.Add(lookahead);
     }
 

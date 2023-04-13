@@ -718,8 +718,8 @@ public class LexGen : CodeGenerator
                     goto OuterExit;
                 if (len != 0)
                     reList += "; ";
-                reList += "line " + rexprs[initMatch[j]].GetLine() + ", column " +
-                rexprs[initMatch[j]].GetColumn();
+                reList += "line " + rexprs[initMatch[j]].Line + ", column " +
+                rexprs[initMatch[j]].                Column;
                 len++;
             }
 

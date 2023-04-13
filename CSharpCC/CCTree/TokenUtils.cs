@@ -38,21 +38,21 @@ public static class TokenUtils
 {
     public static void Print(Token t, IO io, string _in, string _out)
     {
-        Token tt = t.specialToken;
+        Token tt = t.SpecialToken;
         if (tt != null)
         {
-            while (tt.specialToken != null) tt = tt.specialToken;
+            while (tt.SpecialToken != null) tt = tt.SpecialToken;
             while (tt != null)
             {
-                io.Print(AddUnicodeEscapes(tt.image));
-                tt = tt.next;
+                io.Write(AddUnicodeEscapes(tt.Image));
+                tt = tt.Next;
             }
         }
-        string i = t.image;
+        string i = t.Image;
         if (_in != null && i == (_in)) {
             i = _out;
         }
-        io.Print(AddUnicodeEscapes(i));
+        io.Write(AddUnicodeEscapes(i));
     }
 
     public static string AddUnicodeEscapes(string str)
@@ -76,7 +76,7 @@ public static class TokenUtils
     }
 
 
-    public static bool HasTokens(CCTreeNode n) => n.GetLastToken().next != n.GetFirstToken();
+    public static bool HasTokens(TreeNode n) => n.LastToken.Next != n.FirstToken;
 
     public static string RemoveEscapesAndQuotes(Token t, string str)
     {

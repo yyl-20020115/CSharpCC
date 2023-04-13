@@ -32,9 +32,6 @@ namespace CSharpCC.CCTree;
  */
 public class CCTreeIOException : IOException
 {
-
     public CCTreeIOException(string detail)
           : base(detail) { }
 }
-
-/*end*/

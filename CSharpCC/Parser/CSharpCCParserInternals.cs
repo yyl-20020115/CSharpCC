@@ -357,8 +357,8 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
             return;
         }
         var tblk = new TryBlock();
-        tblk.SetLine(tryLoc.beginLine);
-        tblk.SetColumn(tryLoc.beginColumn);
+        tblk.        Line = tryLoc.beginLine;
+        tblk.        Column = tryLoc.beginColumn;
         tblk.exp = (Expansion)(nestedExp.Member);
         tblk.exp.parent = tblk;
         tblk.exp.ordinal = 0;

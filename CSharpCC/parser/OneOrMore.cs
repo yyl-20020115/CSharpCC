@@ -47,8 +47,8 @@ public class OneOrMore : Expansion
 
     public OneOrMore(Token t, Expansion e)
     {
-        this.SetLine(t.beginLine);
-        this.SetColumn(t.beginColumn);
+        this.        Line = t.beginLine;
+        this.        Column = t.beginColumn;
         this.expansion = e;
         expansion.parent = this;
     }

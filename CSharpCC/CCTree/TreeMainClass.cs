@@ -30,9 +30,8 @@ namespace CSharpCC.CCTree;
 /**
  * Entry point.
  */
-public static class MainClass
+public static class TreeMainClass
 {
-
     public static void Main(string[] args)
     {
         var cctree = new CCTree();
@@ -40,5 +39,3 @@ public static class MainClass
         Environment.Exit(result);
     }
 }
-
-/*end*/

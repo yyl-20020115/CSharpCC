@@ -27,10 +27,7 @@
  */
 
 using CSharpCC.Parser;
-
 namespace CSharpCC.CCTree;
-
-
 
 /**
  * Generate the State of a tree.
@@ -39,39 +36,26 @@ public static class CCTreeState
 {
     public static void InsertParserMembers(IO io)
     {
-        string s;
-
-        if (CCTreeOptions.GetStatic())
-        {
-            s = "static ";
-        }
-        else
-        {
-            s = "";
-        }
-
-        io.Println();
-        io.Println("  protected " + s + NameState() +
+        var s = CCTreeOptions.GetStatic() ? "static " : "";
+        io.WriteLine();
+        io.WriteLine("  protected " + s + NameState() +
              " jjtree = new " + NameState() + "();");
-        io.Println();
+        io.WriteLine();
     }
 
 
-    private static string NameState()
-    {
-        return "JJT" + CCTreeGlobals.ParserName + "State";
-    }
+    private static string NameState() => $"JJT{CCTreeGlobals.ParserName}State";
 
 
     public static void GenerateTreeStateJava()
     {
-        string file = System.IO.Path.Combine(CCTreeOptions.GetJJTreeOutputDirectory(), NameState() + ".java");
+        var file = System.IO.Path.Combine(CCTreeOptions.GetJJTreeOutputDirectory(), NameState() + ".java");
 
         try
         {
             OutputFile outputFile = new OutputFile(file);
             TextWriter ostr = outputFile.GetPrintWriter();
-            NodeFiles.generatePrologue(ostr);
+            NodeFiles.GeneratePrologue(ostr);
             InsertState(ostr);
             outputFile.Close();
         }
@@ -251,5 +235,3 @@ public static class CCTreeState
     }
 
 }
-
-/*end*/

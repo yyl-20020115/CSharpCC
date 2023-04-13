@@ -43,8 +43,8 @@ public class ROneOrMore : RegularExpression
 
     public ROneOrMore(Token t, RegularExpression re)
     {
-        this.SetLine(t.beginLine);
-        this.SetColumn(t.beginColumn);
+        this.        Line = t.beginLine;
+        this.        Column = t.beginColumn;
         this.regexpr = re;
     }
     public override Nfa GenerateNfa(bool ignoreCase)

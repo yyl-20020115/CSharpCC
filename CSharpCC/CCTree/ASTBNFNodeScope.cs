@@ -27,20 +27,13 @@
  */
 namespace CSharpCC.CCTree;
 
-
-public class ASTBNFNodeScope : CCTreeNode
+public class ASTBNFNodeScope : TreeNode
 {
-    public ASTBNFNodeScope(int id) : base(id)
-    {
-    }
+    public ASTBNFNodeScope(int id) : base(id) { }
 
     public NodeScope NodeScope;
-    public CCTreeNode expansion_unit;
+    public TreeNode expansion_unit;
 
-
-    /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data) 
+    public override object Accept(TreeParserVisitor visitor, object data) 
         => visitor.Visit(this, data);
 }
-
-/*end*/

@@ -29,36 +29,24 @@ using System.Text;
 
 namespace CSharpCC.CCTree;
 
-public class CCTreeNode : SimpleNode
+public class TreeNode : SimpleNode
 {
 
-    private int myOrdinal;
+    private int ordinal;
 
-    public CCTreeNode(int id):base(id)
+    public TreeNode(int id) : base(id) { }
+
+    public TreeNode(CCTreeParser p, int i) : this(i) { }
+
+    public static Node Create(int id) => new TreeNode(id);
+
+    public override void AddChild(Node n, int i)
     {
+        base.AddChild(n, i);
+        (n as TreeNode).Ordinal = i;
     }
 
-    public CCTreeNode(CCTreeParser p, int i):this(i)
-    {
-    }
-
-    public static Node jjtCreate(int id) => new CCTreeNode(id);
-
-    public override void jjtAddChild(Node n, int i)
-    {
-        base.jjtAddChild(n, i);
-        ((CCTreeNode)n).SetOrdinal(i);
-    }
-
-    public int GetOrdinal()
-    {
-        return myOrdinal;
-    }
-
-    public void SetOrdinal(int o)
-    {
-        myOrdinal = o;
-    }
+    public int Ordinal { get => ordinal; set => ordinal = value; }
 
 
     /*****************************************************************
@@ -72,23 +60,21 @@ public class CCTreeNode : SimpleNode
 
     private Token first, last;
 
-    public Token GetFirstToken() { return first; }
-    public void SetFirstToken(Token t) { first = t; }
-    public Token GetLastToken() { return last; }
-    public void SetLastToken(Token t) { last = t; }
+    public Token FirstToken { get => first;
+        set => first = value; }
 
-    public virtual string TranslateImage(Token t)
-    {
-        return t.image;
-    }
+    public Token LastToken { get => last;
+        set => last = value; }
+
+    public virtual string TranslateImage(Token t) => t.Image;
 
     public string WhiteOut(Token t)
     {
-        var sb = new StringBuilder(t.image.Length);
+        var sb = new StringBuilder(t.Image.Length);
 
-        for (int i = 0; i < t.image.Length; ++i)
+        for (int i = 0; i < t.Image.Length; ++i)
         {
-            char ch = t.image[i];
+            char ch = t.Image[i];
             if (ch != '\t' && ch != '\n' && ch != '\r' && ch != '\f')
             {
                 sb.Append(' ');
@@ -108,14 +94,14 @@ public class CCTreeNode : SimpleNode
 
     public void Print(Token t, IO io)
     {
-        Token tt = t.specialToken;
+        Token tt = t.SpecialToken;
         if (tt != null)
         {
-            while (tt.specialToken != null) tt = tt.specialToken;
+            while (tt.SpecialToken != null) tt = tt.SpecialToken;
             while (tt != null)
             {
-                io.Print(TokenUtils.AddUnicodeEscapes(TranslateImage(tt)));
-                tt = tt.next;
+                io.Write(TokenUtils.AddUnicodeEscapes(TranslateImage(tt)));
+                tt = tt.Next;
             }
         }
 
@@ -128,29 +114,29 @@ public class CCTreeNode : SimpleNode
            2) we replace all calls to `jjtree.currentNode()' with
            references to the node variable. */
 
-        NodeScope s = NodeScope.GetEnclosingNodeScope(this);
+        var s = NodeScope.GetEnclosingNodeScope(this);
         if (s == null)
         {
             /* Not within a node scope so we don't need to modify the
                source. */
-            io.Print(TokenUtils.AddUnicodeEscapes(TranslateImage(t)));
+            io.Write(TokenUtils.AddUnicodeEscapes(TranslateImage(t)));
             return;
         }
 
-        if (t.image == ("jjtThis"))
+        if (t.Image == ("jjtThis"))
         {
-            io.Print(s.NodeVariable);
+            io.Write(s.NodeVariable);
             return;
         }
-        else if (t.image == ("jjtree"))
+        else if (t.Image == ("jjtree"))
         {
-            if (t.next.image == ("."))
+            if (t.Next.Image == ("."))
             {
-                if (t.next.next.image == ("currentNode"))
+                if (t.Next.Next.Image == ("currentNode"))
                 {
-                    if (t.next.next.next.image == ("("))
+                    if (t.Next.Next.Next.Image == ("("))
                     {
-                        if (t.next.next.next.next.image == (")"))
+                        if (t.Next.Next.Next.Next.Image == (")"))
                         {
                             /* Found `jjtree.currentNode()' so go into white _out
                                mode.  We'll stay in this mode until we find the
@@ -163,26 +149,26 @@ public class CCTreeNode : SimpleNode
         }
         if (whitingOut)
         {
-            if (t.image == ("jjtree"))
+            if (t.Image == ("jjtree"))
             {
-                io.Print(s.NodeVariable);
-                io.Print(" ");
+                io.Write(s.NodeVariable);
+                io.Write(" ");
             }
-            else if (t.image == (")"))
+            else if (t.Image == (")"))
             {
-                io.Print(" ");
+                io.Write(" ");
                 whitingOut = false;
             }
             else
             {
-                for (int i = 0; i < t.image.Length; ++i)
+                for (int i = 0; i < t.Image.Length; ++i)
                 {
-                    io.Print(" ");
+                    io.Write(" ");
                 }
             }
             return;
         }
 
-        io.Print(TokenUtils.AddUnicodeEscapes(TranslateImage(t)));
+        io.Write(TokenUtils.AddUnicodeEscapes(TranslateImage(t)));
     }
 }

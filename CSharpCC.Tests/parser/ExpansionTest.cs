@@ -40,19 +40,21 @@ public class ExpansionTest : CSharpCCTestCase
     [TestInitialize]
     public void SetUp()
     {
-        t = new Token();
-        t.beginColumn = 2;
-        t.beginLine = 3;
+        t = new Token
+        {
+            beginColumn = 2,
+            beginLine = 3
+        };
         e = new Expansion();
-        e.SetColumn(5);
-        e.SetLine(6);
+        e.        Column = 5;
+        e.        Line = 6;
     }
     [TestMethod]
     public void TestZeroOrOneConstructor()
     {
         var zoo = new ZeroOrOne(t, e);
-        Assert.AreEqual(t.beginColumn, zoo.GetColumn());
-        Assert.AreEqual(t.beginLine, zoo.GetLine());
+        Assert.AreEqual(t.beginColumn, zoo.Column);
+        Assert.AreEqual(t.beginLine, zoo.Line);
         Assert.AreEqual(e, zoo.expansion);
         Assert.AreSame(e.parent, zoo);
     }
@@ -60,8 +62,8 @@ public class ExpansionTest : CSharpCCTestCase
     public void TestZeroOrMoreConstructor()
     {
         ZeroOrMore zom = new ZeroOrMore(t, e);
-        Assert.AreEqual(t.beginColumn, zom.GetColumn());
-        Assert.AreEqual(t.beginLine, zom.GetLine());
+        Assert.AreEqual(t.beginColumn, zom.Column);
+        Assert.AreEqual(t.beginLine, zom.Line);
         Assert.AreEqual(e, zom.expansion);
         Assert.AreEqual(e.parent, zom);
     }
@@ -70,8 +72,8 @@ public class ExpansionTest : CSharpCCTestCase
     {
         RegularExpression r = new RChoice();
         RZeroOrMore rzom = new RZeroOrMore(t, r);
-        Assert.AreEqual(t.beginColumn, rzom.GetColumn());
-        Assert.AreEqual(t.beginLine, rzom.GetLine());
+        Assert.AreEqual(t.beginColumn, rzom.Column);
+        Assert.AreEqual(t.beginLine, rzom.Line);
         Assert.AreEqual(r, rzom.regexpr);
     }
     [TestMethod]
@@ -79,8 +81,8 @@ public class ExpansionTest : CSharpCCTestCase
     {
         RegularExpression r = new RChoice();
         ROneOrMore room = new ROneOrMore(t, r);
-        Assert.AreEqual(t.beginColumn, room.GetColumn());
-        Assert.AreEqual(t.beginLine, room.GetLine());
+        Assert.AreEqual(t.beginColumn, room.Column);
+        Assert.AreEqual(t.beginLine, room.Line);
         Assert.AreEqual(r, room.regexpr);
     }
     [TestMethod]
@@ -88,8 +90,8 @@ public class ExpansionTest : CSharpCCTestCase
     {
         Expansion rce = new RChoice();
         OneOrMore oom = new OneOrMore(t, rce);
-        Assert.AreEqual(t.beginColumn, oom.GetColumn());
-        Assert.AreEqual(t.beginLine, oom.GetLine());
+        Assert.AreEqual(t.beginColumn, oom.Column);
+        Assert.AreEqual(t.beginLine, oom.Line);
         Assert.AreEqual(rce, oom.expansion);
         Assert.AreEqual(rce.parent, oom);
     }
@@ -98,27 +100,27 @@ public class ExpansionTest : CSharpCCTestCase
     public void TestRStringLiteralConstructor()
     {
         RStringLiteral r = new RStringLiteral(t, "hey");
-        Assert.AreEqual(t.beginColumn, r.GetColumn());
-        Assert.AreEqual(t.beginLine, r.GetLine());
+        Assert.AreEqual(t.beginColumn, r.Column);
+        Assert.AreEqual(t.beginLine, r.Line);
         Assert.AreEqual("hey", r.image);
     }
     [TestMethod]
     public void TestChoiceConstructor()
     {
         Choice c = new Choice(t);
-        Assert.AreEqual(t.beginColumn, c.GetColumn());
-        Assert.AreEqual(t.beginLine, c.GetLine());
+        Assert.AreEqual(t.beginColumn, c.Column);
+        Assert.AreEqual(t.beginLine, c.Line);
         c = new Choice(e);
-        Assert.AreEqual(e.GetColumn(), c.GetColumn());
-        Assert.AreEqual(e.GetLine(), c.GetLine());
+        Assert.AreEqual(e.Column, c.Column);
+        Assert.AreEqual(e.Line, c.Line);
         Assert.AreSame(e, c.GetChoices()[0]);
     }
     [TestMethod]
     public void TestRJustNameConstructor()
     {
         RJustName r = new RJustName(t, "hey");
-        Assert.AreEqual(t.beginColumn, r.GetColumn());
-        Assert.AreEqual(t.beginLine, r.GetLine());
+        Assert.AreEqual(t.beginColumn, r.Column);
+        Assert.AreEqual(t.beginLine, r.Line);
         Assert.AreEqual("hey", r.label);
     }
     [TestMethod]
@@ -126,8 +128,8 @@ public class ExpansionTest : CSharpCCTestCase
     {
         Lookahead la = new Lookahead();
         Sequence s = new Sequence(t, la);
-        Assert.AreEqual(t.beginColumn, s.GetColumn());
-        Assert.AreEqual(t.beginLine, s.GetLine());
+        Assert.AreEqual(t.beginColumn, s.Column);
+        Assert.AreEqual(t.beginLine, s.Line);
         Assert.AreSame(la, s.units[0]);
     }
 }

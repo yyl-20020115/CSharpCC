@@ -28,16 +28,13 @@
 namespace CSharpCC.CCTree;
 
 
-public class ASTBNFAction : CCTreeNode
+public class ASTBNFAction : TreeNode
 {
-
-    public ASTBNFAction(int id):base(id)
-    {
-    }
+    public ASTBNFAction(int id) : base(id) { }
 
     public Node GetScopingParent(NodeScope ns)
     {
-        for (var n = this.jjtGetParent(); n != null; n = n.jjtGetParent())
+        for (var n = this.Parent; n != null; n = n.Parent)
         {
             if (n is ASTBNFNodeScope scope)
             {
@@ -53,9 +50,7 @@ public class ASTBNFAction : CCTreeNode
 
 
     /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data) 
+    public override object Accept(TreeParserVisitor visitor, object data) 
         => visitor.Visit(this, data);
 
 }
-
-/*end*/

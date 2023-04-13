@@ -18,21 +18,21 @@ public class Token
      * system is determined by JavaCCParser, and a table of these numbers is
      * stored in the file ...Constants.java.
      */
-    public int kind;
+    public int Kind;
 
     /** The line number of the first character of this Token. */
-    public int beginLine;
+    public int BeginLine;
     /** The column number of the first character of this Token. */
-    public int beginColumn;
+    public int BeginColumn;
     /** The line number of the last character of this Token. */
-    public int endLine;
+    public int EndLine;
     /** The column number of the last character of this Token. */
-    public int endColumn;
+    public int EndColumn;
 
     /**
      * The string image of the token.
      */
-    public string image;
+    public string Image;
 
     /**
      * A reference to the next regular (non-special) token from the input
@@ -42,7 +42,7 @@ public class Token
      * token.  Otherwise, see below for a description of the contents of
      * this field.
      */
-    public Token next;
+    public Token Next;
 
     /**
      * This field is used to access special tokens that occur prior to this
@@ -56,7 +56,7 @@ public class Token
      * immediately follow it (without an intervening regular token).  If there
      * is no such token, this field is null.
      */
-    public Token specialToken;
+    public Token SpecialToken;
 
     /**
      * An optional attribute value of the Token.
@@ -66,7 +66,7 @@ public class Token
      * Any subclass of Token that actually wants to return a non-null value can
      * override this method as appropriate.
      */
-    public Object GetValue() => null;
+    public Object Value => null;
 
     /**
      * No-argument constructor
@@ -86,14 +86,14 @@ public class Token
      */
     public Token(int kind, string image)
     {
-        this.kind = kind;
-        this.image = image;
+        this.Kind = kind;
+        this.Image = image;
     }
 
     /**
      * Returns the image.
      */
-    public override string ToString() => image;
+    public override string ToString() => Image;
 
     /**
      * Returns a new Token object, by default. However, if you want, you
@@ -109,7 +109,9 @@ public class Token
      */
     public static Token NewToken(int ofKind, string image) => ofKind switch
     {
-        CCTreeParserConstants.RUNSIGNEDSHIFT_VALUE or CCTreeParserConstants.RSIGNEDSHIFT_VALUE or CCTreeParserConstants.GT => new GTToken(ofKind, image),
+        CCTreeParserConstants.RUNSIGNEDSHIFT_VALUE 
+        or CCTreeParserConstants.RSIGNEDSHIFT_VALUE 
+        or CCTreeParserConstants.GT => new GTToken(ofKind, image),
         _ => new Token(ofKind, image),
     };
 
@@ -123,6 +125,6 @@ public class Token
         public GTToken(int kind, string image)
             : base(kind, image) { }
 
-        public int realKind = CCTreeParserConstants.GT;
+        public int RealKind = CCTreeParserConstants.GT;
     }
 }

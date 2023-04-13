@@ -226,26 +226,26 @@ public class Options
      * set of legal options. Its initial values define the default option
      * values, and the option types can be determined from these values too.
      */ 
-    protected static Dictionary<String, object> optionValues = new();
+    protected static Dictionary<String, object> OptionValues = new();
 
     /**
      * Initialize for JavaCC
      */
     public static void Init()
     {
-        optionValues = new Dictionary<String, object>();
+        OptionValues = new Dictionary<String, object>();
         cmdLineSetting = new HashSet<string>();
         inputFileSetting = new HashSet<string>();
 
         foreach (OptionInfo t in userOptions)
         {
-            optionValues.Add(t.Name, t.Default);
+            OptionValues.Add(t.Name, t.Default);
         }
 
         {
-            object o = optionValues[(USEROPTION__JAVA_TEMPLATE_TYPE)];
+            object o = OptionValues[(USEROPTION__JAVA_TEMPLATE_TYPE)];
             bool isLegacy = JAVA_TEMPLATE_TYPE_CLASSIC == (o);
-            optionValues.Add(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING, isLegacy);
+            OptionValues.Add(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING, isLegacy);
         }
 
     }
@@ -255,7 +255,7 @@ public class Options
      */
     public static int IntValue(string option)
     {
-        return optionValues.TryGetValue(option, out var ret) && ret is int i ? i : 0;
+        return OptionValues.TryGetValue(option, out var ret) && ret is int i ? i : 0;
     }
 
     /**
@@ -263,7 +263,7 @@ public class Options
      */
     public static bool BooleanValue(string option)
     {
-        return optionValues.TryGetValue(option, out var b) && b is bool bx && bx;
+        return OptionValues.TryGetValue(option, out var b) && b is bool bx && bx;
     }
      
     /**
@@ -271,19 +271,19 @@ public class Options
      */
     public static string StringValue(string option)
     {
-        return optionValues.TryGetValue(option,out var s)&& s is string t ?t:string.Empty;
+        return OptionValues.TryGetValue(option,out var s)&& s is string t ?t:string.Empty;
     }
 
 
     public static object ObjectValue(string option)
     {
-        return optionValues.TryGetValue(option, out var o) ? o : null;
+        return OptionValues.TryGetValue(option, out var o) ? o : null;
     }
 
 
     public static Dictionary<String, object> getOptions()
     {
-        Dictionary<String, object> ret = new (optionValues);
+        Dictionary<String, object> ret = new (OptionValues);
         return ret;
     }
 
@@ -321,7 +321,7 @@ public class Options
             string key = interestingOptions[i];
             sb.Append(key);
             sb.Append('=');
-            sb.Append(optionValues.TryGetValue(key,out var v)?v:"");
+            sb.Append(OptionValues.TryGetValue(key,out var v)?v:"");
             if (i != interestingOptions.Length - 1)
             {
                 sb.Append(',');
@@ -377,7 +377,7 @@ public class Options
             string name, object value)
     {
         string nameUpperCase = name.ToUpper();
-        if (!optionValues.ContainsKey(nameUpperCase))
+        if (!OptionValues.ContainsKey(nameUpperCase))
         {
             CSharpCCErrors.Warning(nameloc, "Bad option name \"" + name
                     + "\".  Option setting will be ignored.");
@@ -386,7 +386,7 @@ public class Options
         
         value = UpgradeValue(name, value);
 
-        if (optionValues.TryGetValue(nameUpperCase,out var existingValue))
+        if (OptionValues.TryGetValue(nameUpperCase,out var existingValue))
         {
 
             bool isIndirectProperty = nameUpperCase.Equals(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING, StringComparison.InvariantCultureIgnoreCase);
@@ -427,7 +427,7 @@ public class Options
             }
         }
 
-        optionValues.Add(nameUpperCase, value);
+        OptionValues.Add(nameUpperCase, value);
         inputFileSetting.Add(nameUpperCase);
 
         // Special case logic block here for setting indirect flags
@@ -444,7 +444,7 @@ public class Options
             }
 
             bool isLegacy = JAVA_TEMPLATE_TYPE_CLASSIC == (templateType);
-            optionValues.Add(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING, isLegacy);
+            OptionValues.Add(NONUSER_OPTION__LEGACY_EXCEPTION_HANDLING, isLegacy);
         }
         else
 
@@ -523,7 +523,7 @@ public class Options
         if (index < 0)
         {
             name = s.ToUpper();
-            if (optionValues.ContainsKey(name))
+            if (OptionValues.ContainsKey(name))
             {
                 Val = true;
             }
@@ -580,13 +580,13 @@ public class Options
             }
         }
 
-        if (!optionValues.ContainsKey(name))
+        if (!OptionValues.ContainsKey(name))
         {
             Console.WriteLine("Warning: Bad option \"" + arg
                     + "\" will be ignored.");
             return;
         }
-        if (optionValues.TryGetValue(name,out var valOrig) && Val.GetType() != valOrig.GetType())
+        if (OptionValues.TryGetValue(name,out var valOrig) && Val.GetType() != valOrig.GetType())
         {
             Console.WriteLine("Warning: Bad option value in \"" + arg
                     + "\" will be ignored.");
@@ -601,7 +601,7 @@ public class Options
 
         Val = UpgradeValue(name, Val);
 
-        optionValues.Add(name, Val);
+        OptionValues.Add(name, Val);
         cmdLineSetting.Add(name);
         if (name.Equals(USEROPTION__CPP_NAMESPACE, StringComparison.InvariantCultureIgnoreCase))
         {
@@ -620,16 +620,16 @@ public class Options
                         .Warning("True setting of option DEBUG_LOOKAHEAD overrides " 
                                 + "false setting of option DEBUG_PARSER.");
             }
-            optionValues.Add(USEROPTION__DEBUG_PARSER, true);
+            OptionValues.Add(USEROPTION__DEBUG_PARSER, true);
         }
 
         // Now set the "GENERATE" options from the supplied (or default) JDK
         // version.
 
-        optionValues.Add(USEROPTION__GENERATE_CHAINED_EXCEPTION, (JdkVersionAtLeast(1.4)));
-        optionValues.Add(USEROPTION__GENERATE_GENERICS, (JdkVersionAtLeast(1.5)));
-        optionValues.Add(USEROPTION__GENERATE_STRING_BUILDER, (JdkVersionAtLeast(1.5)));
-        optionValues.Add(USEROPTION__GENERATE_ANNOTATIONS, (JdkVersionAtLeast(1.5)));
+        OptionValues.Add(USEROPTION__GENERATE_CHAINED_EXCEPTION, (JdkVersionAtLeast(1.4)));
+        OptionValues.Add(USEROPTION__GENERATE_GENERICS, (JdkVersionAtLeast(1.5)));
+        OptionValues.Add(USEROPTION__GENERATE_STRING_BUILDER, (JdkVersionAtLeast(1.5)));
+        OptionValues.Add(USEROPTION__GENERATE_ANNOTATIONS, (JdkVersionAtLeast(1.5)));
     }
 
     /**
@@ -1058,7 +1058,7 @@ public class Options
 
     public static void SetStringOption(string optionName, string optionValue)
     {
-        optionValues.Add(optionName, optionValue);
+        OptionValues.Add(optionName, optionValue);
         if (optionName.Equals(USEROPTION__CPP_NAMESPACE, StringComparison.InvariantCultureIgnoreCase))
         {
             ProcessCPPNamespaceOption(optionValue);
@@ -1083,9 +1083,9 @@ public class Options
                     ns_close += "\n}";
                 }
             }
-            optionValues.Add(NONUSER_OPTION__NAMESPACE_OPEN, expanded_ns);
-            optionValues.Add(NONUSER_OPTION__HAS_NAMESPACE, true);
-            optionValues.Add(NONUSER_OPTION__NAMESPACE_CLOSE, ns_close);
+            OptionValues.Add(NONUSER_OPTION__NAMESPACE_OPEN, expanded_ns);
+            OptionValues.Add(NONUSER_OPTION__HAS_NAMESPACE, true);
+            OptionValues.Add(NONUSER_OPTION__NAMESPACE_CLOSE, ns_close);
         }
     }
 

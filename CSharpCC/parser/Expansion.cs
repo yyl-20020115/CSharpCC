@@ -102,7 +102,7 @@ public class Expansion : Descriptor
         return name[(name.LastIndexOf(".") + 1)..]; // strip the package name
     }
 
-    public override string ToString() => $"[{GetLine()},{GetColumn()} {this.GetHashCode()} {GetSimpleName()}]";
+    public override string ToString() => $"[{Line},{Column} {this.GetHashCode()} {GetSimpleName()}]";
 
     protected static readonly string eol = Environment.NewLine;// System.getProperty("line.separator", "\n");
     protected static StringBuilder DumpPrefix(int indent)
@@ -142,36 +142,20 @@ public class Expansion : Descriptor
     }
 
     /**
-     * @param column the column to set
-     */
-    public void SetColumn(int column)
-    {
-        this.column = column;
-    }
-
-    /**
      * @return the column
      */
-    public int GetColumn()
-    {
-        return column;
-    }
-
     /**
-     * @param line the line to set
-     */
-    public void SetLine(int line)
-    {
-        this.line = line;
-    }
+ * @param column the column to set
+ */
+    public int Column { get => column; set => this.column = value; }
 
     /**
      * @return the line
      */
-    public int GetLine()
-    {
-        return line;
-    }
+    /**
+ * @param line the line to set
+ */
+    public int Line { get => line; set => this.line = value; }
 
     /**
      * A reimplementing of Object.hashCode() to be deterministic.  This uses
@@ -179,7 +163,7 @@ public class Expansion : Descriptor
      * that this method is called only after line and column are set to
      * their actual values.
      */
-    public override int GetHashCode() => GetLine() + GetColumn();
+    public override int GetHashCode() => Line + Column;
 
 
 }

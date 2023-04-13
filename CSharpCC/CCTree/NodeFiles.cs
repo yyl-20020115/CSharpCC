@@ -35,19 +35,17 @@ using System.Text;
 
 namespace CSharpCC.CCTree;
 
-
-
 public static class NodeFiles
 {
     /**
      * ID of the latest version (of JJTree) in which one of the Node classes
      * was modified.
      */
-    static readonly string nodeVersion = Version.MajorDotMinor;
+    static readonly string NodeVersion = Version.MajorDotMinor;
 
-    static HashSet<string> nodesGenerated = new();
+    static HashSet<string> NodesGenerated = new();
 
-    public static void ensure(IO io, string nodeType)
+    public static void Ensure(IO io, string nodeType)
     {
         string file = System.IO.Path.Combine(CCTreeOptions.GetJJTreeOutputDirectory(), nodeType + ".java");
 
@@ -56,11 +54,11 @@ public static class NodeFiles
         }
         else if (nodeType == ("SimpleNode"))
         {
-            ensure(io, "Node");
+            Ensure(io, "Node");
         }
         else
         {
-            ensure(io, "SimpleNode");
+            Ensure(io, "SimpleNode");
         }
 
         /* Only build the node file if we're dealing with Node.java, or
@@ -70,18 +68,18 @@ public static class NodeFiles
             return;
         }
 
-        if (File.Exists(file) && nodesGenerated.Contains(file))
+        if (File.Exists(file) && NodesGenerated.Contains(file))
         {
             return;
         }
 
         try
         {
-            String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
-            OutputFile outputFile = new OutputFile(file, nodeVersion, options);
+            string[] options = new string[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+            OutputFile outputFile = new OutputFile(file, NodeVersion, options);
             outputFile.SetToolName("JJTree");
 
-            nodesGenerated.Add(file);
+            NodesGenerated.Add(file);
 
             if (!outputFile.NeedToWrite)
             {
@@ -111,7 +109,7 @@ public static class NodeFiles
     }
 
 
-    public static void generatePrologue(TextWriter ostr)
+    public static void GeneratePrologue(TextWriter ostr)
     {
         // Output the node's package name. JJTreeGlobals.nodePackageName
         // will be the value of NODE_PACKAGE in OPTIONS; if that wasn't set it
@@ -132,14 +130,11 @@ public static class NodeFiles
     }
 
 
-    public static string nodeConstants()
-    {
-        return CCTreeGlobals.ParserName + "TreeConstants";
-    }
+    public static string NodeConstants => CCTreeGlobals.ParserName + "TreeConstants";
 
-    public static void generateTreeConstants_java()
+    public static void GenerateTreeConstantsJava()
     {
-        string name = nodeConstants();
+        string name = NodeConstants;
         string file = System.IO.Path.Combine(CCTreeOptions.GetJJTreeOutputDirectory(), name + ".java");
 
         try
@@ -150,7 +145,7 @@ public static class NodeFiles
             var nodeIds = ASTNodeDescriptor.GetNodeIds();
             var nodeNames = ASTNodeDescriptor.GetNodeNames();
 
-            generatePrologue(ostr);
+            GeneratePrologue(ostr);
             ostr.WriteLine("public interface " + name);
             ostr.WriteLine("{");
 
@@ -182,29 +177,26 @@ public static class NodeFiles
     }
 
 
-    public static string visitorClass()
-    {
-        return CCTreeGlobals.ParserName + "Visitor";
-    }
+    public static string VisitorClass => CCTreeGlobals.ParserName + "Visitor";
 
-    public static void generateVisitor_java()
+    public static void GenerateVisitorJava()
     {
         if (!CCTreeOptions.GetVisitor())
         {
             return;
         }
 
-        string name = visitorClass();
+        string name = VisitorClass;
         string file = System.IO.Path.Combine(CCTreeOptions.GetJJTreeOutputDirectory(), name + ".java");
 
         try
         {
-            OutputFile outputFile = new OutputFile(file);
-            TextWriter ostr = outputFile.GetPrintWriter();
+            var outputFile = new OutputFile(file);
+            var ostr = outputFile.GetPrintWriter();
 
             var nodeNames = ASTNodeDescriptor.GetNodeNames();
 
-            generatePrologue(ostr);
+            GeneratePrologue(ostr);
             ostr.WriteLine("public interface " + name);
             ostr.WriteLine("{");
 
@@ -228,7 +220,7 @@ public static class NodeFiles
                         continue;
                     }
                     string nodeType = CCTreeOptions.GetNodePrefix() + n;
-                    ostr.WriteLine("  public " + CCTreeOptions.GetVisitorReturnType() + " " + getVisitMethodName(nodeType) +
+                    ostr.WriteLine("  public " + CCTreeOptions.GetVisitorReturnType() + " " + GetVisitMethodName(nodeType) +
                     "(" + nodeType +
                         " node, " + argumentType + " data)" + ve + ";");
                 }
@@ -243,12 +235,9 @@ public static class NodeFiles
         }
     }
 
-    public static string defaultVisitorClass()
-    {
-        return CCTreeGlobals.ParserName + "DefaultVisitor";
-    }
+    public static string DefaultVisitorClass => CCTreeGlobals.ParserName + "DefaultVisitor";
 
-    private static string getVisitMethodName(string className)
+    private static string GetVisitMethodName(string className)
     {
         var sb = new StringBuilder("visit");
         if (CCTreeOptions.BooleanValue("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME"))
@@ -263,14 +252,14 @@ public static class NodeFiles
         return sb.ToString();
     }
 
-    public static void generateDefaultVisitor_java()
+    public static void GenerateDefaultVisitorJava()
     {
         if (!CCTreeOptions.GetVisitor())
         {
             return;
         }
 
-        string className = defaultVisitorClass();
+        string className = DefaultVisitorClass;
         string file = System.IO.Path.Combine(CCTreeOptions.GetJJTreeOutputDirectory(), className + ".java");
 
         try
@@ -280,8 +269,8 @@ public static class NodeFiles
 
             var nodeNames = ASTNodeDescriptor.GetNodeNames();
 
-            generatePrologue(ostr);
-            ostr.WriteLine("public class " + className + " implements " + visitorClass() + "{");
+            GeneratePrologue(ostr);
+            ostr.WriteLine("public class " + className + " implements " + VisitorClass + "{");
 
             string ve = MergeVisitorException();
 
@@ -339,7 +328,7 @@ public static class NodeFiles
                         continue;
                     }
                     string nodeType = CCTreeOptions.GetNodePrefix() + n;
-                    ostr.WriteLine("  public " + returnType + " " + getVisitMethodName(nodeType) +
+                    ostr.WriteLine("  public " + returnType + " " + GetVisitMethodName(nodeType) +
                     "(" + nodeType +
                         " node, " + argumentType + " data)" + ve + "{");
                     ostr.WriteLine("    " + (isVoidReturnType ? "" : "return ") + "defaultVisit(node, data);");
@@ -372,7 +361,7 @@ public static class NodeFiles
     {
         TextWriter ostr = outputFile.GetPrintWriter();
 
-        generatePrologue(ostr);
+        GeneratePrologue(ostr);
 
         var options = new Dictionary<string, object>(Options.getOptions());
         options.Add(Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName);
@@ -390,7 +379,7 @@ public static class NodeFiles
     {
         TextWriter ostr = outputFile.GetPrintWriter();
 
-        generatePrologue(ostr);
+        GeneratePrologue(ostr);
 
         var options = new Dictionary<string, object>(Options.getOptions());
         options.Add(Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName);
@@ -409,7 +398,7 @@ public static class NodeFiles
     {
         var ostr = outputFile.GetPrintWriter();
 
-        generatePrologue(ostr);
+        GeneratePrologue(ostr);
 
         var options = new Dictionary<string, object>(Options.getOptions());
         options.Add(Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName);
@@ -423,5 +412,4 @@ public static class NodeFiles
 
         ostr.Close();
     }
-
 }

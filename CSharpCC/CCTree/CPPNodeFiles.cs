@@ -88,12 +88,12 @@ public static class CPPNodeFiles
 
     private static void GenerateNodeHeader()
     {
-        string file = NodeIncludeFile();
+        var file = NodeIncludeFile();
         OutputFile outputFile = null;
 
         try
         {
-            String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+            var options = new string[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
             outputFile = new OutputFile(file, NodeVersion, options);
             outputFile.SetToolName("JJTree");
 
@@ -102,11 +102,13 @@ public static class CPPNodeFiles
                 return;
             }
 
-            Dictionary<String, Object> optionMap = new(Options.getOptions());
-            optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName);
-            optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
-            optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
-            optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
+            Dictionary<string, object> optionMap = new(Options.getOptions())
+            {
+                { Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName },
+                { "VISITOR_RETURN_TYPE", GetVisitorReturnType() },
+                { "VISITOR_DATA_TYPE", GetVisitorArgumentType() },
+                { "VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString() }
+            };
             GenerateFile(outputFile, "/templates/cpp/Node.h.template", optionMap, false);
         }
         catch (IOException e)
@@ -125,7 +127,7 @@ public static class CPPNodeFiles
 
         try
         {
-            String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+            string[] options = new string[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
             outputFile = new OutputFile(file, NodeVersion, options);
             outputFile.SetToolName("JJTree");
 
@@ -134,11 +136,13 @@ public static class CPPNodeFiles
                 return;
             }
 
-            Dictionary<String, Object> optionMap = new(Options.getOptions());
-            optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName);
-            optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
-            optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
-            optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
+            Dictionary<string, object> optionMap = new(Options.getOptions())
+            {
+                { Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName },
+                { "VISITOR_RETURN_TYPE", GetVisitorReturnType() },
+                { "VISITOR_DATA_TYPE", GetVisitorArgumentType() },
+                { "VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString() }
+            };
             GenerateFile(outputFile, "/templates/cpp/SimpleNode.h.template", optionMap, false);
         }
         catch (IOException e)
@@ -157,7 +161,7 @@ public static class CPPNodeFiles
 
         try
         {
-            String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+            string[] options = new string[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
             outputFile = new OutputFile(file, NodeVersion, options);
             outputFile.SetToolName("JJTree");
 
@@ -166,11 +170,13 @@ public static class CPPNodeFiles
                 return;
             }
 
-            Dictionary<String, Object> optionMap = new(Options.getOptions());
-            optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName);
-            optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
-            optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
-            optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
+            Dictionary<string, object> optionMap = new(Options.getOptions())
+            {
+                { Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName },
+                { "VISITOR_RETURN_TYPE", GetVisitorReturnType() },
+                { "VISITOR_DATA_TYPE", GetVisitorArgumentType() },
+                { "VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString() }
+            };
             GenerateFile(outputFile, "/templates/cpp/SimpleNode.cc.template", optionMap, false);
         }
         catch (IOException e)
@@ -192,7 +198,7 @@ public static class CPPNodeFiles
             foreach (string node in NodesToGenerate)
             {
                 string file = (JjtreeIncludeFile(node));
-                String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+                string[] options = new string[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
                 outputFile = new OutputFile(file, NodeVersion, options);
                 outputFile.SetToolName("JJTree");
 
@@ -201,11 +207,13 @@ public static class CPPNodeFiles
                     return;
                 }
 
-                Dictionary<String, Object> optionMap = new Dictionary<String, Object>(Options.getOptions());
-                optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName);
-                optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
-                optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
-                optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
+                Dictionary<string, object> optionMap = new(Options.getOptions())
+                {
+                    { Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName },
+                    { "VISITOR_RETURN_TYPE", GetVisitorReturnType() },
+                    { "VISITOR_DATA_TYPE", GetVisitorArgumentType() },
+                    { "VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString() }
+                };
 
                 TextWriter ostr = outputFile.GetPrintWriter();
                 optionMap.Add("NODE_TYPE", node);
@@ -232,7 +240,7 @@ public static class CPPNodeFiles
             foreach (string node in NodesToGenerate)
             {
                 string file = (JjtreeImplFile(node));
-                String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+                string[] options = new string[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
                 outputFile = new OutputFile(file, NodeVersion, options);
                 outputFile.SetToolName("JJTree");
 
@@ -241,11 +249,13 @@ public static class CPPNodeFiles
                     return;
                 }
 
-                Dictionary<String, Object> optionMap = new(Options.getOptions());
-                optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName);
-                optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
-                optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
-                optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
+                Dictionary<string, object> optionMap = new(Options.getOptions())
+                {
+                    { Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName },
+                    { "VISITOR_RETURN_TYPE", GetVisitorReturnType() },
+                    { "VISITOR_DATA_TYPE", GetVisitorArgumentType() },
+                    { "VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString() }
+                };
 
                 TextWriter ostr = outputFile.GetPrintWriter();
                 optionMap.Add("NODE_TYPE", node);
@@ -271,7 +281,7 @@ public static class CPPNodeFiles
 
         try
         {
-            String[] options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+            string[] options = new string[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
             outputFile = new OutputFile(file, NodeVersion, options);
             outputFile.SetToolName("JJTree");
 
@@ -280,11 +290,13 @@ public static class CPPNodeFiles
                 return;
             }
 
-            Dictionary<String, Object> optionMap = new(Options.getOptions());
-            optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName);
-            optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
-            optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
-            optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
+            Dictionary<string, object> optionMap = new(Options.getOptions())
+            {
+                { Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName },
+                { "VISITOR_RETURN_TYPE", GetVisitorReturnType() },
+                { "VISITOR_DATA_TYPE", GetVisitorArgumentType() },
+                { "VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString() }
+            };
 
             TextWriter ostr = outputFile.GetPrintWriter();
             string includeName = file.Replace('.', '_').ToUpper();
@@ -314,7 +326,7 @@ public static class CPPNodeFiles
 
         try
         {
-            var options = new String[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
+            var options = new string[] { "MULTI", "NODE_USES_PARSER", "VISITOR", "TRACK_TOKENS", "NODE_PREFIX", "NODE_EXTENDS", "NODE_FACTORY", Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC };
             outputFile = new OutputFile(file, NodeVersion, options);
             outputFile.SetToolName("JJTree");
 
@@ -323,11 +335,13 @@ public static class CPPNodeFiles
                 return;
             }
 
-            Dictionary<String, Object> optionMap = new(Options.getOptions());
-            optionMap.Add(Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName);
-            optionMap.Add("VISITOR_RETURN_TYPE", GetVisitorReturnType());
-            optionMap.Add("VISITOR_DATA_TYPE", GetVisitorArgumentType());
-            optionMap.Add("VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString());
+            Dictionary<string, object> optionMap = new(Options.getOptions())
+            {
+                { Options.NONUSER_OPTION__PARSER_NAME, CCTreeGlobals.ParserName },
+                { "VISITOR_RETURN_TYPE", GetVisitorReturnType() },
+                { "VISITOR_DATA_TYPE", GetVisitorArgumentType() },
+                { "VISITOR_RETURN_TYPE_VOID", (GetVisitorReturnType() == ("void")).ToString() }
+            };
             GenerateFile(outputFile, "/templates/cpp/TreeImplHeader.template", optionMap, false);
 
             bool hasNamespace = CCTreeOptions.StringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0;
@@ -395,7 +409,7 @@ public static class CPPNodeFiles
             ostr.WriteLine("enum {");
             for (int i = 0; i < nodeIds.Count; ++i)
             {
-                string n = (String)nodeIds[i];
+                string n = (string)nodeIds[i];
                 ostr.WriteLine("  " + n + " = " + i + ",");
             }
 
@@ -405,7 +419,7 @@ public static class CPPNodeFiles
             for (int i = 0; i < nodeNames.Count; ++i)
             {
                 ostr.WriteLine("  static JJChar jjtNodeName_arr_" + i + "[] = ");
-                string n = (String)nodeNames[i];
+                var n = nodeNames[i];
                 //ostr.WriteLine("    (JJChar*)\"" + n + "\",");
                 OtherFilesGenCPP.PrintCharArray(ostr, n);
                 ostr.WriteLine(";");
@@ -457,13 +471,13 @@ public static class CPPNodeFiles
     private static string GetVisitorArgumentType()
     {
         string ret = CCTreeOptions.StringValue("VISITOR_DATA_TYPE");
-        return ret == null || ret == ("") || ret == ("Object") ? "void *" : ret;
+        return ret == null || ret == ("") || ret == ("object") ? "void *" : ret;
     }
 
     private static string GetVisitorReturnType()
     {
         string ret = CCTreeOptions.StringValue("VISITOR_RETURN_TYPE");
-        return ret == null || ret == ("") || ret == ("Object") ? "void " : ret;
+        return ret == null || ret == ("") || ret == ("object") ? "void " : ret;
     }
 
     public static void GenerateVisitors()
@@ -530,7 +544,7 @@ public static class CPPNodeFiles
         {
             for (int i = 0; i < nodeNames.Count; ++i)
             {
-                string n = (String)nodeNames[i];
+                string n = (string)nodeNames[i];
                 if (n == ("void"))
                 {
                     continue;
@@ -571,7 +585,7 @@ public static class CPPNodeFiles
         {
             for (int i = 0; i < nodeNames.Count; ++i)
             {
-                string n = (String)nodeNames[i];
+                string n = (string)nodeNames[i];
                 if (n == ("void"))
                 {
                     continue;

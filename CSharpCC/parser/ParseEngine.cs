@@ -1289,7 +1289,7 @@ public class ParseEngine
             //    new Error().codeGenerator.printStackTrace();
             //    Console.WriteLine(" ***** seq: " + seq.internal_name + "; size: " + ((Sequence)seq).units.Count);
             //    }
-            e.internal_name = "R_" + e.GetProductionName() + "_" + e.GetLine() + "_" + e.GetColumn() + "_" + gensymindex;
+            e.internal_name = "R_" + e.GetProductionName() + "_" + e.Line + "_" + e.Column + "_" + gensymindex;
             e.internal_index = gensymindex;
         }
         if (!phase3table.TryGetValue(e, out var p3d) || p3d.count < inf.count)

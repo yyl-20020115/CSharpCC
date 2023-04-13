@@ -25,6 +25,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+using CSharpCC.Utils;
+
 namespace CSharpCC.Parser;
 
 
@@ -90,7 +92,7 @@ public class LookaheadCalc : CSharpCCGlobals
                 if (rexps_of_tokens.TryGetValue(m.match[i], out var re) 
                     && re is RStringLiteral rs)
                 {
-                    ret += " \"" + AddEscapes(rs.image) + "\"";
+                    ret += " \"" +StringEscapeHelpers.AddEscapes(rs.image) + "\"";
                 }
                 else if (!string.IsNullOrEmpty(re?.label))
                 {
@@ -199,10 +201,10 @@ public class LookaheadCalc : CSharpCCGlobals
             if (minLA[i] > Options.GetChoiceAmbiguityCheck())
             {
                 CSharpCCErrors.Warning("Choice conflict involving two expansions at");
-                Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).GetLine());
-                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).GetColumn());
-                Console.Error.Write(" and line " + ((Expansion)ch.GetChoices()[(other[i])]).GetLine());
-                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[(other[i])]).GetColumn());
+                Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).Line);
+                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).Column);
+                Console.Error.Write(" and line " + ((Expansion)ch.GetChoices()[(other[i])]).Line);
+                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[(other[i])]).Column);
                 Console.Error.WriteLine(" respectively.");
                 Console.Error.WriteLine("         A common prefix is: " + Image(overlapInfo[i]));
                 Console.Error.WriteLine("         Consider using a lookahead of " + minLA[i] + " or more for earlier expansion.");
@@ -210,10 +212,10 @@ public class LookaheadCalc : CSharpCCGlobals
             else if (minLA[i] > 1)
             {
                 CSharpCCErrors.Warning("Choice conflict involving two expansions at");
-                Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).GetLine());
-                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).GetColumn());
-                Console.Error.Write(" and line " + ((Expansion)ch.GetChoices()[(other[i])]).GetLine());
-                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[(other[i])]).GetColumn());
+                Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).Line);
+                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).Column);
+                Console.Error.Write(" and line " + ((Expansion)ch.GetChoices()[(other[i])]).Line);
+                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[(other[i])]).Column);
                 Console.Error.WriteLine(" respectively.");
                 Console.Error.WriteLine("         A common prefix is: " + Image(overlapInfo[i]));
                 Console.Error.WriteLine("         Consider using a lookahead of " + minLA[i] + " for earlier expansion.");
@@ -309,7 +311,7 @@ public class LookaheadCalc : CSharpCCGlobals
         if (la > Options.GetOtherAmbiguityCheck())
         {
             CSharpCCErrors.Warning("Choice conflict in " + Image(exp) + " construct " +
-                    "at line " + exp.GetLine() + ", column " + exp.GetColumn() + ".");
+                    "at line " + exp.Line + ", column " + exp.Column + ".");
             Console.Error.WriteLine("         Expansion nested within construct and expansion following construct");
             Console.Error.WriteLine("         have common prefixes, one of which is: " + Image(m1));
             Console.Error.WriteLine("         Consider using a lookahead of " + la + " or more for nested expansion.");
@@ -317,7 +319,7 @@ public class LookaheadCalc : CSharpCCGlobals
         else if (la > 1)
         {
             CSharpCCErrors.Warning("Choice conflict in " + Image(exp) + " construct " +
-                    "at line " + exp.GetLine() + ", column " + exp.GetColumn() + ".");
+                    "at line " + exp.Line + ", column " + exp.Column + ".");
             Console.Error.WriteLine("         Expansion nested within construct and expansion following construct");
             Console.Error.WriteLine("         have common prefixes, one of which is: " + Image(m1));
             Console.Error.WriteLine("         Consider using a lookahead of " + la + " for nested expansion.");

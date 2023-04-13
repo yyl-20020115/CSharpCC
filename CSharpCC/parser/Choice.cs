@@ -49,14 +49,14 @@ public class Choice : Expansion
 
     public Choice(Token token)
     {
-        this.SetLine(token.beginLine);
-        this.SetColumn(token.beginColumn);
+        this.        Line = token.beginLine;
+        this.        Column = token.beginColumn;
     }
 
     public Choice(Expansion expansion)
     {
-        this.SetLine(expansion.GetLine());
-        this.SetColumn(expansion.GetColumn());
+        this.        Line = expansion.Line;
+        this.        Column = expansion.Column;
         this.GetChoices().Add(expansion);
     }
 

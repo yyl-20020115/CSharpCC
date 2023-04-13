@@ -48,8 +48,8 @@ public class RJustName : RegularExpression
 
     public RJustName(Token token, string image)
     {
-        this.SetLine(token.beginLine);
-        this.SetColumn(token.beginColumn);
+        this.        Line = token.beginLine;
+        this.        Column = token.beginColumn;
         this.label = image;
     }
 

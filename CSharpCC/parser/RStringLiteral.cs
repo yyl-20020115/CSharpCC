@@ -29,6 +29,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using CSharpCC.Utils;
 using System.Text;
 
 namespace CSharpCC.Parser;
@@ -51,8 +52,8 @@ public class RStringLiteral : RegularExpression
 
     public RStringLiteral(Token t, string image)
     {
-        this.SetLine(t.beginLine);
-        this.SetColumn(t.beginColumn);
+        this.        Line = t.beginLine;
+        this.        Column = t.beginColumn;
         this.image = image;
     }
 
@@ -447,7 +448,7 @@ public class RStringLiteral : RegularExpression
         var re = LexGen.rexprs[kind];
 
         if (re is RStringLiteral literal)
-            return " \"" + CSharpCCGlobals.AddEscapes(literal.image) + "\"";
+            return " \"" + StringEscapeHelpers.AddEscapes(literal.image) + "\"";
         else if (re.label != (""))
             return " <" + re.label + ">";
         else
@@ -456,12 +457,12 @@ public class RStringLiteral : RegularExpression
 
     static int GetLine(int kind)
     {
-        return LexGen.rexprs[kind].GetLine();
+        return LexGen.rexprs[kind].Line;
     }
 
     static int GetColumn(int kind)
     {
-        return LexGen.rexprs[kind].GetColumn();
+        return LexGen.rexprs[kind].Column;
     }
 
     /**
@@ -1085,7 +1086,7 @@ public class RStringLiteral : RegularExpression
                                 intermediateMatchedPos[(j * 64 + k)][i] == i)
                             {
                                 CSharpCCErrors.Warning(" \"" +
-                                    CSharpCCGlobals.AddEscapes(allImages[j * 64 + k]) +
+                                    StringEscapeHelpers.AddEscapes(allImages[j * 64 + k]) +
                                     "\" cannot be matched as a string literal token " +
                                     "at line " + GetLine(j * 64 + k) + ", column " + GetColumn(j * 64 + k) +
                                     ". It will be matched as " +
@@ -1097,7 +1098,7 @@ public class RStringLiteral : RegularExpression
                                  LexGen.canMatchAnyChar[LexGen.lexStateIndex] < (j * 64 + k))
                             {
                                 CSharpCCErrors.Warning(" \"" +
-                                    CSharpCCGlobals.AddEscapes(allImages[j * 64 + k]) +
+                                    StringEscapeHelpers.AddEscapes(allImages[j * 64 + k]) +
                                     "\" cannot be matched as a string literal token " +
                                     "at line " + GetLine(j * 64 + k) + ", column " + GetColumn(j * 64 + k) +
                                     ". It will be matched as " +

@@ -28,11 +28,9 @@
 namespace CSharpCC.CCTree;
 
 
-public class ASTOptionBinding : CCTreeNode
+public class ASTOptionBinding : TreeNode
 {
-    public ASTOptionBinding(int id) : base(id)
-    {
-    }
+    public ASTOptionBinding(int id) : base(id) { }
 
     private bool suppressed = false;
     private string name;
@@ -59,22 +57,8 @@ public class ASTOptionBinding : CCTreeNode
     }
 
 
-    public override string TranslateImage(Token t)
-    {
-        if (suppressed)
-        {
-            return WhiteOut(t);
-        }
-        else
-        {
-            return t.image;
-        }
-    }
+    public override string TranslateImage(Token t) => suppressed ? WhiteOut(t) : t.Image;
 
-    /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data) 
+    public override object Accept(TreeParserVisitor visitor, object data) 
         => visitor.Visit(this, data);
 }
-
-
-/*end*/

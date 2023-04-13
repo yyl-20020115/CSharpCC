@@ -54,19 +54,19 @@ public static class CSharpCCErrors
 
             case Expansion n:
                 {
-                    Console.Error.Write("Line " + n.GetLine() + ", Column " + n.GetColumn() + ": ");
+                    Console.Error.Write("Line " + n.Line + ", Column " + n.Column + ": ");
                     break;
                 }
 
             case CharacterRange n:
                 {
-                    Console.Error.Write("Line " + n.GetLine() + ", Column " + n.GetColumn() + ": ");
+                    Console.Error.Write("Line " + n.Line + ", Column " + n.Column + ": ");
                     break;
                 }
 
             case SingleCharacter n:
                 {
-                    Console.Error.Write("Line " + n.GetLine() + ", Column " + n.GetColumn() + ": ");
+                    Console.Error.Write("Line " + n.Line + ", Column " + n.Column + ": ");
                     break;
                 }
 

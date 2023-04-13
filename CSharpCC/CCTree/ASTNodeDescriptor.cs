@@ -30,13 +30,9 @@
  */
 namespace CSharpCC.CCTree;
 
-
-public class ASTNodeDescriptor : CCTreeNode
+public class ASTNodeDescriptor : TreeNode
 {
-    public ASTNodeDescriptor(int id) : base(id)
-    {
-    }
-
+    public ASTNodeDescriptor(int id) : base(id) { }
     private bool faked = false;
 
     public static ASTNodeDescriptor Indefinite(string s)
@@ -51,10 +47,9 @@ public class ASTNodeDescriptor : CCTreeNode
         return nd;
     }
 
-
     public static List<string> NodeIds = new();
     public static List<string> NodeNames = new();
-    public static Dictionary<string, string> nodeSeen = new ();
+    public static Dictionary<string, string> NodeSeen = new();
 
     public static List<string> GetNodeIds() => NodeIds;
 
@@ -63,9 +58,9 @@ public class ASTNodeDescriptor : CCTreeNode
     public void SetNodeIdValue()
     {
         var k = GetNodeId();
-        if (!nodeSeen.ContainsKey(k))
+        if (!NodeSeen.ContainsKey(k))
         {
-            nodeSeen.Add(k, k);
+            NodeSeen.Add(k, k);
             NodeNames.Add(name);
             NodeIds.Add(k);
         }
@@ -88,31 +83,29 @@ public class ASTNodeDescriptor : CCTreeNode
 
     public string GetNodeType() => CCTreeOptions.GetMulti() ? CCTreeOptions.GetNodePrefix() + name : "SimpleNode";
 
-
     public string GetNodeName() => name;
-
 
     public string OpenNode(string nodeVar) => $"jjtree.openNodeScope({nodeVar});";
 
 
     public string ExpressionText()
     {
-        if (expression.GetFirstToken().image == (")") &&
-          expression.GetLastToken().image == ("("))
+        if (expression.FirstToken.Image == (")") &&
+          expression.          LastToken.Image == ("("))
         {
             return "true";
         }
 
         string s = "";
-        Token t = expression.GetFirstToken();
+        Token t = expression.FirstToken;
         while (true)
         {
-            s += " " + t.image;
-            if (t == expression.GetLastToken())
+            s += " " + t.Image;
+            if (t == expression.LastToken)
             {
                 break;
             }
-            t = t.next;
+            t = t.Next;
         }
         return s;
     }
@@ -139,10 +132,7 @@ public class ASTNodeDescriptor : CCTreeNode
 
     public override string TranslateImage(Token t) => WhiteOut(t);
 
-    /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data) 
+    public override object Accept(TreeParserVisitor visitor, object data) 
         => visitor.Visit(this, data);
 
 }
-
-/*end*/

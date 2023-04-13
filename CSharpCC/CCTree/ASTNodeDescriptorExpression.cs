@@ -27,18 +27,13 @@
  */
 namespace CSharpCC.CCTree;
 
-
-public class ASTNodeDescriptorExpression : CCTreeNode
+public class ASTNodeDescriptorExpression : TreeNode
 {
-    public ASTNodeDescriptorExpression(int id) : base(id)
-    {
-    }
+    public ASTNodeDescriptorExpression(int id) : base(id) { }
 
     public override string TranslateImage(Token t) => WhiteOut(t);
 
     /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data) 
+    public override object Accept(TreeParserVisitor visitor, object data) 
         => visitor.Visit(this, data);
 }
-
-/*end*/

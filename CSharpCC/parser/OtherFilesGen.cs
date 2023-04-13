@@ -29,6 +29,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 using CSharpCC.CCTree;
+using CSharpCC.Utils;
 
 namespace CSharpCC.Parser;
 
@@ -176,7 +177,8 @@ public class OtherFilesGen : CSharpCCGlobals
                 ostr.Write("    ");
                 if (re is RStringLiteral literal)
                 { 
-                    ostr.WriteLine("\"\\\"" + AddEscapes(AddEscapes(literal.image)) + "\\\"\",");
+                    ostr.WriteLine("\"\\\"" + StringEscapeHelpers.AddEscapes(
+                        StringEscapeHelpers.AddEscapes(literal.image)) + "\\\"\",");
                 }
                 else if (re.label != (""))
                 { 

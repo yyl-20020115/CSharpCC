@@ -46,8 +46,8 @@ public class ZeroOrOne : Expansion
 
     public ZeroOrOne(Token t, Expansion e)
     {
-        this.SetLine(t.beginLine);
-        this.SetColumn(t.beginColumn);
+        this.        Line = t.beginLine;
+        this.        Column = t.beginColumn;
         this.expansion = e;
         e.parent = this;
     }

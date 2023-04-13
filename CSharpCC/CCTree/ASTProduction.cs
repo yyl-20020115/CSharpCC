@@ -27,32 +27,24 @@
  */
 namespace CSharpCC.CCTree;
 
-public class ASTProduction : CCTreeNode
+public class ASTProduction : TreeNode
 {
-    public ASTProduction(int id) : base(id)
-    {
-    }
+    public ASTProduction(int id) : base(id) { }
+    public string Name;
+    public readonly List<string> ThrowsList = new ();
 
-    public string name;
-    public readonly List<string> throws_list = new ();
-
-    private Dictionary<NodeScope, int> scopes = new ();
-    private int nextNodeScopeNumber = 0;
-
-    
+    private Dictionary<NodeScope, int> Scopes = new ();
+    private int nextNodeScopeNumber = 0;    
     public int GetNodeScopeNumber(NodeScope s)
     {
-        if (!scopes.TryGetValue(s,out var i))
+        if (!Scopes.TryGetValue(s,out var i))
         {
             i = nextNodeScopeNumber++;
-            scopes.Add(s, i);
+            Scopes.Add(s, i);
         }
         return i;
     }
 
-    /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data)
+    public override object Accept(TreeParserVisitor visitor, object data)
         => visitor.Visit(this, data);
 }
-
-/*end*/

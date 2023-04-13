@@ -30,9 +30,7 @@
  */
 
 using CSharpCC.Parser;
-
 namespace CSharpCC.CCTree;
-
 
 
 /**
@@ -46,9 +44,7 @@ public class CCTreeOptions : Options
     /**
      * Limit subclassing to derived classes.
      */
-    protected CCTreeOptions():base()
-    {
-    }
+    protected CCTreeOptions() : base() { }
 
     /**
      * Initialize the JJTree-specific options.
@@ -56,37 +52,37 @@ public class CCTreeOptions : Options
     public new static void Init()
     {
         Options.Init();
-        Options.optionValues.Add("MULTI", false);
-        Options.optionValues.Add("NODE_DEFAULT_VOID", false);
-        Options.optionValues.Add("NODE_SCOPE_HOOK", false);
-        Options.optionValues.Add("NODE_USES_PARSER", false);
-        Options.optionValues.Add("BUILD_NODE_FILES", true);
-        Options.optionValues.Add("VISITOR", false);
-        Options.optionValues.Add("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME", false);
-        Options.optionValues.Add("TRACK_TOKENS", false);
+        Options.OptionValues.Add("MULTI", false);
+        Options.OptionValues.Add("NODE_DEFAULT_VOID", false);
+        Options.OptionValues.Add("NODE_SCOPE_HOOK", false);
+        Options.OptionValues.Add("NODE_USES_PARSER", false);
+        Options.OptionValues.Add("BUILD_NODE_FILES", true);
+        Options.OptionValues.Add("VISITOR", false);
+        Options.OptionValues.Add("VISITOR_METHOD_NAME_INCLUDES_TYPE_NAME", false);
+        Options.OptionValues.Add("TRACK_TOKENS", false);
 
-        Options.optionValues.Add("NODE_PREFIX", "AST");
-        Options.optionValues.Add("NODE_PACKAGE", "");
-        Options.optionValues.Add("NODE_EXTENDS", "");
-        Options.optionValues.Add("NODE_CLASS", "");
-        Options.optionValues.Add("NODE_FACTORY", "");
-        Options.optionValues.Add("NODE_INCLUDES", "");
-        Options.optionValues.Add("OUTPUT_FILE", "");
-        Options.optionValues.Add("VISITOR_DATA_TYPE", "");
-        Options.optionValues.Add("VISITOR_RETURN_TYPE", "Object");
-        Options.optionValues.Add("VISITOR_EXCEPTION", "");
+        Options.OptionValues.Add("NODE_PREFIX", "AST");
+        Options.OptionValues.Add("NODE_PACKAGE", "");
+        Options.OptionValues.Add("NODE_EXTENDS", "");
+        Options.OptionValues.Add("NODE_CLASS", "");
+        Options.OptionValues.Add("NODE_FACTORY", "");
+        Options.OptionValues.Add("NODE_INCLUDES", "");
+        Options.OptionValues.Add("OUTPUT_FILE", "");
+        Options.OptionValues.Add("VISITOR_DATA_TYPE", "");
+        Options.OptionValues.Add("VISITOR_RETURN_TYPE", "Object");
+        Options.OptionValues.Add("VISITOR_EXCEPTION", "");
 
-        Options.optionValues.Add("JJTREE_OUTPUT_DIRECTORY", "");
+        Options.OptionValues.Add("JJTREE_OUTPUT_DIRECTORY", "");
 
 
         // TODO :: 2013/07/23 -- This appears to be a duplicate from the parent class
-        Options.optionValues.Add(Options.USEROPTION__JDK_VERSION, "1.5");
+        Options.OptionValues.Add(Options.USEROPTION__JDK_VERSION, "1.5");
 
         // Also appears to be a duplicate
-        Options.optionValues.Add(Options.USEROPTION__CPP_NAMESPACE, "");
+        Options.OptionValues.Add(Options.USEROPTION__CPP_NAMESPACE, "");
 
         // Also appears to be a duplicate
-        Options.optionValues.Add(Options.USEROPTION__CPP_IGNORE_ACTIONS, false);
+        Options.OptionValues.Add(Options.USEROPTION__CPP_IGNORE_ACTIONS, false);
     }
 
     /**

@@ -28,15 +28,9 @@
 namespace CSharpCC.CCTree;
 
 
-public class ASTLHS : CCTreeNode
+public class ASTLHS : TreeNode
 {
-    public ASTLHS(int id) : base(id)
-    {
-    }
-
-    /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data) 
+    public ASTLHS(int id) : base(id) { }
+    public override object Accept(TreeParserVisitor visitor, object data) 
         => visitor.Visit(this, data);
 }
-
-/*end*/

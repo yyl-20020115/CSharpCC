@@ -27,18 +27,11 @@
  */
 namespace CSharpCC.CCTree;
 
-
 public class ASTJavacode : ASTProduction
 {
-    public ASTJavacode(int id) : base(id)
-    {
-    }
-
+    public ASTJavacode(int id) : base(id) { }
     public Token StatementBeginLocation;
 
-    /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data)
+    public override object Accept(TreeParserVisitor visitor, object data)
         => visitor.Visit(this, data);
 }
-
-/*end*/

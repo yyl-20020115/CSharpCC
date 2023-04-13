@@ -27,18 +27,12 @@
  */
 namespace CSharpCC.CCTree;
 
-
-public class ASTJavacodeBody : CCTreeNode
+public class ASTJavacodeBody : TreeNode
 {
-    public ASTJavacodeBody(int id) : base(id)
-    {
-    }
+    public ASTJavacodeBody(int id) : base(id) { }
 
     public NodeScope NodeScope;
 
-    /** Accept the visitor. **/
-    public override object jjtAccept(CCTreeParserVisitor visitor, object data) 
+    public override object Accept(TreeParserVisitor visitor, object data) 
         => visitor.Visit(this, data);
 }
-
-/*end*/
