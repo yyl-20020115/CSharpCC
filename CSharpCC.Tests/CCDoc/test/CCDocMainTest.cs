@@ -26,31 +26,29 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace CSharpCC.CCDoc.test;
+using CSharpCC.CCDoc;
 
-
+namespace CSharpCC.Tests;
 
 /**
  * @author timp
  * @since 7 Mar 2007
  *
  */
+[TestClass]
 public class CCDocMainTest : CSharpCCTestCase
 {
-
     /**
      * @param name
      */
     public CCDocMainTest(string name)
-        : base(name)
-    {
-    }
+        : base(name) { }
 
     /**
      * {@inheritDoc}
      * @see junit.framework.TestCase#setUp()
      */
-    protected void setUp()
+    protected void SetUp()
     {
         //base.setUp();
     }
@@ -59,7 +57,7 @@ public class CCDocMainTest : CSharpCCTestCase
      * {@inheritDoc}
      * @see junit.framework.TestCase#tearDown()
      */
-    protected void tearDown()
+    protected void TearDown()
     {
         //base.tearDown();
     }
@@ -67,27 +65,29 @@ public class CCDocMainTest : CSharpCCTestCase
     /**
      * Test method for {@link org.javacc.jjdoc.JJDocMain#main(java.lang.String[])}.
      */
-    public void testMain()
+    public void TestMain()
     {
     }
 
     /**
      * Test method for {@link org.javacc.jjdoc.JJDocMain#mainProgram(java.lang.String[])}.
      */
-    public void testMainProgramHTML()
+    [TestMethod]
+    public void TestMainProgramHTML()
     {
         int result = CCDocMain.mainProgram(
-            new string[] { "-OUTPUT_FILE:" + getJJDocOutputDirectory() + "JavaCC.html", getJJInputDirectory() + "JavaCC.jj" });
+            new string[] { "-OUTPUT_FILE:" + GetCCDocOutputDirectory() + "JavaCC.html", GetCCInputDirectory() + "JavaCC.jj" });
         Assert.AreEqual(0, result);
     }
 
     /**
      * Test method for {@link org.javacc.jjdoc.JJDocMain#mainProgram(java.lang.String[])}.
      */
-    public void testMainProgramText()
+    [TestMethod]
+    public void TestMainProgramText()
     {
-        Assert.AreEqual(0, CCDocMain.mainProgram(new string[] {"-OUTPUT_FILE:" + getJJDocOutputDirectory() + "JavaCC.txt",
-            "-TEXT:true",getJJInputDirectory() + "JavaCC.jj"}));
+        Assert.AreEqual(0, CCDocMain.mainProgram(new string[] {"-OUTPUT_FILE:" + GetCCDocOutputDirectory() + "JavaCC.txt",
+            "-TEXT:true",GetCCInputDirectory() + "JavaCC.jj"}));
     }
 
 }

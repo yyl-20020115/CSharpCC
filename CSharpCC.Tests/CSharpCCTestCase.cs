@@ -1,8 +1,4 @@
-/**
- *
- */
-namespace CSharpCC;
-
+namespace CSharpCC.Tests;
 
 /**
  * An ancestor class to enable transition to a different directory structure.
@@ -26,7 +22,7 @@ public abstract class CSharpCCTestCase
     /**
      * @return the documentation output directory name string relative to the root
      */
-    public string getJJDocOutputDirectory()
+    public string GetCCDocOutputDirectory()
     {
         return "www/doc/";
         //return "src/site/resources/";
@@ -36,7 +32,7 @@ public abstract class CSharpCCTestCase
      * Where the input jj files are located
      * @return the directory name string relative to the root
      */
-    public string getJJInputDirectory()
+    public string GetCCInputDirectory()
     {
         return "src/main/javacc/";
         //return "src/org/javacc/parser/";

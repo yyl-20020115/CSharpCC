@@ -26,16 +26,20 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace CSharpCC.Parser;
+using CSharpCC.Parser;
 
+namespace CSharpCC.Tests;
 
-public class ExpansionTest: CSharpCCTestCase
+[TestClass]
+public class ExpansionTest : CSharpCCTestCase
 {
 
     private Token t;
     private Expansion e;
 
-    public void setUp() {
+    [TestInitialize]
+    public void SetUp()
+    {
         t = new Token();
         t.beginColumn = 2;
         t.beginLine = 3;
@@ -43,39 +47,45 @@ public class ExpansionTest: CSharpCCTestCase
         e.SetColumn(5);
         e.SetLine(6);
     }
-    public void testZeroOrOneConstructor() {
+    [TestMethod]
+    public void TestZeroOrOneConstructor()
+    {
         var zoo = new ZeroOrOne(t, e);
         Assert.AreEqual(t.beginColumn, zoo.GetColumn());
         Assert.AreEqual(t.beginLine, zoo.GetLine());
         Assert.AreEqual(e, zoo.expansion);
         Assert.AreSame(e.parent, zoo);
     }
-
-    public void testZeroOrMoreConstructor() {
+    [TestMethod]
+    public void TestZeroOrMoreConstructor()
+    {
         ZeroOrMore zom = new ZeroOrMore(t, e);
         Assert.AreEqual(t.beginColumn, zom.GetColumn());
         Assert.AreEqual(t.beginLine, zom.GetLine());
         Assert.AreEqual(e, zom.expansion);
         Assert.AreEqual(e.parent, zom);
     }
-
-    public void testRZeroOrMoreConstructor() {
+    [TestMethod]
+    public void TestRZeroOrMoreConstructor()
+    {
         RegularExpression r = new RChoice();
         RZeroOrMore rzom = new RZeroOrMore(t, r);
         Assert.AreEqual(t.beginColumn, rzom.GetColumn());
         Assert.AreEqual(t.beginLine, rzom.GetLine());
         Assert.AreEqual(r, rzom.regexpr);
     }
-
-    public void testROneOrMoreConstructor() {
+    [TestMethod]
+    public void TestROneOrMoreConstructor()
+    {
         RegularExpression r = new RChoice();
         ROneOrMore room = new ROneOrMore(t, r);
         Assert.AreEqual(t.beginColumn, room.GetColumn());
         Assert.AreEqual(t.beginLine, room.GetLine());
         Assert.AreEqual(r, room.regexpr);
     }
-
-    public void testOneOrMoreConstructor() {
+    [TestMethod]
+    public void TestOneOrMoreConstructor()
+    {
         Expansion rce = new RChoice();
         OneOrMore oom = new OneOrMore(t, rce);
         Assert.AreEqual(t.beginColumn, oom.GetColumn());
@@ -84,15 +94,17 @@ public class ExpansionTest: CSharpCCTestCase
         Assert.AreEqual(rce.parent, oom);
     }
 
-
-    public void testRStringLiteralConstructor() {
+    [TestMethod]
+    public void TestRStringLiteralConstructor()
+    {
         RStringLiteral r = new RStringLiteral(t, "hey");
         Assert.AreEqual(t.beginColumn, r.GetColumn());
         Assert.AreEqual(t.beginLine, r.GetLine());
         Assert.AreEqual("hey", r.image);
     }
-
-    public void testChoiceConstructor() {
+    [TestMethod]
+    public void TestChoiceConstructor()
+    {
         Choice c = new Choice(t);
         Assert.AreEqual(t.beginColumn, c.GetColumn());
         Assert.AreEqual(t.beginLine, c.GetLine());
@@ -101,15 +113,17 @@ public class ExpansionTest: CSharpCCTestCase
         Assert.AreEqual(e.GetLine(), c.GetLine());
         Assert.AreSame(e, c.GetChoices()[0]);
     }
-
-    public void testRJustNameConstructor() {
+    [TestMethod]
+    public void TestRJustNameConstructor()
+    {
         RJustName r = new RJustName(t, "hey");
         Assert.AreEqual(t.beginColumn, r.GetColumn());
         Assert.AreEqual(t.beginLine, r.GetLine());
         Assert.AreEqual("hey", r.label);
     }
-
-    public void testSequenceConstructor() {
+    [TestMethod]
+    public void TestSequenceConstructor()
+    {
         Lookahead la = new Lookahead();
         Sequence s = new Sequence(t, la);
         Assert.AreEqual(t.beginColumn, s.GetColumn());

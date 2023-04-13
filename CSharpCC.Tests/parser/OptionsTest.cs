@@ -1,15 +1,17 @@
-namespace CSharpCC.Parser;
+using CSharpCC.Parser;
 
-
+namespace CSharpCC.Tests;
 
 /**
  * Test cases to prod at the valitity of Options a little.
  *
  * @author Kees Jan Koster &lt;kjkoster@kjkoster.org&gt;
  */
+[TestClass]
 public class OptionsTest : CSharpCCTestCase
 {
-    public void testDefaults()
+    [TestMethod]
+    public void TestDefaults()
     {
         Options.Init();
         CSharpCCErrors.ReInit();
@@ -50,8 +52,8 @@ public class OptionsTest : CSharpCCTestCase
         Assert.AreEqual(0, CSharpCCErrors.GetParseErrorCount());
         Assert.AreEqual(0, CSharpCCErrors.GetSemanticErrorCount());
     }
-
-    public void testSetBooleanOption()
+    [TestMethod]
+    public void TestSetBooleanOption()
     {
         Options.Init();
         CSharpCCErrors.ReInit();
@@ -74,8 +76,8 @@ public class OptionsTest : CSharpCCTestCase
         Assert.AreEqual(0, CSharpCCErrors.GetSemanticErrorCount());
     }
 
-
-    public void testIntBooleanOption()
+    [TestMethod]
+    public void TestIntBooleanOption()
     {
         Options.Init();
         CSharpCCErrors.ReInit();
@@ -95,8 +97,8 @@ public class OptionsTest : CSharpCCTestCase
         Assert.AreEqual(0, CSharpCCErrors.GetParseErrorCount());
         Assert.AreEqual(0, CSharpCCErrors.GetSemanticErrorCount());
     }
-
-    public void testSetStringOption()
+    [TestMethod]
+    public void TestSetStringOption()
     {
         Options.Init();
         CSharpCCErrors.ReInit();
@@ -116,8 +118,8 @@ public class OptionsTest : CSharpCCTestCase
         Options.SetCmdLineOption("-TOKEN_EXTENDS=java.lang.Object");
         Assert.AreEqual("java.lang.Object", Options.GetTokenExtends());
     }
-
-    public void testSetNonexistentOption()
+    [TestMethod]
+    public void TestSetNonexistentOption()
     {
         Options.Init();
         CSharpCCErrors.ReInit();
@@ -130,8 +132,8 @@ public class OptionsTest : CSharpCCTestCase
         Assert.AreEqual(0, CSharpCCErrors.GetParseErrorCount());
         Assert.AreEqual(0, CSharpCCErrors.GetSemanticErrorCount());
     }
-
-    public void testSetWrongTypeForOption()
+    [TestMethod]
+    public void TestSetWrongTypeForOption()
     {
         Options.Init();
         CSharpCCErrors.ReInit();
@@ -145,8 +147,8 @@ public class OptionsTest : CSharpCCTestCase
         Assert.AreEqual(0, CSharpCCErrors.GetParseErrorCount());
         Assert.AreEqual(0, CSharpCCErrors.GetSemanticErrorCount());
     }
-
-    public void testNormalize()
+    [TestMethod]
+    public void TestNormalize()
     {
         Options.Init();
         CSharpCCErrors.ReInit();
@@ -165,8 +167,8 @@ public class OptionsTest : CSharpCCTestCase
         Assert.AreEqual(0, CSharpCCErrors.GetParseErrorCount());
         Assert.AreEqual(0, CSharpCCErrors.GetSemanticErrorCount());
     }
-
-    public void testOptionsString()
+    [TestMethod]
+    public void TestOptionsString()
     {
         Options.Init();
         CSharpCCErrors.ReInit();
