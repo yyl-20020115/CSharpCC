@@ -697,7 +697,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[10] = jj_gen;
-                    ;
+                    break;
+                    
             }
             switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
@@ -706,7 +707,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[11] = jj_gen;
-                    ;
+                    break;
+
             }
             jj_consume_token(COLON);
             // This is really a Block()
@@ -941,7 +943,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[14] = jj_gen;
-                ;
+                break;
+
         }
     }
 
@@ -996,7 +999,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[17] = jj_gen;
-                    ;
+                    break;
+
             }
             regexpr_kind();
             switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
@@ -1008,7 +1012,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[18] = jj_gen;
-                    ;
+                    break;
+
             }
             jj_consume_token(COLON);
             jj_consume_token(LBRACE);
@@ -1085,7 +1090,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[20] = jj_gen;
-                    ;
+                    break;
+
             }
         }
         catch (Exception jjte000)
@@ -1159,7 +1165,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[22] = jj_gen;
-                    ;
+                    break;
+
             }
             switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
             {
@@ -1169,7 +1176,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[23] = jj_gen;
-                    ;
+                    break;
+
             }
         }
         catch (Exception jjte000)
@@ -1321,7 +1329,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[25] = jj_gen;
-                    ;
+                    break;
+
             }
         label_10:
             while (true)
@@ -1340,7 +1349,8 @@ public class JJTreeParser : JJTreeParserConstants
                             break;
                         default:
                             jj_la1[26] = jj_gen;
-                            ;
+                            break;
+
                     }
                     jjtree.CloseNodeScope(jjtn002, jjtree.NodeArity() > 1);
                     jjtc002 = false;
@@ -1432,7 +1442,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[27] = jj_gen;
-                ;
+                break;
+
         }
         if (!emptyLA && (getToken(1).kind != RPAREN))
         {
@@ -1514,7 +1525,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[28] = jj_gen;
-                    ;
+                    break;
+
             }
             jj_consume_token(RBRACE);
         }
@@ -1700,7 +1712,8 @@ public class JJTreeParser : JJTreeParserConstants
                             break;
                         default:
                             jj_la1[30] = jj_gen;
-                            ;
+                            break;
+
                     }
                 }
                 catch (Exception jjte004)
@@ -1765,7 +1778,8 @@ public class JJTreeParser : JJTreeParserConstants
                                         break;
                                     default:
                                         jj_la1[31] = jj_gen;
-                                        ;
+                                        break;
+
                                 }
                                 break;
                             case IDENTIFIER:
@@ -1929,6 +1943,8 @@ public class JJTreeParser : JJTreeParserConstants
                                             jjtreeCloseNodeScope(jjtn010);
                                         }
                                     }
+                                    break;
+
                             }
                       ((JJTreeNode)jjtree.PeekNode()).SetFirstToken(t);
                             break;
@@ -2008,6 +2024,7 @@ public class JJTreeParser : JJTreeParserConstants
                                         break;
                                     default:
                                         jj_la1[36] = jj_gen;
+                                        break;
                                         ;
                                 }
                                 identifier();
@@ -2015,6 +2032,7 @@ public class JJTreeParser : JJTreeParserConstants
                                 break;
                             default:
                                 jj_la1[37] = jj_gen;
+                                break;
                                 ;
                         }
                         complex_regular_expression_choices();
@@ -2122,6 +2140,8 @@ public class JJTreeParser : JJTreeParserConstants
                             throw new ParseException();
                     }
                 }
+                break;
+
         }
     }
 
@@ -2404,12 +2424,14 @@ public class JJTreeParser : JJTreeParserConstants
                                         break;
                                     default:
                                         jj_la1[42] = jj_gen;
-                                        ;
+                                        break;
+
                                 }
                                 break;
                             default:
                                 jj_la1[43] = jj_gen;
-                                ;
+                                break;
+
                         }
                         ASTRRepetitionRange jjtn006 = new ASTRRepetitionRange(JJTRREPETITIONRANGE);
                         bool jjtc006 = true;
@@ -2449,6 +2471,8 @@ public class JJTreeParser : JJTreeParserConstants
                                 jjtreeCloseNodeScope(jjtn007);
                             }
                         }
+                        break;
+
                 }
               ((JJTreeNode)jjtree.PeekNode()).SetFirstToken(t);
                 break;
@@ -2475,7 +2499,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[46] = jj_gen;
-                    ;
+                    break;
+
             }
             jj_consume_token(LBRACKET);
             switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
@@ -2500,7 +2525,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[48] = jj_gen;
-                    ;
+                    break;
+
             }
             jj_consume_token(RBRACKET);
         }
@@ -2553,7 +2579,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[49] = jj_gen;
-                    ;
+                    break;
+
             }
         }
         catch (Exception jjte000)
@@ -2647,7 +2674,8 @@ public class JJTreeParser : JJTreeParserConstants
                             break;
                         default:
                             jj_la1[51] = jj_gen;
-                            ;
+                            break;
+
                     }
                     node_descriptor_expression();
                     jjtn000.expression =
@@ -2656,7 +2684,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[52] = jj_gen;
-                    ;
+                    break;
+
             }
             jjtree.CloseNodeScope(jjtn000, true);
             jjtc000 = false;
@@ -2874,7 +2903,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[56] = jj_gen;
-                ;
+                break;
+
         }
         Name();
         switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
@@ -2885,7 +2915,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[57] = jj_gen;
-                ;
+                break;
+
         }
         jj_consume_token(SEMICOLON);
     }
@@ -3031,7 +3062,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[62] = jj_gen;
-                ;
+                break;
+
         }
         switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
@@ -3040,7 +3072,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[63] = jj_gen;
-                ;
+                break;
+
         }
         switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
@@ -3050,7 +3083,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[64] = jj_gen;
-                ;
+                break;
+
         }
         if (s.Equals(JJTreeGlobals.ParserName))
         {
@@ -3120,7 +3154,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[67] = jj_gen;
-                ;
+                break;
+
         }
         EnumBody();
     }
@@ -3172,7 +3207,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[68] = jj_gen;
-                ;
+                break;
+
         }
         switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
@@ -3181,7 +3217,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[69] = jj_gen;
-                ;
+                break;
+
         }
         switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
@@ -3244,7 +3281,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[71] = jj_gen;
-                ;
+                break;
+
         }
         jj_consume_token(RBRACE);
     }
@@ -3260,7 +3298,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[72] = jj_gen;
-                ;
+                break;
+
         }
         switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
@@ -3269,7 +3308,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[73] = jj_gen;
-                ;
+                break;
+
         }
     }
 
@@ -3305,7 +3345,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[75] = jj_gen;
-                ;
+                break;
+
         }
     }
 
@@ -3495,6 +3536,8 @@ public class JJTreeParser : JJTreeParserConstants
                                         throw new ParseException();
                                 }
                             }
+                            break;
+
                     }
                     break;
                 case SEMICOLON:
@@ -3541,7 +3584,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[82] = jj_gen;
-                ;
+                break;
+
         }
     }
 
@@ -3685,7 +3729,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[85] = jj_gen;
-                ;
+                break;
+
         }
         switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
@@ -3694,7 +3739,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[86] = jj_gen;
-                ;
+                break;
+
         }
         jj_consume_token(RBRACE);
     }
@@ -3708,7 +3754,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[87] = jj_gen;
-                ;
+                break;
+
         }
         ResultType();
         MethodDeclarator();
@@ -3720,7 +3767,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[88] = jj_gen;
-                ;
+                break;
+
         }
         switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
         {
@@ -3815,7 +3863,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[92] = jj_gen;
-                ;
+                break;
+
         }
         jj_consume_token(RPAREN);
     }
@@ -3848,7 +3897,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[94] = jj_gen;
-                ;
+                break;
+
         }
         VariableDeclaratorId();
     }
@@ -3862,7 +3912,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[95] = jj_gen;
-                ;
+                break;
+
         }
         JavaIdentifier();
         FormalParameters();
@@ -3874,7 +3925,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[96] = jj_gen;
-                ;
+                break;
+
         }
         jj_consume_token(LBRACE);
         if (jj_2_14(2147483647))
@@ -4040,7 +4092,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[99] = jj_gen;
-                ;
+                break;
+
         }
         Block();
     }
@@ -4124,7 +4177,8 @@ public class JJTreeParser : JJTreeParserConstants
                         break;
                     default:
                         jj_la1[101] = jj_gen;
-                        ;
+                        break;
+
                 }
                 ClassOrInterfaceType();
             label_32:
@@ -4276,7 +4330,8 @@ public class JJTreeParser : JJTreeParserConstants
                     break;
                 default:
                     jj_la1[108] = jj_gen;
-                    ;
+                    break;
+
             }
         }
         jj_consume_token(GT);
@@ -4451,7 +4506,8 @@ public class JJTreeParser : JJTreeParserConstants
                         break;
                     default:
                         jj_la1[116] = jj_gen;
-                        ;
+                        break;
+
                 }
                 break;
             default:
@@ -4581,7 +4637,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[120] = jj_gen;
-                ;
+                break;
+
         }
     }
 
@@ -4729,7 +4786,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[128] = jj_gen;
-                ;
+                break;
+
         }
     }
 
@@ -5040,6 +5098,8 @@ public class JJTreeParser : JJTreeParserConstants
                             throw new ParseException();
                     }
                 }
+                break;
+
         }
     }
 
@@ -5148,7 +5208,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[144] = jj_gen;
-                ;
+                break;
+
         }
     }
 
@@ -5302,6 +5363,8 @@ public class JJTreeParser : JJTreeParserConstants
                             throw new ParseException();
                     }
                 }
+                break;
+
         }
     }
 
@@ -5529,7 +5592,8 @@ public class JJTreeParser : JJTreeParserConstants
                                     break;
                                 default:
                                     jj_la1[154] = jj_gen;
-                                    ;
+                                    break;
+
                             }
                             break;
                         default:
@@ -5728,7 +5792,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[160] = jj_gen;
-                ;
+                break;
+
         }
         jj_consume_token(SEMICOLON);
     }
@@ -6020,7 +6085,8 @@ public class JJTreeParser : JJTreeParserConstants
                         break;
                     default:
                         jj_la1[165] = jj_gen;
-                        ;
+                        break;
+
                 }
                 break;
             default:
@@ -6309,7 +6375,8 @@ public class JJTreeParser : JJTreeParserConstants
                             break;
                         default:
                             jj_la1[171] = jj_gen;
-                            ;
+                            break;
+
                     }
                     jj_consume_token(SEMICOLON);
                     switch ((jj_ntk == -1) ? jj_ntk_func() : jj_ntk)
@@ -6403,7 +6470,8 @@ public class JJTreeParser : JJTreeParserConstants
                             break;
                         default:
                             jj_la1[173] = jj_gen;
-                            ;
+                            break;
+
                     }
                     break;
                 default:
@@ -6518,7 +6586,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[177] = jj_gen;
-                ;
+                break;
+
         }
         jj_consume_token(SEMICOLON);
     }
@@ -6544,7 +6613,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[178] = jj_gen;
-                ;
+                break;
+
         }
         jj_consume_token(SEMICOLON);
     }
@@ -6598,7 +6668,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[179] = jj_gen;
-                ;
+                break;
+
         }
         jj_consume_token(SEMICOLON);
     }
@@ -6676,7 +6747,7 @@ public class JJTreeParser : JJTreeParserConstants
     public void RSIGNEDSHIFT()
     {
         if (getToken(1).kind == GT &&
-                        ((Token.GTToken)getToken(1)).realKind == RSIGNEDSHIFT)
+                        ((Token.GTToken)getToken(1)).realKind == RSIGNEDSHIFT_VALUE)
         {
 
         }
@@ -6738,7 +6809,7 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[183] = jj_gen;
-                ;
+                break;
         }
         jj_consume_token(RPAREN);
     }
@@ -6869,7 +6940,8 @@ public class JJTreeParser : JJTreeParserConstants
                 break;
             default:
                 jj_la1[186] = jj_gen;
-                ;
+                break;
+
         }
         jj_consume_token(RBRACE);
     }
@@ -6993,7 +7065,8 @@ public class JJTreeParser : JJTreeParserConstants
                             break;
                         default:
                             jj_la1[188] = jj_gen;
-                            ;
+                            break;
+
                     }
                     jj_consume_token(SEMICOLON);
                 }

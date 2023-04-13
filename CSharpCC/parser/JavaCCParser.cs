@@ -2172,7 +2172,8 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             default:
                 jj_la1[66] = jj_gen;
-                ;
+                break;
+
         }
         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
