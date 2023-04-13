@@ -579,7 +579,7 @@ public class Options
                     {
                         // i.e., there is space for two '"'s in value 
                         if (s[index + 1] == '"'
-                                && s[^1] == '"')
+                                && s[^1] == '"') 
                         {
                             // remove the two '"'s.
                             Val = s.substring(index + 2, s.Length - 1);

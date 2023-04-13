@@ -34,12 +34,10 @@ namespace org.javacc.parser;
 
 public class ROneOrMore : RegularExpression
 {
-
     /**
      * The regular expression which is repeated one or more times.
      */
     public RegularExpression regexpr;
-
 
     public ROneOrMore() { }
 

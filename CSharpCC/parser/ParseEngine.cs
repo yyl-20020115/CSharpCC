@@ -659,7 +659,7 @@ public class ParseEngine
         string comment1 = codeGenerator.GetLeadingComments(t);
         cline = t.beginLine;
         ccol = t.beginColumn;
-        sig.Append(t.image);
+        sig.Append(t.image); 
         if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
         if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
 

@@ -175,7 +175,7 @@ public class OutputFile
      * @param versionId
      */
     private void checkVersion(string file, string versionId)
-    {
+    { 
         string firstLine = "/* " + JavaCCGlobals.GetIdString(toolName, file) + " Version ";
 
         try

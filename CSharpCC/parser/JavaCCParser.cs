@@ -796,7 +796,7 @@ public class JavaCCParser : JavaCCParserInternals
         Action act = new Action();
         Token t = null;
         RegExprSpec res = new RegExprSpec();
-        regular_expression(c);
+        regular_expression(c); 
         res.rexp = (RegularExpression)c.Member;
         res.rexp.tpContext = p;
         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)

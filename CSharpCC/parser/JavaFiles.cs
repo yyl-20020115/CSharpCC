@@ -574,7 +574,7 @@ public partial class JavaFiles : JavaCCGlobals
 
 
 
-    public static void gen_Token(JavaResourceTemplateLocations locations)
+    public static void GenToken(JavaResourceTemplateLocations locations)
     {
         try
         {
@@ -626,7 +626,7 @@ public partial class JavaFiles : JavaCCGlobals
 
 
 
-    public static void gen_TokenManager(JavaResourceTemplateLocations locations)
+    public static void GenTokenManager(JavaResourceTemplateLocations locations)
     {
         try
         {

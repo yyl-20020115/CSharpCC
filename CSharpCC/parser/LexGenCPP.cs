@@ -35,7 +35,7 @@ namespace org.javacc.parser;
 
 
 
-
+ 
 /**
  * Generate lexer.
  */

@@ -81,7 +81,7 @@ public class NfaState
         stateSetsToFix.Clear();
     }
 
-    public long[] asciiMoves = new long[2];
+    public ulong[] asciiMoves = new ulong[2];
     public char[] charMoves = null;
     public char[] rangeMoves = null;
     public NfaState next = null;
@@ -132,7 +132,7 @@ public class NfaState
         return retVal;
     }
 
-    static void InsertInOrder(List v, NfaState s)
+    static void InsertInOrder(List<NfaState> v, NfaState s)
     {
         int j;
 
@@ -156,11 +156,11 @@ public class NfaState
     {
         if (!epsilonMoves.Contains(newState))
             InsertInOrder(epsilonMoves, newState);
-    }
+    } 
 
     private void AddASCIIMove(char c)
     {
-        asciiMoves[c / 64] |= (1L << (c % 64));
+        asciiMoves[c / 64] |= (1UL << (c % 64));
     }
 
     public void AddChar(char c)
@@ -655,7 +655,7 @@ public class NfaState
                 if (((NfaState)epsilonMoves[i]).HasTransitions())
                     usefulEpsilonMoves++;
                 else
-                    epsilonMoves.removeElementAt(i--);
+                    epsilonMoves.RemoveAt(i--);
         }
     }
 
@@ -740,7 +740,7 @@ public class NfaState
             return c == matchSingleChar;
 
         if (c < 128)
-            return ((asciiMoves[c / 64] & (1L << c % 64)) != 0L);
+            return ((asciiMoves[c / 64] & (1UL << c % 64)) != 0L);
 
         // Just check directly if there is a move for this char
         if (charMoves != null && charMoves[0] != 0)
@@ -786,12 +786,12 @@ public class NfaState
         return i;
     }
 
-    public int MoveFrom(char c, List newStates)
+    public int MoveFrom(char c, List<NfaState> newStates)
     {
         if (CanMoveUsingChar(c))
         {
             for (int i = next.epsilonMoves.Count; i-- > 0;)
-                InsertInOrder(newStates, (NfaState)next.epsilonMoves[i]);
+                InsertInOrder(newStates, next.epsilonMoves[i]);
 
             return kindToPrint;
         }
@@ -799,7 +799,7 @@ public class NfaState
         return int.MaxValue;
     }
 
-    public static int MoveFromSet(char c, List states, List newStates)
+    public static int MoveFromSet(char c, List<NfaState> states, List<NfaState> newStates)
     {
         int tmp;
         int retVal = int.MaxValue;
@@ -863,7 +863,7 @@ public class NfaState
         int i = 0, j = 0;
         char hiByte;
         int cnt = 0;
-        long[][] loBytes = new long[256][4];
+        ulong[][] loBytes = new long[256][4];
 
         if ((charMoves == null || charMoves[0] == 0) &&
             (rangeMoves == null || rangeMoves[0] == 0))
@@ -878,7 +878,7 @@ public class NfaState
 
                 hiByte = (char)(charMoves[i] >> 8);
                 loBytes[hiByte][(charMoves[i] & 0xff) / 64] |=
-                                  (1L << ((charMoves[i] & 0xff) % 64));
+                                  (1UL << ((charMoves[i] & 0xff) % 64));
             }
         }
 
@@ -897,13 +897,13 @@ public class NfaState
                 if (hiByte == (char)(rangeMoves[i + 1] >> 8))
                 {
                     for (c = (char)(rangeMoves[i] & 0xff); c <= r; c++)
-                        loBytes[hiByte][c / 64] |= (1L << (c % 64));
+                        loBytes[hiByte][c / 64] |= (1UL << (c % 64));
 
                     continue;
                 }
 
                 for (c = (char)(rangeMoves[i] & 0xff); c <= 0xff; c++)
-                    loBytes[hiByte][c / 64] |= (1L << (c % 64));
+                    loBytes[hiByte][c / 64] |= (1UL << (c % 64));
 
                 while (++hiByte < (char)(rangeMoves[i + 1] >> 8))
                 {
@@ -914,7 +914,7 @@ public class NfaState
                 }
 
                 for (c = 0; c <= r; c++)
-                    loBytes[hiByte][c / 64] |= (1L << (c % 64));
+                    loBytes[hiByte][c / 64] |= (1UL << (c % 64));
             }
         }
 

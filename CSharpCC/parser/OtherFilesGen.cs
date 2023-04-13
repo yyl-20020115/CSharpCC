@@ -62,14 +62,14 @@ public class OtherFilesGen : JavaCCGlobals
 
             JavaFiles.gen_TokenMgrError(templateLoc);
             JavaFiles.gen_ParseException(templateLoc);
-            JavaFiles.gen_Token(templateLoc);
+            JavaFiles.GenToken(templateLoc);
         }
 
 
         if (Options.getUserTokenManager())
         {
             // CBA -- I think that Token managers are unique so will always be generated
-            JavaFiles.gen_TokenManager(templateLoc);
+            JavaFiles.GenTokenManager(templateLoc);
         }
         else if (Options.getUserCharStream())
         {
@@ -187,8 +187,8 @@ public class OtherFilesGen : JavaCCGlobals
                 { 
                     ostr.WriteLine("\"\\\"" + AddEscapes(AddEscapes(((RStringLiteral)re).image)) + "\\\"\",");
                 }
-                else if (!re.label == (""))
-                {
+                else if (re.label != (""))
+                { 
                     ostr.WriteLine("\"<" + re.label + ">\",");
                 }
                 else

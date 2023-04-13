@@ -794,7 +794,7 @@ public class JavaCCParserTokenManager : JavaCCParserConstants
                 break;
         }
         return jjStartNfa_0(3, active0, active1, active2);
-    }
+    } 
     private int jjMoveStringLiteralDfa5_0(long old0, long active0, long old1, long active1, long old2, long active2)
     {
         if (((active0 &= old0) | (active1 &= old1) | (active2 &= old2)) == 0L)

@@ -106,7 +106,7 @@ public class OtherFilesGenCPP : JavaCCGlobals
         }
 
         RegularExpression re; 
-        string constPrefix = "const";
+        string constPrefix = "const"; 
         ostr.WriteLine("  /** End of File. */");
         ostr.WriteLine(constPrefix + "  int _EOF = 0;");
         for (Iterator<RegularExpression> it = ordered_named_tokens.iterator(); it.hasNext();)

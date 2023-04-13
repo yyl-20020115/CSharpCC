@@ -91,7 +91,7 @@ public class RStringLiteral : RegularExpression
     private static int maxLen = 0;
     private static int charCnt = 0;
     private static List<Dictionary<string,object>> charPosKind = new(); // Elements are hashtables
-                                             // with single char keys;
+                                             // with single char keys; 
     private static int[] maxLenForActive = new int[100]; // 6400 tokens
     public static String[] allImages;
     private static int[][] intermediateKinds;

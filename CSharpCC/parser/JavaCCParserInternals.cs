@@ -26,8 +26,6 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System.Collections.Generic;
-
 namespace org.javacc.parser;
 
 

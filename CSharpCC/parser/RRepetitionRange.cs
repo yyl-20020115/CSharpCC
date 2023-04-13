@@ -56,15 +56,19 @@ public class RRepetitionRange : RegularExpression
 
         if (hasMax && max == -1) // Unlimited
         {
-            var zoo = new RZeroOrMore();
-            zoo.regexpr = regexpr;
+            var zoo = new RZeroOrMore
+            {
+                regexpr = regexpr
+            };
             units.Add(zoo);
         }
 
         while (i++ < max)
         {
-            var zoo = new RZeroOrOne();
-            zoo.regexpr = regexpr;
+            var zoo = new RZeroOrOne
+            {
+                regexpr = regexpr
+            };
             units.Add(zoo);
         }
         seq = new RSequence(units);
