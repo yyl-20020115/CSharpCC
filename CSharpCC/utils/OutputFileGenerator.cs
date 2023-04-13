@@ -68,10 +68,7 @@ public class OutputFileGenerator
         Process(Console.In, _out, false);
     }
 
-    private string PeekLine(TextReader _in)
-    {
-        return currentLine ??= _in.ReadLine();
-    }
+    private string PeekLine(TextReader _in) => currentLine ??= _in.ReadLine();
 
     private string GetLine(TextReader _in)
     {

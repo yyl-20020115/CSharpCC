@@ -477,18 +477,18 @@ public class ConditionParserTokenManager : ConditionParserConstants
     }
 
     /** Token literal values. */
-    public static readonly String[] jjstrLiteralImages = {
-"", null, null, null, null, null, null, null, null, null, null, null, null,
-"\50", "\51", "\41", "\174\174", "\46\46", "\176", "\164\162\165\145",
-"\146\141\154\163\145", null, null, null, };
-     
+    public static readonly string[] jjstrLiteralImages = {
+        "", null, null, null, null, null, null, null, null, null, null, null, null,
+        "\x28", "\x29", "\x21", "\x7c\x7c", "\x26\x26", "\x7e", "\x74\x72\x75\x65",
+        "\x66\x61\x6c\x73\x65", null, null, null, };
+
     /** Lexer state names. */
-    public static readonly String[] lexStateNames = {
-   "DEFAULT",
-   "IN_SINGLE_LINE_COMMENT",
-   "IN_FORMAL_COMMENT",
-   "IN_MULTI_LINE_COMMENT",
-};
+    public static readonly string[] lexStateNames = {
+       "DEFAULT",
+       "IN_SINGLE_LINE_COMMENT",
+       "IN_FORMAL_COMMENT",
+       "IN_MULTI_LINE_COMMENT",
+    };
 
     /** Lex State array. */
     public static readonly int[] jjnewLexState = {
@@ -509,8 +509,8 @@ public class ConditionParserTokenManager : ConditionParserConstants
     protected JavaCharStream input_stream;
     private readonly int[] jjrounds = new int[6];
     private readonly int[] jjstateSet = new int[12];
-    private readonly StringBuilder jjimage = new StringBuilder();
-    private StringBuilder image = jjimage;
+    private readonly StringBuilder jjimage = new();
+    private StringBuilder image;
     private int jjimageLen;
     private int lengthOfMatch;
     protected char curChar;
@@ -524,7 +524,7 @@ public class ConditionParserTokenManager : ConditionParserConstants
 
     /** Constructor. */
     public ConditionParserTokenManager(JavaCharStream stream, int lexState)
-        :this(stream)
+        : this(stream)
     {
         SwitchTo(lexState);
     }
@@ -593,7 +593,7 @@ public class ConditionParserTokenManager : ConditionParserConstants
     int jjmatchedKind;
 
     /** Get the next Token. */
-    public Token getNextToken()
+    public Token GetNextToken()
     {
         Token specialToken = null;
         Token matchedToken;
@@ -614,7 +614,7 @@ public class ConditionParserTokenManager : ConditionParserConstants
                 return matchedToken;
             }
             image = jjimage;
-            image.Capacity=0;
+            image.Capacity = 0;
             jjimageLen = 0;
 
             for (; ; )
@@ -628,7 +628,7 @@ public class ConditionParserTokenManager : ConditionParserConstants
                             while (curChar <= 32 && (0x100003600L & (1L << curChar)) != 0L)
                                 curChar = input_stream.BeginToken();
                         }
-                        catch (IOException e1) { continue EOFLoop; }
+                        catch (IOException e1) { goto EOFLoop; }
                         jjmatchedKind = 0x7fffffff;
                         jjmatchedPos = 0;
                         curPos = jjMoveStringLiteralDfa0_0();
@@ -691,7 +691,7 @@ public class ConditionParserTokenManager : ConditionParserConstants
                             SkipLexicalActions(null);
                         if (jjnewLexState[jjmatchedKind] != -1)
                             curLexState = jjnewLexState[jjmatchedKind];
-                        continue EOFLoop;
+                        goto EOFLoop;
                     }
                     MoreLexicalActions();
                     if (jjnewLexState[jjmatchedKind] != -1)

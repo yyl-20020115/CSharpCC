@@ -309,7 +309,7 @@ public class ConditionParser : ConditionParserConstants
     {
         Token oldToken;
         if ((oldToken = token).next != null) token = token.next;
-        else token = token.next = token_source.getNextToken();
+        else token = token.next = token_source.GetNextToken();
         jj_ntk = -1;
         if (token.kind == kind)
         {
@@ -326,7 +326,7 @@ public class ConditionParser : ConditionParserConstants
     public Token getNextToken()
     {
         if (token.next != null) token = token.next;
-        else token = token.next = token_source.getNextToken();
+        else token = token.next = token_source.GetNextToken();
         jj_ntk = -1;
         jj_gen++;
         return token;
@@ -339,7 +339,7 @@ public class ConditionParser : ConditionParserConstants
         for (int i = 0; i < index; i++)
         {
             if (t.next != null) t = t.next;
-            else t = t.next = token_source.getNextToken();
+            else t = t.next = token_source.GetNextToken();
         }
         return t;
     }
@@ -347,7 +347,7 @@ public class ConditionParser : ConditionParserConstants
     private int jj_ntk_()
     {
         if ((jj_nt = token.next) == null)
-            return (jj_ntk = (token.next = token_source.getNextToken()).kind);
+            return (jj_ntk = (token.next = token_source.GetNextToken()).kind);
         else
             return (jj_ntk = jj_nt.kind);
     }

@@ -11,31 +11,31 @@ namespace org.javacc.utils;
  */
 public class OptionInfo : IComparable<OptionInfo>
 {
-    readonly string _name;
-    readonly OptionType _type;
-    readonly object _default;
+    readonly string name;
+    readonly OptionType type;
+    readonly object @default;
 
-    public OptionInfo(string name, OptionType type, Object default1)
+    public OptionInfo(string name, OptionType type, object default1)
     {
-        _name = name;
-        _type = type;
-        _default = default1;
+        this.name = name;
+        this.type = type;
+        @default = default1;
     }
 
-    public string Name => _name;
+    public string Name => name;
 
-    public OptionType OptionType => _type;
+    public OptionType OptionType => type;
 
-    public object Default => _default;
+    public object Default => @default;
 
     public override int GetHashCode()
     {
         const int prime = 31;
         int result = 1;
         result = prime * result
-                + ((_default == null) ? 0 : _default.GetHashCode());
-        result = prime * result + ((_name == null) ? 0 : _name.GetHashCode());
-        result = prime * result + ((_type == null) ? 0 : _type.GetHashCode());
+                + ((@default == null) ? 0 : @default.GetHashCode());
+        result = prime * result + ((name == null) ? 0 : name.GetHashCode());
+        result = prime * result + ((type == null) ? 0 : type.GetHashCode());
         return result;
     }
 
@@ -49,26 +49,26 @@ public class OptionInfo : IComparable<OptionInfo>
         if (this.GetType() != obj.GetType())
             return false;
         OptionInfo other = (OptionInfo)obj;
-        if (_default == null)
+        if (@default == null)
         {
-            if (other._default != null)
+            if (other.@default != null)
                 return false;
         }
-        else if (_default != (other._default))
+        else if (@default != (other.@default))
             return false;
-        if (_name == null)
+        if (name == null)
         {
-            if (other._name != null)
+            if (other.name != null)
                 return false;
         }
-        else if (_name != (other._name))
+        else if (name != (other.name))
             return false;
-        if (_type != other._type)
+        if (type != other.type)
             return false;
         return true;
     }
 
-    public int CompareTo(OptionInfo? o) => _name.CompareTo(o?._name);
+    public int CompareTo(OptionInfo? o) => name.CompareTo(o?.name);
 
 
 }

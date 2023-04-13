@@ -15,55 +15,26 @@ public class JavaCharStream
     /** Whether parser is static. */
     public const bool staticFlag = false;
 
-    static int Hexval(char c)
+    static int Hexval(char c) => c switch
     {
-        switch (c)
-        {
-            case '0':
-                return 0;
-            case '1':
-                return 1;
-            case '2':
-                return 2;
-            case '3':
-                return 3;
-            case '4':
-                return 4;
-            case '5':
-                return 5;
-            case '6':
-                return 6;
-            case '7':
-                return 7;
-            case '8':
-                return 8;
-            case '9':
-                return 9;
-
-            case 'a':
-            case 'A':
-                return 10;
-            case 'b':
-            case 'B':
-                return 11;
-            case 'c':
-            case 'C':
-                return 12;
-            case 'd':
-            case 'D':
-                return 13;
-            case 'e':
-            case 'E':
-                return 14;
-            case 'f':
-            case 'F':
-                return 15;
-            default:
-                break;
-        }
-
-        throw new IOException(); // Should never come here
-    }
+        '0' => 0,
+        '1' => 1,
+        '2' => 2,
+        '3' => 3,
+        '4' => 4,
+        '5' => 5,
+        '6' => 6,
+        '7' => 7,
+        '8' => 8,
+        '9' => 9,
+        'a' or 'A' => 10,
+        'b' or 'B' => 11,
+        'c' or 'C' => 12,
+        'd' or 'D' => 13,
+        'e' or 'E' => 14,
+        'f' or 'F' => 15,
+        _ => throw new IOException(),// Should never come here
+    };
 
     /** Position in buffer. */
     public int bufpos = -1;
@@ -88,8 +59,8 @@ public class JavaCharStream
     protected int inBuf = 0;
     protected int tabSize = 8;
 
-    protected void setTabSize(int i) { tabSize = i; }
-    protected int getTabSize(int i) { return tabSize; }
+    protected void SetTabSize(int i) => tabSize = i;
+    protected int GetTabSize(int i) => tabSize;
 
     protected void ExpandBuff(bool wrapAround)
     {
@@ -480,7 +451,7 @@ public class JavaCharStream
     int startcolumn, int buffersize)
         : this(new StreamReader(dstream), startline, startcolumn, 4096)
     {
-       ;
+        ;
     }
 
     /** Constructor. */
@@ -496,7 +467,7 @@ public class JavaCharStream
                           int startcolumn)
         : this(dstream, startline, startcolumn, 4096)
     {
-       ;
+        ;
     }
 
     /** Constructor. */
@@ -510,7 +481,7 @@ public class JavaCharStream
     public JavaCharStream(Stream dstream)
         : this(dstream, 1, 1, 4096)
     {
-       ;
+        ;
     }
 
     /** Reinitialise. */

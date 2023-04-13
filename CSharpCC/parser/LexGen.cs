@@ -93,7 +93,7 @@ public class LexGen : CodeGenerator
     public static bool keepLineCol;
     public static string errorHandlingClass;
     public static TokenizerData tokenizerData;
-    public static bool generateDataOnly;
+    public static bool GenerateDataOnly;
 
     void PrintClassHead()
     {
@@ -103,7 +103,7 @@ public class LexGen : CodeGenerator
         List<string> tn = new(toolNames);
         tn.Add(toolName);
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        GenCodeLine("/* " + getIdString(tn, tokMgrClassName + GetFileExtension(Options.getOutputLanguage())) + " */");
+        GenCodeLine("/* " + GetIdString(tn, tokMgrClassName + GetFileExtension(Options.getOutputLanguage())) + " */");
 
         int l = 0, kind;
         i = 1;
@@ -230,7 +230,8 @@ public class LexGen : CodeGenerator
         options.Add("hasActions", hasMoreActions || hasSkipActions || hasTokenActions);
         options.Add("tokMgrClassName", tokMgrClassName);
         int x = 0;
-    for (int l in maxLongsReqd) x = Math.Max(x, l);
+        foreach (int l in maxLongsReqd)
+            x = Math.Max(x, l);
         options.Add("maxLongs", x);
         options.Add("cu_name", cu_name);
 
@@ -285,7 +286,7 @@ public class LexGen : CodeGenerator
                 if ((tps = (List)allTpsForState.get(tp.lexStates[i])) == null)
                 {
                     tmpLexStateName[maxLexStates++] = tp.lexStates[i];
-                    allTpsForState.Add(tp.lexStates[i], tps = new ());
+                    allTpsForState.Add(tp.lexStates[i], tps = new());
                 }
 
                 tps.Add(tp);
@@ -359,7 +360,7 @@ public class LexGen : CodeGenerator
         string codeGeneratorClass = Options.getTokenManagerCodeGenerator();
         keepLineCol = Options.getKeepLineColumn();
         errorHandlingClass = Options.getTokenMgrErrorClass();
-        List choices = new ();
+        List choices = new();
         Enumeration e;
         TokenProduction tp;
         int i, j;
@@ -367,7 +368,7 @@ public class LexGen : CodeGenerator
         staticString = (Options.getStatic() ? "static " : "");
         tokMgrClassName = cu_name + "TokenManager";
 
-        if (!generateDataOnly && codeGeneratorClass == null) PrintClassHead();
+        if (!GenerateDataOnly && codeGeneratorClass == null) PrintClassHead();
         BuildLexStatesTable();
 
         e = allTpsForState.keys();
@@ -537,7 +538,7 @@ public class LexGen : CodeGenerator
             if (hasNfa[lexStateIndex] && !mixed[lexStateIndex])
                 RStringLiteral.GenerateNfaStartStates(this, initialState);
 
-            if (generateDataOnly || codeGeneratorClass != null)
+            if (GenerateDataOnly || codeGeneratorClass != null)
             {
                 RStringLiteral.UpdateStringLiteralData(totalNumStates, lexStateIndex);
                 NfaState.UpdateNfaData(totalNumStates, startState, lexStateIndex,
@@ -561,7 +562,7 @@ public class LexGen : CodeGenerator
 
         CheckEmptyStringMatch();
 
-        if (generateDataOnly || codeGeneratorClass != null)
+        if (GenerateDataOnly || codeGeneratorClass != null)
         {
             tokenizerData.SetParserName(cu_name);
             NfaState.BuildTokenizerData(tokenizerData);
@@ -605,7 +606,7 @@ public class LexGen : CodeGenerator
             tokenizerData.UpdateMatchInfo(
                 actionStrings, newLexStateIndices,
                 toSkip, toSpecial, toMore, toToken);
-            if (generateDataOnly) return;
+            if (GenerateDataOnly) return;
             Class<TokenManagerCodeGenerator> codeGenClazz;
             TokenManagerCodeGenerator gen;
             try
@@ -1592,7 +1593,7 @@ public class LexGen : CodeGenerator
         toToken = null;
         tokMgrClassName = null;
         tokenizerData = new TokenizerData();
-        generateDataOnly = false;
+        GenerateDataOnly = false;
     }
 
 }

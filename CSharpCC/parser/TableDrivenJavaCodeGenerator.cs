@@ -396,7 +396,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
         for (int i = 0; i < longs.Length; i++)
         {
             if (i > 0) codeGenerator.GenCode(", ");
-            codeGenerator.GenCode("0x" + Long.toHexString(longs[i]) + "L");
+            codeGenerator.GenCode("0x" + Convert.ToString(longs[i]) + "L");
         }
         codeGenerator.GenCodeLine("};");
     }

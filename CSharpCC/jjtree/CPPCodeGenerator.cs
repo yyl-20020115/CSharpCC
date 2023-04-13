@@ -452,9 +452,9 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         OpenJJTreeComment(io, null);
         io.Println();
 
-        Dictionary thrown_set = new Dictionary();
+        Dictionary<string,string> thrown_set = new ();
         FindThrown(ns, thrown_set, expansion_unit);
-        Enumeration thrown_names = thrown_set.elements();
+        var thrown_names = thrown_set;
         InsertCatchBlocks(ns, io, thrown_names, indent);
 
         io.Println(indent + "} {");

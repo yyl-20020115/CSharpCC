@@ -35,6 +35,6 @@ public static class Javacc
 {
     public static void Main(string[] args)
     {
-        org.javacc.parser.MainParser.Main(args);
+        parser.MainParser.Main(args);
     }
 }
