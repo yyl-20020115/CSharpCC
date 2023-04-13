@@ -45,7 +45,7 @@ public static class NodeFiles
      */
     static readonly string nodeVersion = Version.MajorDotMinor;
 
-    static HashSet<Node> nodesGenerated = new ();
+    static HashSet<string> nodesGenerated = new ();
 
     public static void ensure(IO io, string nodeType)
     {
@@ -70,7 +70,7 @@ public static class NodeFiles
             return;
         }
 
-        if (file.exists() && nodesGenerated.Contains(file.getName()))
+        if (File.Exists(file) && nodesGenerated.Contains(file))
         {
             return;
         }
@@ -195,14 +195,14 @@ public static class NodeFiles
         }
 
         string name = visitorClass();
-        string file = new File(JJTreeOptions.GetJJTreeOutputDirectory(), name + ".java");
+        string file = System.IO.Path.Combine(JJTreeOptions.GetJJTreeOutputDirectory(), name + ".java");
 
         try
         {
             OutputFile outputFile = new OutputFile(file);
             TextWriter ostr = outputFile.getPrintWriter();
 
-            List nodeNames = ASTNodeDescriptor.GetNodeNames();
+            var nodeNames = ASTNodeDescriptor.GetNodeNames();
 
             generatePrologue(ostr);
             ostr.WriteLine("public interface " + name);
@@ -211,7 +211,7 @@ public static class NodeFiles
             string ve = mergeVisitorException();
 
             string argumentType = "Object";
-            if (!JJTreeOptions.GetVisitorDataType() == (""))
+            if (JJTreeOptions.GetVisitorDataType() != (""))
             {
                 argumentType = JJTreeOptions.GetVisitorDataType();
             }

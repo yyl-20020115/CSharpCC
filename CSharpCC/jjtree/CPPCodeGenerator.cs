@@ -5,13 +5,11 @@ using org.javacc.parser;
 
 namespace org.javacc.jjtree;
 
-
-
 public class CPPCodeGenerator : DefaultJJTreeVisitor
 {
     public override Object DefaultVisit(SimpleNode node, Object data)
     {
-        visit((JJTreeNode)node, data);
+        Visit((JJTreeNode)node, data);
         return null;
     }
 
@@ -79,7 +77,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
             }
         }
 
-        return visit((JJTreeNode)node, io);
+        return Visit((JJTreeNode)node, io);
     }
 
     public override Object Visit(ASTBNFDeclaration node, Object data)
@@ -106,7 +104,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
             CloseJJTreeComment(io);
         }
 
-        return visit((JJTreeNode)node, io);
+        return Visit((JJTreeNode)node, io);
     }
 
     public override Object Visit(ASTBNFNodeScope node, Object data)
@@ -114,7 +112,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         IO io = (IO)data;
         if (node.NodeScope.IsVoid)
         {
-            return visit((JJTreeNode)node, io);
+            return Visit((JJTreeNode)node, io);
         }
 
         string indent = GetIndentation(node.expansion_unit);
@@ -166,7 +164,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         IO io = (IO)data;
         if (node.NodeScope.IsVoid)
         {
-            return visit((JJTreeNode)node, io);
+            return Visit((JJTreeNode)node, io);
         }
 
         Token first = node.GetFirstToken();
@@ -405,7 +403,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         OpenJJTreeComment(io, null);
         io.Println();
 
-        Enumeration thrown_names = ns.production.throws_list.elements();
+        var thrown_names = ns.production.throws_list;
         InsertCatchBlocks(ns, io, thrown_names, indent);
 
         io.Println(indent + "} {");
@@ -420,7 +418,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
     }
 
 
-    private static void FindThrown(NodeScope ns, Dictionary thrown_set,
+    private static void FindThrown(NodeScope ns, Dictionary<string, string> thrown_set,
         JJTreeNode expansion_unit)
     {
         if (expansion_unit is ASTBNFNonTerminal)
@@ -428,13 +426,10 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
             /* Should really make the nonterminal explicitly maintain its
                name. */
             string nt = expansion_unit.GetFirstToken().image;
-            ASTProduction prod = (ASTProduction)JJTreeGlobals.Productions.get(nt);
-            if (prod != null)
+            if (JJTreeGlobals.Productions.TryGetValue(nt, out var prod))
             {
-                Enumeration e = prod.throws_list.elements();
-                while (e.hasMoreElements())
+                foreach (var t in prod.throws_list)
                 {
-                    string t = (String)e.nextElement();
                     thrown_set.Add(t, t);
                 }
             }

@@ -146,7 +146,7 @@ public class ParseGenCPP : ParseGen
                     for (Iterator it = maskVals.iterator(); it.hasNext();)
                     {
                         int[] tokenMask = (int[])(it.next());
-                        genCode("0x" + Integer.toHexString(tokenMask[i]) + ",");
+                        GenCode("0x" + Integer.toHexString(tokenMask[i]) + ",");
                     }
                     GenCodeLine("};");
                 }
@@ -164,7 +164,7 @@ public class ParseGenCPP : ParseGen
             GenCodeLine("    ~__jj_depth_inc(){ parent->jj_depth--; }");
             GenCodeLine("  };");
         }
-        if (!Options.getStackLimit() == (""))
+        if (Options.getStackLimit() != (""))
         {
             GenCodeLine("  public: size_t jj_stack_limit;");
             GenCodeLine("  private: void* jj_stack_base;");
@@ -214,7 +214,7 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("    jj_kind = -1;");
         GenCodeLine("    indent = 0;");
         GenCodeLine("    trace = " + Options.getDebugParser() + ";");
-        if (!Options.getStackLimit() == (""))
+        if (Options.getStackLimit() != (""))
         {
             GenCodeLine("    jj_stack_limit = " + Options.getStackLimit() + ";");
             GenCodeLine("    jj_stack_error = jj_stack_check(true);");
@@ -271,7 +271,7 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("}");
         GenCodeLine("");
 
-        if (!Options.getStackLimit() == (""))
+        if (Options.getStackLimit() != (""))
         {
             GenCodeLine("");
             SwitchToIncludeFile();
@@ -545,9 +545,9 @@ public class ParseGenCPP : ParseGen
             //GenCodeLine("        for (int j = 0; j < 32; j++) {");
             //for (int i = 0; i < (tokenCount-1)/32 + 1; i++) {
               //GenCodeLine("          if ((jj_la1_" + i + "[i] & (1<<j)) != 0) {");
-              //genCode("            la1tokens[");
+              //GenCode("            la1tokens[");
               //if (i != 0) {
-                //genCode((32*i) + "+");
+                //GenCode((32*i) + "+");
               //}
               //GenCodeLine("j] = true;");
               //GenCodeLine("          }");

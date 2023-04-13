@@ -45,7 +45,7 @@ public class ASTGrammar : JJTreeNode
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
         if (JJTreeOptions.isOutputLanguageJava())
         {
-            new JavaCodeGenerator().visit(this, io);
+            new JavaCodeGenerator().Visit(this, io);
         }
         else if (JJTreeOptions.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {

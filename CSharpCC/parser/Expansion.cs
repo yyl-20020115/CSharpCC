@@ -36,7 +36,7 @@ namespace org.javacc.parser;
  * a bunch of other more specific classes.
  */
 
-public class Expansion
+public class Expansion :Descriptor
 {
 
     /**

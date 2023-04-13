@@ -636,11 +636,11 @@ public class ParseEngine
             }
             sig.Append(codeGenerator.GetTrailingComments(t));
         }
-        sig.Append(")");
+        sig.Append(')');
         _params = sig.ToString();
 
         // For now, just ignore comments
-        codeGenerator.generateMethodDefHeader(ret, cu_name, p.getLhs() + _params, sig.ToString());
+        codeGenerator.GenerateMethodDefHeader(ret, cu_name, p.getLhs() + _params, sig.ToString());
 
         return "";
     }

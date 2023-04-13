@@ -128,7 +128,7 @@ public class NormalProduction
         return name.substring(name.LastIndexOf(".") + 1); // strip the package name
     }
 
-    public override StringBuilder Dump(int indent, HashSet<> alreadyDumped)
+    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
         StringBuilder sb = dumpPrefix(indent).Append(System.identityHashCode(this)).Append(' ').Append(GetSimpleName()).Append(' ').Append(getLhs());
         if (!alreadyDumped.Contains(this))
