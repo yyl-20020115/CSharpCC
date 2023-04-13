@@ -89,7 +89,7 @@ public class ParseEngine
         }
         else if (exp is NonTerminal)
         {
-            NormalProduction prod = ((NonTerminal)exp).getProd();
+            NormalProduction prod = ((NonTerminal)exp).GetProd();
             if (prod is CodeProduction)
             {
                 return true;
@@ -117,7 +117,7 @@ public class ParseEngine
             for (int i = 0; i < seq.units.Count; i++)
             {
                 Expansion[] units = (Expansion[])seq.units.toArray(new Expansion[seq.units.Count]);
-                if (units[i] is Lookahead && ((Lookahead)units[i]).isExplicit())
+                if (units[i] is Lookahead && ((Lookahead)units[i]).IsExplicit())
                 {
                     // An explicit lookahead (rather than one generated implicitly). Assume
                     // the user knows what he / she is doing, e.g.
@@ -180,9 +180,9 @@ public class ParseEngine
         }
         else if (exp is NonTerminal)
         {
-            if (!(((NonTerminal)exp).getProd() is CodeProduction))
+            if (!(((NonTerminal)exp).GetProd() is CodeProduction))
             {
-                genFirstSet(((BNFProduction)(((NonTerminal)exp).getProd())).getExpansion());
+                genFirstSet(((BNFProduction)(((NonTerminal)exp).GetProd())).getExpansion());
             }
         }
         else if (exp is Choice)
@@ -197,7 +197,7 @@ public class ParseEngine
         {
             Sequence seq = (Sequence)exp;
             object obj = seq.units[0];
-            if ((obj is Lookahead) && (((Lookahead)obj).getActionTokens().Count != 0))
+            if ((obj is Lookahead) && (((Lookahead)obj).GetActionTokens().Count != 0))
             {
                 jj2LA = true;
             }
@@ -207,12 +207,12 @@ public class ParseEngine
                 // Javacode productions can not have FIRST sets. Instead we generate the FIRST set
                 // for the preceding LOOKAHEAD (the semantic checks should have made sure that
                 // the LOOKAHEAD is suitable).
-                if (unit is NonTerminal && ((NonTerminal)unit).getProd() is CodeProduction)
+                if (unit is NonTerminal && ((NonTerminal)unit).GetProd() is CodeProduction)
                 {
                     if (i > 0 && seq.units.get(i - 1) is Lookahead)
                     {
                         Lookahead la = (Lookahead)seq.units.get(i - 1);
-                        genFirstSet(la.getLaExpansion());
+                        genFirstSet(la.GetLaExpansion());
                     }
                 }
                 else
@@ -302,9 +302,9 @@ public class ParseEngine
             la = conds[index];
             jj2LA = false;
 
-            if ((la.getAmount() == 0) ||
-                Semanticize.emptyExpansionExists(la.getLaExpansion()) ||
-                javaCodeCheck(la.getLaExpansion())
+            if ((la.GetAmount() == 0) ||
+                Semanticize.emptyExpansionExists(la.GetLaExpansion()) ||
+                javaCodeCheck(la.GetLaExpansion())
             )
             {
 
@@ -315,7 +315,7 @@ public class ParseEngine
                 //   string - in which case the lookahead trivially passes.
                 // . If the lookahead expansion has a JAVACODE production that it directly
                 //   expands to - in which case the lookahead trivially passes.
-                if (la.getActionTokens().Count == 0)
+                if (la.GetActionTokens().Count == 0)
                 {
                     // In addition, if there is no semantic lookahead, then the
                     // lookahead trivially succeeds.  So break the main loop and
@@ -347,8 +347,8 @@ public class ParseEngine
                             retval += "\n" + "if (";
                             indentAmt++;
                     }
-                    codeGenerator.PrintTokenSetup((Token)(la.getActionTokens()[0]));
-                    for (Iterator it = la.getActionTokens().iterator(); it.hasNext();)
+                    codeGenerator.PrintTokenSetup((Token)(la.GetActionTokens()[0]));
+                    for (Iterator it = la.GetActionTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
                         retval += codeGenerator.GetStringToPrint(t);
@@ -359,7 +359,7 @@ public class ParseEngine
                 }
 
             }
-            else if (la.getAmount() == 1 && la.getActionTokens().Count == 0)
+            else if (la.GetAmount() == 1 && la.GetActionTokens().Count == 0)
             {
                 // Special optimal processing when the lookahead is exactly 1, and there
                 // is no semantic lookahead.
@@ -375,7 +375,7 @@ public class ParseEngine
                 // jj2LA is set to false at the beginning of the containing "if" statement.
                 // It is checked immediately after the end of the same statement to determine
                 // if lookaheads are to be performed using calls to the jj2 methods.
-                genFirstSet(la.getLaExpansion());
+                genFirstSet(la.GetLaExpansion());
                 // genFirstSet may find that semantic attributes are appropriate for the next
                 // token.  In which case, it sets jj2LA to true.
                 if (!jj2LA)
@@ -486,17 +486,17 @@ public class ParseEngine
                 }
                 jj2index++;
                 // At this point, la.la_expansion.internal_name must be "".
-                la.getLaExpansion().internal_name = "_" + jj2index;
-                la.getLaExpansion().internal_index = jj2index;
+                la.GetLaExpansion().internal_name = "_" + jj2index;
+                la.GetLaExpansion().internal_index = jj2index;
                 phase2list.Add(la);
-                retval += "jj_2" + la.getLaExpansion().internal_name + "(" + la.getAmount() + ")";
-                if (la.getActionTokens().Count != 0)
+                retval += "jj_2" + la.GetLaExpansion().internal_name + "(" + la.GetAmount() + ")";
+                if (la.GetActionTokens().Count != 0)
                 {
                     // In addition, there is also a semantic lookahead.  So concatenate
                     // the semantic check with the syntactic one.
                     retval += " && (";
-                    codeGenerator.PrintTokenSetup((Token)(la.getActionTokens()[0]));
-                    for (Iterator it = la.getActionTokens().iterator(); it.hasNext();)
+                    codeGenerator.PrintTokenSetup((Token)(la.GetActionTokens()[0]));
+                    for (Iterator it = la.GetActionTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
                         retval += codeGenerator.GetStringToPrint(t);
@@ -964,10 +964,10 @@ public class ParseEngine
         {
             NonTerminal e_nrw = (NonTerminal)e;
             retval += "\n";
-            if (e_nrw.getLhsTokens().Count != 0)
+            if (e_nrw.GetLhsTokens().Count != 0)
             {
-                codeGenerator.PrintTokenSetup((Token)(e_nrw.getLhsTokens()[0]));
-                for (Iterator it = e_nrw.getLhsTokens().iterator(); it.hasNext();)
+                codeGenerator.PrintTokenSetup((Token)(e_nrw.GetLhsTokens()[0]));
+                for (Iterator it = e_nrw.GetLhsTokens().iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
                     retval += codeGenerator.GetStringToPrint(t);
@@ -975,11 +975,11 @@ public class ParseEngine
                 retval += codeGenerator.GetTrailingComments(t);
                 retval += " = ";
             }
-            retval += e_nrw.getName() + "(";
-            if (e_nrw.getArgumentTokens().Count != 0)
+            retval += e_nrw.GetName() + "(";
+            if (e_nrw.GetArgumentTokens().Count != 0)
             {
-                codeGenerator.PrintTokenSetup((Token)(e_nrw.getArgumentTokens()[0]));
-                for (Iterator it = e_nrw.getArgumentTokens().iterator(); it.hasNext();)
+                codeGenerator.PrintTokenSetup((Token)(e_nrw.GetArgumentTokens()[0]));
+                for (Iterator it = e_nrw.GetArgumentTokens().iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
                     retval += codeGenerator.GetStringToPrint(t);
@@ -1072,8 +1072,8 @@ public class ParseEngine
             else
             {
                 la = new Lookahead();
-                la.setAmount(Options.getLookahead());
-                la.setLaExpansion(nested_e);
+                la.SetAmount(Options.getLookahead());
+                la.SetLaExpansion(nested_e);
             }
             retval += "\n";
             int labelIndex = ++gensymindex;
@@ -1116,8 +1116,8 @@ public class ParseEngine
             else
             {
                 la = new Lookahead();
-                la.setAmount(Options.getLookahead());
-                la.setLaExpansion(nested_e);
+                la.SetAmount(Options.getLookahead());
+                la.SetLaExpansion(nested_e);
             }
             retval += "\n";
             int labelIndex = ++gensymindex;
@@ -1158,8 +1158,8 @@ public class ParseEngine
             else
             {
                 la = new Lookahead();
-                la.setAmount(Options.getLookahead());
-                la.setLaExpansion(nested_e);
+                la.SetAmount(Options.getLookahead());
+                la.SetLaExpansion(nested_e);
             }
             conds = new Lookahead[1];
             conds[0] = la;
@@ -1239,7 +1239,7 @@ public class ParseEngine
 
     void buildPhase2Routine(Lookahead la)
     {
-        Expansion e = la.getLaExpansion();
+        Expansion e = la.GetLaExpansion();
         if (isJavaDialect)
         {
             codeGenerator.genCodeLine("  " + staticOpt() + "private " + Options.getBooleanType() + " jj_2" + e.internal_name + "(int xla)");
@@ -1273,7 +1273,7 @@ public class ParseEngine
         }
         codeGenerator.GenCodeLine("  }");
         codeGenerator.GenCodeLine("");
-        Phase3Data p3d = new Phase3Data(e, la.getAmount());
+        Phase3Data p3d = new Phase3Data(e, la.GetAmount());
         phase3list.Add(p3d);
         phase3table.Add(e, p3d);
     }
@@ -1315,7 +1315,7 @@ public class ParseEngine
                 else if (seq is NonTerminal)
                 {
                     NonTerminal e_nrw = (NonTerminal)seq;
-                    NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.getName()));
+                    NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.GetName()));
                     if (ntprod is CodeProduction)
                     {
                         break; // nothing to do here
@@ -1367,7 +1367,7 @@ public class ParseEngine
             // fact, we rely here on the fact that the "name" fields of both these
             // variables are the same.
             NonTerminal e_nrw = (NonTerminal)e;
-            NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.getName()));
+            NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.GetName()));
             if (ntprod is CodeProduction)
             {
                 ; // nothing to do here
@@ -1507,7 +1507,7 @@ public class ParseEngine
             // fact, we rely here on the fact that the "name" fields of both these
             // variables are the same.
             NonTerminal e_nrw = (NonTerminal)e;
-            NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.getName()));
+            NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.GetName()));
             if (ntprod is CodeProduction)
             {
                 codeGenerator.GenCodeLine("    if (true) { jj_la = 0; jj_scanpos = jj_lastpos; " + genReturn(false) + "}");
@@ -1537,14 +1537,14 @@ public class ParseEngine
             {
                 nested_seq = (Sequence)(e_nrw.GetChoices()[i]);
                 Lookahead la = (Lookahead)(nested_seq.units[0]);
-                if (la.getActionTokens().Count != 0)
+                if (la.GetActionTokens().Count != 0)
                 {
                     // We have semantic lookahead that must be evaluated.
                     lookaheadNeeded = true;
                     codeGenerator.GenCodeLine("    jj_lookingAhead = true;");
                     codeGenerator.GenCode("    jj_semLA = ");
-                    codeGenerator.PrintTokenSetup((Token)(la.getActionTokens()[0]));
-                    for (Iterator it = la.getActionTokens().iterator(); it.hasNext();)
+                    codeGenerator.PrintTokenSetup((Token)(la.GetActionTokens()[0]));
+                    for (Iterator it = la.GetActionTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
                         codeGenerator.PrintToken(t);
@@ -1554,7 +1554,7 @@ public class ParseEngine
                     codeGenerator.GenCodeLine("    jj_lookingAhead = false;");
                 }
                 codeGenerator.GenCode("    if (");
-                if (la.getActionTokens().Count != 0)
+                if (la.GetActionTokens().Count != 0)
                 {
                     codeGenerator.GenCode("!jj_semLA || ");
                 }
@@ -1686,7 +1686,7 @@ public class ParseEngine
         else if (e is NonTerminal)
         {
             NonTerminal e_nrw = (NonTerminal)e;
-            NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.getName()));
+            NormalProduction ntprod = (NormalProduction)(production_table.get(e_nrw.GetName()));
             if (ntprod is CodeProduction)
             {
                 retval = int.MaxValue;
@@ -1970,7 +1970,7 @@ public class ParseEngine
         {
             NonTerminal e_nrw = (NonTerminal)e;
             NormalProduction ntprod =
-                (NormalProduction)(production_table.get(e_nrw.getName()));
+                (NormalProduction)(production_table.get(e_nrw.GetName()));
             if (ntprod is CodeProduction)
             {
                 // javacode, true - always (warn?)
@@ -1994,7 +1994,7 @@ public class ParseEngine
                 if (i > 0) Console.Error.Write("\n|");
                 nested_seq = (Sequence)(e_nrw.GetChoices()[i]);
                 Lookahead la = (Lookahead)(nested_seq.units[0]);
-                if (la.getActionTokens().Count != 0)
+                if (la.GetActionTokens().Count != 0)
                 {
                     Console.Error.Write("SEMANTIC,");
                 }
@@ -2028,7 +2028,7 @@ public class ParseEngine
                 {
                     NormalProduction ntprod =
                         (NormalProduction)(
-                            production_table.get(((NonTerminal)tmp).getName()));
+                            production_table.get(((NonTerminal)tmp).GetName()));
                     if (ntprod is CodeProduction) break;
                     tmp = ntprod.getExpansion();
                 }

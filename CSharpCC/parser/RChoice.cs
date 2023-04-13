@@ -95,7 +95,7 @@ public class RChoice:RegularExpression {
         if (curRE is RStringLiteral &&
             ((RStringLiteral)curRE).image.Length == 1)
            getChoices().set(i, curRE = new RCharacterList(
-                      ((RStringLiteral)curRE).image.charAt(0)));
+                      ((RStringLiteral)curRE).image[0]));
 
         if (curRE is RCharacterList)
         {

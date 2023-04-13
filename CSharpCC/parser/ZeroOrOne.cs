@@ -37,7 +37,6 @@ namespace org.javacc.parser;
 
 public class ZeroOrOne : Expansion
 {
-
     /**
      * The expansion which is repeated zero or one times.
      */

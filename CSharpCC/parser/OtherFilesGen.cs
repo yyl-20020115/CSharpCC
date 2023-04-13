@@ -37,7 +37,7 @@ namespace org.javacc.parser;
 /**
  * Generates the Constants file.
  */
-public class OtherFilesGen : JavaCCGlobals, JavaCCParserConstants
+public class OtherFilesGen : JavaCCGlobals
 {
 
     private static readonly string CONSTANTS_FILENAME_SUFFIX = "Constants.java";
@@ -45,7 +45,7 @@ public class OtherFilesGen : JavaCCGlobals, JavaCCParserConstants
     static public void start(bool isJavaModern)
     {
 
-        JavaResourceTemplateLocations templateLoc = isJavaModern ? JavaFiles.RESOURCES_JAVA_MODERN : JavaFiles.RESOURCES_JAVA_CLASSIC;
+        var templateLoc = isJavaModern ? JavaFiles.RESOURCES_JAVA_MODERN : JavaFiles.RESOURCES_JAVA_CLASSIC;
 
         Token t = null;
 
@@ -57,7 +57,7 @@ public class OtherFilesGen : JavaCCGlobals, JavaCCParserConstants
 
             if (isJavaModern)
             {
-                JavaFiles.gen_JavaModernFiles();
+                JavaFiles.GenJavaModernFiles();
             }
 
             JavaFiles.gen_TokenMgrError(templateLoc);

@@ -307,7 +307,7 @@ public class RStringLiteral : RegularExpression
     /**
      * Used for top level string literals.
      */
-    public override void GenerateDfa(CodeGenerator codeGenerator, int kind)
+    public virtual void GenerateDfa(CodeGenerator codeGenerator, int kind)
     {
         string s;
         Dictionary temp;
@@ -395,11 +395,11 @@ public class RStringLiteral : RegularExpression
         allImages[ordinal] = image;
     }
 
-    public Nfa GenerateNfa(bool ignoreCase)
+    public override Nfa GenerateNfa(bool ignoreCase)
     {
         if (image.Length == 1)
         {
-            RCharacterList temp = new RCharacterList(image.charAt(0));
+            RCharacterList temp = new RCharacterList(image[0]);
             return temp.GenerateNfa(ignoreCase);
         }
 

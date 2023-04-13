@@ -49,13 +49,13 @@ public class TokenMgrError : Error
      * Indicates the reason why the exception is thrown. It will have
      * one of the above 4 values.
      */
-    int errorCode;
+    public int errorCode;
 
     /**
      * Replaces unprintable characters by their escaped (or unicode escaped)
      * equivalents in the given string
      */
-    protected static String addEscapes(String str)
+    protected static String AddEscapes(String str)
     {
         var retval = new StringBuilder();
         char ch;
@@ -92,7 +92,7 @@ public class TokenMgrError : Error
                 default:
                     if ((ch = str[i]) < 0x20 || ch > 0x7e)
                     {
-                        String s = "0000" + Convert.ToString(ch, 16);
+                        var s = "0000" + Convert.ToString(ch, 16);
                         retval.Append("\\u" + s[^4..]);
                     }
                     else
@@ -119,7 +119,7 @@ public class TokenMgrError : Error
      */
     protected static String LexicalError(bool EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar)
     {
-        return ($"Lexical error at line {errorLine}, column {errorColumn}.  Encountered: {(EOFSeen ? "<EOF> " : ("\"" + addEscapes(Convert.ToString(curChar)) + "\"") + " (" + (int)curChar + "), ")}after : \"{addEscapes(errorAfter)}\"");
+        return ($"Lexical error at line {errorLine}, column {errorColumn}.  Encountered: {(EOFSeen ? "<EOF> " : ("\"" + AddEscapes(Convert.ToString(curChar)) + "\"") + " (" + (int)curChar + "), ")}after : \"{AddEscapes(errorAfter)}\"");
     }
 
     /**
@@ -138,7 +138,7 @@ public class TokenMgrError : Error
 
     /** No arg constructor. */
     public TokenMgrError()
-        :base("")
+        : base("")
     {
     }
 

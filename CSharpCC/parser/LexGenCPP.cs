@@ -628,7 +628,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
 
   void DumpFillToken()
   {
-    double tokenVersion = JavaFiles.getVersion("Token.java");
+    double tokenVersion = JavaFiles.GetVersion("Token.java");
     bool hasBinaryNewToken = tokenVersion > 4.09;
 
     GenerateMethodDefHeader("Token *", tokMgrClassName, "jjFillToken()");

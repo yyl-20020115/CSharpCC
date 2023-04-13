@@ -64,7 +64,7 @@ public class TryBlock : Expansion
      * The block part of the finally block.  Each list entry is a token.
      * If there is no finally block, this is null.
      */
-    public List<Token> finallyblk;
+    public List<Token> finallyblk = new();
 
     public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
@@ -75,5 +75,4 @@ public class TryBlock : Expansion
         sb.Append(eol).Append(exp.Dump(indent + 1, alreadyDumped));
         return sb;
     }
-
 }

@@ -48,7 +48,7 @@ public static class JavaCCErrors
 
             case TokenProduction n:
                 {
-                    Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+                    Console.Error.Write("Line " + n.GetLine() + ", Column " + n.GetColumn() + ": ");
                     break;
                 }
 
@@ -66,7 +66,7 @@ public static class JavaCCErrors
 
             case SingleCharacter n:
                 {
-                    Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+                    Console.Error.Write("Line " + n.GetLine() + ", Column " + n.GetColumn() + ": ");
                     break;
                 }
 

@@ -38,7 +38,6 @@ namespace org.javacc.parser;
 
 public class Sequence : Expansion
 {
-
     /**
      * The list of units in this expansion sequence.  Each
      * List component will narrow to Expansion.
@@ -55,7 +54,7 @@ public class Sequence : Expansion
     }
 
 
-    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
+    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
         if (alreadyDumped.Contains(this))
         {

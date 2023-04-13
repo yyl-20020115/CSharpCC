@@ -47,7 +47,7 @@ public static class LookaheadWalk
     {
         if (exp is RegularExpression)
         {
-            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            List<MatchInfo> retval = new ();
             for (int i = 0; i < partialMatches.Count; i++)
             {
                 MatchInfo m = (MatchInfo)partialMatches[i];
@@ -71,10 +71,10 @@ public static class LookaheadWalk
         }
         else if (exp is NonTerminal)
         {
-            NormalProduction prod = ((NonTerminal)exp).getProd();
+            NormalProduction prod = ((NonTerminal)exp).GetProd();
             if (prod is CodeProduction)
             {
-                return new ArrayList<MatchInfo>();
+                return new ();
             }
             else
             {
@@ -83,7 +83,7 @@ public static class LookaheadWalk
         }
         else if (exp is Choice)
         {
-            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            List<MatchInfo> retval = new ();
             Choice ch = (Choice)exp;
             for (int i = 0; i < ch.GetChoices().Count; i++)
             {
@@ -105,7 +105,7 @@ public static class LookaheadWalk
         }
         else if (exp is OneOrMore)
         {
-            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            List<MatchInfo> retval = new ();
             List<MatchInfo> v = partialMatches;
             OneOrMore om = (OneOrMore)exp;
             while (true)
@@ -118,7 +118,7 @@ public static class LookaheadWalk
         }
         else if (exp is ZeroOrMore)
         {
-            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            List<MatchInfo> retval = new ();
             listAppend(retval, partialMatches);
             List<MatchInfo> v = partialMatches;
             ZeroOrMore zm = (ZeroOrMore)exp;
@@ -132,7 +132,7 @@ public static class LookaheadWalk
         }
         else if (exp is ZeroOrOne)
         {
-            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            List<MatchInfo> retval = new ();
             listAppend(retval, partialMatches);
             listAppend(retval, genFirstSet(partialMatches, ((ZeroOrOne)exp).expansion));
             return retval;
@@ -143,14 +143,14 @@ public static class LookaheadWalk
         }
         else if (considerSemanticLA &&
                    exp is Lookahead &&
-                   ((Lookahead)exp).getActionTokens().Count != 0
+                   ((Lookahead)exp).GetActionTokens().Count != 0
                   )
         {
-            return new ArrayList<MatchInfo>();
+            return new ();
         }
         else
         {
-            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            List<MatchInfo> retval = new ();
             listAppend(retval, partialMatches);
             return retval;
         }
@@ -177,13 +177,13 @@ public static class LookaheadWalk
     {
         if (exp.myGeneration == generation)
         {
-            return new ArrayList<MatchInfo>();
+            return new ();
         }
         //  Console.WriteLine("*** Parent: " + exp.parent);
         exp.myGeneration = generation;
         if (exp.parent == null)
         {
-            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            List<MatchInfo> retval = new ();
             listAppend(retval, partialMatches);
             return retval;
         }
@@ -192,7 +192,7 @@ public static class LookaheadWalk
         if (exp.parent is NormalProduction)
         {
             List parents = ((NormalProduction)exp.parent).getParents();
-            List<MatchInfo> retval = new ArrayList<MatchInfo>();
+            List<MatchInfo> retval = new ();
             //    Console.WriteLine("1; gen: " + generation + "; exp: " + exp);
             for (int i = 0; i < parents.Count; i++)
             {
@@ -212,8 +212,8 @@ public static class LookaheadWalk
                 v = genFirstSet(v, (Expansion)seq.units[i]);
                 if (v.Count == 0) return v;
             }
-            List<MatchInfo> v1 = new ArrayList<MatchInfo>();
-            List<MatchInfo> v2 = new ArrayList<MatchInfo>();
+            List<MatchInfo> v1 = new ();
+            List<MatchInfo> v2 = new ();
             listSplit(v, partialMatches, v1, v2);
             if (v1.Count != 0)
             {
@@ -232,7 +232,7 @@ public static class LookaheadWalk
 
         if (exp.parent is OneOrMore || exp.parent is ZeroOrMore)
         {
-            List<MatchInfo> moreMatches = new ArrayList<MatchInfo>();
+            List<MatchInfo> moreMatches = new ();
             listAppend(moreMatches, partialMatches);
             List<MatchInfo> v = partialMatches;
             while (true)

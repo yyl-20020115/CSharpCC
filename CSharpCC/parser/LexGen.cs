@@ -852,7 +852,7 @@ public class LexGen : CodeGenerator
 
     void DumpFillToken()
     {
-        double tokenVersion = JavaFiles.getVersion("Token.java");
+        double tokenVersion = JavaFiles.GetVersion("Token.java");
         bool hasBinaryNewToken = tokenVersion > 4.09;
 
         GenCodeLine(staticString + "protected Token jjFillToken()");

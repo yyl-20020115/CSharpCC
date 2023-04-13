@@ -51,11 +51,11 @@ public class JavaCCParser : JavaCCParserInternals
      */
     bool jumpPatched = false;
 
-    protected static bool isJavaLanguage()
+    protected static bool IsJavaLanguage()
     {
         return Options.language == Language.java;
     }
-    protected static bool isCppLanguage()
+    protected static bool IsCppLanguage()
     {
         return Options.language == Language.cpp;
     }
@@ -78,7 +78,7 @@ public class JavaCCParser : JavaCCParserInternals
      */
     private bool isAllowed(Token t)
     {
-        if (isJavaLanguage() && (t.kind == STAR || t.kind == BIT_AND || t.kind == CONST))
+        if (IsJavaLanguage() && (t.kind == STAR || t.kind == BIT_AND || t.kind == CONST))
             return false;
         else
             return true;
@@ -208,18 +208,18 @@ public class JavaCCParser : JavaCCParserInternals
     public void javacc_input()
     {
         String id1, id2;
-        initialize();
+        Initialize();
         javacc_options();
 
         jj_consume_token(_PARSER_BEGIN);
         jj_consume_token(LPAREN);
         id1 = identifier();
-        addcuname(id1);
+        Addcuname(id1);
         jj_consume_token(RPAREN);
         processing_cu = true;
         parser_class_name = id1;
 
-        if (!isJavaLanguage())
+        if (!IsJavaLanguage())
         {
             JavaCCGlobals.otherLanguageDeclTokenBeg = getToken(1);
             while (getToken(1).kind != _PARSER_END)
@@ -233,13 +233,13 @@ public class JavaCCParser : JavaCCParserInternals
         jj_consume_token(_PARSER_END);
         jj_consume_token(LPAREN);
         id2 = identifier();
-        compare(getToken(0), id1, id2);
+        Compare(getToken(0), id1, id2);
         jj_consume_token(RPAREN);
     label_1:
         while (true)
         {
             production();
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case _JAVACODE:
                 case _CPPCODE:
@@ -284,7 +284,7 @@ public class JavaCCParser : JavaCCParserInternals
         label_2:
             while (true)
             {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case _LOOKAHEAD:
                     case _IGNORE_CASE:
@@ -316,7 +316,7 @@ public class JavaCCParser : JavaCCParserInternals
         String string_val;
         List<string> string_list;
         Token t = getToken(1);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case IDENTIFIER:
                 jj_consume_token(IDENTIFIER);
@@ -340,7 +340,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         option_name = t.image;
         jj_consume_token(ASSIGN);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case INTEGER_LITERAL:
                 int_val = IntegerLiteral();
@@ -377,7 +377,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_3:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -397,7 +397,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void production()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case _JAVACODE:
                 javacode_production();
@@ -456,7 +456,7 @@ public class JavaCCParser : JavaCCParserInternals
         lhs = identifier();
         p.setLhs(lhs);
         FormalParameters(p.getParameterListTokens());
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case THROWS:
                 jj_consume_token(THROWS);
@@ -466,7 +466,7 @@ public class JavaCCParser : JavaCCParserInternals
             label_4:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case COMMA:
                             ;
@@ -487,7 +487,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         Block(p.GetCodeTokens());
         p.setLastToken(getToken(0));
-        addproduction(p);
+        AddProduction(p);
     }
 
     public void cppcode_production()
@@ -506,7 +506,7 @@ public class JavaCCParser : JavaCCParserInternals
         lhs = identifier();
         p.setLhs(lhs);
         FormalParameters(p.getParameterListTokens());
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case THROWS:
                 jj_consume_token(THROWS);
@@ -516,7 +516,7 @@ public class JavaCCParser : JavaCCParserInternals
             label_5:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case COMMA:
                             ;
@@ -537,7 +537,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         Block(p.GetCodeTokens());
         p.setLastToken(getToken(0));
-        addproduction(p);
+        AddProduction(p);
     }
 
     public void bnf_production()
@@ -557,7 +557,7 @@ public class JavaCCParser : JavaCCParserInternals
         lhs = identifier();
         p.setLhs(lhs);
         FormalParameters(p.getParameterListTokens());
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case THROWS:
                 jj_consume_token(THROWS);
@@ -567,7 +567,7 @@ public class JavaCCParser : JavaCCParserInternals
             label_6:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case COMMA:
                             ;
@@ -593,19 +593,19 @@ public class JavaCCParser : JavaCCParserInternals
         t = jj_consume_token(RBRACE);
         p.setLastToken(t);
         p.SetJumpPatched(jumpPatched);
-        production_addexpansion(p, (Expansion)(c.Member));
-        addproduction(p);
+        ProductionAddexpansion(p, (Expansion)(c.Member));
+        AddProduction(p);
     }
 
     public void AccessModifier(NormalProduction p)
     {
         Token t = null;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case PRIVATE:
             case PROTECTED:
             case PUBLIC:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case PUBLIC:
                         t = jj_consume_token(PUBLIC);
@@ -637,12 +637,12 @@ public class JavaCCParser : JavaCCParserInternals
         TokenProduction p = new TokenProduction();
         List states;
         Token t = p.firstToken = getToken(1);
-        p.setLine(t.beginLine);
-        p.setColumn(t.beginColumn);
+        p.SetLine(t.beginLine);
+        p.SetColumn(t.beginColumn);
         // set p.lexStates assuming there is no state spec.
         // and then override if necessary.
         p.lexStates = new String[] { "DEFAULT" };
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case LANGLE:
                 if (jj_2_1(2))
@@ -654,7 +654,7 @@ public class JavaCCParser : JavaCCParserInternals
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case LANGLE:
                             jj_consume_token(LANGLE);
@@ -664,7 +664,7 @@ public class JavaCCParser : JavaCCParserInternals
                         label_7:
                             while (true)
                             {
-                                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                                 {
                                     case COMMA:
                                         ;
@@ -700,7 +700,7 @@ public class JavaCCParser : JavaCCParserInternals
         {
             JavaCCErrors.Warning(getToken(0), "Regular expression is being treated as if it were a TOKEN since option USER_TOKEN_MANAGER has been set to true.");
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case LBRACKET:
                 jj_consume_token(LBRACKET);
@@ -722,7 +722,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_8:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case BIT_OR:
                     ;
@@ -736,7 +736,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         t = jj_consume_token(RBRACE);
         p.lastToken = t;
-        addregexpr(p);
+        AddRegexpr(p);
     }
 
     public void token_manager_decls()
@@ -745,13 +745,13 @@ public class JavaCCParser : JavaCCParserInternals
         Token t;
         t = jj_consume_token(_TOKEN_MGR_DECLS);
         jj_consume_token(COLON);
-        if (!isJavaLanguage())
+        if (!IsJavaLanguage())
         {
             getNextToken(); // eat {
             eatUptoCloseBrace(decls);
             getNextToken(); // eat }
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case LBRACE:
                 ClassOrInterfaceBody(false, decls);
@@ -760,12 +760,12 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_la1[19] = jj_gen;
                 ;
         }
-        add_token_manager_decls(t, decls);
+        AddTokenManagerDecls(t, decls);
     }
 
     public void regexpr_kind(TokenProduction p)
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case _TOKEN:
                 jj_consume_token(_TOKEN);
@@ -799,7 +799,7 @@ public class JavaCCParser : JavaCCParserInternals
         regular_expression(c);
         res.rexp = (RegularExpression)c.Member;
         res.rexp.tpContext = p;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case LBRACE:
                 t = getToken(1);
@@ -817,7 +817,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_la1[21] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case COLON:
                 jj_consume_token(COLON);
@@ -846,7 +846,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_9:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case BIT_OR:
                     ;
@@ -887,17 +887,17 @@ public class JavaCCParser : JavaCCParserInternals
         seq.SetColumn(t.beginColumn);
         la.SetLine(t.beginLine);
         la.SetColumn(t.beginColumn);
-        la.setAmount(Options.getLookahead());
-        la.setLaExpansion(null);
-        la.setExplicit(false);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        la.SetAmount(Options.getLookahead());
+        la.SetLaExpansion(null);
+        la.SetExplicit(false);
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case _LOOKAHEAD:
                 t = jj_consume_token(_LOOKAHEAD);
                 jj_consume_token(LPAREN);
                 la = local_lookahead();
                 jj_consume_token(RPAREN);
-                if (inLocalLA != 0 && la.getAmount() != 0)
+                if (inLocalLA != 0 && la.GetAmount() != 0)
                 {
                     JavaCCErrors.Warning(t, "Only semantic lookahead specifications within other lookahead specifications is considered.  Syntactic lookahead is ignored.");
                 }
@@ -923,9 +923,9 @@ public class JavaCCParser : JavaCCParserInternals
                 break label_10;
             }
         }
-        if (la.getLaExpansion() == null)
+        if (la.GetLaExpansion() == null)
         {
-            la.setLaExpansion(seq);
+            la.SetLaExpansion(seq);
         }
         c1.Member = seq;
     }
@@ -933,21 +933,21 @@ public class JavaCCParser : JavaCCParserInternals
     public Lookahead local_lookahead()
     {
         Lookahead la = new Lookahead();
-        la.setExplicit(true);
+        la.SetExplicit(true);
         Token t = getToken(1);
         la.SetLine(t.beginLine);
         la.SetColumn(t.beginColumn);
-        la.setLaExpansion(null);
+        la.SetLaExpansion(null);
         Container c = new Container();
         bool commaAtEnd = false, emptyLA = true;
         int laAmount;
         inLocalLA++;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case INTEGER_LITERAL:
                 laAmount = IntegerLiteral();
                 emptyLA = false;
-                la.setAmount(laAmount);
+                la.SetAmount(laAmount);
                 break;
             default:
                 jj_la1[25] = jj_gen;
@@ -966,7 +966,7 @@ public class JavaCCParser : JavaCCParserInternals
         {
             expansion_choices(c);
             emptyLA = false; commaAtEnd = false;
-            la.setLaExpansion((Expansion)c.Member);
+            la.SetLaExpansion((Expansion)c.Member);
         }
         else
         {
@@ -984,17 +984,17 @@ public class JavaCCParser : JavaCCParserInternals
         if (emptyLA || commaAtEnd)
         {
             jj_consume_token(LBRACE);
-            if (!isJavaLanguage())
+            if (!IsJavaLanguage())
             {
                 int b = 0;
                 while (getToken(1).kind != RBRACE || --b > 0)
                 {
                     t = getNextToken();
-                    la.getActionTokens().Add(t);
+                    la.GetActionTokens().Add(t);
                     if (t.kind == LBRACE) b++;
                 }
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -1043,7 +1043,7 @@ public class JavaCCParser : JavaCCParserInternals
                 case 143:
                 case 144:
                 case IDENTIFIER:
-                    Expression(la.getActionTokens());
+                    Expression(la.GetActionTokens());
                     break;
                 default:
                     jj_la1[26] = jj_gen;
@@ -1052,7 +1052,7 @@ public class JavaCCParser : JavaCCParserInternals
             jj_consume_token(RBRACE);
             if (emptyLA)
             {
-                la.setAmount(0);
+                la.SetAmount(0);
             }
         }
         else
@@ -1072,7 +1072,7 @@ public class JavaCCParser : JavaCCParserInternals
         Action act;
         Token t;
         Lookahead la;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case _LOOKAHEAD:
                 /*
@@ -1085,7 +1085,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_consume_token(RPAREN);
                 // Now set the la_expansion field of la with a dummy
                 // expansion (we use EOF).
-                la.setLaExpansion(new REndOfFile());
+                la.SetLaExpansion(new REndOfFile());
                 // Create a singleton choice with an empty action.
                 Choice ch = new Choice(t);
                 Sequence seq = new Sequence(t, la);
@@ -1097,9 +1097,9 @@ public class JavaCCParser : JavaCCParserInternals
                 act.parent = seq; act.ordinal = 1;
                 ch.GetChoices().Add(seq);
                 seq.parent = ch; seq.ordinal = 0;
-                if (la.getAmount() != 0)
+                if (la.GetAmount() != 0)
                 {
-                    if (la.getActionTokens().Count != 0)
+                    if (la.GetActionTokens().Count != 0)
                     {
                         JavaCCErrors.Warning(t, "Encountered LOOKAHEAD(...) at a non-choice location.  Only semantic lookahead will be considered here.");
                     }
@@ -1145,7 +1145,7 @@ public class JavaCCParser : JavaCCParserInternals
             label_11:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case CATCH:
                             ;
@@ -1156,14 +1156,14 @@ public class JavaCCParser : JavaCCParserInternals
                     }
                     jj_consume_token(CATCH);
                     jj_consume_token(LPAREN);
-                    if (!isJavaLanguage())
+                    if (!IsJavaLanguage())
                     {
                         while (getToken(1).kind != RPAREN) getNextToken();
                     }
                     t = getToken(0);
                     t.kind = IDENTIFIER;
                     t.image = "...";
-                    if (isJavaLanguage())
+                    if (IsJavaLanguage())
                     {
                         Name(vec);
                         t = jj_consume_token(IDENTIFIER);
@@ -1182,7 +1182,7 @@ public class JavaCCParser : JavaCCParserInternals
                     catchblks.Add(vec);
                     vec = new ();
                 }
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case FINALLY:
                         inAction = true;
@@ -1195,7 +1195,7 @@ public class JavaCCParser : JavaCCParserInternals
                         jj_la1[28] = jj_gen;
                         ;
                 }
-                makeTryBlock(t0, c, expch, types, ids, catchblks, finallyblk);
+                MakeTryBlock(t0, c, expch, types, ids, catchblks, finallyblk);
                 break;
             default:
                 jj_la1[34] = jj_gen;
@@ -1227,29 +1227,29 @@ public class JavaCCParser : JavaCCParserInternals
                         nt.SetColumn(t.beginColumn);
                         nt.setLhsTokens(lhsTokens);
                         name = identifier();
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                         {
                             case LANGLE:
-                                TypeArguments(nt.getParametrizedTypeTokens());
+                                TypeArguments(nt.GetParametrizedTypeTokens());
                                 break;
                             default:
                                 jj_la1[29] = jj_gen;
                                 ;
                         }
-                        Arguments(nt.getArgumentTokens());
-                        nt.setName(name);
+                        Arguments(nt.GetArgumentTokens());
+                        nt.SetName(name);
                         c.Member = nt;
                     }
                     else
                     {
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                         {
                             case STRING_LITERAL:
                             case LANGLE:
                                 regular_expression(c);
                                 ((RegularExpression)(c.Member)).lhsTokens = lhsTokens;
-                                add_inline_regexpr((RegularExpression)(c.Member));
-                                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                                AddInlineRegexpr((RegularExpression)(c.Member));
+                                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                                 {
                                     case DOT:
                                         jj_consume_token(DOT);
@@ -1270,18 +1270,18 @@ public class JavaCCParser : JavaCCParserInternals
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case LPAREN:
                             t = jj_consume_token(LPAREN);
                             expansion_choices(c);
                             jj_consume_token(RPAREN);
-                            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                             {
                                 case HOOK:
                                 case PLUS:
                                 case STAR:
-                                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                                     {
                                         case PLUS:
                                             jj_consume_token(PLUS);
@@ -1321,7 +1321,7 @@ public class JavaCCParser : JavaCCParserInternals
         String image;
         bool private_rexp = false;
         Token t = getToken(1);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case STRING_LITERAL:
                 image = StringLiteral();
@@ -1333,11 +1333,11 @@ public class JavaCCParser : JavaCCParserInternals
                 {
                     image = "";
                     jj_consume_token(LANGLE);
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case 138:
                         case IDENTIFIER:
-                            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                             {
                                 case 138:
                                     jj_consume_token(138);
@@ -1382,7 +1382,7 @@ public class JavaCCParser : JavaCCParserInternals
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case LANGLE:
                             jj_consume_token(LANGLE);
@@ -1412,7 +1412,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_12:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case BIT_OR:
                     ;
@@ -1469,7 +1469,7 @@ public class JavaCCParser : JavaCCParserInternals
             {
                 seq.units.Add(c2.Member);
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case STRING_LITERAL:
                 case LPAREN:
@@ -1495,7 +1495,7 @@ public class JavaCCParser : JavaCCParserInternals
         Token t = getToken(1);
         int r1 = 0, r2 = -1;
         bool hasMax = false;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case STRING_LITERAL:
                 image = StringLiteral();
@@ -1515,13 +1515,13 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_consume_token(LPAREN);
                 complex_regular_expression_choices(c);
                 jj_consume_token(RPAREN);
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case LBRACE:
                     case HOOK:
                     case PLUS:
                     case STAR:
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                         {
                             case PLUS:
                                 jj_consume_token(PLUS);
@@ -1542,12 +1542,12 @@ public class JavaCCParser : JavaCCParserInternals
                             case LBRACE:
                                 jj_consume_token(LBRACE);
                                 r1 = IntegerLiteral();
-                                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                                 {
                                     case COMMA:
                                         jj_consume_token(COMMA);
                                         hasMax = true;
-                                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                                         {
                                             case INTEGER_LITERAL:
                                                 r2 = IntegerLiteral();
@@ -1596,7 +1596,7 @@ public class JavaCCParser : JavaCCParserInternals
         chlist.SetLine(t.beginLine);
         chlist.SetColumn(t.beginColumn);
         Container c2 = new Container();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case TILDE:
                 jj_consume_token(TILDE);
@@ -1607,7 +1607,7 @@ public class JavaCCParser : JavaCCParserInternals
                 ;
         }
         jj_consume_token(LBRACKET);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case STRING_LITERAL:
                 character_descriptor(c2);
@@ -1615,7 +1615,7 @@ public class JavaCCParser : JavaCCParserInternals
             label_14:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case COMMA:
                             ;
@@ -1644,14 +1644,14 @@ public class JavaCCParser : JavaCCParserInternals
         String imageL, imageR;
         Token t = getToken(1);
         imageL = StringLiteral();
-        c1 = character_descriptor_assign(getToken(0), imageL);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        c1 = CharacterDescriptorAssign(getToken(0), imageL);
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case MINUS:
                 jj_consume_token(MINUS);
                 imageR = StringLiteral();
                 isrange = true;
-                c2 = character_descriptor_assign(getToken(0), imageR, imageL);
+                c2 = CharacterDescriptorAssign(getToken(0), imageR, imageL);
                 break;
             default:
                 jj_la1[50] = jj_gen;
@@ -1669,8 +1669,8 @@ public class JavaCCParser : JavaCCParserInternals
         else
         {
             var sc = new SingleCharacter();
-            sc.setLine(t.beginLine);
-            sc.setColumn(t.beginColumn);
+            sc.SetLine(t.beginLine);
+            sc.SetColumn(t.beginColumn);
             sc.ch = c1;
             c.Member = sc;
         }
@@ -1699,7 +1699,7 @@ public class JavaCCParser : JavaCCParserInternals
      */
     public Token JavaIdentifier()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case IDENTIFIER:
                 jj_consume_token(IDENTIFIER);
@@ -1774,7 +1774,7 @@ public class JavaCCParser : JavaCCParserInternals
      */
     public void CompilationUnit()
     {
-        set_initial_cu_token(getToken(1));
+        SetInitialCuToken(getToken(1));
         if (jj_2_7(2147483647))
         {
             PackageDeclaration();
@@ -1786,7 +1786,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_15:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case IMPORT:
                     ;
@@ -1800,7 +1800,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_16:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case ABSTRACT:
                 case CLASS:
@@ -1828,7 +1828,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         if (Options.isOutputLanguageJava())
         {
-            insertionpointerrors(getToken(1));
+            InsertionPointErrors(getToken(1));
         }
     }
 
@@ -1843,7 +1843,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void ImportDeclaration()
     {
         jj_consume_token(IMPORT);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case STATIC:
                 jj_consume_token(STATIC);
@@ -1853,7 +1853,7 @@ public class JavaCCParser : JavaCCParserInternals
                 ;
         }
         Name(null);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case DOT:
                 jj_consume_token(DOT);
@@ -1885,7 +1885,7 @@ public class JavaCCParser : JavaCCParserInternals
             {
                 break label_17;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case PUBLIC:
                     jj_consume_token(PUBLIC);
@@ -1950,7 +1950,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void TypeDeclaration()
     {
         int modifiers;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case SEMICOLON:
                 jj_consume_token(SEMICOLON);
@@ -1971,7 +1971,7 @@ public class JavaCCParser : JavaCCParserInternals
             case VOLATILE:
             case 150:
                 modifiers = Modifiers();
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case CLASS:
                     case INTERFACE:
@@ -2004,7 +2004,7 @@ public class JavaCCParser : JavaCCParserInternals
         bool is_parser_class = false;
         if (tokens == null)
             tokens = new ();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case CLASS:
                 jj_consume_token(CLASS);
@@ -2019,7 +2019,7 @@ public class JavaCCParser : JavaCCParserInternals
                 throw new ParseException();
         }
         t = JavaIdentifier();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case LANGLE:
                 TypeParameters();
@@ -2028,7 +2028,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_la1[60] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case EXTENDS:
                 ExtendsList(isInterface);
@@ -2037,7 +2037,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_la1[61] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case IMPLEMENTS:
                 ImplementsList(isInterface);
@@ -2049,12 +2049,12 @@ public class JavaCCParser : JavaCCParserInternals
         if (t.image.equals(parser_class_name) && class_nesting == 1 && processing_cu)
         {
             is_parser_class = true;
-            setinsertionpoint(getToken(1), 1);
+            SetInsertionPoint(getToken(1), 1);
         }
         ClassOrInterfaceBody(isInterface, null);
         if (is_parser_class)
         {
-            setinsertionpoint(getToken(0), 2);
+            SetInsertionPoint(getToken(0), 2);
         }
         class_nesting--;
     }
@@ -2067,7 +2067,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_18:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -2091,7 +2091,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_19:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -2111,7 +2111,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         jj_consume_token(ENUM);
         JavaIdentifier();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case IMPLEMENTS:
                 ImplementsList(false);
@@ -2126,7 +2126,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void EnumBody()
     {
         jj_consume_token(LBRACE);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -2179,7 +2179,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_la1[66] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case COMMA:
                 jj_consume_token(COMMA);
@@ -2188,14 +2188,14 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_la1[67] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case SEMICOLON:
                 jj_consume_token(SEMICOLON);
             label_21:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -2265,7 +2265,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         Modifiers();
         JavaIdentifier();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case LPAREN:
                 Arguments(null);
@@ -2274,7 +2274,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_la1[70] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case LBRACE:
                 ClassOrInterfaceBody(false, null);
@@ -2292,7 +2292,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_22:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -2310,7 +2310,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void TypeParameter()
     {
         JavaIdentifier();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case EXTENDS:
                 TypeBound();
@@ -2328,7 +2328,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_23:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case BIT_AND:
                     ;
@@ -2352,7 +2352,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_24:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -2435,7 +2435,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -2484,7 +2484,7 @@ public class JavaCCParser : JavaCCParserInternals
                 case 150:
                 case IDENTIFIER:
                     modifiers = Modifiers();
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case CLASS:
                         case INTERFACE:
@@ -2505,7 +2505,7 @@ public class JavaCCParser : JavaCCParserInternals
                             }
                             else
                             {
-                                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                                 {
                                     case BOOLEAN:
                                     case BYTE:
@@ -2549,7 +2549,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_25:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -2567,7 +2567,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void VariableDeclarator()
     {
         VariableDeclaratorId();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case ASSIGN:
                 jj_consume_token(ASSIGN);
@@ -2585,7 +2585,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_26:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case LBRACKET:
                     ;
@@ -2601,7 +2601,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void VariableInitializer()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case LBRACE:
                 ArrayInitializer();
@@ -2665,7 +2665,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void ArrayInitializer()
     {
         jj_consume_token(LBRACE);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -2735,7 +2735,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_la1[83] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case COMMA:
                 jj_consume_token(COMMA);
@@ -2749,7 +2749,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void MethodDeclaration(int modifiers)
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case LANGLE:
                 TypeParameters();
@@ -2760,7 +2760,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         ResultType(null);
         MethodDeclarator();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case THROWS:
                 jj_consume_token(THROWS);
@@ -2770,7 +2770,7 @@ public class JavaCCParser : JavaCCParserInternals
                 jj_la1[86] = jj_gen;
                 ;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case LBRACE:
                 Block(null);
@@ -2792,7 +2792,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_28:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case LBRACKET:
                     ;
@@ -2813,7 +2813,7 @@ public class JavaCCParser : JavaCCParserInternals
             tokens = new ();
         jj_consume_token(LPAREN);
         first = getToken(1);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case ABSTRACT:
             case BOOLEAN:
@@ -2842,7 +2842,7 @@ public class JavaCCParser : JavaCCParserInternals
             label_29:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case COMMA:
                             ;
@@ -2878,16 +2878,16 @@ public class JavaCCParser : JavaCCParserInternals
         Token t;
         Modifiers();
         Type();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case STAR:
             case BIT_AND:
             case 145:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case STAR:
                     case BIT_AND:
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                         {
                             case BIT_AND:
                                 t = jj_consume_token(BIT_AND);
@@ -2920,7 +2920,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void ConstructorDeclaration()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case LANGLE:
                 TypeParameters();
@@ -2931,7 +2931,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         JavaIdentifier();
         FormalParameters(null);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case THROWS:
                 jj_consume_token(THROWS);
@@ -2953,7 +2953,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_30:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -3046,7 +3046,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -3112,7 +3112,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void Initializer()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case STATIC:
                 jj_consume_token(STATIC);
@@ -3135,7 +3135,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case BOOLEAN:
                 case BYTE:
@@ -3157,7 +3157,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void ReferenceType()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case BOOLEAN:
             case BYTE:
@@ -3186,7 +3186,7 @@ public class JavaCCParser : JavaCCParserInternals
             case TEMPLATE:
             case DOUBLECOLON:
             case IDENTIFIER:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case TEMPLATE:
                         Template();
@@ -3226,7 +3226,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_33:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -3244,7 +3244,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void TemplateBase()
     {
         TemplatePack();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case 145:
                 jj_consume_token(145);
@@ -3258,7 +3258,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void TemplatePack()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case CLASS:
                 jj_consume_token(CLASS);
@@ -3275,7 +3275,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void ClassOrInterfaceType()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case DOUBLECOLON:
                 jj_consume_token(DOUBLECOLON);
@@ -3304,7 +3304,7 @@ public class JavaCCParser : JavaCCParserInternals
             {
                 break label_34;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case DOT:
                     jj_consume_token(DOT);
@@ -3336,7 +3336,7 @@ public class JavaCCParser : JavaCCParserInternals
             tokens = new ();
         jj_consume_token(LANGLE);
         first = getToken(0);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case BOOLEAN:
             case BYTE:
@@ -3354,7 +3354,7 @@ public class JavaCCParser : JavaCCParserInternals
             label_35:
                 while (true)
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case COMMA:
                             ;
@@ -3365,7 +3365,7 @@ public class JavaCCParser : JavaCCParserInternals
                     }
                     jj_consume_token(COMMA);
                     TypeArgument();
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case 145:
                             jj_consume_token(145);
@@ -3396,7 +3396,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void TypeArgument()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case BOOLEAN:
             case BYTE:
@@ -3413,7 +3413,7 @@ public class JavaCCParser : JavaCCParserInternals
                 break;
             case HOOK:
                 jj_consume_token(HOOK);
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case EXTENDS:
                     case SUPER:
@@ -3433,7 +3433,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void WildcardBounds()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case EXTENDS:
                 jj_consume_token(EXTENDS);
@@ -3452,7 +3452,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void PrimitiveType()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case BOOLEAN:
                 jj_consume_token(BOOLEAN);
@@ -3490,11 +3490,11 @@ public class JavaCCParser : JavaCCParserInternals
         Token first = getToken(1);
         if (tokens == null)
             tokens = new ();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case VOID:
                 jj_consume_token(VOID);
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case STAR:
                         jj_consume_token(STAR);
@@ -3516,7 +3516,7 @@ public class JavaCCParser : JavaCCParserInternals
             case TEMPLATE:
             case DOUBLECOLON:
             case IDENTIFIER:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case CONST:
                         jj_consume_token(CONST);
@@ -3526,11 +3526,11 @@ public class JavaCCParser : JavaCCParserInternals
                         ;
                 }
                 Type();
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case STAR:
                     case BIT_AND:
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                         {
                             case STAR:
                                 jj_consume_token(STAR);
@@ -3608,7 +3608,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_37:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -3652,7 +3652,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void AssignmentOperator()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case ASSIGN:
                 jj_consume_token(ASSIGN);
@@ -3700,7 +3700,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void ConditionalExpression()
     {
         ConditionalOrExpression();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case HOOK:
                 jj_consume_token(HOOK);
@@ -3720,7 +3720,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_38:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case SC_OR:
                     ;
@@ -3740,7 +3740,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_39:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case SC_AND:
                     ;
@@ -3760,7 +3760,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_40:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case BIT_OR:
                     ;
@@ -3780,7 +3780,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_41:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case XOR:
                     ;
@@ -3800,7 +3800,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_42:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case BIT_AND:
                     ;
@@ -3820,7 +3820,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_43:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case EQ:
                 case NE:
@@ -3830,7 +3830,7 @@ public class JavaCCParser : JavaCCParserInternals
                     jj_la1[127] = jj_gen;
                     break label_43;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case EQ:
                     jj_consume_token(EQ);
@@ -3850,7 +3850,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void InstanceOfExpression()
     {
         RelationalExpression();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case INSTANCEOF:
                 jj_consume_token(INSTANCEOF);
@@ -3868,7 +3868,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_44:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case LANGLE:
                 case LE:
@@ -3880,7 +3880,7 @@ public class JavaCCParser : JavaCCParserInternals
                     jj_la1[130] = jj_gen;
                     break label_44;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case LANGLE:
                     jj_consume_token(LANGLE);
@@ -3917,7 +3917,7 @@ public class JavaCCParser : JavaCCParserInternals
             {
                 break label_45;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case 149:
                     jj_consume_token(149);
@@ -3948,7 +3948,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_46:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case PLUS:
                 case MINUS:
@@ -3958,7 +3958,7 @@ public class JavaCCParser : JavaCCParserInternals
                     jj_la1[133] = jj_gen;
                     break label_46;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case PLUS:
                     jj_consume_token(PLUS);
@@ -3981,7 +3981,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_47:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case STAR:
                 case SLASH:
@@ -3992,7 +3992,7 @@ public class JavaCCParser : JavaCCParserInternals
                     jj_la1[135] = jj_gen;
                     break label_47;
             }
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case STAR:
                     jj_consume_token(STAR);
@@ -4014,11 +4014,11 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void UnaryExpression()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case PLUS:
             case MINUS:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case PLUS:
                         jj_consume_token(PLUS);
@@ -4105,11 +4105,11 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void UnaryExpressionNotPlusMinus()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case BANG:
             case TILDE:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case TILDE:
                         jj_consume_token(TILDE);
@@ -4132,7 +4132,7 @@ public class JavaCCParser : JavaCCParserInternals
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -4205,13 +4205,13 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case LPAREN:
                     jj_consume_token(LPAREN);
                     Type();
                     jj_consume_token(RPAREN);
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case TILDE:
                             jj_consume_token(TILDE);
@@ -4278,11 +4278,11 @@ public class JavaCCParser : JavaCCParserInternals
     public void PostfixExpression()
     {
         PrimaryExpression();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case INCR:
             case DECR:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case INCR:
                         jj_consume_token(INCR);
@@ -4313,7 +4313,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case LPAREN:
                     jj_consume_token(LPAREN);
@@ -4356,7 +4356,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void PrimaryPrefix()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case FALSE:
             case NULL:
@@ -4393,7 +4393,7 @@ public class JavaCCParser : JavaCCParserInternals
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -4443,7 +4443,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case LBRACKET:
                     jj_consume_token(LBRACKET);
@@ -4467,7 +4467,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void Literal()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case INTEGER_LITERAL:
                 jj_consume_token(INTEGER_LITERAL);
@@ -4511,7 +4511,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public bool BooleanLiteral()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case TRUE:
                 jj_consume_token(TRUE);
@@ -4533,7 +4533,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         Token t;
         t = jj_consume_token(STRING_LITERAL);
-        { if (true) return remove_escapes_and_quotes(t, t.image); }
+        { if (true) return RemoveEscapesAndQuotes(t, t.image); }
         throw new Error("Missing return statement in function");
     }
 
@@ -4551,11 +4551,11 @@ public class JavaCCParser : JavaCCParserInternals
         first = getToken(1);
         // Added by Sreenivas Viswanadha for 6.0
         // TODO :: 2013/07/16 -- cba : Think this condition should be if the language IS C++, not if the language ISN'T Java ...
-        if (!isJavaLanguage())
+        if (!IsJavaLanguage())
         {
             eatUptoRParen(null);
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -4630,7 +4630,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_49:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -4654,12 +4654,12 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case NEW:
                     jj_consume_token(NEW);
                     ClassOrInterfaceType();
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case LANGLE:
                             TypeArguments(null);
@@ -4668,14 +4668,14 @@ public class JavaCCParser : JavaCCParserInternals
                             jj_la1[154] = jj_gen;
                             ;
                     }
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case LBRACKET:
                             ArrayDimsAndInits();
                             break;
                         case LPAREN:
                             Arguments(null);
-                            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                             {
                                 case LBRACE:
                                     ClassOrInterfaceBody(false, null);
@@ -4739,7 +4739,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case LBRACKET:
                 label_52:
@@ -4747,7 +4747,7 @@ public class JavaCCParser : JavaCCParserInternals
                     {
                         jj_consume_token(LBRACKET);
                         jj_consume_token(RBRACKET);
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                         {
                             case LBRACKET:
                                 ;
@@ -4778,7 +4778,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case ASSERT:
                     AssertStatement();
@@ -4880,7 +4880,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         jj_consume_token(ASSERT);
         Expression(null);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case COLON:
                 jj_consume_token(COLON);
@@ -4907,14 +4907,14 @@ public class JavaCCParser : JavaCCParserInternals
             tokens = new ();
         jj_consume_token(LBRACE);
         first = getToken(1);
-        if (!isJavaLanguage())
+        if (!IsJavaLanguage())
         {
             eatUptoCloseBrace(null);
         }
     label_53:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -5017,7 +5017,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -5098,7 +5098,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_54:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -5119,7 +5119,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void StatementExpression()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case INCR:
                 PreIncrementExpression();
@@ -5169,7 +5169,7 @@ public class JavaCCParser : JavaCCParserInternals
             case 144:
             case IDENTIFIER:
                 PrimaryExpression();
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case ASSIGN:
                     case INCR:
@@ -5185,7 +5185,7 @@ public class JavaCCParser : JavaCCParserInternals
                     case 146:
                     case 147:
                     case 148:
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                         {
                             case INCR:
                                 jj_consume_token(INCR);
@@ -5236,7 +5236,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_55:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case CASE:
                 case _DEFAULT:
@@ -5250,7 +5250,7 @@ public class JavaCCParser : JavaCCParserInternals
         label_56:
             while (true)
             {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case _LOOKAHEAD:
                     case _IGNORE_CASE:
@@ -5336,7 +5336,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void SwitchLabel()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case CASE:
                 jj_consume_token(CASE);
@@ -5361,7 +5361,7 @@ public class JavaCCParser : JavaCCParserInternals
         Expression(null);
         jj_consume_token(RPAREN);
         Statement();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case ELSE:
                 jj_consume_token(ELSE);
@@ -5407,7 +5407,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -5465,7 +5465,7 @@ public class JavaCCParser : JavaCCParserInternals
                 case 144:
                 case 150:
                 case IDENTIFIER:
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -5529,7 +5529,7 @@ public class JavaCCParser : JavaCCParserInternals
                             ;
                     }
                     jj_consume_token(SEMICOLON);
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -5585,7 +5585,7 @@ public class JavaCCParser : JavaCCParserInternals
                             ;
                     }
                     jj_consume_token(SEMICOLON);
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case _LOOKAHEAD:
                         case _IGNORE_CASE:
@@ -5655,7 +5655,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case _LOOKAHEAD:
                 case _IGNORE_CASE:
@@ -5716,7 +5716,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_57:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -5738,7 +5738,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void BreakStatement()
     {
         jj_consume_token(BREAK);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -5771,7 +5771,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void ContinueStatement()
     {
         jj_consume_token(CONTINUE);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -5814,7 +5814,7 @@ public class JavaCCParser : JavaCCParserInternals
             t.image = "{if (\u005c\"\u005c\" != null) return";
             jumpPatched = true;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -5919,16 +5919,16 @@ public class JavaCCParser : JavaCCParserInternals
         Token t;
         Modifiers();
         Type();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case STAR:
             case BIT_AND:
             case 145:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case STAR:
                     case BIT_AND:
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                         {
                             case BIT_AND:
                                 t = jj_consume_token(BIT_AND);
@@ -5959,7 +5959,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_58:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case BIT_OR:
                     ;
@@ -5978,7 +5978,7 @@ public class JavaCCParser : JavaCCParserInternals
     {
         bool empty = true;
         jj_consume_token(TRY);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case LPAREN:
                 jj_consume_token(LPAREN);
@@ -5997,7 +5997,7 @@ public class JavaCCParser : JavaCCParserInternals
                     jj_consume_token(SEMICOLON);
                     ResourceDeclaration();
                 }
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case SEMICOLON:
                         jj_consume_token(SEMICOLON);
@@ -6017,7 +6017,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_60:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case CATCH:
                     ;
@@ -6033,7 +6033,7 @@ public class JavaCCParser : JavaCCParserInternals
             Block(null);
             empty = false;
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case FINALLY:
                 jj_consume_token(FINALLY);
@@ -6097,7 +6097,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         else
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case 150:
                     MarkerAnnotation();
@@ -6115,7 +6115,7 @@ public class JavaCCParser : JavaCCParserInternals
         jj_consume_token(150);
         Name(null);
         jj_consume_token(LPAREN);
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case _LOOKAHEAD:
             case _IGNORE_CASE:
@@ -6166,7 +6166,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_61:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case COMMA:
                     ;
@@ -6189,7 +6189,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public void MemberValue()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case 150:
                 Annotation();
@@ -6271,7 +6271,7 @@ public class JavaCCParser : JavaCCParserInternals
             jj_consume_token(COMMA);
             MemberValue();
         }
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case COMMA:
                 jj_consume_token(COMMA);
@@ -6298,7 +6298,7 @@ public class JavaCCParser : JavaCCParserInternals
     label_63:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case ABSTRACT:
                 case BOOLEAN:
@@ -6341,7 +6341,7 @@ public class JavaCCParser : JavaCCParserInternals
     public void AnnotationTypeMemberDeclaration()
     {
         int modifiers;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case ABSTRACT:
             case BOOLEAN:
@@ -6376,7 +6376,7 @@ public class JavaCCParser : JavaCCParserInternals
                     JavaIdentifier();
                     jj_consume_token(LPAREN);
                     jj_consume_token(RPAREN);
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case _DEFAULT:
                             DefaultValue();
@@ -6389,7 +6389,7 @@ public class JavaCCParser : JavaCCParserInternals
                 }
                 else
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                    switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                     {
                         case CLASS:
                         case INTERFACE:
@@ -10565,7 +10565,7 @@ public class JavaCCParser : JavaCCParserInternals
         return t;
     }
 
-    private int jj_ntk()
+    private int jj_ntk_()
     {
         if ((jj_nt = token.next) == null)
             return (jj_ntk = (token.next = token_source.getNextToken()).kind);

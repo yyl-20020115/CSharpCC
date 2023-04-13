@@ -31,10 +31,10 @@ namespace org.javacc.parser;
  * Describes the EOF regular expression
  */
 
-public class REndOfFile:RegularExpression {
-
-  public Nfa GenerateNfa(bool ignoreCase)
-  {
-     return null;
-  }
+public class REndOfFile : RegularExpression
+{
+    public override Nfa GenerateNfa(bool ignoreCase)
+    {
+        return null;
+    }
 }

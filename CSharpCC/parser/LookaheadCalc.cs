@@ -85,7 +85,7 @@ public class LookaheadCalc:JavaCCGlobals {
     if (m.firstFreeLoc == 0) {
       return "";
     } else {
-      return ret.substring(1);
+      return ret[1..];
     }
   }
 
@@ -106,10 +106,10 @@ public class LookaheadCalc:JavaCCGlobals {
       MatchInfo.laLimit = la;
       LookaheadWalk.considerSemanticLA = !Options.getForceLaCheck();
       for (int i = first; i < ch.GetChoices().Count-1; i++) {
-        LookaheadWalk.sizeLimitedMatches = new ArrayList<MatchInfo>();
+        LookaheadWalk.sizeLimitedMatches = new ();
         m = new MatchInfo();
         m.firstFreeLoc = 0;
-        v = new ArrayList<MatchInfo>();
+        v = new ();
         v.Add(m);
         LookaheadWalk.genFirstSet(v, (Expansion)ch.GetChoices()[i]);
         dbl[i] = LookaheadWalk.sizeLimitedMatches;
@@ -190,7 +190,7 @@ public class LookaheadCalc:JavaCCGlobals {
       return false;
     }
     Lookahead la = (Lookahead)obj;
-    return la.isExplicit();
+    return la.IsExplicit();
   }
 
   static int firstChoice(Choice ch) {

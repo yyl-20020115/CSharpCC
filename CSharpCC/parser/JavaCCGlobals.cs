@@ -29,8 +29,6 @@ using org.javacc.jjtree;
 
 namespace org.javacc.parser;
 
-
-
 /**
  * This package contains data created as a result of parsing and semanticizing
  * a JavaCC input file.  This data is what is used by the back-ends of JavaCC as
@@ -58,7 +56,7 @@ public class JavaCCGlobals : JavaCCParserConstants
     /**
      * Set to true if this file has been processed by JJTree.
      */
-    static public bool jjtreeGenerated;
+    static public bool jjtreeGenerated = false;
 
     /**
      * The list of tools that have participated in generating the
@@ -133,7 +131,7 @@ public class JavaCCGlobals : JavaCCParserConstants
     /**
      * The declarations to be inserted into the TokenManager class.
      */
-    static public List token_mgr_decls;
+    static public List<Token> token_mgr_decls;
 
     /**
      * The list of all TokenProductions from the input file.  This list includes
@@ -185,7 +183,7 @@ public class JavaCCGlobals : JavaCCParserConstants
      * This third level hashtable contains the actual string of the simple token
      * and maps it to its RegularExpression.
      */
-    static public Dictionary simple_tokens_table = new Dictionary();
+    static public Dictionary<string, Dictionary<string,string>> simple_tokens_table = new();
 
     /**
      * maskindex, jj2index, maskVals are variables that are shared between
@@ -194,7 +192,7 @@ public class JavaCCGlobals : JavaCCParserConstants
     static protected int maskindex = 0;
     static protected int jj2index = 0;
     public static bool lookaheadNeeded;
-    public static protected List maskVals = new ();
+    public static List<int[]> maskVals = new ();
 
     public static Action actForEof;
     public static string nextStateForEof;
@@ -339,30 +337,30 @@ public class JavaCCGlobals : JavaCCParserConstants
         return new ();
     }
 
-    public static void createOutputDir(string outputDir)
+    public static void CreateOutputDir(string outputDir)
     {
         if (!Directory.Exists(outputDir))
         {
             JavaCCErrors.Warning("Output directory \"" + outputDir + "\" does not exist. Creating the directory.");
 
-            if (!outputDir.mkdirs())
+            if (!Directory.CreateDirectory(outputDir).Exists)
             {
                 JavaCCErrors.SemanticError("Cannot create the output directory : " + outputDir);
                 return;
             }
         }
 
-        if (!outputDir.isDirectory())
+        if (!Directory.Exists(outputDir))
         {
             JavaCCErrors.SemanticError("\"" + outputDir + " is not a valid output directory.");
             return;
         }
 
-        if (!outputDir.canWrite())
-        {
-            JavaCCErrors.SemanticError("Cannot write to the output output directory : \"" + outputDir + "\"");
-            return;
-        }
+        //if (!outputDir.canWrite())
+        //{
+        //    JavaCCErrors.SemanticError("Cannot write to the output output directory : \"" + outputDir + "\"");
+        //    return;
+        //}
     }
 
     static public string staticOpt()

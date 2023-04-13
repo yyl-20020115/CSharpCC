@@ -1182,7 +1182,7 @@ public class NfaState
         while (e.hasMoreElements())
         {
             s = (String)e.nextElement();
-            if (!s == (stateSetString) && Intersect(stateSetString, s))
+            if (s != (stateSetString) && Intersect(stateSetString, s))
             {
                 int[] other = (int[])compositeStateTable.get(s);
 

@@ -183,7 +183,7 @@ public class IO
     {
         try
         {
-            JavaCCGlobals.createOutputDir(JJTreeOptions.GetJJTreeOutputDirectory());
+            JavaCCGlobals.CreateOutputDir(JJTreeOptions.GetJJTreeOutputDirectory());
             string ofile = Path.Combine(JJTreeOptions.GetJJTreeOutputDirectory(), Create_output_file_name(ifn));
             ofn = ofile.ToString();
             _out = new StreamWriter(ofile);

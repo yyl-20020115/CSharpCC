@@ -456,7 +456,7 @@ public class CodeGenerator : JavaCCGlobals
                                                   : "SimpleCharStream";
         }
     }
-    protected void WriteTemplate(string name, Dictionary<String, object> options, params object[] additionalOptions)
+    public void WriteTemplate(string name, Dictionary<String, object> options, params object[] additionalOptions)
     {
 
         // options.Add("", .valueOf(maxOrdinal));

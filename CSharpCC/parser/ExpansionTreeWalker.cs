@@ -72,7 +72,7 @@ public static class ExpansionTreeWalker
             }
             else if (node is Lookahead lookahead)
             {
-                var nested_e = lookahead.getLaExpansion();
+                var nested_e = lookahead.GetLaExpansion();
                 if (!(nested_e is Sequence && (Expansion)(((Sequence)nested_e).units[0]) == node))
                 {
                     PreOrderWalk(nested_e, opObj);
@@ -152,7 +152,7 @@ public static class ExpansionTreeWalker
             }
             else if (node is Lookahead lookahead)
             {
-                Expansion nested_e = lookahead.getLaExpansion();
+                Expansion nested_e = lookahead.GetLaExpansion();
                 if (!(nested_e is Sequence && (Expansion)(((Sequence)nested_e).units[0]) == node))
                 {
                     PostOrderWalk(nested_e, opObj);

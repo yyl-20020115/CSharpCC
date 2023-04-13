@@ -39,9 +39,9 @@ public class ROneOrMore:RegularExpression {
    */
   public RegularExpression regexpr;
 
-  public Nfa GenerateNfa(bool ignoreCase)
+  public override Nfa GenerateNfa(bool ignoreCase)
   {
-     Nfa retVal = new Nfa();
+     var retVal = new Nfa();
      NfaState startState = retVal.start;
      NfaState finalState = retVal.end;
 

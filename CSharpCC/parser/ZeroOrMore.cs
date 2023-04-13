@@ -35,28 +35,31 @@ namespace org.javacc.parser;
  * Describes zero-or-more expansions (e.g., foo*).
  */
 
-public class ZeroOrMore:Expansion {
+public class ZeroOrMore : Expansion
+{
 
-  /**
-   * The expansion which is repeated zero or more times.
-   */
-  public Expansion expansion;
+    /**
+     * The expansion which is repeated zero or more times.
+     */
+    public Expansion expansion;
 
-    public ZeroOrMore() {}
+    public ZeroOrMore() { }
 
-    public ZeroOrMore(Token token, Expansion expansion) {
+    public ZeroOrMore(Token token, Expansion expansion)
+    {
         this.SetLine(token.beginLine);
         this.SetColumn(token.beginColumn);
         this.expansion = expansion;
         this.expansion.parent = this;
     }
 
-    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped) {
-      StringBuilder sb = base.Dump(indent, alreadyDumped);
-      if (alreadyDumped.Contains(this))
+    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
+    {
+        var sb = base.Dump(indent, alreadyDumped);
+        if (alreadyDumped.Contains(this))
+            return sb;
+        alreadyDumped.Add(this);
+        sb.Append(eol).Append(expansion.Dump(indent + 1, alreadyDumped));
         return sb;
-      alreadyDumped.Add(this);
-      sb.Append(eol).Append(expansion.Dump(indent + 1, alreadyDumped));
-      return sb;
     }
 }

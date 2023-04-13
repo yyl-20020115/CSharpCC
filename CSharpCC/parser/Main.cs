@@ -44,10 +44,8 @@ public class MainParser
     protected MainParser() { }
 
     public static LexGen lg;
-    static void help_message()
+    static void HelpMessage()
     {
-
-
         Console.WriteLine("Usage:");
         Console.WriteLine("    javacc option-settings inputfile");
         Console.WriteLine("");
@@ -203,7 +201,7 @@ public class MainParser
         if (args.Length == 0)
         {
             Console.WriteLine("");
-            help_message();
+            HelpMessage();
             return 1;
         }
         else
@@ -287,7 +285,7 @@ public class MainParser
                 return unhandledLanguageExit(outputLanguage);
             }
 
-            JavaCCGlobals.createOutputDir(Options.getOutputDirectory());
+            JavaCCGlobals.CreateOutputDir(Options.getOutputDirectory());
 
             if (Options.getUnicodeInput())
             {
@@ -385,11 +383,11 @@ public class MainParser
         org.javacc.parser.JavaCCErrors.ReInit();
         org.javacc.parser.JavaCCGlobals.ReInit();
         Options.Init();
-        org.javacc.parser.JavaCCParserInternals.reInit();
+        org.javacc.parser.JavaCCParserInternals.ReInit();
         org.javacc.parser.RStringLiteral.reInit();
-        org.javacc.parser.JavaFiles.reInit();
+        org.javacc.parser.JavaFiles.ReInit();
         org.javacc.parser.NfaState.reInit();
-        org.javacc.parser.MatchInfo.reInit();
+        org.javacc.parser.MatchInfo.ReInit();
         org.javacc.parser.LookaheadWalk.reInit();
         org.javacc.parser.Semanticize.reInit();
         org.javacc.parser.OtherFilesGen.reInit();

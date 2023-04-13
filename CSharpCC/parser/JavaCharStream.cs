@@ -123,10 +123,10 @@ class JavaCharStream
 
         try
         {
-            if ((i = inputStream.read(nextCharBuf, maxNextCharInd,
+            if ((i = inputStream.Read(nextCharBuf, maxNextCharInd,
                                                 4096 - maxNextCharInd)) == -1)
             {
-                inputStream.close();
+                inputStream.Close();
                 throw new IOException();
             }
             else

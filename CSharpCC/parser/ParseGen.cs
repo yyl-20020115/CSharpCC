@@ -31,12 +31,10 @@
 namespace org.javacc.parser;
 
 
-
-
 /**
  * Generate the parser.
  */
-public class ParseGen : CodeGenerator, JavaCCParserConstants {
+public class ParseGen : CodeGenerator {
 
 	public void start(bool isJavaModernMode) {
 

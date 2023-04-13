@@ -35,28 +35,31 @@ namespace org.javacc.parser;
  * Describes one-or-more expansions (e.g., foo+).
  */
 
-public class OneOrMore:Expansion {
+public class OneOrMore : Expansion
+{
 
-  /**
-   * The expansion which is repeated one or more times.
-   */
-  public Expansion expansion;
+    /**
+     * The expansion which is repeated one or more times.
+     */
+    public Expansion expansion;
 
-    public OneOrMore() {}
+    public OneOrMore() { }
 
-    public OneOrMore(Token t, Expansion e) {
+    public OneOrMore(Token t, Expansion e)
+    {
         this.SetLine(t.beginLine);
         this.SetColumn(t.beginColumn);
         this.expansion = e;
         expansion.parent = this;
     }
 
-    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped) {
-      StringBuilder sb = base.Dump(indent, alreadyDumped);
-      if (alreadyDumped.Contains(this))
+    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
+    {
+        var sb = base.Dump(indent, alreadyDumped);
+        if (alreadyDumped.Contains(this))
+            return sb;
+        alreadyDumped.Add(this);
+        sb.Append(eol).Append(expansion.Dump(indent + 1, alreadyDumped));
         return sb;
-      alreadyDumped.Add(this);
-      sb.Append(eol).Append(expansion.Dump(indent + 1, alreadyDumped));
-      return sb;
     }
 }

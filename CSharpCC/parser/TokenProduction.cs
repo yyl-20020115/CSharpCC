@@ -76,7 +76,7 @@ public class TokenProduction
      * The list of regular expression specifications that comprise this
      * production.  Each entry is a "RegExprSpec".
      */
-    public List<RegExprSpec> respecs = new ();
+    public List<RegExprSpec> respecs = new();
 
     /**
      * This is true if this corresponds to a production that actually
@@ -101,7 +101,7 @@ public class TokenProduction
     /**
      * @param line the line to set
      */
-    public void setLine(int line)
+    public void SetLine(int line)
     {
         this.line = line;
     }
@@ -109,7 +109,7 @@ public class TokenProduction
     /**
      * @return the line
      */
-    public int getLine()
+    public int GetLine()
     {
         return line;
     }
@@ -117,7 +117,7 @@ public class TokenProduction
     /**
      * @param column the column to set
      */
-    public void setColumn(int column)
+    public void SetColumn(int column)
     {
         this.column = column;
     }
@@ -125,7 +125,7 @@ public class TokenProduction
     /**
      * @return the column
      */
-    public int getColumn()
+    public int GetColumn()
     {
         return column;
     }

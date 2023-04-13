@@ -39,8 +39,8 @@ public class ParseException : Exception
                           int[][] expectedTokenSequencesVal,
                           String[] tokenImageVal
                          )
+        : base(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal))
     {
-        super(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal));
         currentToken = currentTokenVal;
         expectedTokenSequences = expectedTokenSequencesVal;
         tokenImage = tokenImageVal;
@@ -57,14 +57,14 @@ public class ParseException : Exception
      */
 
     public ParseException()
+        :base()
     {
-        super();
     }
 
     /** Constructor with message. */
     public ParseException(String message)
+        :base(message)
     {
-        super(message);
     }
 
 
@@ -100,7 +100,7 @@ public class ParseException : Exception
                              int[][] expectedTokenSequences,
                              String[] tokenImage)
     {
-        String eol = System.getProperty("line.separator", "\n");
+        String eol = Environment.NewLine;// System.getProperty("line.separator", "\n");
         StringBuilder expected = new StringBuilder();
         int maxSize = 0;
         for (int i = 0; i < expectedTokenSequences.Length; i++)
@@ -152,7 +152,7 @@ public class ParseException : Exception
     /**
      * The end of line string for this machine.
      */
-    protected String eol = System.getProperty("line.separator", "\n");
+    protected String eol = Environment.NewLine;// System.getProperty("line.separator", "\n");
 
     /**
      * Used to convert raw characters to their escaped version
@@ -167,7 +167,7 @@ public class ParseException : Exception
         {
             switch (str[i])
             {
-                case 0:
+                case '\0':
                     continue;
                 case '\b':
                     retval.Append("\\b");
@@ -196,8 +196,8 @@ public class ParseException : Exception
                 default:
                     if ((ch = str[i]) < 0x20 || ch > 0x7e)
                     {
-                        String s = "0000" + int.toString(ch, 16);
-                        retval.Append("\\u" + s.substring(s.Length - 4, s.Length));
+                        var s = "0000" + Convert.ToString(ch, 16);
+                        retval.Append("\\u" + s[^4..]);
                     }
                     else
                     {

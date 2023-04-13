@@ -41,7 +41,7 @@ public class RJustName:RegularExpression {
    */
   public RegularExpression regexpr;
 
-  public Nfa GenerateNfa(bool ignoreCase)
+  public override Nfa GenerateNfa(bool ignoreCase)
   {
      return regexpr.GenerateNfa(ignoreCase);
   }

@@ -32,30 +32,31 @@ namespace org.javacc.parser;
  * "TokenProduction".
  */
 
-public class RegExprSpec {
+public class RegExprSpec
+{
 
-  /**
-   * The regular expression of this specification.
-   */
-  public RegularExpression rexp;
+    /**
+     * The regular expression of this specification.
+     */
+    public RegularExpression rexp;
 
-  /**
-   * The action corresponding to this specification.
-   */
-  public Action act;
+    /**
+     * The action corresponding to this specification.
+     */
+    public Action act;
 
-  /**
-   * The next state corresponding to this specification.  If no
-   * next state has been specified, this field is set to "null".
-   */
-  public string nextState;
+    /**
+     * The next state corresponding to this specification.  If no
+     * next state has been specified, this field is set to "null".
+     */
+    public string nextState;
 
-  /**
-   * If the next state specification was explicit in the previous
-   * case, then this token is that of the identifier denoting
-   * the next state.  This is used for location information, etc.
-   * in error reporting.
-   */
-  public Token nsTok;
+    /**
+     * If the next state specification was explicit in the previous
+     * case, then this token is that of the identifier denoting
+     * the next state.  This is used for location information, etc.
+     * in error reporting.
+     */
+    public Token nsTok;
 
 }

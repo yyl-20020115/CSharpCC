@@ -269,7 +269,7 @@ public class JJDoc : JJDocGlobals
     private static void EmitExpansionNonTerminal(NonTerminal nt, Generator gen)
     {
         gen.NonTerminalStart(nt);
-        gen.Text(nt.getName());
+        gen.Text(nt.GetName());
         gen.NonTerminalEnd(nt);
     }
     private static void EmitExpansionOneOrMore(OneOrMore o, Generator gen)

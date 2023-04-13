@@ -8,7 +8,6 @@ namespace org.javacc.utils;
  */
 public class ConditionParserConstants
 {
-
     /** End of File. */
     public const int EOF = 0;
     /** RegularExpression Id. */
@@ -48,7 +47,7 @@ public class ConditionParserConstants
     public const int IN_MULTI_LINE_COMMENT = 3;
 
     /** Literal token values. */
-    public static readonly string[] tokenImage = {
+    public static readonly string[] TokenImage = {
     "<EOF>",
     "\" \"",
     "\"\\t\"",

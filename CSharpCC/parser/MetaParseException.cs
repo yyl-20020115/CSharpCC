@@ -31,10 +31,11 @@ namespace org.javacc.parser;
 /**
  * Thrown when there is a mis-configuration or a bug.
  */
-public class MetaParseException:ParseException {
+public class MetaParseException : ParseException
+{
 
-	/**
+    /**
 	 *
 	 */
-	private const long serialVersionUID = 1L;
+    private const long serialVersionUID = 1L;
 }

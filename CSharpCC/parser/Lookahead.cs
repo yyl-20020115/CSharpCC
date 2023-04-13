@@ -49,7 +49,7 @@ public class Lookahead : Expansion
      * that forms the semantic lookahead.  In this case, the following
      * fields "amount" and "la_expansion" are ignored.
      */
-    private List<Token> action_tokens = new();
+    private readonly List<Token> ActionTokens = new();
 
     /**
      * The lookahead amount.  Its default value essentially gives us
@@ -71,7 +71,7 @@ public class Lookahead : Expansion
      */
     private bool _isExplicit;
 
-    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
+    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
         var sb = base.Dump(indent, alreadyDumped).Append(_isExplicit ? " explicit" : " implicit");
         if (alreadyDumped.Contains(this))
@@ -84,15 +84,15 @@ public class Lookahead : Expansion
     /**
      * @return the action_tokens
      */
-    public List<Token> getActionTokens()
+    public List<Token> GetActionTokens()
     {
-        return action_tokens;
+        return ActionTokens;
     }
 
     /**
      * @param amount the amount to set
      */
-    public void setAmount(int amount)
+    public void SetAmount(int amount)
     {
         this.amount = amount;
     }
@@ -100,7 +100,7 @@ public class Lookahead : Expansion
     /**
      * @return the amount
      */
-    public int getAmount()
+    public int GetAmount()
     {
         return amount;
     }
@@ -108,7 +108,7 @@ public class Lookahead : Expansion
     /**
      * @param la_expansion the la_expansion to set
      */
-    public void setLaExpansion(Expansion la_expansion)
+    public void SetLaExpansion(Expansion la_expansion)
     {
         this.la_expansion = la_expansion;
     }
@@ -116,7 +116,7 @@ public class Lookahead : Expansion
     /**
      * @return the la_expansion
      */
-    public Expansion getLaExpansion()
+    public Expansion GetLaExpansion()
     {
         return la_expansion;
     }
@@ -124,7 +124,7 @@ public class Lookahead : Expansion
     /**
      * @param isExplicit the isExplicit to set
      */
-    public void setExplicit(bool _isExplicit)
+    public void SetExplicit(bool _isExplicit)
     {
         this._isExplicit = _isExplicit;
     }
@@ -132,7 +132,7 @@ public class Lookahead : Expansion
     /**
      * @return the isExplicit
      */
-    public bool isExplicit()
+    public bool IsExplicit()
     {
         return _isExplicit;
     }

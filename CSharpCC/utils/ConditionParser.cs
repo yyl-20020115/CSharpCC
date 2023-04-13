@@ -49,7 +49,7 @@ public class ConditionParser : ConditionParserConstants
     label_1:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case SC_OR:
                     ;
@@ -74,7 +74,7 @@ public class ConditionParser : ConditionParserConstants
     label_2:
         while (true)
         {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+            switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
             {
                 case SC_AND:
                     ;
@@ -94,11 +94,11 @@ public class ConditionParser : ConditionParserConstants
     public bool UnaryExpressionNotPlusMinus()
     {
         bool value;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case BANG:
             case 18:
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+                switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
                 {
                     case 18:
                         jj_consume_token(18);
@@ -132,7 +132,7 @@ public class ConditionParser : ConditionParserConstants
     public bool UnaryExpression()
     {
         bool value;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case TRUE:
             case FALSE:
@@ -167,7 +167,7 @@ public class ConditionParser : ConditionParserConstants
 
     public bool BooleanLiteral()
     {
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+        switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case TRUE:
                 jj_consume_token(TRUE);
@@ -193,13 +193,13 @@ public class ConditionParser : ConditionParserConstants
 
         Object obj = options.get(name);
 
-        if (obj is Boolean)
+        if (obj is bool b)
         {
-            { if (true) return ((Boolean)obj).booleanValue(); }
+            { if (true) return b; }
         }
-        else if (obj is String)
+        else if (obj is String s2)
         {
-            String s = ((String)obj).Trim();
+            String s = s2.Trim();
             { if (true) return s.Length > 0 && !s.equalsIgnoreCase("false") && !s.equalsIgnoreCase("no"); }
         }
 
@@ -250,7 +250,7 @@ public class ConditionParser : ConditionParserConstants
         ReInit(stream, null);
     }
     /** Reinitialise. */
-    public void ReInit(Stream stream, String encoding)
+    public void ReInit(Stream stream, Encoding encoding)
     {
         try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (Exception e) { throw new RuntimeException(e); }
         token_source.ReInit(jj_input_stream);
@@ -341,7 +341,7 @@ public class ConditionParser : ConditionParserConstants
         return t;
     }
 
-    private int jj_ntk()
+    private int jj_ntk_()
     {
         if ((jj_nt = token.next) == null)
             return (jj_ntk = (token.next = token_source.getNextToken()).kind);
@@ -390,7 +390,7 @@ public class ConditionParser : ConditionParserConstants
         {
             exptokseq[i] = jj_expentries[i];
         }
-        return new ParseException(token, exptokseq, tokenImage);
+        return new ParseException(token, exptokseq, TokenImage);
     }
 
     /** Enable tracing. */

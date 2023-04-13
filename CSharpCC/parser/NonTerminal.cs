@@ -60,16 +60,16 @@ public class NonTerminal : Expansion
      */
     private NormalProduction prod;
 
-    public StringBuilder dump(int indent, Set alreadyDumped)
+    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        StringBuilder value = base.dump(indent, alreadyDumped).Append(' ').Append(name);
+        var value = base.Dump(indent, alreadyDumped).Append(' ').Append(name);
         return value;
     }
 
     /**
      * @param lhsTokens the lhsTokens to set
      */
-    public void setLhsTokens(List<Token> lhsTokens)
+    public void SetLhsTokens(List<Token> lhsTokens)
     {
         this.lhsTokens = lhsTokens;
     }
@@ -77,7 +77,7 @@ public class NonTerminal : Expansion
     /**
      * @return the lhsTokens
      */
-    public List<Token> getLhsTokens()
+    public List<Token> GetLhsTokens()
     {
         return lhsTokens;
     }
@@ -85,7 +85,7 @@ public class NonTerminal : Expansion
     /**
      * @param name the name to set
      */
-    public void setName(string name)
+    public void SetName(string name)
     {
         this.name = name;
     }
@@ -93,7 +93,7 @@ public class NonTerminal : Expansion
     /**
      * @return the name
      */
-    public string getName()
+    public string GetName()
     {
         return name;
     }
@@ -101,7 +101,7 @@ public class NonTerminal : Expansion
     /**
      * @param argument_tokens the argument_tokens to set
      */
-    public void setParametrizedTypeTokens(List<Token> argument_tokens)
+    public void SetParametrizedTypeTokens(List<Token> argument_tokens)
     {
         this.argument_tokens = argument_tokens;
     }
@@ -109,7 +109,7 @@ public class NonTerminal : Expansion
     /**
      * @return the argument_tokens
      */
-    public List<Token> getParametrizedTypeTokens()
+    public List<Token> GetParametrizedTypeTokens()
     {
         return parametrized_type__tokens;
     }
@@ -117,7 +117,7 @@ public class NonTerminal : Expansion
     /**
      * @param argument_tokens the argument_tokens to set
      */
-    public void setArgumentTokens(List<Token> parametrized_type__tokens)
+    public void SetArgumentTokens(List<Token> parametrized_type__tokens)
     {
         this.parametrized_type__tokens = parametrized_type__tokens;
     }
@@ -125,7 +125,7 @@ public class NonTerminal : Expansion
     /**
      * @return the argument_tokens
      */
-    public List<Token> getArgumentTokens()
+    public List<Token> GetArgumentTokens()
     {
         return argument_tokens;
     }
@@ -133,7 +133,7 @@ public class NonTerminal : Expansion
     /**
      * @param prod the prod to set
      */
-    public NormalProduction setProd(NormalProduction prod)
+    public NormalProduction SetProd(NormalProduction prod)
     {
         return this.prod = prod;
     }
@@ -141,7 +141,7 @@ public class NonTerminal : Expansion
     /**
      * @return the prod
      */
-    public NormalProduction getProd()
+    public NormalProduction GetProd()
     {
         return prod;
     }

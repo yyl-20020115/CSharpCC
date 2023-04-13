@@ -587,7 +587,7 @@ public class Semanticize : JavaCCGlobals
     {
         if (exp is NonTerminal)
         {
-            return ((NonTerminal)exp).getProd().isEmptyPossible();
+            return ((NonTerminal)exp).GetProd().isEmptyPossible();
         }
         else if (exp is Action)
         {
@@ -648,7 +648,7 @@ public class Semanticize : JavaCCGlobals
         {
             for (int i = 0; i < prod.leIndex; i++)
             {
-                if (prod.getLeftExpansions()[i] == ((NonTerminal)exp).getProd())
+                if (prod.getLeftExpansions()[i] == ((NonTerminal)exp).GetProd())
                 {
                     return;
                 }
@@ -659,7 +659,7 @@ public class Semanticize : JavaCCGlobals
                 Array.Copy(prod.getLeftExpansions(), 0, newle, 0, prod.leIndex);
                 prod.setLeftExpansions(newle);
             }
-            prod.getLeftExpansions()[prod.leIndex++] = ((NonTerminal)exp).getProd();
+            prod.getLeftExpansions()[prod.leIndex++] = ((NonTerminal)exp).GetProd();
         }
         else if (exp is OneOrMore)
         {
@@ -899,7 +899,7 @@ public class Semanticize : JavaCCGlobals
                 }
                 Sequence seq = (Sequence)e;
                 Lookahead la = (Lookahead)(seq.units[0]);
-                if (!la.isExplicit())
+                if (!la.IsExplicit())
                 {
                     return;
                 }
@@ -917,9 +917,9 @@ public class Semanticize : JavaCCGlobals
                 act.parent = seq1;
                 seq1.units.Add(act);
                 ch.GetChoices().Add(seq1);
-                if (la.getAmount() != 0)
+                if (la.GetAmount() != 0)
                 {
-                    if (la.getActionTokens().Count != 0)
+                    if (la.GetActionTokens().Count != 0)
                     {
                         JavaCCErrors.Warning(la, "Encountered LOOKAHEAD(...) at a non-choice location.  " +
                                 "Only semantic lookahead will be considered here.");
@@ -932,12 +932,12 @@ public class Semanticize : JavaCCGlobals
                 // Now we have moved the lookahead into the singleton choice.  Now create
                 // a new dummy lookahead node to replace this one at its original location.
                 Lookahead la1 = new Lookahead();
-                la1.setExplicit(false);
+                la1.SetExplicit(false);
                 la1.SetLine(la.GetLine()); la1.SetColumn(la.GetColumn());
                 la1.parent = seq;
                 // Now set the la_expansion field of la and la1 with a dummy expansion (we use EOF).
-                la.setLaExpansion(new REndOfFile());
-                la1.setLaExpansion(new REndOfFile());
+                la.SetLaExpansion(new REndOfFile());
+                la1.SetLaExpansion(new REndOfFile());
                 seq.units[0] = la1;
                 seq.units.Insert(1, ch);
             }
@@ -965,13 +965,13 @@ public class Semanticize : JavaCCGlobals
             if (e is NonTerminal)
             {
                 NonTerminal nt = (NonTerminal)e;
-                if ((nt.setProd((NormalProduction)production_table.get(nt.getName()))) == null)
+                if ((nt.SetProd((NormalProduction)production_table.get(nt.GetName()))) == null)
                 {
-                    JavaCCErrors.SemanticError(e, "Non-terminal " + nt.getName() + " has not been defined.");
+                    JavaCCErrors.SemanticError(e, "Non-terminal " + nt.GetName() + " has not been defined.");
                 }
                 else
                 {
-                    nt.getProd().getParents().Add(nt);
+                    nt.GetProd().getParents().Add(nt);
                 }
             }
         }
@@ -1087,7 +1087,7 @@ public class Semanticize : JavaCCGlobals
                 return true;
             }
             Lookahead la = (Lookahead)obj;
-            return !la.isExplicit();
+            return !la.IsExplicit();
         }
 
     }

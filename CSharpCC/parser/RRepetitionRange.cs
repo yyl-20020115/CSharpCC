@@ -42,9 +42,9 @@ public class RRepetitionRange:RegularExpression {
   public int max = -1;
   public bool hasMax;
 
-  public Nfa GenerateNfa(bool ignoreCase)
+  public override Nfa GenerateNfa(bool ignoreCase)
   {
-     List<Object> units = new ArrayList<Object>();
+     List<Object> units = new ();
      RSequence seq;
      int i;
 
@@ -62,7 +62,7 @@ public class RRepetitionRange:RegularExpression {
 
      while (i++ < max)
      {
-        RZeroOrOne zoo = new RZeroOrOne();
+        var zoo = new RZeroOrOne();
         zoo.regexpr = regexpr;
         units.Add(zoo);
      }

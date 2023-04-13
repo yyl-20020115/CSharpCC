@@ -37,586 +37,651 @@ namespace org.javacc.parser;
 /**
  * Generate CharStream, TokenManager and Exceptions.
  */
-public class JavaFiles:JavaCCGlobals 
+public class JavaFiles : JavaCCGlobals
 {
-  /**
-   * ID of the latest version (of JavaCC) in which one of the CharStream classes
-   * or the CharStream interface is modified.
-   */
-  static readonly string charStreamVersion = Version.MajorDotMinor;
+    /**
+     * ID of the latest version (of JavaCC) in which one of the CharStream classes
+     * or the CharStream interface is modified.
+     */
+    static readonly string charStreamVersion = Version.MajorDotMinor;
 
-  /**
-   * ID of the latest version (of JavaCC) in which the TokenManager interface is modified.
-   */
-  static readonly string tokenManagerVersion = Version.MajorDotMinor;
+    /**
+     * ID of the latest version (of JavaCC) in which the TokenManager interface is modified.
+     */
+    static readonly string tokenManagerVersion = Version.MajorDotMinor;
 
-  /**
-   * ID of the latest version (of JavaCC) in which the Token class is modified.
-   */
-  static readonly string tokenVersion = Version.MajorDotMinor;
+    /**
+     * ID of the latest version (of JavaCC) in which the Token class is modified.
+     */
+    static readonly string tokenVersion = Version.MajorDotMinor;
 
-  /**
-   * ID of the latest version (of JavaCC) in which the ParseException class is
-   * modified.
-   */
-  static readonly string parseExceptionVersion = Version.MajorDotMinor;
+    /**
+     * ID of the latest version (of JavaCC) in which the ParseException class is
+     * modified.
+     */
+    static readonly string parseExceptionVersion = Version.MajorDotMinor;
 
-  /**
-   * ID of the latest version (of JavaCC) in which the TokenMgrError class is
-   * modified.
-   */
-  static readonly string tokenMgrErrorVersion = Version.MajorDotMinor;
-
-
-  public interface JavaResourceTemplateLocations {
-		public string getTokenManagerTemplateResourceUrl();
-		public string getTokenTemplateResourceUrl();
-		public string getTokenMgrErrorTemplateResourceUrl();
-		public string getJavaCharStreamTemplateResourceUrl();
-		public string getCharStreamTemplateResourceUrl();
-		public string getSimpleCharStreamTemplateResourceUrl();
-		public string getParseExceptionTemplateResourceUrl();
-  }
+    /**
+     * ID of the latest version (of JavaCC) in which the TokenMgrError class is
+     * modified.
+     */
+    static readonly string tokenMgrErrorVersion = Version.MajorDotMinor;
 
 
-  public static class JavaModernResourceTemplateLocationImpl : JavaResourceTemplateLocations {
-		public string getTokenMgrErrorTemplateResourceUrl() {
-			// Same as Java
-			return "/templates/TokenMgrError.template";
-		}
-		public string getCharStreamTemplateResourceUrl() {
-			// Same as Java
-			return "/templates/CharStream.template";
-		}
-
-	  public string getTokenManagerTemplateResourceUrl() {
-		// Same as Java
-			return "/templates/TokenManager.template";
-		}
-
-		public string getTokenTemplateResourceUrl() {
-			// Same as Java
-			return "/templates/Token.template";
-		}
-
-		public string getSimpleCharStreamTemplateResourceUrl() {
-			return "/templates/gwt/SimpleCharStream.template";
-		}
-
-
-		public string getJavaCharStreamTemplateResourceUrl() {
-			return "/templates/gwt/JavaCharStream.template";
-		}
-
-
-		public string getParseExceptionTemplateResourceUrl() {
-			return "/templates/gwt/ParseException.template";
-		}
-  }
-
-
-  public class JavaResourceTemplateLocationImpl : JavaResourceTemplateLocations {
-
-	    public string getTokenTemplateResourceUrl() {
-			return "/templates/Token.template";
-		}
-		public string getTokenManagerTemplateResourceUrl() {
-			return "/templates/TokenManager.template";
-		}
-		public string getTokenMgrErrorTemplateResourceUrl() {
-			return "/templates/TokenMgrError.template";
-		}
-		public string getJavaCharStreamTemplateResourceUrl() {
-			return "/templates/JavaCharStream.template";
-		}
-
-		public string getCharStreamTemplateResourceUrl() {
-			return "/templates/CharStream.template";
-		}
-		public string getSimpleCharStreamTemplateResourceUrl() {
-			return "/templates/SimpleCharStream.template";
-		}
-
-		public string getParseExceptionTemplateResourceUrl() {
-			return "/templates/ParseException.template";
-		}
-
-}
-
-  public static readonly JavaResourceTemplateLocations RESOURCES_JAVA_CLASSIC = new JavaResourceTemplateLocationImpl();
-  public static readonly JavaResourceTemplateLocations RESOURCES_JAVA_MODERN = new JavaModernResourceTemplateLocationImpl();
-
-
-  /**
-   * Replaces all backslahes with double backslashes.
-   */
-  static string replaceBackslash(string str)
-  {
-    StringBuilder b;
-    int i = 0, len = str.Length;
-
-    while (i < len && str[i++] != '\\') ;
-
-    if (i == len)  // No backslash found.
-      return str;
-
-    char c;
-    b = new StringBuilder();
-    for (i = 0; i < len; i++)
-      if ((c = str[i]) == '\\')
-        b.Append("\\\\");
-      else
-        b.Append(c);
-
-    return b.ToString();
-  }
-
-  /**
-   * Read the version from the comment in the specified file.
-   * This method does not try to recover from invalid comment syntax, but
-   * rather returns version 0.0 (which will always be taken to mean the file
-   * is out of date).
-   * @param fileName eg Token.java
-   * @return The version as a double, eg 4.1
-   * @since 4.1
-   */
-  public static double getVersion(string fileName)
-  {
-    string commentHeader = "/* " + GetIdString(toolName, fileName) + " Version ";
-    File file = new File(Options.getOutputDirectory(), replaceBackslash(fileName));
-
-    if (!file.exists()) {
-      // Has not yet been created, so it must be up to date.
-      try {
-        string majorVersion = Version.MajorDotMinor.replaceAll("[^0-9.]+.*", "");
-        return Double.parseDouble(majorVersion);
-      } catch (NumberFormatException e) {
-        return 0.0; // Should never happen
-      }
-    }
-
-    BufferedReader reader = null;
-    try {
-      reader = new BufferedReader(new FileReader(file));
-      string str;
-      double version = 0.0;
-
-      // Although the version comment should be the first line, sometimes the
-      // user might have put comments before it.
-      while ( (str = reader.readLine()) != null) {
-        if (str.StartsWith(commentHeader)) {
-          str = str.substring(commentHeader.Length);
-          int pos = str.IndexOf(' ');
-          if (pos >= 0) str = str.substring(0, pos);
-          if (str.Length > 0) {
-            try {
-              // str can be 4.09
-              // or even 7.0.5
-              // So far we keep only major.minor part
-              // "4 qwerty"-> "4"
-              // "4.09 qwerty" -> "4.09"
-              // "7.0.5 qwerty" -> "7.0"
-              str = str.replaceAll("(\\d+(\\.\\d+)?).*", "$1");
-              version = Double.parseDouble(str);
-            }
-            catch (NumberFormatException nfe) {
-              // Ignore - leave version as 0.0
-            }
-          }
-
-          break;
-        }
-      }
-
-      return version;
-    }
-    catch (IOException ioe)
+    public interface JavaResourceTemplateLocations
     {
-      return 0.0;
+        string GetTokenManagerTemplateResourceUrl();
+        string GetTokenTemplateResourceUrl();
+        string GetTokenMgrErrorTemplateResourceUrl();
+        string GetJavaCharStreamTemplateResourceUrl();
+        string GetCharStreamTemplateResourceUrl();
+        string GetSimpleCharStreamTemplateResourceUrl();
+        string GetParseExceptionTemplateResourceUrl();
     }
-    finally {
-      if (reader != null)
-      {
-        try { reader.Close(); } catch (IOException e) {}
-      }
+
+
+    public class JavaModernResourceTemplateLocationImpl : JavaResourceTemplateLocations
+    {
+        public string GetTokenMgrErrorTemplateResourceUrl() =>
+            // Same as Java
+            "/templates/TokenMgrError.template";
+        public string GetCharStreamTemplateResourceUrl() =>
+            // Same as Java
+            "/templates/CharStream.template";
+
+        public string GetTokenManagerTemplateResourceUrl() =>
+            // Same as Java
+            "/templates/TokenManager.template";
+
+        public string GetTokenTemplateResourceUrl() =>
+            // Same as Java
+            "/templates/Token.template";
+
+        public string GetSimpleCharStreamTemplateResourceUrl() => 
+            "/templates/gwt/SimpleCharStream.template";
+
+
+        public string GetJavaCharStreamTemplateResourceUrl() => 
+            "/templates/gwt/JavaCharStream.template";
+
+
+        public string GetParseExceptionTemplateResourceUrl() =>
+            "/templates/gwt/ParseException.template";
     }
-  }
 
 
+    public class JavaResourceTemplateLocationImpl : JavaResourceTemplateLocations
+    {
 
-  public static void gen_JavaCharStream(JavaResourceTemplateLocations locations) {
-    try {
-      File file = new File(Options.getOutputDirectory(), "JavaCharStream.java");
-      OutputFile outputFile = new OutputFile(file, charStreamVersion, new String[] {Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
+        public string GetTokenTemplateResourceUrl() 
+            => "/templates/Token.template";
+        public string GetTokenManagerTemplateResourceUrl() 
+            => "/templates/TokenManager.template";
+        public string GetTokenMgrErrorTemplateResourceUrl()
+            => "/templates/TokenMgrError.template";
+        public string GetJavaCharStreamTemplateResourceUrl() 
+            => "/templates/JavaCharStream.template";
 
-      if (!outputFile.NeedToWrite)
-      {
-        return;
-      }
+        public string GetCharStreamTemplateResourceUrl()
+            => "/templates/CharStream.template";
+        public string GetSimpleCharStreamTemplateResourceUrl() 
+            => "/templates/SimpleCharStream.template";
 
-      TextWriter ostr = outputFile.getPrintWriter();
+        public string GetParseExceptionTemplateResourceUrl()
+            => "/templates/ParseException.template";
 
-      if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
-      ) {
-        for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
-            for (int j = 0; j <= i; j++) {
-              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+    }
+
+    public static readonly JavaResourceTemplateLocations RESOURCES_JAVA_CLASSIC = new JavaResourceTemplateLocationImpl();
+    public static readonly JavaResourceTemplateLocations RESOURCES_JAVA_MODERN = new JavaModernResourceTemplateLocationImpl();
+
+
+    /**
+     * Replaces all backslahes with double backslashes.
+     */
+    static string ReplaceBackslash(string str)
+    {
+        StringBuilder b;
+        int i = 0, len = str.Length;
+
+        while (i < len && str[i++] != '\\') ;
+
+        if (i == len)  // No backslash found.
+            return str;
+
+        char c;
+        b = new StringBuilder();
+        for (i = 0; i < len; i++)
+            if ((c = str[i]) == '\\')
+                b.Append("\\\\");
+            else
+                b.Append(c);
+
+        return b.ToString();
+    }
+
+    /**
+     * Read the version from the comment in the specified file.
+     * This method does not try to recover from invalid comment syntax, but
+     * rather returns version 0.0 (which will always be taken to mean the file
+     * is out of date).
+     * @param fileName eg Token.java
+     * @return The version as a double, eg 4.1
+     * @since 4.1
+     */
+    public static double GetVersion(string fileName)
+    {
+        string commentHeader = "/* " + GetIdString(toolName, fileName) + " Version ";
+        string file = System.IO.Path.Combine(Options.getOutputDirectory(), ReplaceBackslash(fileName));
+
+        if (!File.Exists(file))
+        {
+            // Has not yet been created, so it must be up to date.
+            try
+            {
+                string majorVersion = Version.MajorDotMinor.replaceAll("[^0-9.]+.*", "");
+                return Double.parseDouble(majorVersion);
             }
-            ostr.WriteLine("");
-            ostr.WriteLine("");
-            break;
-          }
-        }
-      }
-      string prefix = (Options.getStatic() ? "static " : "");
-      Dictionary options = new Dictionary(Options.getOptions());
-      options.Add("PREFIX", prefix);
-
-      OutputFileGenerator generator = new OutputFileGenerator(
-    		  locations.getJavaCharStreamTemplateResourceUrl(), options);
-
-      generator.Generate(ostr);
-
-      ostr.Close();
-    } catch (IOException e) {
-      Console.Error.WriteLine("Failed to create JavaCharStream " + e);
-      JavaCCErrors.SemanticError("Could not open file JavaCharStream.java for writing.");
-      throw new Error();
-    }
-  }
-
-
-
-  public static void gen_SimpleCharStream(JavaResourceTemplateLocations locations) {
-    try {
-      File file = new File(Options.getOutputDirectory(), "SimpleCharStream.java");
-      OutputFile outputFile = new OutputFile(file, charStreamVersion, new String[] {Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
-
-      if (!outputFile.NeedToWrite)
-      {
-        return;
-      }
-
-      TextWriter ostr = outputFile.getPrintWriter();
-
-      if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
-      ) {
-        for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
-            for (int j = 0; j <= i; j++) {
-              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+            catch (NumberFormatException e)
+            {
+                return 0.0; // Should never happen
             }
-            ostr.WriteLine("");
-            ostr.WriteLine("");
-            break;
-          }
         }
-      }
-      string prefix = (Options.getStatic() ? "static " : "");
-      Dictionary options = new Dictionary(Options.getOptions());
-      options.Add("PREFIX", prefix);
 
-      OutputFileGenerator generator = new OutputFileGenerator(
-    		  locations.getSimpleCharStreamTemplateResourceUrl(), options);
+        StreamReader reader = null;
+        try
+        {
+            reader = new StreamReader(file);
+            string str;
+            double version = 0.0;
 
-      generator.Generate(ostr);
+            // Although the version comment should be the first line, sometimes the
+            // user might have put comments before it.
+            while ((str = reader.ReadLine()) != null)
+            {
+                if (str.StartsWith(commentHeader))
+                {
+                    str = str[commentHeader.Length..];
+                    int pos = str.IndexOf(' ');
+                    if (pos >= 0) str = str[..pos];
+                    if (str.Length > 0)
+                    {
+                        try
+                        {
+                            // str can be 4.09
+                            // or even 7.0.5
+                            // So far we keep only major.minor part
+                            // "4 qwerty"-> "4"
+                            // "4.09 qwerty" -> "4.09"
+                            // "7.0.5 qwerty" -> "7.0"
+                            str = str.replaceAll("(\\d+(\\.\\d+)?).*", "$1");
+                            version = Double.parseDouble(str);
+                        }
+                        catch (NumberFormatException nfe)
+                        {
+                            // Ignore - leave version as 0.0
+                        }
+                    }
 
-      ostr.Close();
-    } catch (IOException e) {
-      Console.Error.WriteLine("Failed to create SimpleCharStream " + e);
-      JavaCCErrors.SemanticError("Could not open file SimpleCharStream.java for writing.");
-      throw new Error();
-    }
-  }
-
-
-
-  public static void gen_CharStream(JavaResourceTemplateLocations locations) {
-    try {
-      File file = new File(Options.getOutputDirectory(), "CharStream.java");
-      OutputFile outputFile = new OutputFile(file, charStreamVersion, new String[] {Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
-
-      if (!outputFile.NeedToWrite)
-      {
-        return;
-      }
-
-      TextWriter ostr = outputFile.getPrintWriter();
-
-      if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
-      ) {
-        for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
-            for (int j = 0; j <= i; j++) {
-              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                    break;
+                }
             }
-            ostr.WriteLine("");
-            ostr.WriteLine("");
-            break;
-          }
+
+            return version;
         }
-      }
-
-      OutputFileGenerator generator = new OutputFileGenerator(
-    		  locations.getCharStreamTemplateResourceUrl(), Options.getOptions());
-
-      generator.Generate(ostr);
-
-      ostr.Close();
-    } catch (IOException e) {
-      Console.Error.WriteLine("Failed to create CharStream " + e);
-      JavaCCErrors.SemanticError("Could not open file CharStream.java for writing.");
-      throw new Error();
-    }
-  }
-
-
-
-  public static void gen_JavaModernFiles() {
-	  genMiscFile("Provider.java","/templates/gwt/Provider.template" );
-	  genMiscFile("StringProvider.java","/templates/gwt/StringProvider.template" );
-
-	  // This provides a bridge to standard Java readers.
-	  genMiscFile("StreamProvider.java","/templates/gwt/StreamProvider.template" );
-  }
-
-  private static void genMiscFile(string fileName, string templatePath) {
-	try {
-	  File file = new File(Options.getOutputDirectory(), fileName);
-	  OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new String[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN});
-
-	  if (!outputFile.NeedToWrite)
-	  {
-	    return;
-	  }
-
-	  TextWriter ostr = outputFile.getPrintWriter();
-
-	  if (cu_to_insertion_point_1.Count != 0 &&
-	      ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
-	  ) {
-	    for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-	      if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
-	        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-	        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
-	        for (int j = 0; j <= i; j++) {
-	          PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
-	        }
-	        ostr.WriteLine("");
-	        ostr.WriteLine("");
-	        break;
-	      }
-	    }
-	  }
-
-	  OutputFileGenerator generator = new OutputFileGenerator( templatePath, Options.getOptions());
-
-	  generator.Generate(ostr);
-
-	  ostr.Close();
-	} catch (IOException e) {
-	  Console.Error.WriteLine("Failed to create " + fileName + " "+ e);
-	  JavaCCErrors.SemanticError("Could not open file "+fileName+" for writing.");
-	  throw new Error();
-	}
-}
-
-
-  public static void gen_ParseException(JavaResourceTemplateLocations locations) {
-    try {
-      File file = new File(Options.getOutputDirectory(), "ParseException.java");
-      OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new String[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN});
-
-      if (!outputFile.NeedToWrite)
-      {
-        return;
-      }
-
-      TextWriter ostr = outputFile.getPrintWriter();
-
-      if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
-      ) {
-        for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
-            for (int j = 0; j <= i; j++) {
-              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+        catch (IOException ioe)
+        {
+            return 0.0;
+        }
+        finally
+        {
+            if (reader != null)
+            {
+                try { reader.Close(); } catch (IOException e) { }
             }
-            ostr.WriteLine("");
-            ostr.WriteLine("");
-            break;
-          }
         }
-      }
-
-      OutputFileGenerator generator = new OutputFileGenerator(
-    		  locations.getParseExceptionTemplateResourceUrl(), Options.getOptions());
-
-      generator.Generate(ostr);
-
-      ostr.Close();
-    } catch (IOException e) {
-      Console.Error.WriteLine("Failed to create ParseException " + e);
-      JavaCCErrors.SemanticError("Could not open file ParseException.java for writing.");
-      throw new Error();
     }
-  }
 
 
 
-  public static void gen_TokenMgrError(JavaResourceTemplateLocations locations) {
+    public static void GenJavaCharStream(JavaResourceTemplateLocations locations)
+    {
+        try
+        {
+            string file = System.IO.Path.Combine(Options.getOutputDirectory(), "JavaCharStream.java");
+            var outputFile = new OutputFile(file, charStreamVersion, new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
-
-	  bool isLegacyExceptionHandling = Options.isLegacyExceptionHandling();
-	string filename = isLegacyExceptionHandling ? "TokenMgrError.java" : "TokenMgrException.java";
-    try {
-
-	File file = new File(Options.getOutputDirectory(), filename);
-      OutputFile outputFile = new OutputFile(file, tokenMgrErrorVersion, new String[0]);
-
-      if (!outputFile.NeedToWrite)
-      {
-        return;
-      }
-
-      TextWriter ostr = outputFile.getPrintWriter();
-
-      if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
-      ) {
-        for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
-            for (int j = 0; j <= i; j++) {
-              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+            if (!outputFile.NeedToWrite)
+            {
+                return;
             }
-            ostr.WriteLine("");
-            ostr.WriteLine("");
-            break;
-          }
-        }
-      }
 
+            TextWriter ostr = outputFile.getPrintWriter();
 
-
-      OutputFileGenerator generator = new OutputFileGenerator( locations.getTokenMgrErrorTemplateResourceUrl(), Options.getOptions());
-
-      generator.Generate(ostr);
-
-      ostr.Close();
-
-
-    } catch (IOException e) {
-      Console.Error.WriteLine("Failed to create "+filename+" " + e);
-      JavaCCErrors.SemanticError("Could not open file "+filename+" for writing.");
-      throw new Error();
-    }
-  }
-
-
-
-  public static void gen_Token(JavaResourceTemplateLocations locations) {
-    try {
-      File file = new File(Options.getOutputDirectory(), "Token.java");
-      OutputFile outputFile = new OutputFile(file, tokenVersion, new String[] {Options.USEROPTION__TOKEN_EXTENDS, Options.USEROPTION__KEEP_LINE_COLUMN, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
-
-      if (!outputFile.NeedToWrite)
-      {
-        return;
-      }
-
-      TextWriter ostr = outputFile.getPrintWriter();
-
-      if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
-      ) {
-        for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
-            for (int j = 0; j <= i; j++) {
-              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+            if (cu_to_insertion_point_1.Count != 0 &&
+                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+            )
+            {
+                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                {
+                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    {
+                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        for (int j = 0; j <= i; j++)
+                        {
+                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                        }
+                        ostr.WriteLine("");
+                        ostr.WriteLine("");
+                        break;
+                    }
+                }
             }
-            ostr.WriteLine("");
-            ostr.WriteLine("");
-            break;
-          }
+            string prefix = (Options.getStatic() ? "static " : "");
+            Dictionary<string,object> options = new (Options.getOptions());
+            options.Add("PREFIX", prefix);
+
+            var generator = new OutputFileGenerator(
+                    locations.GetJavaCharStreamTemplateResourceUrl(), options);
+
+            generator.Generate(ostr);
+
+            ostr.Close();
         }
-      }
-
-      OutputFileGenerator generator = new OutputFileGenerator(
-    		  locations.getTokenTemplateResourceUrl(), Options.getOptions());
-
-      generator.Generate(ostr);
-
-      ostr.Close();
-    } catch (IOException e) {
-      Console.Error.WriteLine("Failed to create Token " + e);
-      JavaCCErrors.SemanticError("Could not open file Token.java for writing.");
-      throw new Error();
+        catch (IOException e)
+        {
+            Console.Error.WriteLine("Failed to create JavaCharStream " + e);
+            JavaCCErrors.SemanticError("Could not open file JavaCharStream.java for writing.");
+            throw new Error();
+        }
     }
-  }
 
 
 
-  public static void gen_TokenManager(JavaResourceTemplateLocations locations) {
-    try {
-      File file = new File(Options.getOutputDirectory(), "TokenManager.java");
-      OutputFile outputFile = new OutputFile(file, tokenManagerVersion, new String[] {Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC});
+    public static void GenSimpleCharStream(JavaResourceTemplateLocations locations)
+    {
+        try
+        {
+            string file = System.IO.Path.Combine(Options.getOutputDirectory(), "SimpleCharStream.java");
+            var outputFile = new OutputFile(file, charStreamVersion, new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
-      if (!outputFile.NeedToWrite)
-      {
-        return;
-      }
-
-      TextWriter ostr = outputFile.getPrintWriter();
-
-      if (cu_to_insertion_point_1.Count != 0 &&
-          ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
-      ) {
-        for (int i = 1; i < cu_to_insertion_point_1.Count; i++) {
-          if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON) {
-            cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-            ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
-            for (int j = 0; j <= i; j++) {
-              PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+            if (!outputFile.NeedToWrite)
+            {
+                return;
             }
-            ostr.WriteLine("");
-            ostr.WriteLine("");
-            break;
-          }
+
+            TextWriter ostr = outputFile.getPrintWriter();
+
+            if (cu_to_insertion_point_1.Count != 0 &&
+                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+            )
+            {
+                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                {
+                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    {
+                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        for (int j = 0; j <= i; j++)
+                        {
+                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                        }
+                        ostr.WriteLine("");
+                        ostr.WriteLine("");
+                        break;
+                    }
+                }
+            }
+            string prefix = (Options.getStatic() ? "static " : "");
+            var options = new Dictionary<string,object>(Options.getOptions());
+            options.Add("PREFIX", prefix);
+
+            OutputFileGenerator generator = new OutputFileGenerator(
+                    locations.GetSimpleCharStreamTemplateResourceUrl(), options);
+
+            generator.Generate(ostr);
+
+            ostr.Close();
         }
-      }
-
-      OutputFileGenerator generator = new OutputFileGenerator(
-    		  locations.getTokenManagerTemplateResourceUrl(), Options.getOptions());
-
-      generator.Generate(ostr);
-
-      ostr.Close();
-    } catch (IOException e) {
-      Console.Error.WriteLine("Failed to create TokenManager " + e);
-      JavaCCErrors.SemanticError("Could not open file TokenManager.java for writing.");
-      throw new Error();
+        catch (IOException e)
+        {
+            Console.Error.WriteLine("Failed to create SimpleCharStream " + e);
+            JavaCCErrors.SemanticError("Could not open file SimpleCharStream.java for writing.");
+            throw new Error();
+        }
     }
-  }
 
 
-  public static void reInit()
-  {
-  }
+
+    public static void GenCharStream(JavaResourceTemplateLocations locations)
+    {
+        try
+        {
+            var file = System.IO.Path.Combine(Options.getOutputDirectory(), "CharStream.java");
+            var outputFile = new OutputFile(file, charStreamVersion, new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+
+            if (!outputFile.NeedToWrite)
+            {
+                return;
+            }
+
+            TextWriter ostr = outputFile.getPrintWriter();
+
+            if (cu_to_insertion_point_1.Count != 0 &&
+                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+            )
+            {
+                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                {
+                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    {
+                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        for (int j = 0; j <= i; j++)
+                        {
+                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                        }
+                        ostr.WriteLine("");
+                        ostr.WriteLine("");
+                        break;
+                    }
+                }
+            }
+
+            OutputFileGenerator generator = new OutputFileGenerator(
+                    locations.GetCharStreamTemplateResourceUrl(), Options.getOptions());
+
+            generator.Generate(ostr);
+
+            ostr.Close();
+        }
+        catch (IOException e)
+        {
+            Console.Error.WriteLine("Failed to create CharStream " + e);
+            JavaCCErrors.SemanticError("Could not open file CharStream.java for writing.");
+            throw new Error();
+        }
+    }
+
+
+
+    public static void GenJavaModernFiles()
+    {
+        genMiscFile("Provider.java", "/templates/gwt/Provider.template");
+        genMiscFile("StringProvider.java", "/templates/gwt/StringProvider.template");
+
+        // This provides a bridge to standard Java readers.
+        genMiscFile("StreamProvider.java", "/templates/gwt/StreamProvider.template");
+    }
+
+    private static void genMiscFile(string fileName, string templatePath)
+    {
+        try
+        {
+            var file =System.IO.Path.Combine(Options.getOutputDirectory(), fileName);
+            var outputFile = new OutputFile(file, parseExceptionVersion, new String[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN });
+
+            if (!outputFile.NeedToWrite)
+            {
+                return;
+            }
+
+            TextWriter ostr = outputFile.getPrintWriter();
+
+            if (cu_to_insertion_point_1.Count != 0 &&
+                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+            )
+            {
+                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                {
+                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    {
+                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        for (int j = 0; j <= i; j++)
+                        {
+                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                        }
+                        ostr.WriteLine("");
+                        ostr.WriteLine("");
+                        break;
+                    }
+                }
+            }
+
+            var generator = new OutputFileGenerator(templatePath, Options.getOptions());
+
+            generator.Generate(ostr);
+
+            ostr.Close();
+        }
+        catch (IOException e)
+        {
+            Console.Error.WriteLine("Failed to create " + fileName + " " + e);
+            JavaCCErrors.SemanticError("Could not open file " + fileName + " for writing.");
+            throw new Error();
+        }
+    }
+
+
+    public static void GenParseException(JavaResourceTemplateLocations locations)
+    {
+        try
+        {
+            string file = System.IO.Path.Combine(Options.getOutputDirectory(), "ParseException.java");
+            OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new String[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN });
+
+            if (!outputFile.NeedToWrite)
+            {
+                return;
+            }
+
+            TextWriter ostr = outputFile.getPrintWriter();
+
+            if (cu_to_insertion_point_1.Count != 0 &&
+                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+            )
+            {
+                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                {
+                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    {
+                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        for (int j = 0; j <= i; j++)
+                        {
+                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                        }
+                        ostr.WriteLine("");
+                        ostr.WriteLine("");
+                        break;
+                    }
+                }
+            }
+
+            OutputFileGenerator generator = new OutputFileGenerator(
+                    locations.GetParseExceptionTemplateResourceUrl(), Options.getOptions());
+
+            generator.Generate(ostr);
+
+            ostr.Close();
+        }
+        catch (IOException e)
+        {
+            Console.Error.WriteLine("Failed to create ParseException " + e);
+            JavaCCErrors.SemanticError("Could not open file ParseException.java for writing.");
+            throw new Error();
+        }
+    }
+
+
+
+    public static void GenTokenMgrError(JavaResourceTemplateLocations locations)
+    {
+
+
+        bool isLegacyExceptionHandling = Options.isLegacyExceptionHandling();
+        string filename = isLegacyExceptionHandling ? "TokenMgrError.java" : "TokenMgrException.java";
+        try
+        {
+
+            File file = new File(Options.getOutputDirectory(), filename);
+            OutputFile outputFile = new OutputFile(file, tokenMgrErrorVersion, new String[0]);
+
+            if (!outputFile.NeedToWrite)
+            {
+                return;
+            }
+
+            TextWriter ostr = outputFile.getPrintWriter();
+
+            if (cu_to_insertion_point_1.Count != 0 &&
+                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+            )
+            {
+                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                {
+                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    {
+                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        for (int j = 0; j <= i; j++)
+                        {
+                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                        }
+                        ostr.WriteLine("");
+                        ostr.WriteLine("");
+                        break;
+                    }
+                }
+            }
+
+
+
+            OutputFileGenerator generator = new OutputFileGenerator(locations.GetTokenMgrErrorTemplateResourceUrl(), Options.getOptions());
+
+            generator.Generate(ostr);
+
+            ostr.Close();
+
+
+        }
+        catch (IOException e)
+        {
+            Console.Error.WriteLine("Failed to create " + filename + " " + e);
+            JavaCCErrors.SemanticError("Could not open file " + filename + " for writing.");
+            throw new Error();
+        }
+    }
+
+
+
+    public static void gen_Token(JavaResourceTemplateLocations locations)
+    {
+        try
+        {
+            File file = new File(Options.getOutputDirectory(), "Token.java");
+            OutputFile outputFile = new OutputFile(file, tokenVersion, new String[] { Options.USEROPTION__TOKEN_EXTENDS, Options.USEROPTION__KEEP_LINE_COLUMN, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+
+            if (!outputFile.NeedToWrite)
+            {
+                return;
+            }
+
+            TextWriter ostr = outputFile.getPrintWriter();
+
+            if (cu_to_insertion_point_1.Count != 0 &&
+                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+            )
+            {
+                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                {
+                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    {
+                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        for (int j = 0; j <= i; j++)
+                        {
+                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                        }
+                        ostr.WriteLine("");
+                        ostr.WriteLine("");
+                        break;
+                    }
+                }
+            }
+
+            OutputFileGenerator generator = new OutputFileGenerator(
+                    locations.GetTokenTemplateResourceUrl(), Options.getOptions());
+
+            generator.Generate(ostr);
+
+            ostr.Close();
+        }
+        catch (IOException e)
+        {
+            Console.Error.WriteLine("Failed to create Token " + e);
+            JavaCCErrors.SemanticError("Could not open file Token.java for writing.");
+            throw new Error();
+        }
+    }
+
+
+
+    public static void gen_TokenManager(JavaResourceTemplateLocations locations)
+    {
+        try
+        {
+            File file = new File(Options.getOutputDirectory(), "TokenManager.java");
+            OutputFile outputFile = new OutputFile(file, tokenManagerVersion, new String[] { Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+
+            if (!outputFile.NeedToWrite)
+            {
+                return;
+            }
+
+            TextWriter ostr = outputFile.getPrintWriter();
+
+            if (cu_to_insertion_point_1.Count != 0 &&
+                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+            )
+            {
+                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                {
+                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    {
+                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
+                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        for (int j = 0; j <= i; j++)
+                        {
+                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                        }
+                        ostr.WriteLine("");
+                        ostr.WriteLine("");
+                        break;
+                    }
+                }
+            }
+
+            OutputFileGenerator generator = new OutputFileGenerator(
+                    locations.GetTokenManagerTemplateResourceUrl(), Options.getOptions());
+
+            generator.Generate(ostr);
+
+            ostr.Close();
+        }
+        catch (IOException e)
+        {
+            Console.Error.WriteLine("Failed to create TokenManager " + e);
+            JavaCCErrors.SemanticError("Could not open file TokenManager.java for writing.");
+            throw new Error();
+        }
+    }
+
+
+    public static void ReInit()
+    {
+    }
 
 }

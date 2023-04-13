@@ -26,6 +26,8 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using System.Collections.Generic;
+
 namespace org.javacc.parser;
 
 
@@ -35,7 +37,7 @@ namespace org.javacc.parser;
 public abstract class JavaCCParserInternals : JavaCCGlobals
 {
 
-    static protected void initialize()
+    static protected void Initialize()
     {
         int i = (0);
         lexstate_S2I.Add("DEFAULT", i);
@@ -43,12 +45,12 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         simple_tokens_table.Add("DEFAULT", new());
     }
 
-    static protected void addcuname(string id)
+    static protected void Addcuname(string id)
     {
         cu_name = id;
     }
 
-    static protected void compare(Token t, string id1, string id2)
+    static protected void Compare(Token t, string id1, string id2)
     {
         if (id2 != (id1))
         {
@@ -61,7 +63,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
     static private bool insertionpoint1set = false;
     static private bool insertionpoint2set = false;
 
-    static protected void setinsertionpoint(Token t, int no)
+    static protected void SetInsertionPoint(Token t, int no)
     {
         do
         {
@@ -88,7 +90,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         first_cu_token = t;
     }
 
-    static protected void insertionpointerrors(Token t)
+    static protected void InsertionPointErrors(Token t)
     {
         while (first_cu_token != t)
         {
@@ -101,17 +103,17 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         }
     }
 
-    static protected void set_initial_cu_token(Token t)
+    static protected void SetInitialCuToken(Token t)
     {
         first_cu_token = t;
     }
 
-    static protected void addproduction(NormalProduction p)
+    static protected void AddProduction(NormalProduction p)
     {
         bnfproductions.Add(p);
     }
 
-    static protected void production_addexpansion(BNFProduction p, Expansion e)
+    static protected void ProductionAddexpansion(BNFProduction p, Expansion e)
     {
         e.parent = p;
         p.setExpansion(e);
@@ -119,7 +121,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
 
     static private int nextFreeLexState = 1;
 
-    static protected void addregexpr(TokenProduction p)
+    static protected void AddRegexpr(TokenProduction p)
     {
         int ii;
         rexprlist.Add(p);
@@ -144,17 +146,17 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
                     JavaCCErrors.ParseError(p, "Multiple occurrence of \"" + p.lexStates[i] + "\" in lexical state list.");
                 }
             }
-            if (lexstate_S2I.get(p.lexStates[i]) == null)
+            if (!lexstate_S2I.TryGetValue(p.lexStates[i], out var t))
             {
                 ii = (nextFreeLexState++);
                 lexstate_S2I.Add(p.lexStates[i], ii);
                 lexstate_I2S.Add(ii, p.lexStates[i]);
-                simple_tokens_table.Add(p.lexStates[i], new ());
+                simple_tokens_table.Add(p.lexStates[i], new());
             }
         }
     }
 
-    static protected void add_token_manager_decls(Token t, List decls)
+    static protected void AddTokenManagerDecls(Token t, List<Token> decls)
     {
         if (token_mgr_decls != null)
         {
@@ -171,9 +173,9 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         }
     }
 
-    static protected void add_inline_regexpr(RegularExpression r)
+    static protected void AddInlineRegexpr(RegularExpression r)
     {
-        if (!(r is REndOfFile))
+        if (r is not REndOfFile)
         {
             var p = new TokenProduction();
             p.isExplicit = false;
@@ -190,7 +192,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         }
     }
 
-    static protected bool hexchar(char ch)
+    static protected bool Hexchar(char ch)
     {
         if (ch >= '0' && ch <= '9') return true;
         if (ch >= 'A' && ch <= 'F') return true;
@@ -198,14 +200,14 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         return false;
     }
 
-    static protected int hexval(char ch)
+    static protected int Hexval(char ch)
     {
         if (ch >= '0' && ch <= '9') return ((int)ch) - ((int)'0');
         if (ch >= 'A' && ch <= 'F') return ((int)ch) - ((int)'A') + 10;
         return ((int)ch) - ((int)'a') + 10;
     }
 
-    static protected string remove_escapes_and_quotes(Token t, string str)
+    static protected string RemoveEscapesAndQuotes(Token t, string str)
     {
         string retval = "";
         int index = 1;
@@ -279,21 +281,21 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
             if (ch == 'u')
             {
                 index++; ch = str[index];
-                if (hexchar(ch))
+                if (Hexchar(ch))
                 {
-                    ordinal = hexval(ch);
+                    ordinal = Hexval(ch);
                     index++; ch = str[index];
-                    if (hexchar(ch))
+                    if (Hexchar(ch))
                     {
-                        ordinal = ordinal * 16 + hexval(ch);
+                        ordinal = ordinal * 16 + Hexval(ch);
                         index++; ch = str[index];
-                        if (hexchar(ch))
+                        if (Hexchar(ch))
                         {
-                            ordinal = ordinal * 16 + hexval(ch);
+                            ordinal = ordinal * 16 + Hexval(ch);
                             index++; ch = str[index];
-                            if (hexchar(ch))
+                            if (Hexchar(ch))
                             {
-                                ordinal = ordinal * 16 + hexval(ch);
+                                ordinal = ordinal * 16 + Hexval(ch);
                                 index++;
                                 continue;
                             }
@@ -312,7 +314,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         return retval;
     }
 
-    static protected char character_descriptor_assign(Token t, string s)
+    static protected char CharacterDescriptorAssign(Token t, string s)
     {
         if (s.Length != 1)
         {
@@ -325,7 +327,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         }
     }
 
-    static protected char character_descriptor_assign(Token t, string s, string left)
+    static protected char CharacterDescriptorAssign(Token t, string s, string left)
     {
         if (s.Length != 1)
         {
@@ -344,14 +346,14 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         }
     }
 
-    static protected void makeTryBlock(
+    static protected void MakeTryBlock(
       Token tryLoc,
       Container result,
       Container nestedExp,
-      List types,
-      List ids,
-      List catchblks,
-      List finallyblk
+      List<List<Token>> types,
+      List<Token> ids,
+      List<List<Token>> catchblks,
+      List<Token> finallyblk
     )
     {
         if (catchblks.Count == 0 && finallyblk == null)
@@ -359,7 +361,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
             JavaCCErrors.ParseError(tryLoc, "Try block must contain at least one catch or finally block.");
             return;
         }
-        TryBlock tblk = new TryBlock();
+        var tblk = new TryBlock();
         tblk.SetLine(tryLoc.beginLine);
         tblk.SetColumn(tryLoc.beginColumn);
         tblk.exp = (Expansion)(nestedExp.Member);
@@ -372,7 +374,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         result.Member = tblk;
     }
 
-    public static void reInit()
+    public static void ReInit()
     {
         add_cu_token_here = cu_to_insertion_point_1;
         first_cu_token = null;

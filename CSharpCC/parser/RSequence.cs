@@ -42,7 +42,7 @@ public class RSequence : RegularExpression
      */
     public List<Object> units = new ();
 
-    public Nfa GenerateNfa(bool ignoreCase)
+    public override Nfa GenerateNfa(bool ignoreCase)
     {
         if (units.Count == 1)
             return ((RegularExpression)units[0]).GenerateNfa(ignoreCase);

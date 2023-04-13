@@ -59,7 +59,7 @@ public class SingleCharacter
     /**
      * @param line the line to set
      */
-    public void setLine(int line)
+    public void SetLine(int line)
     {
         this.line = line;
     }
@@ -67,7 +67,7 @@ public class SingleCharacter
     /**
      * @return the line
      */
-    public int getLine()
+    public int GetLine()
     {
         return line;
     }
@@ -75,7 +75,7 @@ public class SingleCharacter
     /**
      * @param column the column to set
      */
-    public void setColumn(int column)
+    public void SetColumn(int column)
     {
         this.column = column;
     }
@@ -83,7 +83,7 @@ public class SingleCharacter
     /**
      * @return the column
      */
-    public int getColumn()
+    public int GetColumn()
     {
         return column;
     }

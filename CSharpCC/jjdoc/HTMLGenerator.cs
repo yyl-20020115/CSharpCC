@@ -228,7 +228,7 @@ public class HTMLGenerator : TextGenerator
 
     public override void NonTerminalStart(NonTerminal nt)
     {
-        Print("<A HREF=\"#" + GetId(nt.getName()) + "\">");
+        Print("<A HREF=\"#" + GetId(nt.GetName()) + "\">");
     }
     public override void NonTerminalEnd(NonTerminal nt)
     {

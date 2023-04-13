@@ -239,7 +239,7 @@ public class Options
 
         foreach (OptionInfo t in userOptions)
         {
-            optionValues.Add(t, t.Default);
+            optionValues.Add(t.Name, t.Default);
         }
 
         {
