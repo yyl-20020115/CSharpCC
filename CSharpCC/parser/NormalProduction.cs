@@ -94,7 +94,7 @@ public class NormalProduction
      * pointers exist.
      */
     private NormalProduction[] leftExpansions = new NormalProduction[10];
-    public readonly int leIndex = 0;
+    public int leIndex = 0;
 
     /**
      * The following variable is used to maintain state information for the

@@ -156,13 +156,13 @@ public class TokenizerData
 
     public void UpdateMatchInfo(Dictionary<int, String> actions,
                                 int[] newLexStateIndices,
-                                long[] toSkip, long[] toSpecial,
-                                long[] toMore, long[] toToken)
+                                ulong[] toSkip, ulong[] toSpecial,
+                                ulong[] toMore, ulong[] toToken)
     {
         for (int i = 0; i < newLexStateIndices.Length; i++)
         {
             int vectorIndex = i >> 6;
-            long bits = (1L << (i & 077));
+            ulong bits = (1UL << (i & 077));
             var matchType = MatchTypes.TOKEN;
             if (toSkip.Length > vectorIndex && (toSkip[vectorIndex] & bits) != 0L)
             {

@@ -44,7 +44,7 @@ public class RChoice : RegularExpression
     /**
      * @param choices the choices to set
      */
-    public void SetChoices(List<Expansion> choices)
+    public void setChoices(List<Expansion> choices)
     {
         this.choices = choices;
     }
@@ -52,39 +52,36 @@ public class RChoice : RegularExpression
     /**
      * @return the choices
      */
-    public List<Expansion> GetChoices()
-    {
-        return choices;
-    }
+    public List<Expansion> GetChoices() => choices;
 
     public override Nfa GenerateNfa(bool ignoreCase)
     {
-        CompressCharLists(curRE);
+        CompressCharLists();
 
         if (GetChoices().Count == 1)
             return ((RegularExpression)GetChoices()[0]).GenerateNfa(ignoreCase);
 
-        Nfa retVal = new Nfa();
-        NfaState startState = retVal.start;
-        NfaState finalState = retVal.end;
+        var retVal = new Nfa();
+        var startState = retVal.Start;
+        var finalState = retVal.End;
 
         for (int i = 0; i < GetChoices().Count; i++)
         {
             Nfa temp;
-            RegularExpression curRE = (RegularExpression)GetChoices()[i];
+            var curRE = (RegularExpression)GetChoices()[i];
 
             temp = curRE.GenerateNfa(ignoreCase);
 
-            startState.AddMove(temp.start);
-            temp.end.AddMove(finalState);
+            startState.AddMove(temp.Start);
+            temp.End.AddMove(finalState);
         }
 
         return retVal;
     }
 
-    void CompressCharLists(RegularExpression curRE)
+    void CompressCharLists()
     {
-        CompressChoices(curRE); // Unroll nested choices
+        CompressChoices(); // Unroll nested choices
         RegularExpression curRE;
         RCharacterList curCharList = null;
 
@@ -92,20 +89,20 @@ public class RChoice : RegularExpression
         {
             curRE = (RegularExpression)GetChoices()[i];
 
-            while (curRE is RJustName)
-                curRE = ((RJustName)curRE).regexpr;
+            while (curRE is RJustName name)
+                curRE = name.regexpr;
 
             if (curRE is RStringLiteral literal &&
                 literal.image.Length == 1)
                 GetChoices()[i] = curRE = new RCharacterList(
                            literal.image[0]);
 
-            if (curRE is RCharacterList)
+            if (curRE is RCharacterList list)
             {
-                if (((RCharacterList)curRE).negated_list)
-                    ((RCharacterList)curRE).RemoveNegation();
+                if (list.negated_list)
+                    list.RemoveNegation();
 
-                var tmp = ((RCharacterList)curRE).descriptors;
+                var tmp = list.descriptors;
 
                 if (curCharList == null)
                     GetChoices()[i] = curRE = curCharList = new RCharacterList();
@@ -119,7 +116,7 @@ public class RChoice : RegularExpression
         }
     }
 
-    void CompressChoices(RegularExpression curRE)
+    void CompressChoices()
     {
         RegularExpression curRE;
 
@@ -127,16 +124,14 @@ public class RChoice : RegularExpression
         {
             curRE = (RegularExpression)GetChoices()[i];
 
-            while (curRE is RJustName)
-            {
-                curRE = ((RJustName)curRE).regexpr;
-            }
+            while (curRE is RJustName name)
+                curRE = name.regexpr;
 
-            if (curRE is RChoice)
+            if (curRE is RChoice choice)
             {
                 GetChoices().RemoveAt(i--);
-                for (int j = ((RChoice)curRE).GetChoices().Count; j-- > 0;)
-                    GetChoices().Add(((RChoice)curRE).GetChoices()[j]);
+                for (int j = choice.GetChoices().Count; j-- > 0;)
+                    GetChoices().Add(choice.GetChoices()[j]);
             }
         }
     }
@@ -158,8 +153,7 @@ public class RChoice : RegularExpression
                        curRE.label + " can never be matched as : " + label);
                 else
                     JavaCCErrors.Warning(this, "Regular Expression choice : " +
-                       curRE.label + " can never be matched as token of kind : " +
-                                                                            ordinal);
+                       curRE.label + " can never be matched as token of kind : " + ordinal);
             }
 
             if (!curRE.private_rexp && curRE is RStringLiteral)

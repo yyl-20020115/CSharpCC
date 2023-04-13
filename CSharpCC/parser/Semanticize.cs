@@ -94,7 +94,7 @@ public class Semanticize : JavaCCGlobals
          */
         for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
         {
-            ExpansionTreeWalker.preOrderWalk((it.next()).getExpansion(), new ProductionDefinedChecker());
+            ExpansionTreeWalker.PreOrderWalk((it.next()).GetExpansion(), new ProductionDefinedChecker());
         }
 
         /*
@@ -135,7 +135,7 @@ public class Semanticize : JavaCCGlobals
                         JavaCCErrors.SemanticError(res.rexp, "Duplicate action/state change specification for <EOF>.");
                     actForEof = res.act;
                     nextStateForEof = res.nextState;
-                    prepareToRemove(respecs, res);
+                    PrepareToRemove(respecs, res);
                 }
                 else if (tp.isExplicit && Options.GetUserTokenManager())
                 {
@@ -147,7 +147,7 @@ public class Semanticize : JavaCCGlobals
                     JavaCCErrors.Warning(res.rexp, "Ignoring free-standing regular expression reference.  " +
                             "If you really want this, you must give it a different label as <NEWLABEL:<"
                             + res.rexp.label + ">>.");
-                    prepareToRemove(respecs, res);
+                    PrepareToRemove(respecs, res);
                 }
                 else if (!tp.isExplicit && res.rexp.private_rexp)
                 {
@@ -334,7 +334,7 @@ public class Semanticize : JavaCCGlobals
                                 // this can be legal is if this is a string declared inline within the
                                 // BNF.  Hence, it belongs to only one lexical state - namely "DEFAULT".
                                 sl.ordinal = re.ordinal;
-                                prepareToRemove(respecs, res);
+                                PrepareToRemove(respecs, res);
                             }
                         }
                     }

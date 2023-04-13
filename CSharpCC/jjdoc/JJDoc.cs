@@ -414,7 +414,7 @@ public class JJDoc : JJDocGlobals
                     returnString += " | ";
                 }
                 first = false;
-                returnString += EmitRE(sub as Regula);
+                returnString += EmitRE(sub as RegularExpression);
             }
         }
         else if (re is REndOfFile)

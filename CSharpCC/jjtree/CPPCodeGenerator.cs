@@ -215,7 +215,7 @@ public class CPPCodeGenerator : DefaultJJTreeVisitor
         }
 
         Token t1 = node.GetFirstToken();
-        Token t = new Token
+        Token t = new()
         {
             next = t1
         };

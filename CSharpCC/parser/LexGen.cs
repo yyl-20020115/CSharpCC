@@ -57,7 +57,7 @@ public class LexGen : CodeGenerator
     public static string lexStateSuffix;
     public static String[] newLexState;
     public static int[] lexStates;
-    public static bool[] ignoreCase; 
+    public static bool[] ignoreCase;
     public static Action[] actions;
     public static Dictionary<string, NfaState> initStates = new();
     public static int stateSetSize;
@@ -99,7 +99,7 @@ public class LexGen : CodeGenerator
     {
         int i, j;
         bool bHasImport = false;
-         
+
         List<string> tn = new(ToolNames);
         tn.Add(ToolName);
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
@@ -155,7 +155,7 @@ public class LexGen : CodeGenerator
         if (Options.GetSupportClassVisibilityPublic())
         {
             //genModifier("public ");
-            GenModifier("public ");  
+            GenModifier("public ");
         }
         //GenCodeLine("class " + tokMgrClassName + " implements " +
         //cu_name + "Constants");
@@ -242,14 +242,17 @@ public class LexGen : CodeGenerator
         {
             object o = additionalOptions[i];
 
-            if (o is Dictionary<string, object>)
+            if (o is Dictionary<string, object> d)
             {
-                options.putAll((Dictionary<String, object>)o);
+                foreach (var p in d)
+                {
+                    options.Add(p.Key, p.Value);
+                }
             }
             else
             {
                 if (i == additionalOptions.Length - 1)
-                    throw new IllegalArgumentException("Must supply pairs of [name value] args");
+                    throw new ArgumentException("Must supply pairs of [name value] args");
 
                 options.Add((String)o, additionalOptions[i + 1]);
                 i++;
@@ -258,7 +261,7 @@ public class LexGen : CodeGenerator
 
         OutputFileGenerator gen = new OutputFileGenerator(name, options);
         StringWriter sw = new StringWriter();
-        gen.Generate(new TextWriter(sw));
+        gen.Generate(sw);
         sw.Close();
         GenCode(sw.ToString());
     }
@@ -270,20 +273,16 @@ public class LexGen : CodeGenerator
 
     static void BuildLexStatesTable()
     {
-        Iterator<TokenProduction> it = rexprlist.iterator();
-        TokenProduction tp;
         int i;
 
         String[] tmpLexStateName = new String[lexstate_I2S.Count];
-        while (it.hasNext())
+        foreach (var tp in rexprlist)
         {
-            tp = it.next();
             List<RegExprSpec> respecs = tp.respecs;
-            List<TokenProduction> tps;
 
             for (i = 0; i < tp.lexStates.Length; i++)
             {
-                if ((tps = (List)allTpsForState.get(tp.lexStates[i])) == null)
+                if (!allTpsForState.TryGetValue(tp.lexStates[i], out var tps))
                 {
                     tmpLexStateName[maxLexStates++] = tp.lexStates[i];
                     allTpsForState.Add(tp.lexStates[i], tps = new());
@@ -302,15 +301,15 @@ public class LexGen : CodeGenerator
         }
 
         kinds = new int[maxOrdinal];
-        toSkip = new long[maxOrdinal / 64 + 1];
-        toSpecial = new long[maxOrdinal / 64 + 1];
-        toMore = new long[maxOrdinal / 64 + 1];
-        toToken = new long[maxOrdinal / 64 + 1];
+        toSkip = new ulong[maxOrdinal / 64 + 1];
+        toSpecial = new ulong[maxOrdinal / 64 + 1];
+        toMore = new ulong[maxOrdinal / 64 + 1];
+        toToken = new ulong[maxOrdinal / 64 + 1];
         toToken[0] = 1L;
         actions = new Action[maxOrdinal];
         actions[0] = actForEof;
         hasTokenActions = actForEof != null;
-        initStates = new ();
+        initStates = new();
         canMatchAnyChar = new int[maxLexStates];
         canLoop = new bool[maxLexStates];
         stateHasActions = new bool[maxLexStates];
@@ -360,8 +359,7 @@ public class LexGen : CodeGenerator
         string codeGeneratorClass = Options.GetTokenManagerCodeGenerator();
         keepLineCol = Options.GetKeepLineColumn();
         errorHandlingClass = Options.getTokenMgrErrorClass();
-        List choices = new();
-        Enumeration e;
+        List<RChoice> choices = new();
         TokenProduction tp;
         int i, j;
 
@@ -371,25 +369,21 @@ public class LexGen : CodeGenerator
         if (!GenerateDataOnly && codeGeneratorClass == null) PrintClassHead();
         BuildLexStatesTable();
 
-        e = allTpsForState.keys();
-
         bool ignoring = false;
 
-        while (e.hasMoreElements())
+        foreach (var key in allTpsForState.Keys)
         {
             int startState = -1;
             NfaState.ReInit();
             RStringLiteral.ReInit();
 
-            string key = (String)e.nextElement();
-
             lexStateIndex = GetIndex(key);
             lexStateSuffix = "_" + lexStateIndex;
-            List<TokenProduction> allTps = (List<TokenProduction>)allTpsForState.get(key);
+            var allTps = allTpsForState[key];
             initStates.Add(key, initialState = new NfaState());
             ignoring = false;
 
-            singlesToSkip[lexStateIndex] = new NfaState();
+            singlesToSkip[lexStateIndex] = new();
             singlesToSkip[lexStateIndex].dummy = true;
 
             if (key == ("DEFAULT"))
@@ -397,7 +391,7 @@ public class LexGen : CodeGenerator
 
             for (i = 0; i < allTps.Count; i++)
             {
-                tp = (TokenProduction)allTps[i];
+                tp = allTps[i];
                 int kind = tp.kind;
                 bool ignore = tp.ignoreCase;
                 List<RegExprSpec> rexps = tp.respecs;
@@ -407,7 +401,7 @@ public class LexGen : CodeGenerator
 
                 for (j = 0; j < rexps.Count; j++)
                 {
-                    RegExprSpec respec = (RegExprSpec)rexps[j];
+                    RegExprSpec respec = rexps[j];
                     curRE = respec.rexp;
 
                     rexprs[curKind = curRE.ordinal] = curRE;
@@ -421,7 +415,7 @@ public class LexGen : CodeGenerator
                     }
 
                     if (!Options.GetNoDfa() && curRE is RStringLiteral &&
-                        !((RStringLiteral)curRE).image == (""))
+                        ((RStringLiteral)curRE).image != (""))
                     {
                         ((RStringLiteral)curRE).GenerateDfa(this, curRE.ordinal);
                         if (i != 0 && !mixed[lexStateIndex] && ignoring != ignore)
@@ -439,13 +433,13 @@ public class LexGen : CodeGenerator
                     {
                         Nfa temp;
 
-                        if (curRE is RChoice)
-                            choices.Add(curRE);
+                        if (curRE is RChoice rc)
+                            choices.Add(rc);
 
                         temp = curRE.GenerateNfa(ignore);
-                        temp.end.isFinal = true;
-                        temp.end.kind = curRE.ordinal;
-                        initialState.AddMove(temp.start);
+                        temp.End.isFinal = true;
+                        temp.End.kind = curRE.ordinal;
+                        initialState.AddMove(temp.Start);
                     }
 
                     if (kinds.Length < curRE.ordinal)
@@ -473,18 +467,18 @@ public class LexGen : CodeGenerator
                             hasSkipActions |= (actions[curRE.ordinal] != null) ||
                             (newLexState[curRE.ordinal] != null);
                             hasSpecial = true;
-                            toSpecial[curRE.ordinal / 64] |= 1L << (curRE.ordinal % 64);
-                            toSkip[curRE.ordinal / 64] |= 1L << (curRE.ordinal % 64);
+                            toSpecial[curRE.ordinal / 64] |= 1UL << (curRE.ordinal % 64);
+                            toSkip[curRE.ordinal / 64] |= 1UL << (curRE.ordinal % 64);
                             break;
                         case TokenProduction.SKIP:
                             hasSkipActions |= (actions[curRE.ordinal] != null);
                             hasSkip = true;
-                            toSkip[curRE.ordinal / 64] |= 1L << (curRE.ordinal % 64);
+                            toSkip[curRE.ordinal / 64] |= 1UL << (curRE.ordinal % 64);
                             break;
                         case TokenProduction.MORE:
                             hasMoreActions |= (actions[curRE.ordinal] != null);
                             hasMore = true;
-                            toMore[curRE.ordinal / 64] |= 1L << (curRE.ordinal % 64);
+                            toMore[curRE.ordinal / 64] |= 1UL << (curRE.ordinal % 64);
 
                             if (newLexState[curRE.ordinal] != null)
                                 canReachOnMore[GetIndex(newLexState[curRE.ordinal])] = true;
@@ -494,7 +488,7 @@ public class LexGen : CodeGenerator
                             break;
                         case TokenProduction.TOKEN:
                             hasTokenActions |= (actions[curRE.ordinal] != null);
-                            toToken[curRE.ordinal / 64] |= 1L << (curRE.ordinal % 64);
+                            toToken[curRE.ordinal / 64] |= 1UL << (curRE.ordinal % 64);
                             break;
                     }
                 }
@@ -504,7 +498,7 @@ public class LexGen : CodeGenerator
             NfaState.ComputeClosures();
 
             for (i = 0; i < initialState.epsilonMoves.Count; i++)
-                ((NfaState)initialState.epsilonMoves.elementAt(i)).GenerateCode();
+                ((NfaState)initialState.epsilonMoves[i]).GenerateCode();
 
             hasNfa[lexStateIndex] = (NfaState.generatedStates != 0);
             if (hasNfa[lexStateIndex])
@@ -515,10 +509,10 @@ public class LexGen : CodeGenerator
 
             if (initialState.kind != int.MaxValue && initialState.kind != 0)
             {
-                if ((toSkip[initialState.kind / 64] & (1L << initialState.kind)) != 0L ||
-                    (toSpecial[initialState.kind / 64] & (1L << initialState.kind)) != 0L)
+                if ((toSkip[initialState.kind / 64] & (1UL << initialState.kind)) != 0L ||
+                    (toSpecial[initialState.kind / 64] & (1UL << initialState.kind)) != 0L)
                     hasSkipActions = true;
-                else if ((toMore[initialState.kind / 64] & (1L << initialState.kind)) != 0L)
+                else if ((toMore[initialState.kind / 64] & (1UL << initialState.kind)) != 0L)
                     hasMoreActions = true;
                 else
                     hasTokenActions = true;
@@ -578,7 +572,7 @@ public class LexGen : CodeGenerator
                 }
             }
             tokenizerData.SetDecls(tokenMgrDecls.ToString());
-            Dictionary<int, String> actionStrings = new Dictionary<int, String>();
+            var actionStrings = new Dictionary<int, String>();
             for (i = 0; i < maxOrdinal; i++)
             {
                 if (newLexState[i] == null)
@@ -593,10 +587,10 @@ public class LexGen : CodeGenerator
                 // simply have a string.
                 Action act = actions[i];
                 if (act == null) continue;
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 for (int k = 0; k < act.GetActionTokens().Count; k++)
                 {
-                    sb.Append(((Token)act.GetActionTokens().get(k)).image);
+                    sb.Append(((Token)act.GetActionTokens()[k]).image);
                     sb.Append(' ');
                 }
                 actionStrings.Add(i, sb.ToString());
@@ -607,12 +601,13 @@ public class LexGen : CodeGenerator
                 actionStrings, newLexStateIndices,
                 toSkip, toSpecial, toMore, toToken);
             if (GenerateDataOnly) return;
-            Class<TokenManagerCodeGenerator> codeGenClazz;
+            Type codeGenClazz;
             TokenManagerCodeGenerator gen;
             try
             {
-                codeGenClazz = (Class<TokenManagerCodeGenerator>)Class.forName(codeGeneratorClass);
-                gen = codeGenClazz.newInstance();
+                codeGenClazz = Type.GetType(codeGeneratorClass);
+                gen = codeGenClazz.Assembly.CreateInstance(codeGeneratorClass)
+                    as TokenManagerCodeGenerator;
             }
             catch (Exception ee)
             {
@@ -621,8 +616,8 @@ public class LexGen : CodeGenerator
                     codeGeneratorClass + "\nError: " + ee.Message);
                 return;
             }
-            gen.generateCode(tokenizerData);
-            gen.finish(tokenizerData);
+            gen.GenerateCode(tokenizerData);
+            gen.Finish(tokenizerData);
             return;
         }
 
@@ -673,7 +668,7 @@ public class LexGen : CodeGenerator
         GenCodeLine(/*{*/ "}");
 
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        string fileName = Options.GetOutputDirectory() + File.separator +
+        string fileName = Options.GetOutputDirectory() + Path.DirectorySeparatorChar +
                           tokMgrClassName +
                           GetFileExtension(Options.GetOutputLanguage());
 
@@ -718,9 +713,9 @@ public class LexGen : CodeGenerator
                 cycle += "-->";
                 done[j] = true;
                 seen[j] = true;
-                if (initMatch[j] == 0 || initMatch[j] == int.MaxValue || 
-                    canMatchAnyChar[j] != -1) 
-                    continue Outer;
+                if (initMatch[j] == 0 || initMatch[j] == int.MaxValue ||
+                    canMatchAnyChar[j] != -1)
+                    goto OuterExit;
                 if (len != 0)
                     reList += "; ";
                 reList += "line " + rexprs[initMatch[j]].GetLine() + ", column " +
@@ -753,6 +748,8 @@ public class LexGen : CodeGenerator
                         cycle + "\ncontaining regular expressions with empty matches." +
                 " This can result in an endless loop of empty string matches.");
             }
+        OuterExit:
+            ;
         }
     }
 
@@ -792,7 +789,7 @@ public class LexGen : CodeGenerator
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                GenCode("0x" + Convert.ToString(toToken[i],16) + "L, ");
+                GenCode("0x" + Convert.ToString((long)toToken[i], 16) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -804,7 +801,7 @@ public class LexGen : CodeGenerator
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                GenCode("0x" + Convert.ToString(toSkip[i],16) + "L, ");
+                GenCode("0x" + Convert.ToString((long)toSkip[i], 16) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -816,7 +813,7 @@ public class LexGen : CodeGenerator
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                GenCode("0x" + Convert.ToString(toSpecial[i],16) + "L, ");
+                GenCode("0x" + Convert.ToString((long)toSpecial[i], 16) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -828,7 +825,7 @@ public class LexGen : CodeGenerator
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                GenCode("0x" + Long.toHexString(toMore[i]) + "L, ");
+                GenCode("0x" + Convert.ToString((long)toMore[i], 16) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -842,13 +839,13 @@ public class LexGen : CodeGenerator
     }
 
     // Assumes l != 0L
-    static char MaxChar(long l)
+    public static char MaxChar(long l)
     {
         for (int i = 64; i-- > 0;)
             if ((l & (1L << i)) != 0L)
                 return (char)i;
 
-        return 0xffff;
+        return '\uffff';
     }
 
     void DumpFillToken()
@@ -1035,26 +1032,26 @@ public class LexGen : CodeGenerator
                     singlesToSkip[i].asciiMoves[1] != 0L)
                 {
                     GenCodeLine(prefix + "   while ((curChar < 64" + " && (0x" +
-                        Convert.ToString((long)(singlesToSkip[i].asciiMoves[0]),16) +
+                        Convert.ToString((long)(singlesToSkip[i].asciiMoves[0]), 16) +
                         "L & (1L << curChar)) != 0L) || \n" +
                         prefix + "          (curChar >> 6) == 1" +
                         " && (0x" +
-                        Long.toHexString(singlesToSkip[i].asciiMoves[1]) +
+                        Convert.ToString((long)singlesToSkip[i].asciiMoves[1], 16) +
                     "L & (1L << (curChar & 077))) != 0L)");
                 }
                 else if (singlesToSkip[i].asciiMoves[1] == 0L)
                 {
                     GenCodeLine(prefix + "   while (curChar <= " +
-                        (int)MaxChar(singlesToSkip[i].asciiMoves[0]) + " && (0x" +
-                        Long.toHexString(singlesToSkip[i].asciiMoves[0]) +
+                        (int)MaxChar((long)singlesToSkip[i].asciiMoves[0]) + " && (0x" +
+                        Convert.ToString((long)singlesToSkip[i].asciiMoves[0], 16) +
                     "L & (1L << curChar)) != 0L)");
                 }
                 else if (singlesToSkip[i].asciiMoves[0] == 0L)
                 {
                     GenCodeLine(prefix + "   while (curChar > 63 && curChar <= " +
-                        ((int)MaxChar(singlesToSkip[i].asciiMoves[1]) + 64) +
+                        ((int)MaxChar((long)singlesToSkip[i].asciiMoves[1]) + 64) +
                         " && (0x" +
-                        Long.toHexString(singlesToSkip[i].asciiMoves[1]) +
+                        Convert.ToString((long)singlesToSkip[i].asciiMoves[1], 16) +
                     "L & (1L << (curChar & 077))) != 0L)");
                 }
 
@@ -1088,7 +1085,7 @@ public class LexGen : CodeGenerator
             }
             else
             {
-                GenCodeLine(prefix + "jjmatchedKind = 0x" + Convert.ToString(int.MaxValue,16) + ";");
+                GenCodeLine(prefix + "jjmatchedKind = 0x" + Convert.ToString(int.MaxValue, 16) + ";");
                 GenCodeLine(prefix + "jjmatchedPos = 0;");
             }
 
@@ -1128,7 +1125,7 @@ public class LexGen : CodeGenerator
         if (maxLexStates > 1)
             GenCodeLine(endSwitch);
         else if (maxLexStates == 0)
-            GenCodeLine("       jjmatchedKind = 0x" + Convert.ToString(int.MaxValue,16) + ";");
+            GenCodeLine("       jjmatchedKind = 0x" + Convert.ToString(int.MaxValue, 16) + ";");
 
         if (maxLexStates > 1)
             prefix = "  ";
@@ -1137,7 +1134,7 @@ public class LexGen : CodeGenerator
 
         if (maxLexStates > 0)
         {
-            GenCodeLine(prefix + "   if (jjmatchedKind != 0x" + Convert.ToString(int.MaxValue,16) + ")");
+            GenCodeLine(prefix + "   if (jjmatchedKind != 0x" + Convert.ToString(int.MaxValue, 16) + ")");
             GenCodeLine(prefix + "   {");
             GenCodeLine(prefix + "      if (jjmatchedPos + 1 < curPos)");
 
@@ -1263,7 +1260,7 @@ public class LexGen : CodeGenerator
                         GenCodeLine(prefix + "      curLexState = jjnewLexState[jjmatchedKind];");
                     }
                     GenCodeLine(prefix + "      curPos = 0;");
-                    GenCodeLine(prefix + "      jjmatchedKind = 0x" + Convert.ToString(int.MaxValue,16) + ";");
+                    GenCodeLine(prefix + "      jjmatchedKind = 0x" + Convert.ToString(int.MaxValue, 16) + ";");
 
                     GenCodeLine(prefix + "      try {");
                     GenCodeLine(prefix + "         curChar = input_stream.readChar();");
@@ -1324,7 +1321,7 @@ public class LexGen : CodeGenerator
     Outer:
         for (int i = 0; i < maxOrdinal; i++)
         {
-            if ((toSkip[i / 64] & (1L << (i % 64))) == 0L)
+            if ((toSkip[i / 64] & (1UL << (i % 64))) == 0L)
                 continue;
 
             for (; ; )
@@ -1332,7 +1329,7 @@ public class LexGen : CodeGenerator
                 if (((act = (Action)actions[i]) == null ||
                     act.GetActionTokens() == null ||
                     act.GetActionTokens().Count == 0) && !canLoop[lexStates[i]])
-                    continue Outer;
+                    goto OuterExit;
 
                 GenCodeLine("      case " + i + " :");
 
@@ -1379,6 +1376,8 @@ public class LexGen : CodeGenerator
             }
 
             GenCodeLine("         break;");
+        OuterExit:
+            ;
         }
 
         GenCodeLine("      default :");
@@ -1400,7 +1399,7 @@ public class LexGen : CodeGenerator
     Outer:
         for (int i = 0; i < maxOrdinal; i++)
         {
-            if ((toMore[i / 64] & (1L << (i % 64))) == 0L)
+            if ((toMore[i / 64] & (1UL << (i % 64))) == 0L)
                 continue;
 
             for (; ; )
@@ -1408,7 +1407,7 @@ public class LexGen : CodeGenerator
                 if (((act = (Action)actions[i]) == null ||
                     act.GetActionTokens() == null ||
                     act.GetActionTokens().Count == 0) && !canLoop[lexStates[i]])
-                    continue Outer;
+                    goto OuterExit;
 
                 GenCodeLine("      case " + i + " :");
 
@@ -1454,6 +1453,8 @@ public class LexGen : CodeGenerator
             }
 
             GenCodeLine("         break;");
+        OuterExit:
+            ;
         }
 
         GenCodeLine("      default :");
@@ -1476,7 +1477,7 @@ public class LexGen : CodeGenerator
     Outer:
         for (i = 0; i < maxOrdinal; i++)
         {
-            if ((toToken[i / 64] & (1L << (i % 64))) == 0L)
+            if ((toToken[i / 64] & (1UL << (i % 64))) == 0L)
                 continue;
 
             for (; ; )
@@ -1484,7 +1485,7 @@ public class LexGen : CodeGenerator
                 if (((act = (Action)actions[i]) == null ||
                     act.GetActionTokens() == null ||
                     act.GetActionTokens().Count == 0) && !canLoop[lexStates[i]])
-                    continue Outer;
+                    goto OuterExit;
 
                 GenCodeLine("      case " + i + " :");
 
@@ -1539,6 +1540,8 @@ public class LexGen : CodeGenerator
             }
 
             GenCodeLine("         break;");
+        OuterExit:
+            ;
         }
 
         GenCodeLine("      default :");
@@ -1550,7 +1553,7 @@ public class LexGen : CodeGenerator
     public static void reInit()
     {
         actions = null;
-        allTpsForState = new ();
+        allTpsForState = new();
         canLoop = null;
         canMatchAnyChar = null;
         canReachOnMore = null;
@@ -1569,7 +1572,7 @@ public class LexGen : CodeGenerator
         hasTokenActions = false;
         ignoreCase = null;
         initMatch = null;
-        initStates = new ();
+        initStates = new();
         initialState = null;
         keepLineCol = false;
         kinds = null;

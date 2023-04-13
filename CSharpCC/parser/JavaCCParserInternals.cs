@@ -174,7 +174,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         if (r is not REndOfFile)
         {
             var p = new TokenProduction { isExplicit = false, lexStates = new String[] { "DEFAULT" }, kind = TokenProduction.TOKEN };
-            RegExprSpec res = new RegExprSpec();
+            var res = new RegExprSpec();
             res.rexp = r;
             res.rexp.tpContext = p;
             res.act = new Action();

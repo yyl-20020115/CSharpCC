@@ -43,15 +43,15 @@ public class RZeroOrMore : RegularExpression
     public override Nfa GenerateNfa(bool ignoreCase)
     {
         var retVal = new Nfa();
-        var startState = retVal.start;
-        var finalState = retVal.end;
+        var startState = retVal.Start;
+        var finalState = retVal.End;
 
         var temp = regexpr.GenerateNfa(ignoreCase);
 
-        startState.AddMove(temp.start);
+        startState.AddMove(temp.Start);
         startState.AddMove(finalState);
-        temp.end.AddMove(finalState);
-        temp.end.AddMove(temp.start);
+        temp.End.AddMove(finalState);
+        temp.End.AddMove(temp.Start);
 
         return retVal;
     }

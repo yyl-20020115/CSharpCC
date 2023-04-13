@@ -48,8 +48,8 @@ public class RSequence : RegularExpression
             return units[0].GenerateNfa(ignoreCase);
 
         var retVal = new Nfa();
-        var startState = retVal.start;
-        var finalState = retVal.end;
+        var startState = retVal.Start;
+        var finalState = retVal.End;
         Nfa temp1;
         Nfa temp2 = null;
 
@@ -57,18 +57,18 @@ public class RSequence : RegularExpression
 
         curRE = units[0];
         temp1 = curRE.GenerateNfa(ignoreCase);
-        startState.AddMove(temp1.start);
+        startState.AddMove(temp1.Start);
 
         for (int i = 1; i < units.Count; i++)
         {
             curRE = units[i];
 
             temp2 = curRE.GenerateNfa(ignoreCase);
-            temp1.end.AddMove(temp2.start);
+            temp1.End.AddMove(temp2.Start);
             temp1 = temp2;
         }
 
-        temp2.end.AddMove(finalState);
+        temp2.End.AddMove(finalState);
 
         return retVal;
     }

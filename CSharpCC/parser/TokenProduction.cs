@@ -39,7 +39,7 @@ public class TokenProduction
      * Definitions of constants that identify the kind of regular
      * expression production this is.
      */
-    public static readonly int TOKEN = 0,
+    public const int TOKEN = 0,
                             SKIP = 1,
                             MORE = 2,
                             SPECIAL = 3;

@@ -32,18 +32,18 @@ namespace org.javacc.parser;
  */
 public class Nfa
 {
-   public NfaState start;
-   public NfaState end;
+   public NfaState Start;
+   public NfaState End;
 
    public Nfa()
    {
-      start = new NfaState();
-      end = new NfaState();
+      Start = new NfaState();
+      End = new NfaState();
    }
 
    public Nfa(NfaState startGiven, NfaState finalGiven)
    {
-      start = startGiven;
-      end = finalGiven;
+      Start = startGiven;
+      End = finalGiven;
    }
 }

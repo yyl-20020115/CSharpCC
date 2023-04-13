@@ -370,8 +370,8 @@ public class RCharacterList : RegularExpression
 
         transformed = true;
         Nfa retVal = new Nfa();
-        NfaState startState = retVal.start;
-        NfaState finalState = retVal.end;
+        NfaState startState = retVal.Start;
+        NfaState finalState = retVal.End;
         int i;
 
         for (i = 0; i < descriptors.Count; i++)

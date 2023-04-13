@@ -91,7 +91,7 @@ public class NfaState
     private NfaState[] epsilonMoveArray;
 
     private readonly int id;
-    int stateName = -1;
+    public int stateName = -1;
     public int kind = int.MaxValue;
     private int lookingFor;
     private int usefulEpsilonMoves = 0;
@@ -142,7 +142,7 @@ public class NfaState
             else if (((NfaState)v[j]).id == s.id)
                 return;
 
-        v.Add(j, s);
+        v.Insert(j, s);
     }
 
     private static char[] ExpandCharArr(char[] oldArr, int incr)
@@ -2724,7 +2724,7 @@ public class NfaState
     }
 
     //private static bool boilerPlateDumped = false;
-    static void PrintBoilerPlateCPP(CodeGenerator codeGenerator)
+    public static void PrintBoilerPlateCPP(CodeGenerator codeGenerator)
     {
         codeGenerator.SwitchToIncludeFile();
         codeGenerator.GenCodeLine("#define jjCheckNAdd(state)\\");

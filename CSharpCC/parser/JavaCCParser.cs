@@ -344,7 +344,7 @@ public class JavaCCParser : JavaCCParserInternals
             case FALSE:
             case TRUE:
                 bool_val = BooleanLiteral();
-                Options.SetInputFileOption(t, getToken(0), option_name, Boolean.valueOf(bool_val));
+                Options.SetInputFileOption(t, getToken(0), option_name, (bool_val));
                 break;
             case STRING_LITERAL:
                 string_val = StringLiteral();

@@ -50,14 +50,14 @@ public class ROneOrMore : RegularExpression
     public override Nfa GenerateNfa(bool ignoreCase)
     {
         var retVal = new Nfa();
-        var startState = retVal.start;
-        var finalState = retVal.end;
+        var startState = retVal.Start;
+        var finalState = retVal.End;
 
         var temp = regexpr.GenerateNfa(ignoreCase);
 
-        startState.AddMove(temp.start);
-        temp.end.AddMove(temp.start);
-        temp.end.AddMove(finalState);
+        startState.AddMove(temp.Start);
+        temp.End.AddMove(temp.Start);
+        temp.End.AddMove(finalState);
 
         return retVal;
     }
