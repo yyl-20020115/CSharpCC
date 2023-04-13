@@ -34,7 +34,7 @@ namespace CSharpCC.Parser;
  */
 public static class CSharpCCErrors
 {
-    private static int parse_error_count = 0, semantic_error_count = 0, warning_count = 0;
+    private static int pec = 0, sec = 0, wc = 0;
 
     private static void PrintLocationInfo(object node)
     {
@@ -83,68 +83,59 @@ public static class CSharpCCErrors
         Console.Error.Write("Error: ");
         PrintLocationInfo(node);
         Console.Error.WriteLine(mess);
-        parse_error_count++;
+        pec++;
     }
 
     public static void ParseError(string mess)
     {
         Console.Error.Write("Error: ");
         Console.Error.WriteLine(mess);
-        parse_error_count++;
+        pec++;
     }
 
-    public static int GetParseErrorCount()
-    {
-        return parse_error_count;
-    }
+    public static int ParseErrorCount => pec;
 
     public static void SemanticError(object node, string mess)
     {
         Console.Error.Write("Error: ");
         PrintLocationInfo(node);
         Console.Error.WriteLine(mess);
-        semantic_error_count++;
+        sec++;
     }
 
     public static void SemanticError(string mess)
     {
         Console.Error.Write("Error: ");
         Console.Error.WriteLine(mess);
-        semantic_error_count++;
+        sec++;
     }
 
-    public static int GetSemanticErrorCount() => semantic_error_count;
+    public static int GetSemanticErrorCount() => sec;
 
     public static void Warning(object node, string mess)
     {
         Console.Error.Write("Warning: ");
         PrintLocationInfo(node);
         Console.Error.WriteLine(mess);
-        warning_count++;
+        wc++;
     }
 
     public static void Warning(string mess)
     {
         Console.Error.Write("Warning: ");
         Console.Error.WriteLine(mess);
-        warning_count++;
+        wc++;
     }
 
-    public static int GetWarningCount()
-    {
-        return warning_count;
-    }
+    public static int WarningCount => wc;
 
-    public static int GetErrorCount()
-    {
-        return parse_error_count + semantic_error_count;
-    }
+    public static int ErrorCount => pec + sec;
 
     public static void ReInit()
     {
-        parse_error_count = 0;
-        semantic_error_count = 0;
-        warning_count = 0;
+        pec = 0;
+        sec = 0;
+        wc = 0;
     }
 
     public static void Fatal(string message)

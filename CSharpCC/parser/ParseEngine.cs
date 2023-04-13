@@ -96,9 +96,9 @@ public class ParseEngine
         }
         else if (exp is Choice ch)
         {
-            for (int i = 0; i < ch.GetChoices().Count; i++)
+            for (int i = 0; i < ch.Choices.Count; i++)
             {
-                if (JavaCodeCheck((Expansion)(ch.GetChoices()[i])))
+                if (JavaCodeCheck((Expansion)(ch.Choices[i])))
                 {
                     return true;
                 }
@@ -176,9 +176,9 @@ public class ParseEngine
         }
         else if (exp is Choice ch)
         {
-            for (int i = 0; i < ch.GetChoices().Count; i++)
+            for (int i = 0; i < ch.Choices.Count; i++)
             {
-                GenFirstSet(ch.GetChoices()[i]);
+                GenFirstSet(ch.Choices[i]);
             }
         }
         else if (exp is Sequence seq)
@@ -260,11 +260,11 @@ public class ParseEngine
         // The state variables.
         int state = NOOPENSTM;
         int indentAmt = 0;
-        bool[] casedValues = new bool[CSharpCCGlobals.tokenCount];
+        bool[] casedValues = new bool[CSharpCCGlobals.TokenCount];
         string retval = "";
         Lookahead la;
         Token t = null;
-        int tokenMaskSize = (CSharpCCGlobals.tokenCount - 1) / 32 + 1;
+        int tokenMaskSize = (CSharpCCGlobals.TokenCount - 1) / 32 + 1;
         int[] tokenMask = null;
 
         // Iterate over all the conditions.
@@ -313,10 +313,10 @@ public class ParseEngine
                             retval += "\u0002\n" + "default:" + "\u0001";
                             if (Options.GetErrorReporting())
                             {
-                                retval += "\njj_la1[" + CSharpCCGlobals.maskindex + "] = jj_gen;";
-                                CSharpCCGlobals.maskindex++;
+                                retval += "\njj_la1[" + CSharpCCGlobals.MaskIndex + "] = jj_gen;";
+                                CSharpCCGlobals.MaskIndex++;
                             }
-                            CSharpCCGlobals.maskVals.Add(tokenMask);
+                            CSharpCCGlobals.MaskVals.Add(tokenMask);
                             retval += "\n" + "if (";
                             indentAmt++;
                             break;
@@ -337,8 +337,8 @@ public class ParseEngine
                 // Special optimal processing when the lookahead is exactly 1, and there
                 // is no semantic lookahead.
 
-                firstSet ??= new bool[CSharpCCGlobals.tokenCount];
-                for (int i = 0; i < CSharpCCGlobals.tokenCount; i++)
+                firstSet ??= new bool[CSharpCCGlobals.TokenCount];
+                for (int i = 0; i < CSharpCCGlobals.TokenCount; i++)
                 {
                     firstSet[i] = false;
                 }
@@ -377,7 +377,7 @@ public class ParseEngine
                             {
                                 retval += "(jj_ntk==-1)?jj_ntk_f():jj_ntk) {\u0001";
                             }
-                            for (int i = 0; i < CSharpCCGlobals.tokenCount; i++)
+                            for (int i = 0; i < CSharpCCGlobals.TokenCount; i++)
                             {
                                 casedValues[i] = false;
                             }
@@ -390,7 +390,7 @@ public class ParseEngine
                             break;
                             // Don't need to do anything if state is OPENSWITCH.
                     }
-                    for (int i = 0; i < CSharpCCGlobals.tokenCount; i++)
+                    for (int i = 0; i < CSharpCCGlobals.TokenCount; i++)
                     {
                         if (firstSet[i])
                         {
@@ -402,7 +402,7 @@ public class ParseEngine
                                 int j2 = i % 32;
                                 tokenMask[j1] |= 1 << j2;
                                 //string s = (String)(names_of_tokens.get((i)));
-                                if (CSharpCCGlobals.names_of_tokens.TryGetValue(i, out var s))
+                                if (CSharpCCGlobals.NamesOfTokens.TryGetValue(i, out var s))
                                 {
                                     retval += i;
                                 }
@@ -448,18 +448,18 @@ public class ParseEngine
                         retval += "\u0002\n" + "default:" + "\u0001";
                         if (Options.GetErrorReporting())
                         {
-                            retval += "\njj_la1[" + CSharpCCGlobals.maskindex + "] = jj_gen;";
-                            CSharpCCGlobals.maskindex++;
+                            retval += "\njj_la1[" + CSharpCCGlobals.MaskIndex + "] = jj_gen;";
+                            CSharpCCGlobals.MaskIndex++;
                         }
-                        CSharpCCGlobals.maskVals.Add(tokenMask);
+                        CSharpCCGlobals.MaskVals.Add(tokenMask);
                         retval += "\n" + "if (";
                         indentAmt++;
                         break;
                 }
-                CSharpCCGlobals.jj2index++;
+                CSharpCCGlobals.CC2Index++;
                 // At this point, la.la_expansion.internal_name must be "".
-                la.GetLaExpansion().internal_name = "_" + CSharpCCGlobals.jj2index;
-                la.GetLaExpansion().internal_index = CSharpCCGlobals.jj2index;
+                la.GetLaExpansion().internal_name = "_" + CSharpCCGlobals.CC2Index;
+                la.GetLaExpansion().internal_index = CSharpCCGlobals.CC2Index;
                 phase2list.Add(la);
                 retval += "jj_2" + la.GetLaExpansion().internal_name + "(" + la.GetAmount() + ")";
                 if (la.GetActionTokens().Count != 0)
@@ -498,9 +498,9 @@ public class ParseEngine
                 retval += "\u0002\n" + "default:" + "\u0001";
                 if (Options.GetErrorReporting())
                 {
-                    retval += "\njj_la1[" + CSharpCCGlobals.maskindex + "] = jj_gen;";
-                    CSharpCCGlobals.maskVals.Add(tokenMask);
-                    CSharpCCGlobals.maskindex++;
+                    retval += "\njj_la1[" + CSharpCCGlobals.MaskIndex + "] = jj_gen;";
+                    CSharpCCGlobals.MaskVals.Add(tokenMask);
+                    CSharpCCGlobals.MaskIndex++;
                 }
                 retval += actions[index];
                 break;
@@ -738,7 +738,7 @@ public class ParseEngine
             CodeGenerator.PrintTokenSetup(t);
             CSharpCCGlobals.ccol = 1;
             _CodeGenerator.PrintLeadingComments(t);
-            _CodeGenerator.GenCode("  " + CSharpCCGlobals.StaticOpt() + "final " + (p.GetAccessMod() ?? "public") + " ");
+            _CodeGenerator.GenCode("  " + CSharpCCGlobals.StaticOpt + "final " + (p.GetAccessMod() ?? "public") + " ");
             CSharpCCGlobals.cline = t.beginLine;
             CSharpCCGlobals.ccol = t.beginColumn;
             _CodeGenerator.PrintTokenOnly(t);
@@ -823,7 +823,7 @@ public class ParseEngine
         DumpFormattedString(code);
         _CodeGenerator.GenCodeLine("");
 
-        if (p.IsJumpPatched() && !voidReturn)
+        if (p.IsJumpPatched && !voidReturn)
         {
             if (isJavaDialect)
             {
@@ -898,7 +898,7 @@ public class ParseEngine
                       (isJavaDialect ? ")." : ")->") + e_nrw.rhsToken.image + ";";
             if (e_nrw.label == (""))
             {
-                if (CSharpCCGlobals.names_of_tokens.TryGetValue(e_nrw.ordinal,out var label))
+                if (CSharpCCGlobals.NamesOfTokens.TryGetValue(e_nrw.ordinal,out var label))
                 {
                     retval += "jj_consume_token(" + (String)label + tail;
                 }
@@ -951,11 +951,11 @@ public class ParseEngine
         {
             retval += "\u0003\n";
             if (!Options.BooleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) &&
-                e_nrw7.GetActionTokens().Count != 0)
+                e_nrw7.                ActionTokens.Count != 0)
             {
-                CSharpCCGlobals.PrintTokenSetup((e_nrw7.GetActionTokens()[0]));
+                CSharpCCGlobals.PrintTokenSetup((e_nrw7.ActionTokens[0]));
                 CSharpCCGlobals.ccol = 1;
-                foreach(var t2 in e_nrw7.GetActionTokens())
+                foreach(var t2 in e_nrw7.ActionTokens)
                 {
                     retval += _CodeGenerator.GetStringToPrint(t = t2);
                 }
@@ -965,9 +965,9 @@ public class ParseEngine
         }
         else if (e is Choice e_nrw8)
         {
-            conds = new Lookahead[e_nrw8.GetChoices().Count];
-            actions = new String[e_nrw8.GetChoices().Count + 1];
-            actions[e_nrw8.GetChoices().Count] = "\n" + "jj_consume_token(-1);\n" +
+            conds = new Lookahead[e_nrw8.Choices.Count];
+            actions = new String[e_nrw8.Choices.Count + 1];
+            actions[e_nrw8.Choices.Count] = "\n" + "jj_consume_token(-1);\n" +
                       (isJavaDialect ? "throw new ParseException();"
                                       : ("errorHandler->handleParseError(token, getToken(1), __FUNCTION__, this), hasError = true;" +
                        (Options.BooleanValue(Options.USEROPTION__CPP_STOP_ON_FIRST_ERROR) ? "return __ERROR_RET__;\n" : "")));
@@ -976,9 +976,9 @@ public class ParseEngine
             // evaluation of jj_consume_token(-1) causes ParseException to be
             // thrown first.
             Sequence nestedSeq;
-            for (int i = 0; i < e_nrw8.GetChoices().Count; i++)
+            for (int i = 0; i < e_nrw8.Choices.Count; i++)
             {
-                nestedSeq = (Sequence)(e_nrw8.GetChoices()[i]);
+                nestedSeq = (Sequence)(e_nrw8.Choices[i]);
                 actions[i] = phase1ExpansionGen(nestedSeq);
                 conds[i] = (Lookahead)(nestedSeq.units[0]);
             }
@@ -993,7 +993,7 @@ public class ParseEngine
                 // For C++, since we are not using exceptions, we will protect all the
                 // expansion choices with if (!error)
                 bool wrap_in_block = false;
-                if (!CSharpCCGlobals.JjtreeGenerated && !isJavaDialect)
+                if (!CSharpCCGlobals.CCTreeGenerated && !isJavaDialect)
                 {
                     // for the last one, if it's an action, we will not protect it.
                     Expansion elem = (Expansion)e_nrw9.units[i];
@@ -1189,7 +1189,7 @@ public class ParseEngine
         Expansion e = la.GetLaExpansion();
         if (isJavaDialect)
         {
-            _CodeGenerator.GenCodeLine("  " + CSharpCCGlobals.StaticOpt() + "private " + Options.GetBooleanType() + " jj_2" + e.internal_name + "(int xla)");
+            _CodeGenerator.GenCodeLine("  " + CSharpCCGlobals.StaticOpt + "private " + Options.GetBooleanType() + " jj_2" + e.internal_name + "(int xla)");
         }
         else
         {
@@ -1262,7 +1262,7 @@ public class ParseEngine
                 }
                 else if (seq is NonTerminal e_nrw)
                 {
-                    CSharpCCGlobals.production_table.TryGetValue(e_nrw.GetName(), out var ntprod);
+                    CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw.GetName(), out var ntprod);
 
                     if (ntprod is CodeProduction)
                     {
@@ -1314,7 +1314,7 @@ public class ParseEngine
             // fact, we rely here on the fact that the "name" fields of both these
             // variables are the same.
 
-            CSharpCCGlobals.production_table.TryGetValue(e_nrw.GetName(), out var ntprod);
+            CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw.GetName(), out var ntprod);
             if (ntprod is CodeProduction)
             {
                 ; // nothing to do here
@@ -1326,9 +1326,9 @@ public class ParseEngine
         }
         else if (e is Choice e_nrw2)
         {
-            for (int i = 0; i < e_nrw2.GetChoices().Count; i++)
+            for (int i = 0; i < e_nrw2.Choices.Count; i++)
             {
-                generate3R(e_nrw2.GetChoices()[i], inf);
+                generate3R(e_nrw2.Choices[i], inf);
             }
         }
         else if (e is Sequence e_nrw4)
@@ -1387,7 +1387,7 @@ public class ParseEngine
         {
             if (isJavaDialect)
             {
-                _CodeGenerator.GenCodeLine("  " + CSharpCCGlobals.StaticOpt() + "private " + Options.GetBooleanType() + " jj_3" + e.internal_name + "()");
+                _CodeGenerator.GenCodeLine("  " + CSharpCCGlobals.StaticOpt + "private " + Options.GetBooleanType() + " jj_3" + e.internal_name + "()");
             }
             else
             {
@@ -1425,7 +1425,7 @@ public class ParseEngine
             RegularExpression e_nrw = (RegularExpression)e;
             if (e_nrw.label == "")
             {
-                if (CSharpCCGlobals.names_of_tokens.TryGetValue(e_nrw.ordinal,out var label))
+                if (CSharpCCGlobals.NamesOfTokens.TryGetValue(e_nrw.ordinal,out var label))
                 {
                     _CodeGenerator.GenCodeLine("    if (jj_scan_token(" + (String)label + ")) " + genReturn(true));
                 }
@@ -1446,7 +1446,7 @@ public class ParseEngine
             // there's no need to check it below for "e_nrw" and "ntexp".  In
             // fact, we rely here on the fact that the "name" fields of both these
             // variables are the same.
-            CSharpCCGlobals.production_table.TryGetValue(e_nrw.GetName(),out var ntprod);
+            CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw.GetName(),out var ntprod);
 
             if (ntprod is CodeProduction)
             {
@@ -1463,7 +1463,7 @@ public class ParseEngine
         else if (e is Choice e_nrw2)
         {
             Sequence nested_seq;
-            if (e_nrw2.GetChoices().Count != 1)
+            if (e_nrw2.Choices.Count != 1)
             {
                 if (!xsp_declared)
                 {
@@ -1472,14 +1472,14 @@ public class ParseEngine
                 }
                 _CodeGenerator.GenCodeLine("    xsp = jj_scanpos;");
             }
-            for (int i = 0; i < e_nrw2.GetChoices().Count; i++)
+            for (int i = 0; i < e_nrw2.Choices.Count; i++)
             {
-                nested_seq = (Sequence)(e_nrw2.GetChoices()[i]);
+                nested_seq = (Sequence)(e_nrw2.Choices[i]);
                 Lookahead la = (Lookahead)(nested_seq.units[0]);
                 if (la.GetActionTokens().Count != 0)
                 {
                     // We have semantic lookahead that must be evaluated.
-                    CSharpCCGlobals.lookaheadNeeded = true;
+                    CSharpCCGlobals.LookaheadNeeded = true;
                     _CodeGenerator.GenCodeLine("    jj_lookingAhead = true;");
                     _CodeGenerator.GenCode("    jj_semLA = ");
                     CSharpCCGlobals.PrintTokenSetup(la.GetActionTokens()[0]);
@@ -1496,7 +1496,7 @@ public class ParseEngine
                 {
                     _CodeGenerator.GenCode("!jj_semLA || ");
                 }
-                if (i != e_nrw2.GetChoices().Count - 1)
+                if (i != e_nrw2.Choices.Count - 1)
                 {
                     //codeGenerator.GenCodeLine("jj_3" + nested_seq.internal_name + "()) {");
                     _CodeGenerator.GenCodeLine(genjj_3Call(nested_seq) + ") {");
@@ -1509,7 +1509,7 @@ public class ParseEngine
                     //codeGenerator.GenCodeLine("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
                 }
             }
-            for (int i = 1; i < e_nrw2.GetChoices().Count; i++)
+            for (int i = 1; i < e_nrw2.Choices.Count; i++)
             {
                 //codeGenerator.GenCodeLine("    } else if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
                 _CodeGenerator.GenCodeLine("    }");
@@ -1618,7 +1618,7 @@ public class ParseEngine
         }
         else if (e is NonTerminal e_nrw6)
         {
-            if (CSharpCCGlobals.production_table.TryGetValue(e_nrw6.GetName(), out var ntprod))
+            if (CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw6.GetName(), out var ntprod))
             {
 
 
@@ -1639,9 +1639,9 @@ public class ParseEngine
         {
             int min = oldMin;
             Expansion nested_e;
-            for (int i = 0; min > 1 && i < e_nrw.GetChoices().Count; i++)
+            for (int i = 0; min > 1 && i < e_nrw.Choices.Count; i++)
             {
-                nested_e = e_nrw.GetChoices()[i];
+                nested_e = e_nrw.Choices[i];
                 int min1 = minimumSize(nested_e, min);
                 if (min > min1) min = min1;
             }
@@ -1702,7 +1702,7 @@ public class ParseEngine
         Token t = null;
 
         this._CodeGenerator = codeGenerator;
-        foreach(var p in CSharpCCGlobals.bnfproductions)
+        foreach(var p in CSharpCCGlobals.BNFProductions)
         {
             if (p is CppCodeProduction cp)
             {
@@ -1751,11 +1751,11 @@ public class ParseEngine
                     }
                     codeGenerator.GenCodeLine("    try {");
                 }
-                if (cp.GetCodeTokens().Count != 0)
+                if (cp.CodeTokens.Count != 0)
                 {
-                    CSharpCCGlobals.PrintTokenSetup(cp.GetCodeTokens()[0]); 
+                    CSharpCCGlobals.PrintTokenSetup(cp.CodeTokens[0]); 
                     CSharpCCGlobals.cline--;
-                    codeGenerator.PrintTokenList(cp.GetCodeTokens());
+                    codeGenerator.PrintTokenList(cp.CodeTokens);
                 }
                 codeGenerator.GenCodeLine("");
                 if (Options.GetDebugParser())
@@ -1777,7 +1777,7 @@ public class ParseEngine
                 CSharpCCGlobals.PrintTokenSetup(t);
                 CSharpCCGlobals.ccol = 1;
                 codeGenerator.PrintLeadingComments(t);
-                codeGenerator.GenCode("  " + CSharpCCGlobals.StaticOpt() + (p.GetAccessMod() != null ? p.GetAccessMod() + " " : ""));
+                codeGenerator.GenCode("  " + CSharpCCGlobals.StaticOpt + (p.GetAccessMod() != null ? p.GetAccessMod() + " " : ""));
                 CSharpCCGlobals.cline = t.beginLine; 
                 CSharpCCGlobals.ccol = t.beginColumn;
                 codeGenerator.PrintTokenOnly(t);
@@ -1818,11 +1818,11 @@ public class ParseEngine
                     codeGenerator.GenCodeLine("    trace_call(\"" + CSharpCCGlobals.AddUnicodeEscapes(jp.GetLhs()) + "\");");
                     codeGenerator.GenCode("    try {");
                 }
-                if (jp.GetCodeTokens().Count != 0)
+                if (jp.CodeTokens.Count != 0)
                 {
-                    CSharpCCGlobals.PrintTokenSetup((jp.GetCodeTokens()[0]));
+                    CSharpCCGlobals.PrintTokenSetup((jp.CodeTokens[0]));
                     CSharpCCGlobals.cline--;
-                    codeGenerator.PrintTokenList(jp.GetCodeTokens());
+                    codeGenerator.PrintTokenList(jp.CodeTokens);
                 }
                 codeGenerator.GenCodeLine("");
                 if (Options.GetDebugParser())
@@ -1894,7 +1894,7 @@ public class ParseEngine
         }
         else if (e is NonTerminal e_nrw2)
         {
-            if (!CSharpCCGlobals.production_table.TryGetValue(e_nrw2.GetName(), out var ntprod))
+            if (!CSharpCCGlobals.ProductionTable.TryGetValue(e_nrw2.GetName(), out var ntprod))
                 return;
 
             if (ntprod is CodeProduction)
@@ -1914,10 +1914,10 @@ public class ParseEngine
         {
             Sequence nested_seq;
             Console.Error.Write("CHOICE, ");
-            for (int i = 0; i < e_nrw4.GetChoices().Count; i++)
+            for (int i = 0; i < e_nrw4.Choices.Count; i++)
             {
                 if (i > 0) Console.Error.Write("\n|");
-                nested_seq = (Sequence)(e_nrw4.GetChoices()[i]);
+                nested_seq = (Sequence)(e_nrw4.Choices[i]);
                 Lookahead la = (Lookahead)(nested_seq.units[0]);
                 if (la.GetActionTokens().Count != 0)
                 {
@@ -1950,7 +1950,7 @@ public class ParseEngine
                 var tmp = e_nrw5.units[1];
                 while (tmp is NonTerminal tx)
                 {
-                    if (!CSharpCCGlobals.production_table.TryGetValue(tx.GetName(), out var ntprod))
+                    if (!CSharpCCGlobals.ProductionTable.TryGetValue(tx.GetName(), out var ntprod))
                         break;
 
                     if (ntprod is CodeProduction) break;

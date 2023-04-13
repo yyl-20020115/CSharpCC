@@ -56,7 +56,7 @@ public class CSharpCCGlobals : CSharpCCParserConstants
     /**
      * Set to true if this file has been processed by JJTree.
      */
-    static public bool JjtreeGenerated = false;
+    static public bool CCTreeGenerated = false;
 
     /**
      * The list of tools that have participated in generating the
@@ -87,77 +87,77 @@ public class CSharpCCGlobals : CSharpCCParserConstants
      * This is a list of tokens that appear after "PARSER_BEGIN(name)" all the
      * way until (but not including) the opening brace "{" of the class "name".
      */
-    static public List<Token> cu_to_insertion_point_1 = new();
+    static public List<Token> CuToInsertionPoint1 = new();
 
     /**
      * This is the list of all tokens that appear after the tokens in
      * "cu_to_insertion_point_1" and until (but not including) the closing brace "}"
      * of the class "name".
      */
-    static public List<Token> cu_to_insertion_point_2 = new();
+    static public List<Token> CuToInsertionPoint2 = new();
 
     /**
      * This is the list of all tokens that appear after the tokens in
      * "cu_to_insertion_point_2" and until "PARSER_END(name)".
      */
-    static public List<Token> cu_from_insertion_point_2 = new();
+    static public List<Token> CuFromInsertionPoint2 = new();
 
     /**
      * A list of all grammar productions - normal and JAVACODE - in the order
      * they appear in the input file.  Each entry here will be a subclass of
      * "NormalProduction".
      */
-    static public List<NormalProduction> bnfproductions = new();
+    static public List<NormalProduction> BNFProductions = new();
 
     /**
      * A symbol table of all grammar productions - normal and JAVACODE.  The
      * symbol table is indexed by the name of the left hand side non-terminal.
      * Its contents are of type "NormalProduction".
      */
-    static public Dictionary<string, NormalProduction> production_table = new();
+    static public Dictionary<string, NormalProduction> ProductionTable = new();
 
     /**
      * A mapping of lexical state strings to their integer internal representation.
      * Integers are stored as java.lang.int's.
      */
-    static public Dictionary<String, int> lexstate_S2I = new();
+    static public Dictionary<String, int> LexstateS2I = new();
 
     /**
      * A mapping of the internal integer representations of lexical states to
      * their strings.  Integers are stored as java.lang.int's.
      */
-    static public Dictionary<int, String> lexstate_I2S = new();
+    static public Dictionary<int, String> LexstateI2S = new();
 
     /**
      * The declarations to be inserted into the TokenManager class.
      */
-    static public List<Token> token_mgr_decls = new();
+    static public List<Token> TokenManagerDeclarations = new();
 
     /**
      * The list of all TokenProductions from the input file.  This list includes
      * implicit TokenProductions that are created for uses of regular expressions
      * within BNF productions.
      */
-    static public List<TokenProduction> rexprlist = new();
+    static public List<TokenProduction> RegexpList = new();
 
     /**
      * The total number of distinct tokens.  This is therefore one more than the
      * largest assigned token ordinal.
      */
-    static public int tokenCount = 0;
+    static public int TokenCount = 0;
 
     /**
      * This is a symbol table that contains all named tokens (those that are
      * defined with a label).  The index to the table is the image of the label
      * and the contents of the table are of type "RegularExpression".
      */
-    static public Dictionary<string, RegularExpression> named_tokens_table = new();
+    static public Dictionary<string, RegularExpression> NamedTokenTable = new();
 
     /**
      * Contains the same entries as "named_tokens_table", but this is an ordered
      * list which is ordered by the order of appearance in the input file.
      */
-    static public List<RegularExpression> ordered_named_tokens = new();
+    static public List<RegularExpression> OrderedNamedToken = new();
 
     /**
      * A mapping of ordinal values (represented as objects of type "int") to
@@ -166,13 +166,13 @@ public class CSharpCCGlobals : CSharpCCParserConstants
      * If there are multiple labels representing the same ordinal value, then
      * only one label is stored.
      */
-    static public Dictionary<int, String> names_of_tokens = new();
+    static public Dictionary<int, String> NamesOfTokens = new();
 
     /**
      * A mapping of ordinal values (represented as objects of type "int") to
      * the corresponding RegularExpression's.
      */
-    static public Dictionary<int, RegularExpression> rexps_of_tokens = new ();
+    static public Dictionary<int, RegularExpression> RegexpsOfTokens = new ();
 
     /**
      * This is a three-level symbol table that contains all simple tokens (those
@@ -183,16 +183,17 @@ public class CSharpCCGlobals : CSharpCCParserConstants
      * This third level hashtable contains the actual string of the simple token
      * and maps it to its RegularExpression.
      */
-    public static Dictionary<string, Dictionary<string, Dictionary<string, RegularExpression>>> simple_tokens_table = new();
+    public static Dictionary<string, Dictionary<string, Dictionary<string, RegularExpression>>>
+        SimpleTokenTable = new();
 
     /**
      * maskindex, jj2index, maskVals are variables that are shared between
      * ParseEngine and ParseGen.
      */
-    public static int maskindex = 0;
-    public static int jj2index = 0;
-    public static bool lookaheadNeeded;
-    public static List<int[]> maskVals = new();
+    public static int MaskIndex = 0;
+    public static int CC2Index = 0;
+    public static bool LookaheadNeeded;
+    public static List<int[]> MaskVals = new();
 
     public static Action actForEof;
     public static string nextStateForEof;
@@ -364,12 +365,9 @@ public class CSharpCCGlobals : CSharpCCParserConstants
         //}
     }
 
-    static public string StaticOpt()
-    {
-        return Options.GetStatic() ? "static " : "";
-    }
+    static public string StaticOpt => Options.GetStatic() ? "static " : "";
 
-  
+
 
     static public string AddUnicodeEscapes(string str)
     {
@@ -559,27 +557,27 @@ public class CSharpCCGlobals : CSharpCCParserConstants
     {
         FileName = null;
         OrigFileName = null;
-        JjtreeGenerated = false;
+        CCTreeGenerated = false;
         ToolNames = null;
         CuName = null;
-        cu_to_insertion_point_1 = new();
-        cu_to_insertion_point_2 = new();
-        cu_from_insertion_point_2 = new();
-        bnfproductions = new();
-        production_table = new();
-        lexstate_S2I = new();
-        lexstate_I2S = new();
-        token_mgr_decls = null;
-        rexprlist = new();
-        tokenCount = 0;
-        named_tokens_table = new();
-        ordered_named_tokens = new();
-        names_of_tokens = new();
-        rexps_of_tokens = new();
-        simple_tokens_table = new();
-        maskindex = 0;
-        jj2index = 0;
-        maskVals = new();
+        CuToInsertionPoint1 = new();
+        CuToInsertionPoint2 = new();
+        CuFromInsertionPoint2 = new();
+        BNFProductions = new();
+        ProductionTable = new();
+        LexstateS2I = new();
+        LexstateI2S = new();
+        TokenManagerDeclarations = null;
+        RegexpList = new();
+        TokenCount = 0;
+        NamedTokenTable = new();
+        OrderedNamedToken = new();
+        NamesOfTokens = new();
+        RegexpsOfTokens = new();
+        SimpleTokenTable = new();
+        MaskIndex = 0;
+        CC2Index = 0;
+        MaskVals = new();
         cline = 0;
         ccol = 0;
         actForEof = null;
@@ -603,5 +601,4 @@ public class CSharpCCGlobals : CSharpCCParserConstants
         //assert(false);
         return null;
     }
-
 }

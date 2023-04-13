@@ -38,11 +38,11 @@ public abstract class CodeProduction : NormalProduction
     /**
      * The tokens that implement this JAVACODE/CPPCODE production.
      */
-    private readonly List<Token> CodeTokens = new();
+    private readonly List<Token> codeTokens = new();
 
     /**
      * @return the code_tokens
      */
-    public List<Token> GetCodeTokens() => CodeTokens;
+    public List<Token> CodeTokens => codeTokens;
 
 }

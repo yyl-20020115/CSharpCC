@@ -44,8 +44,8 @@ public class CCDoc : CCDocGlobals
     {
         Generator = GetGenerator();
         Generator.DocumentStart();
-        EmitTokenProductions(Generator, rexprlist);
-        EmitNormalProductions(Generator, bnfproductions);
+        EmitTokenProductions(Generator, RegexpList);
+        EmitNormalProductions(Generator, BNFProductions);
         Generator.DocumentEnd();
     }
     private static Token GetPrecedingSpecialToken(Token tok)
@@ -171,7 +171,7 @@ public class CCDoc : CCDocGlobals
                 if (np.GetExpansion() is Choice c)
                 {
                     bool first = true;
-                    foreach (Expansion e in c.GetChoices())
+                    foreach (Expansion e in c.Choices)
                     {
                         gen.ExpansionStart(e, first);
                         EmitExpansionTree(e, gen);
@@ -253,7 +253,7 @@ public class CCDoc : CCDocGlobals
     private static void EmitExpansionChoice(Choice c, Generator gen)
     {
         var first = true;
-        foreach (var e in c.GetChoices())
+        foreach (var e in c.Choices)
         {
             if (!first)
             {
@@ -391,10 +391,10 @@ public class CCDoc : CCDocGlobals
                 else if (o is CharacterRange range)
                 {
                     returnString += "\"";
-                    char[] s = { range.GetLeft() };
+                    char[] s = { range.Left };
                     returnString += StringEscapeHelpers.AddEscapes(new string(s));
                     returnString += "\"-\"";
-                    s[0] = range.GetRight();
+                    s[0] = range.Right;
                     returnString += StringEscapeHelpers.AddEscapes(new string(s));
                     returnString += "\"";
                 }

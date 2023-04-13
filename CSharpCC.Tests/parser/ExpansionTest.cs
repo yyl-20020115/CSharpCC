@@ -113,7 +113,7 @@ public class ExpansionTest : CSharpCCTestCase
         c = new Choice(e);
         Assert.AreEqual(e.Column, c.Column);
         Assert.AreEqual(e.Line, c.Line);
-        Assert.AreSame(e, c.GetChoices()[0]);
+        Assert.AreSame(e, c.Choices[0]);
     }
     [TestMethod]
     public void TestRJustNameConstructor()

@@ -37,26 +37,25 @@ namespace CSharpCC.Parser;
 
 public class Action : Expansion
 {
-
     /**
      * Contains the list of tokens that make up the action.  This
      * list does not include the surrounding braces.
      */
-    private readonly List<Token> ActionTokens = new ();
+    private readonly List<Token> actionTokens = new ();
 
     public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        var sb = base.Dump(indent, alreadyDumped);
+        var builder = base.Dump(indent, alreadyDumped);
         alreadyDumped.Add(this);
-        if (GetActionTokens().Count > 0)
+        if (ActionTokens.Count > 0)
         {
-            sb.Append(' ').Append(GetActionTokens()[0]);
+            builder.Append(' ').Append(ActionTokens[0]);
         }
-        return sb;
+        return builder;
     }
 
     /**
      * @return the action_tokens
      */
-    public List<Token> GetActionTokens() => ActionTokens;
+    public List<Token> ActionTokens => actionTokens;
 }

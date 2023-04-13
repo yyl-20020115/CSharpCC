@@ -50,24 +50,24 @@ public class CSharpCCInterpreter
             var lg = new LexGen();
             lg.start();
             TokenizerData td = LexGen.tokenizerData;
-            if (CSharpCCErrors.GetErrorCount() == 0)
+            if (CSharpCCErrors.ErrorCount == 0)
             {
                 Tokenize(td, input);
             }
         }
         catch (MetaParseException e)
         {
-            Console.WriteLine("Detected " + CSharpCCErrors.GetErrorCount() +
+            Console.WriteLine("Detected " + CSharpCCErrors.ErrorCount +
                                " errors and "
-                               + CSharpCCErrors.GetWarningCount() + " warnings.");
+                               + CSharpCCErrors.WarningCount + " warnings.");
             Environment.Exit(1);
         }
         catch (Exception e)
         {
             Console.WriteLine(e.ToString());
-            Console.WriteLine("Detected " + (CSharpCCErrors.GetErrorCount() + 1) +
+            Console.WriteLine("Detected " + (CSharpCCErrors.ErrorCount + 1) +
                                " errors and "
-                               + CSharpCCErrors.GetWarningCount() + " warnings.");
+                               + CSharpCCErrors.WarningCount + " warnings.");
             Environment.Exit(1);
         }
     }

@@ -42,7 +42,7 @@ public class ParseGen : CodeGenerator
 
         Token t = null;
 
-        if (CSharpCCErrors.GetErrorCount() != 0)
+        if (CSharpCCErrors.ErrorCount != 0)
         {
             throw new MetaParseException();
         }
@@ -60,12 +60,12 @@ public class ParseGen : CodeGenerator
             bool implementsExists = false;
             //bool extendsExists = false;
 
-            if (cu_to_insertion_point_1.Count != 0)
+            if (CuToInsertionPoint1.Count != 0)
             {
-                var firstToken = cu_to_insertion_point_1[0];
+                var firstToken = CuToInsertionPoint1[0];
                 PrintTokenSetup(firstToken);
                 this.ccol = 1;
-                foreach (var t2 in cu_to_insertion_point_1)
+                foreach (var t2 in CuToInsertionPoint1)
                 {
                     t = t2;
                     if (t.kind == IMPLEMENTS)
@@ -90,10 +90,10 @@ public class ParseGen : CodeGenerator
                 GenCode(" implements ");
             }
             GenCode(CuName + "Constants ");
-            if (cu_to_insertion_point_2.Count != 0)
+            if (CuToInsertionPoint2.Count != 0)
             {
-                CSharpCCGlobals.PrintTokenSetup((cu_to_insertion_point_2[0]));
-                foreach (var t2 in cu_to_insertion_point_2)
+                CSharpCCGlobals.PrintTokenSetup((CuToInsertionPoint2[0]));
+                foreach (var t2 in CuToInsertionPoint2)
                 {
                     PrintToken(t = t2);
                 }
@@ -112,55 +112,55 @@ public class ParseGen : CodeGenerator
             if (Options.GetUserTokenManager())
             {
                 GenCodeLine("  /** User defined Token Manager. */");
-                GenCodeLine("  " + StaticOpt() + "public TokenManager token_source;");
+                GenCodeLine("  " + StaticOpt + "public TokenManager token_source;");
             }
             else
             {
                 GenCodeLine("  /** Generated Token Manager. */");
-                GenCodeLine("  " + StaticOpt() + "public " + CuName + "TokenManager token_source;");
+                GenCodeLine("  " + StaticOpt + "public " + CuName + "TokenManager token_source;");
                 if (!Options.GetUserCharStream())
                 {
                     if (Options.GetJavaUnicodeEscape())
                     {
-                        GenCodeLine("  " + StaticOpt() + "JavaCharStream jj_input_stream;");
+                        GenCodeLine("  " + StaticOpt + "JavaCharStream jj_input_stream;");
                     }
                     else
                     {
-                        GenCodeLine("  " + StaticOpt() + "SimpleCharStream jj_input_stream;");
+                        GenCodeLine("  " + StaticOpt + "SimpleCharStream jj_input_stream;");
                     }
                 }
             }
             GenCodeLine("  /** Current token. */");
-            GenCodeLine("  " + StaticOpt() + "public Token token;");
+            GenCodeLine("  " + StaticOpt + "public Token token;");
             GenCodeLine("  /** Next token. */");
-            GenCodeLine("  " + StaticOpt() + "public Token jj_nt;");
+            GenCodeLine("  " + StaticOpt + "public Token jj_nt;");
             if (!Options.GetCacheTokens())
             {
-                GenCodeLine("  " + StaticOpt() + "private int jj_ntk;");
+                GenCodeLine("  " + StaticOpt + "private int jj_ntk;");
             }
             if (Options.GetDepthLimit() > 0)
             {
-                GenCodeLine("  " + StaticOpt() + "private int jj_depth;");
+                GenCodeLine("  " + StaticOpt + "private int jj_depth;");
             }
-            if (jj2index != 0)
+            if (CC2Index != 0)
             {
-                GenCodeLine("  " + StaticOpt() + "private Token jj_scanpos, jj_lastpos;");
-                GenCodeLine("  " + StaticOpt() + "private int jj_la;");
-                if (lookaheadNeeded)
+                GenCodeLine("  " + StaticOpt + "private Token jj_scanpos, jj_lastpos;");
+                GenCodeLine("  " + StaticOpt + "private int jj_la;");
+                if (LookaheadNeeded)
                 {
                     GenCodeLine("  /** Whether we are looking ahead. */");
-                    GenCodeLine("  " + StaticOpt() + "private " + Options.GetBooleanType()
+                    GenCodeLine("  " + StaticOpt + "private " + Options.GetBooleanType()
                             + " jj_lookingAhead = false;");
-                    GenCodeLine("  " + StaticOpt() + "private " + Options.GetBooleanType()
+                    GenCodeLine("  " + StaticOpt + "private " + Options.GetBooleanType()
                             + " jj_semLA;");
                 }
             }
             if (Options.GetErrorReporting())
             {
-                GenCodeLine("  " + StaticOpt() + "private int jj_gen;");
-                GenCodeLine("  " + StaticOpt() + "private int[] jj_la1 = new int["
-                        + maskindex + "];");
-                int tokenMaskSize = (tokenCount - 1) / 32 + 1;
+                GenCodeLine("  " + StaticOpt + "private int jj_gen;");
+                GenCodeLine("  " + StaticOpt + "private int[] jj_la1 = new int["
+                        + MaskIndex + "];");
+                int tokenMaskSize = (TokenCount - 1) / 32 + 1;
                 for (int i = 0; i < tokenMaskSize; i++)
                 {
                     GenCodeLine("  static private int[] jj_la1_" + i + ";");
@@ -175,7 +175,7 @@ public class ParseGen : CodeGenerator
                 {
                     GenCodeLine("	private static void jj_la1_init_" + i + "() {");
                     GenCode("	   jj_la1_" + i + " = new int[] {");
-                    foreach (var tokenMask in maskVals)
+                    foreach (var tokenMask in MaskVals)
                     {
                         GenCode("0x" + Convert.ToString(tokenMask[i], 16) + ",");
                     }
@@ -183,13 +183,13 @@ public class ParseGen : CodeGenerator
                     GenCodeLine("	}");
                 }
             }
-            if (jj2index != 0 && Options.GetErrorReporting())
+            if (CC2Index != 0 && Options.GetErrorReporting())
             {
-                GenCodeLine("  " + StaticOpt() + "final private JJCalls[] jj_2_rtns = new JJCalls["
-                        + jj2index + "];");
-                GenCodeLine("  " + StaticOpt() + "private " + Options.GetBooleanType()
+                GenCodeLine("  " + StaticOpt + "final private JJCalls[] jj_2_rtns = new JJCalls["
+                        + CC2Index + "];");
+                GenCodeLine("  " + StaticOpt + "private " + Options.GetBooleanType()
                         + " jj_rescan = false;");
-                GenCodeLine("  " + StaticOpt() + "private int jj_gc = 0;");
+                GenCodeLine("  " + StaticOpt + "private int jj_gc = 0;");
             }
             GenCodeLine("");
 
@@ -242,12 +242,12 @@ public class ParseGen : CodeGenerator
                     if (Options.GetErrorReporting())
                     {
                         GenCodeLine("	 jj_gen = 0;");
-                        if (maskindex > 0)
+                        if (MaskIndex > 0)
                         {
-                            GenCodeLine("	 for (int i = 0; i < " + maskindex
+                            GenCodeLine("	 for (int i = 0; i < " + MaskIndex
                                     + "; i++) jj_la1[i] = -1;");
                         }
-                        if (jj2index != 0)
+                        if (CC2Index != 0)
                         {
                             GenCodeLine("	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();");
                         }
@@ -255,7 +255,7 @@ public class ParseGen : CodeGenerator
                     GenCodeLine("  }");
                     GenCodeLine("");
                     GenCodeLine("  /** Reinitialise. */");
-                    GenCodeLine("  " + StaticOpt() + "public void ReInit(CharStream stream) {");
+                    GenCodeLine("  " + StaticOpt + "public void ReInit(CharStream stream) {");
 
                     if (Options.IsTokenManagerRequiresParserAccess())
                     {
@@ -280,23 +280,23 @@ public class ParseGen : CodeGenerator
                     {
                         GenCodeLine("    jj_depth = -1;");
                     }
-                    if (lookaheadNeeded)
+                    if (LookaheadNeeded)
                     {
                         GenCodeLine("	 jj_lookingAhead = false;");
                     }
-                    if (JjtreeGenerated)
+                    if (CCTreeGenerated)
                     {
                         GenCodeLine("	 jjtree.reset();");
                     }
                     if (Options.GetErrorReporting())
                     {
                         GenCodeLine("	 jj_gen = 0;");
-                        if (maskindex > 0)
+                        if (MaskIndex > 0)
                         {
-                            GenCodeLine("	 for (int i = 0; i < " + maskindex
+                            GenCodeLine("	 for (int i = 0; i < " + MaskIndex
                                     + "; i++) jj_la1[i] = -1;");
                         }
-                        if (jj2index != 0)
+                        if (CC2Index != 0)
                         {
                             GenCodeLine("	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();");
                         }
@@ -381,12 +381,12 @@ public class ParseGen : CodeGenerator
                         if (Options.GetErrorReporting())
                         {
                             GenCodeLine("	 jj_gen = 0;");
-                            if (maskindex > 0)
+                            if (MaskIndex > 0)
                             {
-                                GenCodeLine("	 for (int i = 0; i < " + maskindex
+                                GenCodeLine("	 for (int i = 0; i < " + MaskIndex
                                         + "; i++) jj_la1[i] = -1;");
                             }
-                            if (jj2index != 0)
+                            if (CC2Index != 0)
                             {
                                 GenCodeLine("	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();");
                             }
@@ -395,14 +395,14 @@ public class ParseGen : CodeGenerator
                         GenCodeLine("");
 
                         GenCodeLine("  /** Reinitialise. */");
-                        GenCodeLine("  " + StaticOpt()
+                        GenCodeLine("  " + StaticOpt
                                 + "public void ReInit(java.io.InputStream stream) {");
                         GenCodeLine("	  ReInit(stream, null);");
                         GenCodeLine("  }");
 
                         GenCodeLine("  /** Reinitialise. */");
                         GenCodeLine("  "
-                                + StaticOpt()
+                                + StaticOpt
                                 + "public void ReInit(java.io.InputStream stream, String encoding) {");
                         if (!Options.GetGenerateChainedException())
                         {
@@ -438,16 +438,16 @@ public class ParseGen : CodeGenerator
                         {
                             GenCodeLine("    jj_depth = -1;");
                         }
-                        if (JjtreeGenerated)
+                        if (CCTreeGenerated)
                         {
                             GenCodeLine("	 jjtree.reset();");
                         }
                         if (Options.GetErrorReporting())
                         {
                             GenCodeLine("	 jj_gen = 0;");
-                            GenCodeLine("	 for (int i = 0; i < " + maskindex
+                            GenCodeLine("	 for (int i = 0; i < " + MaskIndex
                                     + "; i++) jj_la1[i] = -1;");
-                            if (jj2index != 0)
+                            if (CC2Index != 0)
                             {
                                 GenCodeLine("	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();");
                             }
@@ -509,12 +509,12 @@ public class ParseGen : CodeGenerator
                     if (Options.GetErrorReporting())
                     {
                         GenCodeLine("	 jj_gen = 0;");
-                        if (maskindex > 0)
+                        if (MaskIndex > 0)
                         {
-                            GenCodeLine("	 for (int i = 0; i < " + maskindex
+                            GenCodeLine("	 for (int i = 0; i < " + MaskIndex
                                     + "; i++) jj_la1[i] = -1;");
                         }
-                        if (jj2index != 0)
+                        if (CC2Index != 0)
                         {
                             GenCodeLine("	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();");
                         }
@@ -540,7 +540,7 @@ public class ParseGen : CodeGenerator
 
 
                     GenCodeLine("  /** Reinitialise. */");
-                    GenCodeLine("  " + StaticOpt() + "public void ReInit(" + readerInterfaceName
+                    GenCodeLine("  " + StaticOpt + "public void ReInit(" + readerInterfaceName
                             + " stream) {");
                     if (Options.GetJavaUnicodeEscape())
                     {
@@ -595,19 +595,19 @@ public class ParseGen : CodeGenerator
                     {
                         GenCodeLine("    jj_depth = -1;");
                     }
-                    if (JjtreeGenerated)
+                    if (CCTreeGenerated)
                     {
                         GenCodeLine("	 jjtree.reset();");
                     }
                     if (Options.GetErrorReporting())
                     {
                         GenCodeLine("	 jj_gen = 0;");
-                        if (maskindex > 0)
+                        if (MaskIndex > 0)
                         {
-                            GenCodeLine("	 for (int i = 0; i < " + maskindex
+                            GenCodeLine("	 for (int i = 0; i < " + MaskIndex
                                     + "; i++) jj_la1[i] = -1;");
                         }
-                        if (jj2index != 0)
+                        if (CC2Index != 0)
                         {
                             GenCodeLine("	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();");
                         }
@@ -655,11 +655,11 @@ public class ParseGen : CodeGenerator
             if (Options.GetErrorReporting())
             {
                 GenCodeLine("	 jj_gen = 0;");
-                if (maskindex > 0)
+                if (MaskIndex > 0)
                 {
-                    GenCodeLine("	 for (int i = 0; i < " + maskindex + "; i++) jj_la1[i] = -1;");
+                    GenCodeLine("	 for (int i = 0; i < " + MaskIndex + "; i++) jj_la1[i] = -1;");
                 }
-                if (jj2index != 0)
+                if (CC2Index != 0)
                 {
                     GenCodeLine("	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();");
                 }
@@ -690,25 +690,25 @@ public class ParseGen : CodeGenerator
             {
                 GenCodeLine("    jj_depth = -1;");
             }
-            if (JjtreeGenerated)
+            if (CCTreeGenerated)
             {
                 GenCodeLine("	 jjtree.reset();");
             }
             if (Options.GetErrorReporting())
             {
                 GenCodeLine("	 jj_gen = 0;");
-                if (maskindex > 0)
+                if (MaskIndex > 0)
                 {
-                    GenCodeLine("	 for (int i = 0; i < " + maskindex + "; i++) jj_la1[i] = -1;");
+                    GenCodeLine("	 for (int i = 0; i < " + MaskIndex + "; i++) jj_la1[i] = -1;");
                 }
-                if (jj2index != 0)
+                if (CC2Index != 0)
                 {
                     GenCodeLine("	 for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();");
                 }
             }
             GenCodeLine("  }");
             GenCodeLine("");
-            GenCodeLine("  " + StaticOpt()
+            GenCodeLine("  " + StaticOpt
                     + "private Token jj_consume_token(int kind) throws ParseException {");
             if (Options.GetCacheTokens())
             {
@@ -727,7 +727,7 @@ public class ParseGen : CodeGenerator
             if (Options.GetErrorReporting())
             {
                 GenCodeLine("	   jj_gen++;");
-                if (jj2index != 0)
+                if (CC2Index != 0)
                 {
                     GenCodeLine("	   if (++jj_gc > 100) {");
                     GenCodeLine("		 jj_gc = 0;");
@@ -759,7 +759,7 @@ public class ParseGen : CodeGenerator
             GenCodeLine("	 throw generateParseException();");
             GenCodeLine("  }");
             GenCodeLine("");
-            if (jj2index != 0)
+            if (CC2Index != 0)
             {
                 GenCodeLine("  @SuppressWarnings(\"serial\")");
                 GenCodeLine("  static private final class LookaheadSuccess extends " + (Options.IsLegacyExceptionHandling() ? "java.lang.Error" : "java.lang.RuntimeException") + " {");
@@ -769,7 +769,7 @@ public class ParseGen : CodeGenerator
                 GenCodeLine("    }");
                 GenCodeLine("  }");
                 GenCodeLine("  static private final LookaheadSuccess jj_ls = new LookaheadSuccess();");
-                GenCodeLine("  " + StaticOpt() + "private " + Options.GetBooleanType()
+                GenCodeLine("  " + StaticOpt + "private " + Options.GetBooleanType()
                         + " jj_scan_token(int kind) {");
                 GenCodeLine("	 if (jj_scanpos == jj_lastpos) {");
                 GenCodeLine("	   jj_la--;");
@@ -806,7 +806,7 @@ public class ParseGen : CodeGenerator
             }
             GenCodeLine("");
             GenCodeLine("/** Get the next Token. */");
-            GenCodeLine("  " + StaticOpt() + "final public Token getNextToken() {");
+            GenCodeLine("  " + StaticOpt + "final public Token getNextToken() {");
             if (Options.GetCacheTokens())
             {
                 GenCodeLine("	 if ((token = jj_nt).next != null) jj_nt = jj_nt.next;");
@@ -830,8 +830,8 @@ public class ParseGen : CodeGenerator
             GenCodeLine("  }");
             GenCodeLine("");
             GenCodeLine("/** Get the specific Token. */");
-            GenCodeLine("  " + StaticOpt() + "final public Token getToken(int index) {");
-            if (lookaheadNeeded)
+            GenCodeLine("  " + StaticOpt + "final public Token getToken(int index) {");
+            if (LookaheadNeeded)
             {
                 GenCodeLine("	 Token t = jj_lookingAhead ? jj_scanpos : token;");
             }
@@ -848,7 +848,7 @@ public class ParseGen : CodeGenerator
             GenCodeLine("");
             if (!Options.GetCacheTokens())
             {
-                GenCodeLine("  " + StaticOpt() + "private int jj_ntk_f() {");
+                GenCodeLine("  " + StaticOpt + "private int jj_ntk_f() {");
                 GenCodeLine("	 if ((jj_nt=token.next) == null)");
                 GenCodeLine("	   return (jj_ntk = (token.next=token_source.getNextToken()).kind);");
                 GenCodeLine("	 else");
@@ -860,23 +860,23 @@ public class ParseGen : CodeGenerator
             {
                 if (!Options.GetGenerateGenerics())
                 {
-                    GenCodeLine("  " + StaticOpt()
+                    GenCodeLine("  " + StaticOpt
                             + "private java.util.List jj_expentries = new java.util.ArrayList();");
                 }
                 else
                 {
                     GenCodeLine("  "
-                            + StaticOpt()
+                            + StaticOpt
                             + "private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();");
                 }
-                GenCodeLine("  " + StaticOpt() + "private int[] jj_expentry;");
-                GenCodeLine("  " + StaticOpt() + "private int jj_kind = -1;");
-                if (jj2index != 0)
+                GenCodeLine("  " + StaticOpt + "private int[] jj_expentry;");
+                GenCodeLine("  " + StaticOpt + "private int jj_kind = -1;");
+                if (CC2Index != 0)
                 {
-                    GenCodeLine("  " + StaticOpt() + "private int[] jj_lasttokens = new int[100];");
-                    GenCodeLine("  " + StaticOpt() + "private int jj_endpos;");
+                    GenCodeLine("  " + StaticOpt + "private int[] jj_lasttokens = new int[100];");
+                    GenCodeLine("  " + StaticOpt + "private int jj_endpos;");
                     GenCodeLine("");
-                    GenCodeLine("  " + StaticOpt()
+                    GenCodeLine("  " + StaticOpt
                             + "private void jj_add_error_token(int kind, int pos) {");
                     GenCodeLine("	 if (pos >= 100) {");
                     GenCodeLine("		return;");
@@ -926,18 +926,18 @@ public class ParseGen : CodeGenerator
                 }
                 GenCodeLine("");
                 GenCodeLine("  /** Generate ParseException. */");
-                GenCodeLine("  " + StaticOpt() + "public ParseException generateParseException() {");
+                GenCodeLine("  " + StaticOpt + "public ParseException generateParseException() {");
                 GenCodeLine("	 jj_expentries.clear();");
                 GenCodeLine("	 " + Options.GetBooleanType() + "[] la1tokens = new "
-                        + Options.GetBooleanType() + "[" + tokenCount + "];");
+                        + Options.GetBooleanType() + "[" + TokenCount + "];");
                 GenCodeLine("	 if (jj_kind >= 0) {");
                 GenCodeLine("	   la1tokens[jj_kind] = true;");
                 GenCodeLine("	   jj_kind = -1;");
                 GenCodeLine("	 }");
-                GenCodeLine("	 for (int i = 0; i < " + maskindex + "; i++) {");
+                GenCodeLine("	 for (int i = 0; i < " + MaskIndex + "; i++) {");
                 GenCodeLine("	   if (jj_la1[i] == jj_gen) {");
                 GenCodeLine("		 for (int j = 0; j < 32; j++) {");
-                for (int i = 0; i < (tokenCount - 1) / 32 + 1; i++)
+                for (int i = 0; i < (TokenCount - 1) / 32 + 1; i++)
                 {
                     GenCodeLine("		   if ((jj_la1_" + i + "[i] & (1<<j)) != 0) {");
                     GenCode("			 la1tokens[");
@@ -951,14 +951,14 @@ public class ParseGen : CodeGenerator
                 GenCodeLine("		 }");
                 GenCodeLine("	   }");
                 GenCodeLine("	 }");
-                GenCodeLine("	 for (int i = 0; i < " + tokenCount + "; i++) {");
+                GenCodeLine("	 for (int i = 0; i < " + TokenCount + "; i++) {");
                 GenCodeLine("	   if (la1tokens[i]) {");
                 GenCodeLine("		 jj_expentry = new int[1];");
                 GenCodeLine("		 jj_expentry[0] = i;");
                 GenCodeLine("		 jj_expentries.add(jj_expentry);");
                 GenCodeLine("	   }");
                 GenCodeLine("	 }");
-                if (jj2index != 0)
+                if (CC2Index != 0)
                 {
                     GenCodeLine("	 jj_endpos = 0;");
                     GenCodeLine("	 jj_rescan_token();");
@@ -992,7 +992,7 @@ public class ParseGen : CodeGenerator
             else
             {
                 GenCodeLine("  /** Generate ParseException. */");
-                GenCodeLine("  " + StaticOpt() + "public ParseException generateParseException() {");
+                GenCodeLine("  " + StaticOpt + "public ParseException generateParseException() {");
                 GenCodeLine("	 Token errortok = token.next;");
                 if (Options.GetKeepLineColumn())
                 {
@@ -1014,30 +1014,30 @@ public class ParseGen : CodeGenerator
             }
             GenCodeLine("");
 
-            GenCodeLine("  " + StaticOpt() + "private " + Options.GetBooleanType()
+            GenCodeLine("  " + StaticOpt + "private " + Options.GetBooleanType()
                     + " trace_enabled;");
             GenCodeLine("");
             GenCodeLine("/** Trace enabled. */");
-            GenCodeLine("  " + StaticOpt() + "final public boolean trace_enabled() {");
+            GenCodeLine("  " + StaticOpt + "final public boolean trace_enabled() {");
             GenCodeLine("	 return trace_enabled;");
             GenCodeLine("  }");
             GenCodeLine("");
 
             if (Options.GetDebugParser())
             {
-                GenCodeLine("  " + StaticOpt() + "private int trace_indent = 0;");
+                GenCodeLine("  " + StaticOpt + "private int trace_indent = 0;");
 
                 GenCodeLine("/** Enable tracing. */");
-                GenCodeLine("  " + StaticOpt() + "final public void enable_tracing() {");
+                GenCodeLine("  " + StaticOpt + "final public void enable_tracing() {");
                 GenCodeLine("	 trace_enabled = true;");
                 GenCodeLine("  }");
                 GenCodeLine("");
                 GenCodeLine("/** Disable tracing. */");
-                GenCodeLine("  " + StaticOpt() + "final public void disable_tracing() {");
+                GenCodeLine("  " + StaticOpt + "final public void disable_tracing() {");
                 GenCodeLine("	 trace_enabled = false;");
                 GenCodeLine("  }");
                 GenCodeLine("");
-                GenCodeLine("  " + StaticOpt() + "protected void trace_call(String s) {");
+                GenCodeLine("  " + StaticOpt + "protected void trace_call(String s) {");
                 GenCodeLine("	 if (trace_enabled) {");
                 GenCodeLine("	   for (int i = 0; i < trace_indent; i++) { System.out.print(\" \"); }");
                 GenCodeLine("	   System.out.println(\"Call:	\" + s);");
@@ -1045,7 +1045,7 @@ public class ParseGen : CodeGenerator
                 GenCodeLine("	 trace_indent = trace_indent + 2;");
                 GenCodeLine("  }");
                 GenCodeLine("");
-                GenCodeLine("  " + StaticOpt() + "protected void trace_return(String s) {");
+                GenCodeLine("  " + StaticOpt + "protected void trace_return(String s) {");
                 GenCodeLine("	 trace_indent = trace_indent - 2;");
                 GenCodeLine("	 if (trace_enabled) {");
                 GenCodeLine("	   for (int i = 0; i < trace_indent; i++) { System.out.print(\" \"); }");
@@ -1053,7 +1053,7 @@ public class ParseGen : CodeGenerator
                 GenCodeLine("	 }");
                 GenCodeLine("  }");
                 GenCodeLine("");
-                GenCodeLine("  " + StaticOpt()
+                GenCodeLine("  " + StaticOpt
                         + "protected void trace_token(Token t, String where) {");
                 GenCodeLine("	 if (trace_enabled) {");
                 GenCodeLine("	   for (int i = 0; i < trace_indent; i++) { System.out.print(\" \"); }");
@@ -1066,7 +1066,7 @@ public class ParseGen : CodeGenerator
                 GenCodeLine("	 }");
                 GenCodeLine("  }");
                 GenCodeLine("");
-                GenCodeLine("  " + StaticOpt() + "protected void trace_scan(Token t1, int t2) {");
+                GenCodeLine("  " + StaticOpt + "protected void trace_scan(Token t1, int t2) {");
                 GenCodeLine("	 if (trace_enabled) {");
                 GenCodeLine("	   for (int i = 0; i < trace_indent; i++) { System.out.print(\" \"); }");
                 GenCodeLine("	   System.out.print(\"Visited token: <\" + tokenImage[t1.kind]);");
@@ -1082,20 +1082,20 @@ public class ParseGen : CodeGenerator
             else
             {
                 GenCodeLine("  /** Enable tracing. */");
-                GenCodeLine("  " + StaticOpt() + "final public void enable_tracing() {");
+                GenCodeLine("  " + StaticOpt + "final public void enable_tracing() {");
                 GenCodeLine("  }");
                 GenCodeLine("");
                 GenCodeLine("  /** Disable tracing. */");
-                GenCodeLine("  " + StaticOpt() + "final public void disable_tracing() {");
+                GenCodeLine("  " + StaticOpt + "final public void disable_tracing() {");
                 GenCodeLine("  }");
                 GenCodeLine("");
             }
 
-            if (jj2index != 0 && Options.GetErrorReporting())
+            if (CC2Index != 0 && Options.GetErrorReporting())
             {
-                GenCodeLine("  " + StaticOpt() + "private void jj_rescan_token() {");
+                GenCodeLine("  " + StaticOpt + "private void jj_rescan_token() {");
                 GenCodeLine("	 jj_rescan = true;");
-                GenCodeLine("	 for (int i = 0; i < " + jj2index + "; i++) {");
+                GenCodeLine("	 for (int i = 0; i < " + CC2Index + "; i++) {");
                 GenCodeLine("	   try {");
                 GenCodeLine("		 JJCalls p = jj_2_rtns[i];");
                 GenCodeLine("");
@@ -1103,7 +1103,7 @@ public class ParseGen : CodeGenerator
                 GenCodeLine("		   if (p.gen > jj_gen) {");
                 GenCodeLine("			 jj_la = p.arg; jj_lastpos = jj_scanpos = p.first;");
                 GenCodeLine("			 switch (i) {");
-                for (int i = 0; i < jj2index; i++)
+                for (int i = 0; i < CC2Index; i++)
                 {
                     GenCodeLine("			   case " + i + ": jj_3_" + (i + 1) + "(); break;");
                 }
@@ -1117,7 +1117,7 @@ public class ParseGen : CodeGenerator
                 GenCodeLine("	 jj_rescan = false;");
                 GenCodeLine("  }");
                 GenCodeLine("");
-                GenCodeLine("  " + StaticOpt() + "private void jj_save(int index, int xla) {");
+                GenCodeLine("  " + StaticOpt + "private void jj_save(int index, int xla) {");
                 GenCodeLine("	 JJCalls p = jj_2_rtns[index];");
                 GenCodeLine("	 while (p.gen > jj_gen) {");
                 GenCodeLine("	   if (p.next == null) { p = p.next = new JJCalls(); break; }");
@@ -1131,7 +1131,7 @@ public class ParseGen : CodeGenerator
                 GenCodeLine("");
             }
 
-            if (jj2index != 0 && Options.GetErrorReporting())
+            if (CC2Index != 0 && Options.GetErrorReporting())
             {
                 GenCodeLine("  static final class JJCalls {");
                 GenCodeLine("	 int gen;");
@@ -1142,11 +1142,11 @@ public class ParseGen : CodeGenerator
                 GenCodeLine("");
             }
 
-            if (cu_from_insertion_point_2.Count != 0)
+            if (CuFromInsertionPoint2.Count != 0)
             {
-                CSharpCCGlobals.PrintTokenSetup((cu_from_insertion_point_2[0]));
+                CSharpCCGlobals.PrintTokenSetup((CuFromInsertionPoint2[0]));
                 this.ccol = 1;
-                foreach (var t2 in cu_from_insertion_point_2)
+                foreach (var t2 in CuFromInsertionPoint2)
                 {
                     PrintToken(t = t2);
                 }
@@ -1163,7 +1163,7 @@ public class ParseGen : CodeGenerator
 
     public static void reInit()
     {
-        lookaheadNeeded = false;
+        LookaheadNeeded = false;
     }
 
 }

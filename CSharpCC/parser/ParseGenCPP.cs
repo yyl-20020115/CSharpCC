@@ -16,7 +16,7 @@ public class ParseGenCPP : ParseGen
 
         Token t = null;
 
-        if (CSharpCCErrors.GetErrorCount() != 0) throw new MetaParseException();
+        if (CSharpCCErrors.ErrorCount != 0) throw new MetaParseException();
 
         List<string> tn = new(ToolNames)
         {
@@ -49,14 +49,14 @@ public class ParseGenCPP : ParseGen
 
         GenCodeLine("#include \"" + CuName + "Constants.h\"");
 
-        if (JjtreeGenerated)
+        if (CCTreeGenerated)
         {
             GenCodeLine("#include \"JJT" + CuName + "State.h\"");
         }
 
         GenCodeLine("#include \"ErrorHandler.h\"");
 
-        if (JjtreeGenerated)
+        if (CCTreeGenerated)
         {
             GenCodeLine("#include \"" + CuName + "Tree.h\"");
         }
@@ -82,10 +82,10 @@ public class ParseGenCPP : ParseGen
                       superClass == null ? Array.Empty<string>() : new String[] {
                    "public " + superClass});
         SwitchToMainFile();
-        if (cu_to_insertion_point_2.Count != 0)
+        if (CuToInsertionPoint2.Count != 0)
         {
-            CSharpCCGlobals.PrintTokenSetup((cu_to_insertion_point_2[0]));
-            foreach(var t3 in cu_to_insertion_point_2)
+            CSharpCCGlobals.PrintTokenSetup((CuToInsertionPoint2[0]));
+            foreach(var t3 in CuToInsertionPoint2)
             {
                 PrintToken(t=t3);
             }
@@ -118,7 +118,7 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("private: ");
         GenCodeLine("  int           jj_ntk;");
 
-        GenCodeLine("  JJCalls       jj_2_rtns[" + (jj2index + 1) + "];");
+        GenCodeLine("  JJCalls       jj_2_rtns[" + (CC2Index + 1) + "];");
         GenCodeLine("  bool          jj_rescan;");
         GenCodeLine("  int           jj_gc;");
         GenCodeLine("  Token        *jj_scanpos, *jj_lastpos;");
@@ -128,23 +128,23 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("  bool          jj_semLA;");
 
         GenCodeLine("  int           jj_gen;");
-        GenCodeLine("  int           jj_la1[" + (maskindex + 1) + "];");
+        GenCodeLine("  int           jj_la1[" + (MaskIndex + 1) + "];");
         GenCodeLine("  ErrorHandler *errorHandler = nullptr;");
         GenCodeLine("");
         GenCodeLine("protected: ");
         GenCodeLine("  bool          hasError;");
         GenCodeLine("");
-        int tokenMaskSize = (tokenCount - 1) / 32 + 1;
+        int tokenMaskSize = (TokenCount - 1) / 32 + 1;
 
         if (Options.GetErrorReporting() && tokenMaskSize > 0)
         {
             SwitchToStaticsFile();
             for (int i = 0; i < tokenMaskSize; i++)
             { 
-                if (maskVals.Count > 0) 
+                if (MaskVals.Count > 0) 
                 {
                     GenCodeLine("  unsigned int jj_la1_" + i + "[] = {");
-                    foreach(var tokenMask in maskVals)
+                    foreach(var tokenMask in MaskVals)
                     {
                         GenCode("0x" + Convert.ToString(tokenMask[i],16) + ",");
                     }
@@ -228,7 +228,7 @@ public class ParseGenCPP : ParseGen
         {
             GenCodeLine("    jj_ntk = -1;");
         }
-        if (JjtreeGenerated)
+        if (CCTreeGenerated)
         {
             GenCodeLine("    jjtree.reset();");
         }
@@ -240,9 +240,9 @@ public class ParseGenCPP : ParseGen
         if (Options.GetErrorReporting())
         {
             GenCodeLine("    jj_gen = 0;");
-            if (maskindex > 0)
+            if (MaskIndex > 0)
             {
-                GenCodeLine("    for (int i = 0; i < " + maskindex + "; i++) jj_la1[i] = -1;");
+                GenCodeLine("    for (int i = 0; i < " + MaskIndex + "; i++) jj_la1[i] = -1;");
             }
         }
         GenCodeLine("  }");
@@ -326,11 +326,11 @@ public class ParseGenCPP : ParseGen
         if (Options.GetErrorReporting())
         {
             GenCodeLine("      jj_gen++;");
-            if (jj2index != 0)
+            if (CC2Index != 0)
             {
                 GenCodeLine("      if (++jj_gc > 100) {");
                 GenCodeLine("        jj_gc = 0;");
-                GenCodeLine("        for (int i = 0; i < " + jj2index + "; i++) {");
+                GenCodeLine("        for (int i = 0; i < " + CC2Index + "; i++) {");
                 GenCodeLine("          JJCalls *c = &jj_2_rtns[i];");
                 GenCodeLine("          while (c != nullptr) {");
                 GenCodeLine("            if (c->gen < jj_gen) c->first = nullptr;");
@@ -371,7 +371,7 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("  }");
         GenCodeLine("");
 
-        if (jj2index != 0)
+        if (CC2Index != 0)
         {
             SwitchToMainFile();
             GenerateMethodDefHeader("bool ", CuName, "jj_scan_token(int kind)");
@@ -449,7 +449,7 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("/** Get the specific Token. */");
         GenerateMethodDefHeader("Token *", CuName, "getToken(int index)");
         GenCodeLine("{");
-        if (lookaheadNeeded)
+        if (LookaheadNeeded)
         {
             GenCodeLine("    Token *t = jj_lookingAhead ? jj_scanpos : token;");
         }
@@ -484,7 +484,7 @@ public class ParseGenCPP : ParseGen
         {
             GenCodeLine("  int **jj_expentries;");
             GenCodeLine("  int *jj_expentry;");
-            if (jj2index != 0)
+            if (CC2Index != 0)
             {
                 SwitchToStaticsFile();
                 // For now we don't support ERROR_REPORTING in the C++ version.
@@ -695,19 +695,19 @@ public class ParseGenCPP : ParseGen
             GenCodeLine("");
         }
 
-        if (jj2index != 0 && Options.GetErrorReporting())
+        if (CC2Index != 0 && Options.GetErrorReporting())
         {
             GenerateMethodDefHeader("  void", CuName, "jj_rescan_token()");
             GenCodeLine("{");
             GenCodeLine("    jj_rescan = true;");
-            GenCodeLine("    for (int i = 0; i < " + jj2index + "; i++) {");
+            GenCodeLine("    for (int i = 0; i < " + CC2Index + "; i++) {");
             //GenCodeLine("    try {");
             GenCodeLine("      JJCalls *p = &jj_2_rtns[i];");
             GenCodeLine("      do {");
             GenCodeLine("        if (p->gen > jj_gen) {");
             GenCodeLine("          jj_la = p->arg; jj_lastpos = jj_scanpos = p->first;");
             GenCodeLine("          switch (i) {");
-            for (int i = 0; i < jj2index; i++)
+            for (int i = 0; i < CC2Index; i++)
             {
                 GenCodeLine("            case " + i + ": jj_3_" + (i + 1) + "(); break;");
             }
@@ -733,10 +733,10 @@ public class ParseGenCPP : ParseGen
             GenCodeLine("");
         }
 
-        if (cu_from_insertion_point_2.Count != 0)
+        if (CuFromInsertionPoint2.Count != 0)
         {
-            CSharpCCGlobals.PrintTokenSetup((cu_from_insertion_point_2[0])); this.ccol = 1;
-            foreach(var t3 in cu_from_insertion_point_2)
+            CSharpCCGlobals.PrintTokenSetup((CuFromInsertionPoint2[0])); this.ccol = 1;
+            foreach(var t3 in CuFromInsertionPoint2)
             {
                 PrintToken(t=t3);
             }
@@ -756,7 +756,7 @@ public class ParseGenCPP : ParseGen
             t1 = t1.next;
         }
         GenCodeLine("\n");
-        if (JjtreeGenerated)
+        if (CCTreeGenerated)
         {
             GenCodeLine("  JJT" + CuName + "State jjtree;");
         }
@@ -770,7 +770,7 @@ public class ParseGenCPP : ParseGen
 
     public static new void ReInit()
     {
-        lookaheadNeeded = false;
+        LookaheadNeeded = false;
     }
 
 }

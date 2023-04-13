@@ -27,7 +27,6 @@
  */
 namespace CSharpCC.Parser;
 
-
 /**
  * Describes BNF productions.
  */
@@ -60,6 +59,6 @@ public class BNFProduction : NormalProduction
     /**
      * @return the jumpPatched
      */
-    public bool IsJumpPatched() => JumpPatched;
+    public bool IsJumpPatched => JumpPatched;
 
 }

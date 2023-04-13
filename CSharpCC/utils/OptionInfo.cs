@@ -12,10 +12,10 @@ namespace CSharpCC.Utils;
 public class OptionInfo : IComparable<OptionInfo>
 {
     readonly string name;
-    readonly OptionType type;
+    readonly OptionTypes type;
     readonly object @default;
 
-    public OptionInfo(string name, OptionType type, object default1)
+    public OptionInfo(string name, OptionTypes type, object default1)
     {
         this.name = name;
         this.type = type;
@@ -24,7 +24,7 @@ public class OptionInfo : IComparable<OptionInfo>
 
     public string Name => name;
 
-    public OptionType OptionType => type;
+    public OptionTypes OptionType => type;
 
     public object Default => @default;
 

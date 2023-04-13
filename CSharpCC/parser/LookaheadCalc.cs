@@ -89,7 +89,7 @@ public class LookaheadCalc : CSharpCCGlobals
             }
             else
             {
-                if (rexps_of_tokens.TryGetValue(m.match[i], out var re) 
+                if (RegexpsOfTokens.TryGetValue(m.match[i], out var re) 
                     && re is RStringLiteral rs)
                 {
                     ret += " \"" +StringEscapeHelpers.AddEscapes(rs.image) + "\"";
@@ -120,11 +120,11 @@ public class LookaheadCalc : CSharpCCGlobals
         // dbl[i] and dbr[i] are lists of size limited matches for choice i
         // of ch.  dbl ignores matches with semantic lookaheads (when force_la_check
         // is false), while dbr ignores semantic lookahead.
-        List<MatchInfo>[] dbl = new List<MatchInfo>[ch.GetChoices().Count];
-        List<MatchInfo>[] dbr = new List<MatchInfo>[ch.GetChoices().Count];
-        int[] minLA = new int[ch.GetChoices().Count - 1];
-        MatchInfo[] overlapInfo = new MatchInfo[ch.GetChoices().Count - 1];
-        int[] other = new int[ch.GetChoices().Count - 1];
+        List<MatchInfo>[] dbl = new List<MatchInfo>[ch.Choices.Count];
+        List<MatchInfo>[] dbr = new List<MatchInfo>[ch.Choices.Count];
+        int[] minLA = new int[ch.Choices.Count - 1];
+        MatchInfo[] overlapInfo = new MatchInfo[ch.Choices.Count - 1];
+        int[] other = new int[ch.Choices.Count - 1];
         MatchInfo m;
         List<MatchInfo> v;
         bool overlapDetected;
@@ -132,32 +132,32 @@ public class LookaheadCalc : CSharpCCGlobals
         {
             MatchInfo.laLimit = la;
             LookaheadWalk.considerSemanticLA = !Options.GetForceLaCheck();
-            for (int i = first; i < ch.GetChoices().Count - 1; i++)
+            for (int i = first; i < ch.Choices.Count - 1; i++)
             {
                 LookaheadWalk.sizeLimitedMatches = new();
                 m = new MatchInfo();
                 m.firstFreeLoc = 0;
                 v = new();
                 v.Add(m);
-                LookaheadWalk.GenFirstSet(v, (Expansion)ch.GetChoices()[i]);
+                LookaheadWalk.GenFirstSet(v, (Expansion)ch.Choices[i]);
                 dbl[i] = LookaheadWalk.sizeLimitedMatches;
             }
             LookaheadWalk.considerSemanticLA = false;
-            for (int i = first + 1; i < ch.GetChoices().Count; i++)
+            for (int i = first + 1; i < ch.Choices.Count; i++)
             {
                 LookaheadWalk.sizeLimitedMatches = new();
                 m = new MatchInfo();
                 m.firstFreeLoc = 0;
                 v = new();
                 v.Add(m);
-                LookaheadWalk.GenFirstSet(v, (Expansion)ch.GetChoices()[i]);
+                LookaheadWalk.GenFirstSet(v, (Expansion)ch.Choices[i]);
                 dbr[i] = LookaheadWalk.sizeLimitedMatches;
             }
             if (la == 1)
             {
-                for (int i = first; i < ch.GetChoices().Count - 1; i++)
+                for (int i = first; i < ch.Choices.Count - 1; i++)
                 {
-                    Expansion exp = (Expansion)ch.GetChoices()[i];
+                    Expansion exp = (Expansion)ch.Choices[i];
                     if (Semanticize.EmptyExpansionExists(exp))
                     {
                         CSharpCCErrors.Warning(exp, "This choice can expand to the empty token sequence " +
@@ -173,9 +173,9 @@ public class LookaheadCalc : CSharpCCGlobals
                 }
             }
             overlapDetected = false;
-            for (int i = first; i < ch.GetChoices().Count - 1; i++)
+            for (int i = first; i < ch.Choices.Count - 1; i++)
             {
-                for (int j = i + 1; j < ch.GetChoices().Count; j++)
+                for (int j = i + 1; j < ch.Choices.Count; j++)
                 {
                     if ((m = Overlap(dbl[i], dbr[j])) != null)
                     {
@@ -192,19 +192,19 @@ public class LookaheadCalc : CSharpCCGlobals
                 break;
             }
         }
-        for (int i = first; i < ch.GetChoices().Count - 1; i++)
+        for (int i = first; i < ch.Choices.Count - 1; i++)
         {
-            if (ExplicitLA((Expansion)ch.GetChoices()[i]) && !Options.GetForceLaCheck())
+            if (ExplicitLA((Expansion)ch.Choices[i]) && !Options.GetForceLaCheck())
             {
                 continue;
             }
             if (minLA[i] > Options.GetChoiceAmbiguityCheck())
             {
                 CSharpCCErrors.Warning("Choice conflict involving two expansions at");
-                Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).Line);
-                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).Column);
-                Console.Error.Write(" and line " + ((Expansion)ch.GetChoices()[(other[i])]).Line);
-                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[(other[i])]).Column);
+                Console.Error.Write("         line " + ((Expansion)ch.Choices[i]).Line);
+                Console.Error.Write(", column " + ((Expansion)ch.Choices[i]).Column);
+                Console.Error.Write(" and line " + ((Expansion)ch.Choices[(other[i])]).Line);
+                Console.Error.Write(", column " + ((Expansion)ch.Choices[(other[i])]).Column);
                 Console.Error.WriteLine(" respectively.");
                 Console.Error.WriteLine("         A common prefix is: " + Image(overlapInfo[i]));
                 Console.Error.WriteLine("         Consider using a lookahead of " + minLA[i] + " or more for earlier expansion.");
@@ -212,10 +212,10 @@ public class LookaheadCalc : CSharpCCGlobals
             else if (minLA[i] > 1)
             {
                 CSharpCCErrors.Warning("Choice conflict involving two expansions at");
-                Console.Error.Write("         line " + ((Expansion)ch.GetChoices()[i]).Line);
-                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[i]).Column);
-                Console.Error.Write(" and line " + ((Expansion)ch.GetChoices()[(other[i])]).Line);
-                Console.Error.Write(", column " + ((Expansion)ch.GetChoices()[(other[i])]).Column);
+                Console.Error.Write("         line " + ((Expansion)ch.Choices[i]).Line);
+                Console.Error.Write(", column " + ((Expansion)ch.Choices[i]).Column);
+                Console.Error.Write(" and line " + ((Expansion)ch.Choices[(other[i])]).Line);
+                Console.Error.Write(", column " + ((Expansion)ch.Choices[(other[i])]).Column);
                 Console.Error.WriteLine(" respectively.");
                 Console.Error.WriteLine("         A common prefix is: " + Image(overlapInfo[i]));
                 Console.Error.WriteLine("         Consider using a lookahead of " + minLA[i] + " for earlier expansion.");
@@ -243,14 +243,14 @@ public class LookaheadCalc : CSharpCCGlobals
     {
         if (!Options.GetForceLaCheck())
         {
-            for (int i = 0; i < ch.GetChoices().Count; i++)
+            for (int i = 0; i < ch.Choices.Count; i++)
             {
-                if (!ExplicitLA((Expansion)ch.GetChoices()[i]))
+                if (!ExplicitLA((Expansion)ch.Choices[i]))
                 {
                     return i;
                 }
             }
-            return ch.GetChoices().Count;
+            return ch.Choices.Count;
         }
         return 0;
     }

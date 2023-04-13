@@ -85,9 +85,9 @@ public static class LookaheadWalk
         {
             List<MatchInfo> retval = new();
             Choice ch = choice;
-            for (int i = 0; i < ch.GetChoices().Count; i++)
+            for (int i = 0; i < ch.Choices.Count; i++)
             {
-                List<MatchInfo> v = GenFirstSet(partialMatches, (Expansion)ch.GetChoices()[i]);
+                List<MatchInfo> v = GenFirstSet(partialMatches, (Expansion)ch.Choices[i]);
                 ListAppend(retval, v);
             }
             return retval;

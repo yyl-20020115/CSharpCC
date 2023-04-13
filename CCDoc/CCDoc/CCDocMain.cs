@@ -176,38 +176,38 @@ public class CCDocMain : CCDocGlobals
             parser.javacc_input();
             CCDoc.Start();
 
-            if (CSharpCCErrors.GetErrorCount() == 0)
+            if (CSharpCCErrors.ErrorCount == 0)
             {
-                if (CSharpCCErrors.GetWarningCount() == 0)
+                if (CSharpCCErrors.WarningCount == 0)
                 {
                     Info("Grammar documentation generated successfully in " + CCDocGlobals.OutputFile);
                 }
                 else
                 {
                     Info("Grammar documentation generated with 0 errors and "
-                                       + CSharpCCErrors.GetWarningCount() + " warnings.");
+                                       + CSharpCCErrors.WarningCount + " warnings.");
                 }
                 return 0;
             }
             else
             {
-                Error("Detected " + CSharpCCErrors.GetErrorCount() + " errors and "
-                                   + CSharpCCErrors.GetWarningCount() + " warnings.");
-                return (CSharpCCErrors.GetErrorCount() == 0) ? 0 : 1;
+                Error("Detected " + CSharpCCErrors.ErrorCount + " errors and "
+                                   + CSharpCCErrors.WarningCount + " warnings.");
+                return (CSharpCCErrors.ErrorCount == 0) ? 0 : 1;
             }
         }
         catch (global::CSharpCC.Parser.MetaParseException e)
         {
             Error(e.ToString());
-            Error("Detected " + CSharpCCErrors.GetErrorCount() + " errors and "
-                               + CSharpCCErrors.GetWarningCount() + " warnings.");
+            Error("Detected " + CSharpCCErrors.ErrorCount + " errors and "
+                               + CSharpCCErrors.WarningCount + " warnings.");
             return 1;
         }
         catch (global::CSharpCC.Parser.ParseException e)
         {
             Error(e.ToString());
-            Error("Detected " + (CSharpCCErrors.GetErrorCount() + 1) + " errors and "
-                               + CSharpCCErrors.GetWarningCount() + " warnings.");
+            Error("Detected " + (CSharpCCErrors.ErrorCount + 1) + " errors and "
+                               + CSharpCCErrors.WarningCount + " warnings.");
             return 1;
         }
     }

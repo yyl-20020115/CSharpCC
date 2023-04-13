@@ -43,7 +43,7 @@ public class OtherFilesGenCPP : CSharpCCGlobals
     {
 
         Token t = null;
-        if (CSharpCCErrors.GetErrorCount() != 0) throw new MetaParseException();
+        if (CSharpCCErrors.ErrorCount != 0) throw new MetaParseException();
 
         CPPFiles.GenJavaCCDefs();
         CPPFiles.GenCharStream();
@@ -68,18 +68,18 @@ public class OtherFilesGenCPP : CSharpCCGlobals
         tn.Add(ToolName);
         ostr.WriteLine("/* " + GetIdString(tn, CuName + "Constants.java") + " */");
 
-        if (cu_to_insertion_point_1.Count != 0 &&
-            cu_to_insertion_point_1[0].kind == PACKAGE
+        if (CuToInsertionPoint1.Count != 0 &&
+            CuToInsertionPoint1[0].kind == PACKAGE
            )
         {
-            for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+            for (int i = 1; i < CuToInsertionPoint1.Count; i++)
             {
-                if (cu_to_insertion_point_1[i].kind == SEMICOLON)
+                if (CuToInsertionPoint1[i].kind == SEMICOLON)
                 {
-                    PrintTokenSetup(cu_to_insertion_point_1[0]);
+                    PrintTokenSetup(CuToInsertionPoint1[0]);
                     for (int j = 0; j <= i; j++)
                     {
-                        t = (Token)(cu_to_insertion_point_1[j]);
+                        t = (Token)(CuToInsertionPoint1[j]);
                         PrintToken(t, ostr);
                     }
                     PrintTrailingComments(t, ostr);
@@ -108,7 +108,7 @@ public class OtherFilesGenCPP : CSharpCCGlobals
         string constPrefix = "const";
         ostr.WriteLine("  /** End of File. */");
         ostr.WriteLine(constPrefix + "  int _EOF = 0;");
-        foreach (var re in ordered_named_tokens)
+        foreach (var re in OrderedNamedToken)
         {
             ostr.WriteLine("  /** RegularExpression Id. */");
             ostr.WriteLine(constPrefix + "  int " + re.label + " = " + re.ordinal + ";");
@@ -130,7 +130,7 @@ public class OtherFilesGenCPP : CSharpCCGlobals
         PrintCharArray(ostr, "<EOF>");
         ostr.WriteLine(";");
 
-        foreach (var tp in rexprlist)
+        foreach (var tp in RegexpList)
         {
             foreach (var res in tp.respecs)
             {

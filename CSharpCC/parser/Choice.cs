@@ -38,7 +38,6 @@ namespace CSharpCC.Parser;
 
 public class Choice : Expansion
 {
-
     /**
      * The list of choices of this expansion unit.  Each
      * List component will narrow to ExpansionUnit.
@@ -49,43 +48,35 @@ public class Choice : Expansion
 
     public Choice(Token token)
     {
-        this.        Line = token.beginLine;
-        this.        Column = token.beginColumn;
+        this.Line = token.beginLine;
+        this.Column = token.beginColumn;
     }
 
     public Choice(Expansion expansion)
     {
-        this.        Line = expansion.Line;
-        this.        Column = expansion.Column;
-        this.GetChoices().Add(expansion);
-    }
-
-    /**
-     * @param choices the choices to set
-     */
-    public void SetChoices(List<Expansion> choices)
-    {
-        this.choices = choices;
+        this.Line = expansion.Line;
+        this.Column = expansion.Column;
+        this.        Choices.Add(expansion);
     }
 
     /**
      * @return the choices
      */
-    public List<Expansion> GetChoices()
-    {
-        return choices;
-    }
+    /**
+ * @param choices the choices to set
+ */
+    public List<Expansion> Choices { get => choices; set => this.choices = value; }
 
     public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
-        var sb = base.Dump(indent, alreadyDumped);
+        var builder = base.Dump(indent, alreadyDumped);
         if (alreadyDumped.Contains(this))
-            return sb;
+            return builder;
         alreadyDumped.Add(this);
-        foreach(Expansion next in GetChoices())
+        foreach (Expansion next in Choices)
         {
-            sb.Append(eol).Append(next.Dump(indent + 1, alreadyDumped));
+            builder.Append(eol).Append(next.Dump(indent + 1, alreadyDumped));
         }
-        return sb;
+        return builder;
     }
 }

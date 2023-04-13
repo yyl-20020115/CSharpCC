@@ -48,7 +48,7 @@ public class OtherFilesGen : CSharpCCGlobals
 
         Token t = null;
 
-        if (CSharpCCErrors.GetErrorCount() != 0) throw new MetaParseException();
+        if (CSharpCCErrors.ErrorCount != 0) throw new MetaParseException();
 
         // Added this if condition -- 2012/10/17 -- cba
         if (Options.IsGenerateBoilerplateCode())
@@ -113,18 +113,18 @@ public class OtherFilesGen : CSharpCCGlobals
         };
         ostr.WriteLine("/* " + GetIdString(tn, CuName + CONSTANTS_FILENAME_SUFFIX) + " */");
 
-        if (cu_to_insertion_point_1.Count != 0 &&
-            ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+        if (CuToInsertionPoint1.Count != 0 &&
+            ((Token)CuToInsertionPoint1[0]).kind == PACKAGE
            )
         {
-            for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+            for (int i = 1; i < CuToInsertionPoint1.Count; i++)
             {
-                if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                if (((Token)CuToInsertionPoint1[i]).kind == SEMICOLON)
                 {
-                    PrintTokenSetup((Token)(cu_to_insertion_point_1[0]));
+                    PrintTokenSetup((Token)(CuToInsertionPoint1[0]));
                     for (int j = 0; j <= i; j++)
                     {
-                        t = (Token)(cu_to_insertion_point_1[j]);
+                        t = (Token)(CuToInsertionPoint1[j]);
                         PrintToken(t, ostr);
                     }
                     PrintTrailingComments(t, ostr);
@@ -149,7 +149,7 @@ public class OtherFilesGen : CSharpCCGlobals
 
         ostr.WriteLine("  /** End of File. */");
         ostr.WriteLine("  int EOF = 0;");
-        foreach(var re2 in ordered_named_tokens)
+        foreach(var re2 in OrderedNamedToken)
         {
             var re = re2;
             ostr.WriteLine("  /** RegularExpression Id. */");
@@ -169,7 +169,7 @@ public class OtherFilesGen : CSharpCCGlobals
         ostr.WriteLine("  String[] tokenImage = {");
         ostr.WriteLine("    \"<EOF>\",");
 
-        foreach(var tp in rexprlist)
+        foreach(var tp in RegexpList)
         {
             foreach(var res in tp.respecs)
             {

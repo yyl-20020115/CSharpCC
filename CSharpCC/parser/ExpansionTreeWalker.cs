@@ -46,7 +46,7 @@ public static class ExpansionTreeWalker
         {
             if (node is Choice choice)
             {
-                foreach(var expansion in choice.GetChoices())
+                foreach(var expansion in choice.Choices)
                 {
                     PreOrderWalk(expansion, opObj);
                 }
@@ -126,7 +126,7 @@ public static class ExpansionTreeWalker
         {
             if (node is Choice choice)
             {
-                foreach(Expansion c in choice.GetChoices())
+                foreach(Expansion c in choice.Choices)
                 {
                     PostOrderWalk(c, opObj);
                 }

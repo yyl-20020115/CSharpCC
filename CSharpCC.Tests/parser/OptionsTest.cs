@@ -47,9 +47,9 @@ public class OptionsTest : CSharpCCTestCase
         Assert.AreEqual("", Options.GetTokenFactory());
         //Assert.AreEqual(System.getProperties().get("file.encoding"), Options.getGrammarEncoding());
 
-        Assert.AreEqual(0, CSharpCCErrors.GetWarningCount());
-        Assert.AreEqual(0, CSharpCCErrors.GetErrorCount());
-        Assert.AreEqual(0, CSharpCCErrors.GetParseErrorCount());
+        Assert.AreEqual(0, CSharpCCErrors.WarningCount);
+        Assert.AreEqual(0, CSharpCCErrors.ErrorCount);
+        Assert.AreEqual(0, CSharpCCErrors.ParseErrorCount);
         Assert.AreEqual(0, CSharpCCErrors.GetSemanticErrorCount());
     }
     [TestMethod]
@@ -70,9 +70,9 @@ public class OptionsTest : CSharpCCTestCase
         Options.SetCmdLineOption("-SANITY_CHECK=false");
         Assert.AreEqual(false, Options.GetSanityCheck());
 
-        Assert.AreEqual(0, CSharpCCErrors.GetWarningCount());
-        Assert.AreEqual(0, CSharpCCErrors.GetErrorCount());
-        Assert.AreEqual(0, CSharpCCErrors.GetParseErrorCount());
+        Assert.AreEqual(0, CSharpCCErrors.WarningCount);
+        Assert.AreEqual(0, CSharpCCErrors.ErrorCount);
+        Assert.AreEqual(0, CSharpCCErrors.ParseErrorCount);
         Assert.AreEqual(0, CSharpCCErrors.GetSemanticErrorCount());
     }
 
@@ -85,16 +85,16 @@ public class OptionsTest : CSharpCCTestCase
         Assert.AreEqual(1, Options.GetLookahead());
         Options.SetCmdLineOption("LOOKAHEAD=2");
         Assert.AreEqual(2, Options.GetLookahead());
-        Assert.AreEqual(0, CSharpCCErrors.GetWarningCount());
+        Assert.AreEqual(0, CSharpCCErrors.WarningCount);
         Options.SetCmdLineOption("LOOKAHEAD=0");
         Assert.AreEqual(2, Options.GetLookahead());
-        Assert.AreEqual(0, CSharpCCErrors.GetWarningCount());
+        Assert.AreEqual(0, CSharpCCErrors.WarningCount);
         Options.SetInputFileOption(null, null, Options.USEROPTION__LOOKAHEAD, (0));
         Assert.AreEqual(2, Options.GetLookahead());
-        Assert.AreEqual(1, CSharpCCErrors.GetWarningCount());
+        Assert.AreEqual(1, CSharpCCErrors.WarningCount);
 
-        Assert.AreEqual(0, CSharpCCErrors.GetErrorCount());
-        Assert.AreEqual(0, CSharpCCErrors.GetParseErrorCount());
+        Assert.AreEqual(0, CSharpCCErrors.ErrorCount);
+        Assert.AreEqual(0, CSharpCCErrors.ParseErrorCount);
         Assert.AreEqual(0, CSharpCCErrors.GetSemanticErrorCount());
     }
     [TestMethod]
@@ -124,12 +124,12 @@ public class OptionsTest : CSharpCCTestCase
         Options.Init();
         CSharpCCErrors.ReInit();
 
-        Assert.AreEqual(0, CSharpCCErrors.GetWarningCount());
+        Assert.AreEqual(0, CSharpCCErrors.WarningCount);
         Options.SetInputFileOption(null, null, "NONEXISTENTOPTION", true);
-        Assert.AreEqual(1, CSharpCCErrors.GetWarningCount());
+        Assert.AreEqual(1, CSharpCCErrors.WarningCount);
 
-        Assert.AreEqual(0, CSharpCCErrors.GetErrorCount());
-        Assert.AreEqual(0, CSharpCCErrors.GetParseErrorCount());
+        Assert.AreEqual(0, CSharpCCErrors.ErrorCount);
+        Assert.AreEqual(0, CSharpCCErrors.ParseErrorCount);
         Assert.AreEqual(0, CSharpCCErrors.GetSemanticErrorCount());
     }
     [TestMethod]
@@ -138,13 +138,13 @@ public class OptionsTest : CSharpCCTestCase
         Options.Init();
         CSharpCCErrors.ReInit();
 
-        Assert.AreEqual(0, CSharpCCErrors.GetWarningCount());
-        Assert.AreEqual(0, CSharpCCErrors.GetErrorCount());
+        Assert.AreEqual(0, CSharpCCErrors.WarningCount);
+        Assert.AreEqual(0, CSharpCCErrors.ErrorCount);
         Options.SetInputFileOption(null, null, Options.USEROPTION__STATIC, (8));
-        Assert.AreEqual(1, CSharpCCErrors.GetWarningCount());
+        Assert.AreEqual(1, CSharpCCErrors.WarningCount);
 
-        Assert.AreEqual(0, CSharpCCErrors.GetErrorCount());
-        Assert.AreEqual(0, CSharpCCErrors.GetParseErrorCount());
+        Assert.AreEqual(0, CSharpCCErrors.ErrorCount);
+        Assert.AreEqual(0, CSharpCCErrors.ParseErrorCount);
         Assert.AreEqual(0, CSharpCCErrors.GetSemanticErrorCount());
     }
     [TestMethod]
@@ -162,9 +162,9 @@ public class OptionsTest : CSharpCCTestCase
         Assert.AreEqual(true, Options.GetDebugLookahead());
         Assert.AreEqual(true, Options.GetDebugParser());
 
-        Assert.AreEqual(0, CSharpCCErrors.GetWarningCount());
-        Assert.AreEqual(0, CSharpCCErrors.GetErrorCount());
-        Assert.AreEqual(0, CSharpCCErrors.GetParseErrorCount());
+        Assert.AreEqual(0, CSharpCCErrors.WarningCount);
+        Assert.AreEqual(0, CSharpCCErrors.ErrorCount);
+        Assert.AreEqual(0, CSharpCCErrors.ParseErrorCount);
         Assert.AreEqual(0, CSharpCCErrors.GetSemanticErrorCount());
     }
     [TestMethod]

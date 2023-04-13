@@ -36,9 +36,9 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
     static protected void Initialize()
     {
         int i = (0);
-        lexstate_S2I.Add("DEFAULT", i);
-        lexstate_I2S.Add(i, "DEFAULT");
-        simple_tokens_table.Add("DEFAULT", new());
+        LexstateS2I.Add("DEFAULT", i);
+        LexstateI2S.Add(i, "DEFAULT");
+        SimpleTokenTable.Add("DEFAULT", new());
     }
 
     static protected void Addcuname(string id)
@@ -54,7 +54,7 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
         }
     }
 
-    static private List<Token> add_cu_token_here = cu_to_insertion_point_1;
+    static private List<Token> add_cu_token_here = CuToInsertionPoint1;
     static private Token first_cu_token;
     static private bool insertionpoint1set = false;
     static private bool insertionpoint2set = false;
@@ -75,12 +75,12 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
             else
             {
                 insertionpoint1set = true;
-                add_cu_token_here = cu_to_insertion_point_2;
+                add_cu_token_here = CuToInsertionPoint2;
             }
         }
         else
         {
-            add_cu_token_here = cu_from_insertion_point_2;
+            add_cu_token_here = CuFromInsertionPoint2;
             insertionpoint2set = true;
         }
         first_cu_token = t;
@@ -106,7 +106,7 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
 
     static protected void AddProduction(NormalProduction p)
     {
-        bnfproductions.Add(p);
+        BNFProductions.Add(p);
     }
 
     static protected void ProductionAddexpansion(BNFProduction p, Expansion e)
@@ -120,7 +120,7 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
     static protected void AddRegexpr(TokenProduction p)
     {
         int ii;
-        rexprlist.Add(p);
+        RegexpList.Add(p);
         if (Options.GetUserTokenManager())
         {
             if (p.lexStates == null || p.lexStates.Length != 1 || p.lexStates[0] != ("DEFAULT"))
@@ -142,25 +142,25 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
                     CSharpCCErrors.ParseError(p, "Multiple occurrence of \"" + p.lexStates[i] + "\" in lexical state list.");
                 }
             }
-            if (!lexstate_S2I.TryGetValue(p.lexStates[i], out var t))
+            if (!LexstateS2I.TryGetValue(p.lexStates[i], out var t))
             {
                 ii = (nextFreeLexState++);
-                lexstate_S2I.Add(p.lexStates[i], ii);
-                lexstate_I2S.Add(ii, p.lexStates[i]);
-                simple_tokens_table.Add(p.lexStates[i], new());
+                LexstateS2I.Add(p.lexStates[i], ii);
+                LexstateI2S.Add(ii, p.lexStates[i]);
+                SimpleTokenTable.Add(p.lexStates[i], new());
             }
         }
     }
 
     static protected void AddTokenManagerDecls(Token t, List<Token> decls)
     {
-        if (token_mgr_decls != null)
+        if (TokenManagerDeclarations != null)
         {
             CSharpCCErrors.ParseError(t, "Multiple occurrence of \"TOKEN_MGR_DECLS\".");
         }
         else
         {
-            token_mgr_decls = decls;
+            TokenManagerDeclarations = decls;
             if (Options.GetUserTokenManager())
             {
                 CSharpCCErrors.Warning(t, "Ignoring declarations in \"TOKEN_MGR_DECLS\" since option " +
@@ -183,7 +183,7 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
             res.nextState = null;
             res.nsTok = null;
             p.respecs.Add(res);
-            rexprlist.Add(p);
+            RegexpList.Add(p);
         }
     }
 
@@ -371,7 +371,7 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
 
     public static new void ReInit()
     {
-        add_cu_token_here = cu_to_insertion_point_1;
+        add_cu_token_here = CuToInsertionPoint1;
         first_cu_token = null;
         insertionpoint1set = false;
         insertionpoint2set = false;

@@ -257,7 +257,7 @@ public class MainParser
         {
             Console.WriteLine("Reading from file " + args[^1] + " . . .");
             CSharpCCGlobals.FileName = CSharpCCGlobals.OrigFileName = args[^1];
-            CSharpCCGlobals.JjtreeGenerated = CSharpCCGlobals.IsGeneratedBy("JJTree", args[^1]);
+            CSharpCCGlobals.CCTreeGenerated = CSharpCCGlobals.IsGeneratedBy("JJTree", args[^1]);
             CSharpCCGlobals.ToolNames = CSharpCCGlobals.GetToolNames(args[^1]);
             parser.javacc_input();
 
@@ -333,9 +333,9 @@ public class MainParser
 
 
 
-            if ((CSharpCCErrors.GetErrorCount() == 0) && (isBuildParser || Options.GetBuildTokenManager()))
+            if ((CSharpCCErrors.ErrorCount == 0) && (isBuildParser || Options.GetBuildTokenManager()))
             {
-                if (CSharpCCErrors.GetWarningCount() == 0)
+                if (CSharpCCErrors.WarningCount == 0)
                 {
                     if (isBuildParser)
                     {
@@ -345,28 +345,28 @@ public class MainParser
                 else
                 {
                     Console.WriteLine("Parser generated with 0 errors and "
-                                       + CSharpCCErrors.GetWarningCount() + " warnings.");
+                                       + CSharpCCErrors.WarningCount + " warnings.");
                 }
                 return 0;
             }
             else
             {
-                Console.WriteLine("Detected " + CSharpCCErrors.GetErrorCount() + " errors and "
-                                   + CSharpCCErrors.GetWarningCount() + " warnings.");
-                return (CSharpCCErrors.GetErrorCount() == 0) ? 0 : 1;
+                Console.WriteLine("Detected " + CSharpCCErrors.ErrorCount + " errors and "
+                                   + CSharpCCErrors.WarningCount + " warnings.");
+                return (CSharpCCErrors.ErrorCount == 0) ? 0 : 1;
             }
         }
         catch (MetaParseException e)
         {
-            Console.WriteLine("Detected " + CSharpCCErrors.GetErrorCount() + " errors and "
-                               + CSharpCCErrors.GetWarningCount() + " warnings.");
+            Console.WriteLine("Detected " + CSharpCCErrors.ErrorCount + " errors and "
+                               + CSharpCCErrors.WarningCount + " warnings.");
             return 1;
         }
         catch (ParseException e)
         {
             Console.WriteLine(e.ToString());
-            Console.WriteLine("Detected " + (CSharpCCErrors.GetErrorCount() + 1) + " errors and "
-                               + CSharpCCErrors.GetWarningCount() + " warnings.");
+            Console.WriteLine("Detected " + (CSharpCCErrors.ErrorCount + 1) + " errors and "
+                               + CSharpCCErrors.WarningCount + " warnings.");
             return 1;
         }
     }

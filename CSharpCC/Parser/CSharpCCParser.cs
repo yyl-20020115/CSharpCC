@@ -483,7 +483,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                 jj_la1[7] = jj_gen;
                 break;
         }
-        Block(p.GetCodeTokens());
+        Block(p.CodeTokens);
         p.SetLastToken(GetToken(0));
         AddProduction(p);
     }
@@ -535,7 +535,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                 break;
                 ;
         }
-        Block(p.GetCodeTokens());
+        Block(p.CodeTokens);
         p.SetLastToken(GetToken(0));
         AddProduction(p);
     }
@@ -807,7 +807,7 @@ public class CSharpCCParser : CSharpCCParserInternals
         {
             case LBRACE:
                 t = GetToken(1);
-                Block(act.GetActionTokens());
+                Block(act.ActionTokens);
                 if (Options.GetUserTokenManager())
                 {
                     CSharpCCErrors.Warning(t, "Ignoring action in regular expression specification since option USER_TOKEN_MANAGER has been set to true.");
@@ -863,7 +863,7 @@ public class CSharpCCParser : CSharpCCParserInternals
             expansion(c2);
             if (morethanone)
             {
-                ch.GetChoices().Add(c2.Member as Expansion);
+                ch.                Choices.Add(c2.Member as Expansion);
                 ((Expansion)c2.Member).parent = ch;
             }
             else
@@ -871,7 +871,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                 morethanone = true;
                 ch = new Choice((Expansion)c1.Member);
                 ((Expansion)c1.Member).parent = ch;
-                ch.GetChoices().Add(c2.Member as Expansion);
+                ch.                Choices.Add(c2.Member as Expansion);
                 ((Expansion)c2.Member).parent = ch;
             }
         }
@@ -1101,7 +1101,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                 act.                Column = t.beginColumn;
                 seq.units.Add(act);
                 act.parent = seq; act.ordinal = 1;
-                ch.GetChoices().Add(seq);
+                ch.                Choices.Add(seq);
                 seq.parent = ch; seq.ordinal = 0;
                 if (la.GetAmount() != 0)
                 {
@@ -1122,7 +1122,7 @@ public class CSharpCCParser : CSharpCCParserInternals
                 act.                Line = t.beginLine;
                 act.                Column = t.beginColumn;
                 inAction = true;
-                Block(act.GetActionTokens());
+                Block(act.ActionTokens);
                 inAction = false;
                 if (inLocalLA != 0)
                 {
@@ -1676,8 +1676,8 @@ public class CSharpCCParser : CSharpCCParserInternals
             var cr = new CharacterRange();
             cr.            Line = t.beginLine;
             cr.            Column = t.beginColumn;
-            cr.SetLeft(c1);
-            cr.SetRight(c2);
+            cr.            Left = c1;
+            cr.            Right = c2;
             c.Member = cr;
         }
         else

@@ -57,43 +57,39 @@ public class CharacterRange : Descriptor
             CSharpCCErrors.SemanticError(this, "Invalid range : \"" + (int)l + "\" - \""
                   + (int)r + "\". First character should be less than or equal to the second one in a range.");
 
-        SetLeft(l);
-        SetRight(r);
+        Left = l;
+        Right = r;
     }
 
     /**
      * @return the line
      */
     /**
- * @param line the line to set
- */
+     * @param line the line to set
+    */
     public int Line { get => line; set => this.line = value; }
 
     /**
      * @return the column
      */
     /**
- * @param column the column to set
- */
+     * @param column the column to set
+    */
     public int Column { get => column; set => this.column = value; }
-
-    /**
-     * @param left the left to set
-     */
-    public void SetLeft(char left) => this.left = left;
 
     /**
      * @return the left
      */
-    public char GetLeft() => left;
-
     /**
-     * @param right the right to set
-     */
-    public void SetRight(char right) => this.right = right;
+     * @param left the left to set
+    */
+    public char Left { get => left; set => this.left = value; }
 
     /**
      * @return the right
      */
-    public char GetRight() => right;
+    /**
+     * @param right the right to set
+    */
+    public char Right { get => right; set => this.right = value; }
 }

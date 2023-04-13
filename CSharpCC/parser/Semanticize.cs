@@ -54,7 +54,7 @@ public class Semanticize : CSharpCCGlobals
     public static void Start()
     {
 
-        if (CSharpCCErrors.GetErrorCount() != 0) throw new MetaParseException();
+        if (CSharpCCErrors.ErrorCount != 0) throw new MetaParseException();
 
         if (Options.GetLookahead() > 1 && !Options.GetForceLaCheck() && Options.GetSanityCheck())
         {
@@ -68,7 +68,7 @@ public class Semanticize : CSharpCCGlobals
          * them to trivial choices.  This way, their semantic lookahead specification
          * can be evaluated during other lookahead evaluations.
          */
-        foreach(var np in bnfproductions)
+        foreach(var np in BNFProductions)
         {
             ExpansionTreeWalker.PostOrderWalk(np.GetExpansion(),
                                               new LookaheadFixer());
@@ -77,20 +77,20 @@ public class Semanticize : CSharpCCGlobals
         /*
          * The following loop populates "production_table"
          */
-        foreach(var p in bnfproductions)
+        foreach(var p in BNFProductions)
         {
-            if (production_table.ContainsKey(p.GetLhs()))
+            if (ProductionTable.ContainsKey(p.GetLhs()))
             {
                 CSharpCCErrors.SemanticError(p, p.GetLhs() + " occurs on the left hand side of more than one production.");
             }
-            production_table.Add(p.GetLhs(), p);
+            ProductionTable.Add(p.GetLhs(), p);
         }
 
         /*
          * The following walks the entire parse tree to make sure that all
          * non-terminals on RHS's are defined on the LHS.
          */
-        foreach(var np in bnfproductions)
+        foreach(var np in BNFProductions)
         {
             ExpansionTreeWalker.PreOrderWalk(np.GetExpansion(), new ProductionDefinedChecker());
         }
@@ -105,14 +105,14 @@ public class Semanticize : CSharpCCGlobals
          * is set to true.  In this case, <name> occurrences are OK, while
          * regular expression specs generate a warning.
          */
-        foreach(var tp in rexprlist)
+        foreach(var tp in RegexpList)
         { 
             List<RegExprSpec> respecs = tp.respecs;
             foreach(var res in respecs)
             {
                 if (res.nextState != null)
                 {
-                    if (!lexstate_S2I.TryGetValue(res.nextState,out var _))
+                    if (!LexstateS2I.TryGetValue(res.nextState,out var _))
                     {
                         CSharpCCErrors.SemanticError(res.nsTok, "Lexical state \"" + res.nextState +
                                                                "\" has not been defined.");
@@ -160,7 +160,7 @@ public class Semanticize : CSharpCCGlobals
          * "named_tokens_table" and "ordered_named_tokens".
          * Duplications are flagged as errors.
          */
-        foreach(var tp in rexprlist)
+        foreach(var tp in RegexpList)
         {
             List<RegExprSpec> respecs = tp.respecs;
             foreach(var res in respecs)
@@ -168,17 +168,17 @@ public class Semanticize : CSharpCCGlobals
                 if (res.rexp is not RJustName && res.rexp.label != "")
                 {
                     string s = res.rexp.label;
-                    var b = named_tokens_table.ContainsKey(s);
-                    named_tokens_table.Add(s, res.rexp);
+                    var b = NamedTokenTable.ContainsKey(s);
+                    NamedTokenTable.Add(s, res.rexp);
                     if (b)
                     {
                         CSharpCCErrors.SemanticError(res.rexp, "Multiply defined lexical token name \"" + s + "\".");
                     }
                     else
                     {
-                        ordered_named_tokens.Add(res.rexp);
+                        OrderedNamedToken.Add(res.rexp);
                     }
-                    if (!lexstate_S2I.TryGetValue(s,out var _))
+                    if (!LexstateS2I.TryGetValue(s,out var _))
                     {
                         CSharpCCErrors.SemanticError(res.rexp, "Lexical token name \"" + s + "\" is the same as " +
                                 "that of a lexical state.");
@@ -198,15 +198,15 @@ public class Semanticize : CSharpCCGlobals
          * table "names_of_tokens".
          */
 
-        tokenCount = 1;
-        foreach(var tp in rexprlist)
+        TokenCount = 1;
+        foreach(var tp in RegexpList)
         {
             List<RegExprSpec> respecs = tp.respecs;
             if (tp.lexStates == null)
             {
-                tp.lexStates = new String[lexstate_I2S.Count];
+                tp.lexStates = new String[LexstateI2S.Count];
                 int i = 0;
-                foreach(var v in lexstate_I2S.Values)
+                foreach(var v in LexstateI2S.Values)
                 {
                     tp.lexStates[i++] = v;
                 }
@@ -214,7 +214,7 @@ public class Semanticize : CSharpCCGlobals
             var table = new Dictionary<string, Dictionary<string, RegularExpression>>[tp.lexStates.Length];
             for (int i = 0; i < tp.lexStates.Length; i++)
             {
-                simple_tokens_table.TryGetValue(tp.lexStates[i], out table[i]);
+                SimpleTokenTable.TryGetValue(tp.lexStates[i], out table[i]);
             }
             foreach(var res in respecs)
             {
@@ -231,7 +231,7 @@ public class Semanticize : CSharpCCGlobals
                             // So go ahead and insert this item.
                             if (sl.ordinal == 0)
                             {
-                                sl.ordinal = tokenCount++;
+                                sl.ordinal = TokenCount++;
                             }
                             table2 = new()
                             {
@@ -278,7 +278,7 @@ public class Semanticize : CSharpCCGlobals
                             // This entry is legitimate.  So insert it.
                             if (sl.ordinal == 0)
                             {
-                                sl.ordinal = tokenCount++;
+                                sl.ordinal = TokenCount++;
                             }
                             table2.Add(sl.image, sl);
                             // The above "put" may override an existing entry (that is not IGNORE_CASE) and that's
@@ -292,7 +292,7 @@ public class Semanticize : CSharpCCGlobals
                             {
                                 if (sl.ordinal == 0)
                                 {
-                                    sl.ordinal = tokenCount++;
+                                    sl.ordinal = TokenCount++;
                                 }
                                 table2.Add(sl.image, sl);
                             }
@@ -335,15 +335,15 @@ public class Semanticize : CSharpCCGlobals
                 }
                 else if (res.rexp is not RJustName)
                 {
-                    res.rexp.ordinal = tokenCount++;
+                    res.rexp.ordinal = TokenCount++;
                 }
                 if (res.rexp is not RJustName && res.rexp.label != (""))
                 {
-                    names_of_tokens.Add((res.rexp.ordinal), res.rexp.label);
+                    NamesOfTokens.Add((res.rexp.ordinal), res.rexp.label);
                 }
                 if (res.rexp is not RJustName)
                 {
-                    rexps_of_tokens.Add((res.rexp.ordinal), res.rexp);
+                    RegexpsOfTokens.Add((res.rexp.ordinal), res.rexp);
                 }
             }
         }
@@ -364,7 +364,7 @@ public class Semanticize : CSharpCCGlobals
         if (!Options.GetUserTokenManager())
         {
             var frjn = new FixRJustNames();
-            foreach(var tp in rexprlist)
+            foreach(var tp in RegexpList)
             {
                 List<RegExprSpec> respecs = tp.respecs;
                 foreach(var res in respecs)
@@ -394,19 +394,19 @@ public class Semanticize : CSharpCCGlobals
 
         if (Options.GetUserTokenManager())
         {
-            foreach(var tp in rexprlist)
+            foreach(var tp in RegexpList)
             {
                 List<RegExprSpec> respecs = tp.respecs;
                 foreach(var res in respecs)
                 {
                     if (res.rexp is RJustName jn)
                     {
-                        if (named_tokens_table.TryGetValue(jn.label, out var rexp))
+                        if (NamedTokenTable.TryGetValue(jn.label, out var rexp))
                         {
-                            jn.ordinal = tokenCount++;
-                            named_tokens_table.Add(jn.label, jn);
-                            ordered_named_tokens.Add(jn);
-                            names_of_tokens.Add((jn.ordinal), jn.label);
+                            jn.ordinal = TokenCount++;
+                            NamedTokenTable.Add(jn.label, jn);
+                            OrderedNamedToken.Add(jn);
+                            NamesOfTokens.Add((jn.ordinal), jn.label);
                         }
                         else
                         {
@@ -429,13 +429,13 @@ public class Semanticize : CSharpCCGlobals
          */
         if (Options.GetUserTokenManager())
         {
-            foreach(var tp in rexprlist)
+            foreach(var tp in RegexpList)
             {
                 List<RegExprSpec> respecs = tp.respecs;
                 foreach(var res in respecs)
                 {
                     int ii = (res.rexp.ordinal);
-                    if (!names_of_tokens.TryGetValue(ii,out var _))
+                    if (!NamesOfTokens.TryGetValue(ii,out var _))
                     {
                         CSharpCCErrors.Warning(res.rexp, "Unlabeled regular expression cannot be referred to by " +
                                 "user generated token manager.");
@@ -444,7 +444,7 @@ public class Semanticize : CSharpCCGlobals
             }
         }
 
-        if (CSharpCCErrors.GetErrorCount() != 0) throw new MetaParseException();
+        if (CSharpCCErrors.ErrorCount != 0) throw new MetaParseException();
 
         // The following code sets the value of the "emptyPossible" field of NormalProduction
         // nodes.  This field is initialized to false, and then the entire list of
@@ -454,7 +454,7 @@ public class Semanticize : CSharpCCGlobals
         while (emptyUpdate)
         {
             emptyUpdate = false;
-            foreach(var prod in bnfproductions)
+            foreach(var prod in BNFProductions)
             {
                 if (EmptyExpansionExists(prod.GetExpansion()))
                 {
@@ -466,12 +466,12 @@ public class Semanticize : CSharpCCGlobals
             }
         }
 
-        if (Options.GetSanityCheck() && CSharpCCErrors.GetErrorCount() == 0)
+        if (Options.GetSanityCheck() && CSharpCCErrors.ErrorCount == 0)
         {
 
             // The following code checks that all ZeroOrMore, ZeroOrOne, and OneOrMore nodes
             // do not contain expansions that can expand to the empty token list.
-            foreach (var prod in bnfproductions)
+            foreach (var prod in BNFProductions)
             {
                 ExpansionTreeWalker.PreOrderWalk(prod.GetExpansion(), new EmptyChecker());
             }
@@ -479,7 +479,7 @@ public class Semanticize : CSharpCCGlobals
             // The following code goes through the productions and adds pointers to other
             // productions that it can expand to without consuming any tokens.  Once this is
             // done, a left-recursion check can be performed.
-            foreach(var prod in bnfproductions)
+            foreach(var prod in BNFProductions)
             {
                 AddLeftMost(prod, prod.GetExpansion());
             }
@@ -488,7 +488,7 @@ public class Semanticize : CSharpCCGlobals
             // actual left recursions.  The way the algorithm is coded, once a node has
             // been determined to participate in a left recursive loop, it is not tried
             // in any other loop.
-            foreach(var prod in bnfproductions)
+            foreach(var prod in BNFProductions)
             {
                 if (prod.GetWalkStatus() == 0)
                 {
@@ -502,7 +502,7 @@ public class Semanticize : CSharpCCGlobals
             // This is not done if option USER_TOKEN_MANAGER is set to true.
             if (!Options.GetUserTokenManager())
             {
-                foreach(var tp in rexprlist)
+                foreach(var tp in RegexpList)
                 {
                     List<RegExprSpec> respecs = tp.respecs;
                     foreach( var res in respecs)    
@@ -525,9 +525,9 @@ public class Semanticize : CSharpCCGlobals
             /*
              * The following code performs the lookahead ambiguity checking.
              */
-            if (CSharpCCErrors.GetErrorCount() == 0)
+            if (CSharpCCErrors.ErrorCount == 0)
             {
-                foreach(var tp in bnfproductions)
+                foreach(var tp in BNFProductions)
                 {
                     ExpansionTreeWalker.PreOrderWalk(tp.GetExpansion(), new LookaheadChecker());
                 }
@@ -535,7 +535,7 @@ public class Semanticize : CSharpCCGlobals
 
         } // matches "if (Options.getSanityCheck()) {"
 
-        if (CSharpCCErrors.GetErrorCount() != 0) throw new MetaParseException();
+        if (CSharpCCErrors.ErrorCount != 0) throw new MetaParseException();
 
     }
 
@@ -591,7 +591,7 @@ public class Semanticize : CSharpCCGlobals
         }
         else if (exp is Choice choice)
         {
-            foreach(var e in choice.GetChoices())
+            foreach(var e in choice.Choices)
             {
                 if (EmptyExpansionExists(e))
                 {
@@ -655,7 +655,7 @@ public class Semanticize : CSharpCCGlobals
         }
         else if (exp is Choice choice)
         {
-            foreach(var p in choice.GetChoices())
+            foreach(var p in choice.Choices)
             {
                 AddLeftMost(prod, p);
             }
@@ -825,7 +825,7 @@ public class Semanticize : CSharpCCGlobals
         {
             if (e is RJustName jn)
             {
-                if (!named_tokens_table.TryGetValue(jn.label,out var rexp))
+                if (!NamedTokenTable.TryGetValue(jn.label,out var rexp))
                 {
                     CSharpCCErrors.SemanticError(e, "Undefined lexical token name \"" + jn.label + "\".");
                 }
@@ -892,7 +892,7 @@ public class Semanticize : CSharpCCGlobals
                 act.                Line = la.Line; act.Column = la.Column;
                 act.parent = seq1;
                 seq1.units.Add(act);
-                ch.GetChoices().Add(seq1);
+                ch.                Choices.Add(seq1);
                 if (la.GetAmount() != 0)
                 {
                     if (la.GetActionTokens().Count != 0)
@@ -940,7 +940,7 @@ public class Semanticize : CSharpCCGlobals
         {
             if (e is NonTerminal nt)
             {                
-                if (production_table.TryGetValue(nt.GetName(), out var ret))
+                if (ProductionTable.TryGetValue(nt.GetName(), out var ret))
                 {
                     nt.SetProd(ret);
 

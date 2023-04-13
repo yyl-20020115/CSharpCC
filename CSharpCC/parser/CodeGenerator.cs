@@ -13,10 +13,7 @@ public class CodeGenerator : CSharpCCGlobals
     protected StringBuilder includeBuffer = new ();
     protected StringBuilder staticsBuffer = new ();
     protected StringBuilder outputBuffer;
-    public CodeGenerator()
-    {
-        this.outputBuffer = mainBuffer;
-    }
+    public CodeGenerator() => this.outputBuffer = mainBuffer;
     public void GenStringLiteralArrayCPP(string varName, String[] arr)
     {
         // First generate char array vars
@@ -53,17 +50,15 @@ public class CodeGenerator : CSharpCCGlobals
     public void GenCode(params object[] code)
     {
         foreach (object s in code)
-        {
             outputBuffer.Append(s);
-        }
     }
 
     public void SaveOutput(string fileName)
     {
         if (!IsJavaLanguage())
         {
-            string incfilePath = fileName.Replace(".cc", ".h");
-            string incfileName = (incfilePath);
+            var incfilePath = fileName.Replace(".cc", ".h");
+            var incfileName = (incfilePath);
             includeBuffer.Insert(0, "#define " + incfileName.Replace('.', '_').ToUpper() + "\n");
             includeBuffer.Insert(0, "#ifndef " + incfileName.Replace('.', '_').ToUpper() + "\n");
 
@@ -78,7 +73,7 @@ public class CodeGenerator : CSharpCCGlobals
                 includeBuffer.Append(Options.StringValue("NAMESPACE_CLOSE") + "\n");
             }
 
-            if (JjtreeGenerated)
+            if (CCTreeGenerated)
             {
                 mainBuffer.Insert(0, "#include \"SimpleNode.h\"\n");
             }
@@ -100,38 +95,38 @@ public class CodeGenerator : CSharpCCGlobals
                (c >= 'A' && c <= 'F');
 
     // HACK
-    private void FixupLongLiterals(StringBuilder sb)
+    private static void FixupLongLiterals(StringBuilder builder)
     {
-        for (int i = 0; i < sb.Length - 1; i++)
+        for (int i = 0; i < builder.Length - 1; i++)
         {
             int beg = i;
-            char c1 = sb[i];
-            char c2 = sb[i + 1];
+            char c1 = builder[i];
+            char c2 = builder[i + 1];
             if (char.IsDigit(c1) || (c1 == '0' && c2 == 'x'))
             {
                 i += c1 == '0' ? 2 : 1;
-                while (IsHexDigit(sb[i])) i++;
-                if (sb[i] == 'L')
+                while (IsHexDigit(builder[i])) i++;
+                if (builder[i] == 'L')
                 {
-                    sb.Insert(i, "UL");
+                    builder.Insert(i, "UL");
                 }
                 i++;
             }
         }
     }
 
-    public void SaveOutput(string fileName, StringBuilder sb)
+    public static void SaveOutput(string fileName, StringBuilder builder)
     {
         TextWriter fw = null;
         if (!IsJavaLanguage())
         {
-            FixupLongLiterals(sb);
+            FixupLongLiterals(builder);
         }
         try
         {
             fw = new StreamWriter(fileName);
 
-            fw.Write(sb.ToString());
+            fw.Write(builder.ToString());
         }
         catch (IOException ioe)
         {

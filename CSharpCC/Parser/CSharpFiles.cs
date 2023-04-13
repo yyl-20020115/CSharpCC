@@ -253,19 +253,19 @@ public partial class CSharpFiles : CSharpCCGlobals
 
             TextWriter ostr = outputFile.GetPrintWriter();
 
-            if (cu_to_insertion_point_1.Count != 0 &&
-                cu_to_insertion_point_1[0].kind == PACKAGE
+            if (CuToInsertionPoint1.Count != 0 &&
+                CuToInsertionPoint1[0].kind == PACKAGE
             )
             {
-                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                for (int i = 1; i < CuToInsertionPoint1.Count; i++)
                 {
-                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
+                    if (CuToInsertionPoint1[i].kind == SEMICOLON)
                     {
-                        cline = cu_to_insertion_point_1[0].beginLine;
-                        ccol = cu_to_insertion_point_1[0].beginColumn;
+                        cline = CuToInsertionPoint1[0].beginLine;
+                        ccol = CuToInsertionPoint1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken(cu_to_insertion_point_1[j], ostr);
+                            PrintToken(CuToInsertionPoint1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -308,19 +308,19 @@ public partial class CSharpFiles : CSharpCCGlobals
 
             TextWriter ostr = outputFile.GetPrintWriter();
 
-            if (cu_to_insertion_point_1.Count != 0 &&
-                cu_to_insertion_point_1[0].kind == PACKAGE
+            if (CuToInsertionPoint1.Count != 0 &&
+                CuToInsertionPoint1[0].kind == PACKAGE
             )
             {
-                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                for (int i = 1; i < CuToInsertionPoint1.Count; i++)
                 {
-                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
+                    if (CuToInsertionPoint1[i].kind == SEMICOLON)
                     {
-                        cline = cu_to_insertion_point_1[0].beginLine;
-                        ccol = cu_to_insertion_point_1[0].beginColumn;
+                        cline = CuToInsertionPoint1[0].beginLine;
+                        ccol = CuToInsertionPoint1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken(cu_to_insertion_point_1[j], ostr);
+                            PrintToken(CuToInsertionPoint1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -363,19 +363,19 @@ public partial class CSharpFiles : CSharpCCGlobals
 
             TextWriter ostr = outputFile.GetPrintWriter();
 
-            if (cu_to_insertion_point_1.Count != 0 &&
-                cu_to_insertion_point_1[0].kind == PACKAGE
+            if (CuToInsertionPoint1.Count != 0 &&
+                CuToInsertionPoint1[0].kind == PACKAGE
             )
             {
-                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                for (int i = 1; i < CuToInsertionPoint1.Count; i++)
                 {
-                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
+                    if (CuToInsertionPoint1[i].kind == SEMICOLON)
                     {
-                        cline = cu_to_insertion_point_1[0].beginLine;
-                        ccol = cu_to_insertion_point_1[0].beginColumn;
+                        cline = CuToInsertionPoint1[0].beginLine;
+                        ccol = CuToInsertionPoint1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken(cu_to_insertion_point_1[j], ostr);
+                            PrintToken(CuToInsertionPoint1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -424,19 +424,19 @@ public partial class CSharpFiles : CSharpCCGlobals
 
             TextWriter ostr = outputFile.GetPrintWriter();
 
-            if (cu_to_insertion_point_1.Count != 0 &&
-                cu_to_insertion_point_1[0].kind == PACKAGE
+            if (CuToInsertionPoint1.Count != 0 &&
+                CuToInsertionPoint1[0].kind == PACKAGE
             )
             {
-                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                for (int i = 1; i < CuToInsertionPoint1.Count; i++)
                 {
-                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
+                    if (CuToInsertionPoint1[i].kind == SEMICOLON)
                     {
-                        cline = cu_to_insertion_point_1[0].beginLine;
-                        ccol = cu_to_insertion_point_1[0].beginColumn;
+                        cline = CuToInsertionPoint1[0].beginLine;
+                        ccol = CuToInsertionPoint1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken(cu_to_insertion_point_1[j], ostr);
+                            PrintToken(CuToInsertionPoint1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -474,19 +474,19 @@ public partial class CSharpFiles : CSharpCCGlobals
 
             TextWriter ostr = outputFile.GetPrintWriter();
 
-            if (cu_to_insertion_point_1.Count != 0 &&
-                cu_to_insertion_point_1[0].kind == PACKAGE
+            if (CuToInsertionPoint1.Count != 0 &&
+                CuToInsertionPoint1[0].kind == PACKAGE
             )
             {
-                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                for (int i = 1; i < CuToInsertionPoint1.Count; i++)
                 {
-                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
+                    if (CuToInsertionPoint1[i].kind == SEMICOLON)
                     {
-                        cline = cu_to_insertion_point_1[0].beginLine;
-                        ccol = cu_to_insertion_point_1[0].beginColumn;
+                        cline = CuToInsertionPoint1[0].beginLine;
+                        ccol = CuToInsertionPoint1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken(cu_to_insertion_point_1[j], ostr);
+                            PrintToken(CuToInsertionPoint1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -531,19 +531,19 @@ public partial class CSharpFiles : CSharpCCGlobals
 
             TextWriter ostr = outputFile.GetPrintWriter();
 
-            if (cu_to_insertion_point_1.Count != 0 &&
-                cu_to_insertion_point_1[0].kind == PACKAGE
+            if (CuToInsertionPoint1.Count != 0 &&
+                CuToInsertionPoint1[0].kind == PACKAGE
             )
             {
-                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                for (int i = 1; i < CuToInsertionPoint1.Count; i++)
                 {
-                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
+                    if (CuToInsertionPoint1[i].kind == SEMICOLON)
                     {
-                        cline = cu_to_insertion_point_1[0].beginLine;
-                        ccol = cu_to_insertion_point_1[0].beginColumn;
+                        cline = CuToInsertionPoint1[0].beginLine;
+                        ccol = CuToInsertionPoint1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken(cu_to_insertion_point_1[j], ostr);
+                            PrintToken(CuToInsertionPoint1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -586,19 +586,19 @@ public partial class CSharpFiles : CSharpCCGlobals
 
             TextWriter ostr = outputFile.GetPrintWriter();
 
-            if (cu_to_insertion_point_1.Count != 0 &&
-                cu_to_insertion_point_1[0].kind == PACKAGE
+            if (CuToInsertionPoint1.Count != 0 &&
+                CuToInsertionPoint1[0].kind == PACKAGE
             )
             {
-                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                for (int i = 1; i < CuToInsertionPoint1.Count; i++)
                 {
-                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
+                    if (CuToInsertionPoint1[i].kind == SEMICOLON)
                     {
-                        cline = cu_to_insertion_point_1[0].beginLine;
-                        ccol = cu_to_insertion_point_1[0].beginColumn;
+                        cline = CuToInsertionPoint1[0].beginLine;
+                        ccol = CuToInsertionPoint1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken(cu_to_insertion_point_1[j], ostr);
+                            PrintToken(CuToInsertionPoint1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -638,19 +638,19 @@ public partial class CSharpFiles : CSharpCCGlobals
 
             TextWriter ostr = outputFile.GetPrintWriter();
 
-            if (cu_to_insertion_point_1.Count != 0 &&
-                cu_to_insertion_point_1[0].kind == PACKAGE
+            if (CuToInsertionPoint1.Count != 0 &&
+                CuToInsertionPoint1[0].kind == PACKAGE
             )
             {
-                for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
+                for (int i = 1; i < CuToInsertionPoint1.Count; i++)
                 {
-                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
+                    if (CuToInsertionPoint1[i].kind == SEMICOLON)
                     {
-                        cline = cu_to_insertion_point_1[0].beginLine;
-                        ccol = cu_to_insertion_point_1[0].beginColumn;
+                        cline = CuToInsertionPoint1[0].beginLine;
+                        ccol = CuToInsertionPoint1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken(cu_to_insertion_point_1[j], ostr);
+                            PrintToken(CuToInsertionPoint1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");

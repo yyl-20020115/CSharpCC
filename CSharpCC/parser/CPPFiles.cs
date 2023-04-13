@@ -1,7 +1,6 @@
 // Copyright 2011 Google Inc. All Rights Reserved.
 // Author: sreeni@google.com (Sreeni Viswanadha)
 
-
 using CSharpCC.CCTree;
 using CSharpCC.Utils;
 using System.Text;
@@ -140,8 +139,8 @@ public partial class CPPFiles : CSharpCCGlobals
                 return;
             }
 
-            TextWriter ostr = outputFile.GetPrintWriter();
-            OutputFileGenerator generator = new OutputFileGenerator(
+            var ostr = outputFile.GetPrintWriter();
+            var generator = new OutputFileGenerator(
                 "/templates/cpp/" + name + ".template", Options.getOptions());
             generator.Generate(ostr);
             ostr.Close();
@@ -203,5 +202,4 @@ public partial class CPPFiles : CSharpCCGlobals
     public static new void ReInit()
     {
     }
-
 }

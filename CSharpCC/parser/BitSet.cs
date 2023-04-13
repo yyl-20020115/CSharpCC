@@ -4,7 +4,6 @@
  */
 
 using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CSharpCC.Parser;
 public class BitSet

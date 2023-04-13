@@ -108,19 +108,19 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         string superClass = Options.StringValue(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS);
         GenClassStart(null, tokMgrClassName, Array.Empty<string>(), new String[] { "public TokenManager" + (superClass == null ? "" : ", public " + superClass) });
 
-        if (token_mgr_decls != null && token_mgr_decls.Count > 0)
+        if (TokenManagerDeclarations != null && TokenManagerDeclarations.Count > 0)
         {
-            Token t = (Token)token_mgr_decls[0];
+            Token t = (Token)TokenManagerDeclarations[0];
             bool commonTokenActionSeen = false;
             bool commonTokenActionNeeded = Options.GetCommonTokenAction();
 
-            PrintTokenSetup((Token)token_mgr_decls[0]);
+            PrintTokenSetup((Token)TokenManagerDeclarations[0]);
             ccol = 1;
 
             SwitchToMainFile();
-            for (j = 0; j < token_mgr_decls.Count; j++)
+            for (j = 0; j < TokenManagerDeclarations.Count; j++)
             {
-                t = (Token)token_mgr_decls[j];
+                t = (Token)TokenManagerDeclarations[j];
                 if (t.kind == IDENTIFIER &&
                     commonTokenActionNeeded &&
                     !commonTokenActionSeen)
@@ -186,8 +186,8 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
     {
         int i;
 
-        String[] tmpLexStateName = new String[lexstate_I2S.Count];
-        foreach(var tp in rexprlist)
+        String[] tmpLexStateName = new String[LexstateI2S.Count];
+        foreach(var tp in RegexpList)
         {
             List<RegExprSpec> respecs = tp.respecs;
 
@@ -264,7 +264,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
     {
         if (!Options.GetBuildTokenManager() ||
             Options.GetUserTokenManager() ||
-            CSharpCCErrors.GetErrorCount() > 0)
+            CSharpCCErrors.            ErrorCount > 0)
             return;
 
         keepLineCol = Options.GetKeepLineColumn();
@@ -363,8 +363,8 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                         respec.nextState != (lexStateName[lexStateIndex]))
                         newLexState[curRE.ordinal] = respec.nextState;
 
-                    if (respec.act != null && respec.act.GetActionTokens() != null &&
-                        respec.act.GetActionTokens().Count > 0)
+                    if (respec.act != null && respec.act.ActionTokens != null &&
+                        respec.act.                        ActionTokens.Count > 0)
                         actions[curRE.ordinal] = respec.act;
 
                     switch (kind)
@@ -1101,8 +1101,8 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             for (; ; )
             {
                 if (((act = (Action)actions[i]) == null ||
-                    act.GetActionTokens() == null ||
-                    act.GetActionTokens().Count == 0) && !canLoop[lexStates[i]])
+                    act.                    ActionTokens == null ||
+                    act.                    ActionTokens.Count == 0) && !canLoop[lexStates[i]])
                     goto OuterExit;
 
                 GenCodeLine("      case " + i + " : {");
@@ -1122,7 +1122,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 }
 
                 if ((act = (Action)actions[i]) == null ||
-                    act.GetActionTokens().Count == 0)
+                    act.                    ActionTokens.Count == 0)
                     break;
 
                 GenCode("         image.append");
@@ -1136,11 +1136,11 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                     GenCodeLine("(input_stream->GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));");
                 }
 
-                PrintTokenSetup((Token)act.GetActionTokens()[0]);
+                PrintTokenSetup((Token)act.ActionTokens[0]);
                 ccol = 1;
 
-                for (int j = 0; j < act.GetActionTokens().Count; j++)
-                    PrintToken((Token)act.GetActionTokens()[j]);
+                for (int j = 0; j < act.ActionTokens.Count; j++)
+                    PrintToken((Token)act.ActionTokens[j]);
                 GenCodeLine("");
 
                 break;
@@ -1177,8 +1177,8 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             for (; ; )
             {
                 if (((act = (Action)actions[i]) == null ||
-                    act.GetActionTokens() == null ||
-                    act.GetActionTokens().Count == 0) && !canLoop[lexStates[i]])
+                    act.                    ActionTokens == null ||
+                    act.                    ActionTokens.Count == 0) && !canLoop[lexStates[i]])
                     goto OuterExit;
 
                 GenCodeLine("      case " + i + " : {");
@@ -1198,7 +1198,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 }
 
                 if ((act = (Action)actions[i]) == null ||
-                    act.GetActionTokens().Count == 0)
+                    act.                    ActionTokens.Count == 0)
                 {
                     break;
                 }
@@ -1211,11 +1211,11 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                     GenCodeLine("(input_stream->GetSuffix(jjimageLen));");
 
                 GenCodeLine("         jjimageLen = 0;");
-                PrintTokenSetup((Token)act.GetActionTokens()[0]);
+                PrintTokenSetup((Token)act.ActionTokens[0]);
                 ccol = 1;
 
-                for (int j = 0; j < act.GetActionTokens().Count; j++)
-                    PrintToken((Token)act.GetActionTokens()[j]);
+                for (int j = 0; j < act.ActionTokens.Count; j++)
+                    PrintToken((Token)act.ActionTokens[j]);
                 GenCodeLine("");
 
                 break;
@@ -1253,8 +1253,8 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             for (; ; )
             {
                 if (((act = (Action)actions[i]) == null ||
-                    act.GetActionTokens() == null ||
-                    act.GetActionTokens().Count == 0) && !canLoop[lexStates[i]])
+                    act.                    ActionTokens == null ||
+                    act.                    ActionTokens.Count == 0) && !canLoop[lexStates[i]])
                     goto OuterExit;
 
                 GenCodeLine("      case " + i + " : {");
@@ -1274,7 +1274,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 }
 
                 if ((act = (Action)actions[i]) == null ||
-                    act.GetActionTokens().Count == 0)
+                    act.                    ActionTokens.Count == 0)
                     break;
 
                 if (i == 0)
@@ -1296,11 +1296,11 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                     }
                 }
 
-                PrintTokenSetup((Token)act.GetActionTokens()[0]);
+                PrintTokenSetup((Token)act.ActionTokens[0]);
                 ccol = 1;
 
-                for (int j = 0; j < act.GetActionTokens().Count; j++)
-                    PrintToken((Token)act.GetActionTokens()[j]);
+                for (int j = 0; j < act.ActionTokens.Count; j++)
+                    PrintToken((Token)act.ActionTokens[j]);
                 GenCodeLine("");
 
                 break;
