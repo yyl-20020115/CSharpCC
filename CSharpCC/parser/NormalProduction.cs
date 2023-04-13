@@ -25,6 +25,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+using System.Collections.Generic;
 using System.Text;
 
 namespace org.javacc.parser;
@@ -114,7 +115,7 @@ public class NormalProduction
     private Token firstToken;
 
     protected string eol = Environment.NewLine;// System.getProperty("line.separator", "\n");
-    protected StringBuilder dumpPrefix(int indent)
+    protected StringBuilder DumpPrefix(int indent)
     {
         StringBuilder sb = new StringBuilder(128);
         for (int i = 0; i < indent; i++)
@@ -124,29 +125,29 @@ public class NormalProduction
 
     protected string GetSimpleName()
     {
-        string name = getClass().getName();
-        return name.substring(name.LastIndexOf(".") + 1); // strip the package name
+        string name = this.GetType().Name;
+        return name[(name.LastIndexOf(".") + 1)..]; // strip the package name
     }
 
-    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
-    {
-        StringBuilder sb = dumpPrefix(indent).Append(System.identityHashCode(this)).Append(' ').Append(GetSimpleName()).Append(' ').Append(getLhs());
-        if (!alreadyDumped.Contains(this))
-        {
-            alreadyDumped.Add(this);
-            if (getExpansion() != null)
-            {
-                sb.Append(eol).Append(getExpansion().dump(indent + 1, alreadyDumped));
-            }
-        }
+    //public virtual StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
+    //{
+    //    var sb = DumpPrefix(indent).Append((this).GetHashCode()).Append(' ').Append(GetSimpleName()).Append(' ').Append(GetLhs());
+    //    if (!alreadyDumped.Contains(this))
+    //    {
+    //        alreadyDumped.Add(this);
+    //        if (GetExpansion() != null)
+    //        {
+    //            sb.Append(eol).Append(GetExpansion().Dump(indent + 1, alreadyDumped));
+    //        }
+    //    }
 
-        return sb;
-    }
+    //    return sb;
+    //}
 
     /**
      * @param line the line to set
      */
-    public void setLine(int line)
+    public void SetLine(int line)
     {
         this.line = line;
     }
@@ -154,7 +155,7 @@ public class NormalProduction
     /**
      * @return the line
      */
-    public int getLine()
+    public int GetLine()
     {
         return line;
     }
@@ -162,7 +163,7 @@ public class NormalProduction
     /**
      * @param column the column to set
      */
-    public void setColumn(int column)
+    public void SetColumn(int column)
     {
         this.column = column;
     }
@@ -170,7 +171,7 @@ public class NormalProduction
     /**
      * @return the column
      */
-    public int getColumn()
+    public int GetColumn()
     {
         return column;
     }
@@ -194,7 +195,7 @@ public class NormalProduction
     /**
      * @param accessMod the accessMod to set
      */
-    public void setAccessMod(string accessMod)
+    public void SetAccessMod(string accessMod)
     {
         this.accessMod = accessMod;
     }
@@ -202,7 +203,7 @@ public class NormalProduction
     /**
      * @return the accessMod
      */
-    public string getAccessMod()
+    public string GetAccessMod()
     {
         return accessMod;
     }
@@ -210,7 +211,7 @@ public class NormalProduction
     /**
      * @param lhs the lhs to set
      */
-    public void setLhs(string lhs)
+    public void SetLhs(string lhs)
     {
         this.lhs = lhs;
     }
@@ -218,7 +219,7 @@ public class NormalProduction
     /**
      * @return the lhs
      */
-    public string getLhs()
+    public string GetLhs()
     {
         return lhs;
     }
@@ -226,7 +227,7 @@ public class NormalProduction
     /**
      * @return the return_type_tokens
      */
-    public List<Token> getReturnTypeTokens()
+    public List<Token> GetReturnTypeTokens()
     {
         return return_type_tokens;
     }
@@ -234,7 +235,7 @@ public class NormalProduction
     /**
      * @return the parameter_list_tokens
      */
-    public List<Token> getParameterListTokens()
+    public List<Token> GetParameterListTokens()
     {
         return parameter_list_tokens;
     }
@@ -242,7 +243,7 @@ public class NormalProduction
     /**
      * @param throws_list the throws_list to set
      */
-    public void setThrowsList(List throws_list)
+    public void SetThrowsList(List<string> throws_list)
     {
         this.throws_list = throws_list;
     }
@@ -250,7 +251,7 @@ public class NormalProduction
     /**
      * @return the throws_list
      */
-    public List getThrowsList()
+    public List<string> getThrowsList()
     {
         return throws_list;
     }
@@ -258,7 +259,7 @@ public class NormalProduction
     /**
      * @param expansion the expansion to set
      */
-    public void setExpansion(Expansion expansion)
+    public void SetExpansion(Expansion expansion)
     {
         this.expansion = expansion;
     }
@@ -266,7 +267,7 @@ public class NormalProduction
     /**
      * @return the expansion
      */
-    public Expansion getExpansion()
+    public Expansion GetExpansion()
     {
         return expansion;
     }
@@ -274,7 +275,7 @@ public class NormalProduction
     /**
      * @param emptyPossible the emptyPossible to set
      */
-    public bool setEmptyPossible(bool emptyPossible)
+    public bool SetEmptyPossible(bool emptyPossible)
     {
         this.emptyPossible = emptyPossible;
         return emptyPossible;
@@ -283,15 +284,12 @@ public class NormalProduction
     /**
      * @return the emptyPossible
      */
-    public bool isEmptyPossible()
-    {
-        return emptyPossible;
-    }
+    public bool IsEmptyPossible() => emptyPossible;
 
     /**
      * @param leftExpansions the leftExpansions to set
      */
-    public void setLeftExpansions(NormalProduction[] leftExpansions)
+    public void SetLeftExpansions(NormalProduction[] leftExpansions)
     {
         this.leftExpansions = leftExpansions;
     }
@@ -299,7 +297,7 @@ public class NormalProduction
     /**
      * @return the leftExpansions
      */
-    public NormalProduction[] getLeftExpansions()
+    public NormalProduction[] GetLeftExpansions()
     {
         return leftExpansions;
     }
@@ -307,7 +305,7 @@ public class NormalProduction
     /**
      * @param walkStatus the walkStatus to set
      */
-    public void setWalkStatus(int walkStatus)
+    public void SetWalkStatus(int walkStatus)
     {
         this.walkStatus = walkStatus;
     }
@@ -315,7 +313,7 @@ public class NormalProduction
     /**
      * @return the walkStatus
      */
-    public int getWalkStatus()
+    public int GetWalkStatus()
     {
         return walkStatus;
     }
@@ -323,7 +321,7 @@ public class NormalProduction
     /**
      * @param firstToken the firstToken to set
      */
-    public Token setFirstToken(Token firstToken)
+    public Token SetFirstToken(Token firstToken)
     {
         this.firstToken = firstToken;
         return firstToken;
@@ -332,7 +330,7 @@ public class NormalProduction
     /**
      * @return the firstToken
      */
-    public Token getFirstToken()
+    public Token GetFirstToken()
     {
         return firstToken;
     }
@@ -340,7 +338,7 @@ public class NormalProduction
     /**
      * @param lastToken the lastToken to set
      */
-    public void setLastToken(Token lastToken)
+    public void SetLastToken(Token lastToken)
     {
         this.lastToken = lastToken;
     }
@@ -348,7 +346,7 @@ public class NormalProduction
     /**
      * @return the lastToken
      */
-    public Token getLastToken()
+    public Token GetLastToken()
     {
         return lastToken;
     }

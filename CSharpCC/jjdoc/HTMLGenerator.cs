@@ -194,10 +194,10 @@ public class HTMLGenerator : TextGenerator
         {
             Println("");
             Println("<TABLE ALIGN=CENTER>");
-            Println("<CAPTION><STRONG>" + np.getLhs() + "</STRONG></CAPTION>");
+            Println("<CAPTION><STRONG>" + np.GetLhs() + "</STRONG></CAPTION>");
         }
         Println("<TR>");
-        Println("<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME=\"" + GetId(np.getLhs()) + "\">" + np.getLhs() + "</A></TD>");
+        Println("<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME=\"" + GetId(np.GetLhs()) + "\">" + np.GetLhs() + "</A></TD>");
         Println("<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>");
         Print("<TD ALIGN=LEFT VALIGN=BASELINE>");
     }

@@ -469,12 +469,12 @@ public class RCharacterList : RegularExpression
                     {
                         if (SubRange(range, (CharacterRange)newDesc[j]))
                         {
-                            continue Outer;
+                            goto OuterExitMe;
                         }
                         else if (SubRange((CharacterRange)newDesc[j], range))
                         {
-                            newDesc.set(j, range);
-                            continue Outer;
+                            newDesc[j]=range;
+                            goto OuterExitMe;
                         }
                         else if (Overlaps(range, (CharacterRange)newDesc[j]))
                         {
@@ -485,7 +485,7 @@ public class RCharacterList : RegularExpression
                             CharacterRange tmp = range;
                             ((CharacterRange)newDesc[j]).SetLeft((char)(range.GetRight() + 1));
                             range = (CharacterRange)newDesc[j];
-                            newDesc.set(j, tmp);
+                            newDesc[j] = tmp;
                         }
                         else if (((CharacterRange)newDesc[j]).GetLeft() > range.GetRight())
                             break;
@@ -494,6 +494,8 @@ public class RCharacterList : RegularExpression
 
                 newDesc.Insert(j, range);
                 cnt++;
+            OuterExitMe:
+                ;
             }
         }
     OuterExit:

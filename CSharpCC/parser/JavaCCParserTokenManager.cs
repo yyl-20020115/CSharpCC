@@ -2687,7 +2687,7 @@ null, null, "\141\142\163\164\162\141\143\164", "\141\163\163\145\162\164",
         {
             case 135:
                 image.Append(jjstrLiteralImages[135]);
-                lengthOfMatch = jjstrLiteralImages[135].Length;
+                lengthOfMatch = jjstrLiteralImages[135].Length; 
                 matchedToken.kind = GT;
                 ((Token.GTToken)matchedToken).realKind = RUNSIGNEDSHIFT;
                 input_stream.Backup(2);

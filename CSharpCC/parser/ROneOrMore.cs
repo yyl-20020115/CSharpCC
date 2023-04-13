@@ -40,6 +40,15 @@ public class ROneOrMore : RegularExpression
      */
     public RegularExpression regexpr;
 
+
+    public ROneOrMore() { }
+
+    public ROneOrMore(Token t, RegularExpression re)
+    {
+        this.SetLine(t.beginLine);
+        this.SetColumn(t.beginColumn);
+        this.regexpr = re;
+    }
     public override Nfa GenerateNfa(bool ignoreCase)
     {
         var retVal = new Nfa();
@@ -53,14 +62,5 @@ public class ROneOrMore : RegularExpression
         temp.end.AddMove(finalState);
 
         return retVal;
-    }
-
-    public ROneOrMore() { }
-
-    public ROneOrMore(Token t, RegularExpression re)
-    {
-        this.SetLine(t.beginLine);
-        this.SetColumn(t.beginColumn);
-        this.regexpr = re;
     }
 }

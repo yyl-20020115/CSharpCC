@@ -184,7 +184,7 @@ public class OtherFilesGen : JavaCCGlobals
                 re = res.rexp;
                 ostr.print("    ");
                 if (re is RStringLiteral)
-                {
+                { 
                     ostr.WriteLine("\"\\\"" + AddEscapes(AddEscapes(((RStringLiteral)re).image)) + "\\\"\",");
                 }
                 else if (!re.label == (""))

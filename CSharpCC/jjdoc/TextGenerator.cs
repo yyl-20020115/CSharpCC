@@ -160,7 +160,7 @@ public class TextGenerator : Generator
      */
     public virtual void ProductionStart(NormalProduction np)
     {
-        writer.Write("\t" + np.getLhs() + "\t:=\t");
+        writer.Write("\t" + np.GetLhs() + "\t:=\t");
     }
     /**
      * {@inheritDoc}

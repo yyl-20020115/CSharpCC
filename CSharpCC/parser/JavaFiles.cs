@@ -29,6 +29,7 @@
 using org.javacc.jjtree;
 using org.javacc.utils;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace org.javacc.parser;
 
@@ -37,7 +38,7 @@ namespace org.javacc.parser;
 /**
  * Generate CharStream, TokenManager and Exceptions.
  */
-public class JavaFiles : JavaCCGlobals
+public partial class JavaFiles : JavaCCGlobals
 {
     /**
      * ID of the latest version (of JavaCC) in which one of the CharStream classes
@@ -169,23 +170,23 @@ public class JavaFiles : JavaCCGlobals
      * @return The version as a double, eg 4.1
      * @since 4.1
      */
+    [GeneratedRegex("[^0-9.]+.*")]
+    private static partial Regex MyRegex();
+    static Regex versionRegex = MyRegex();
+
+    [GeneratedRegex("(\\d+(\\.\\d+)?).*")]
+    private static partial Regex MyRegex1();
+    static Regex numberRegex = MyRegex1();
     public static double GetVersion(string fileName)
     {
         string commentHeader = "/* " + GetIdString(ToolName, fileName) + " Version ";
-        string file = System.IO.Path.Combine(Options.getOutputDirectory(), ReplaceBackslash(fileName));
+        string file = Path.Combine(Options.getOutputDirectory(), ReplaceBackslash(fileName));
 
         if (!File.Exists(file))
         {
             // Has not yet been created, so it must be up to date.
-            try
-            {
-                string majorVersion = Version.MajorDotMinor.replaceAll("[^0-9.]+.*", "");
-                return Double.parseDouble(majorVersion);
-            }
-            catch (NumberFormatException e)
-            {
-                return 0.0; // Should never happen
-            }
+            string majorVersion = versionRegex.Replace(Version.MajorDotMinor, "");
+            return double.TryParse(majorVersion, out var d) ? d : 0;
         }
 
         StreamReader reader = null;
@@ -206,21 +207,17 @@ public class JavaFiles : JavaCCGlobals
                     if (pos >= 0) str = str[..pos];
                     if (str.Length > 0)
                     {
-                        try
-                        {
-                            // str can be 4.09
-                            // or even 7.0.5
-                            // So far we keep only major.minor part
-                            // "4 qwerty"-> "4"
-                            // "4.09 qwerty" -> "4.09"
-                            // "7.0.5 qwerty" -> "7.0"
-                            str = str.replaceAll("(\\d+(\\.\\d+)?).*", "$1");
-                            version = Double.parseDouble(str);
-                        }
-                        catch (NumberFormatException nfe)
-                        {
-                            // Ignore - leave version as 0.0
-                        }
+
+                        // str can be 4.09
+                        // or even 7.0.5
+                        // So far we keep only major.minor part
+                        // "4 qwerty"-> "4"
+                        // "4.09 qwerty" -> "4.09"
+                        // "7.0.5 qwerty" -> "7.0"
+                        //str = str.replaceAll("(\\d+(\\.\\d+)?).*", "$1");
+                        str = numberRegex.Replace(str, "$1");
+
+                        return double.TryParse(str, out version) ? version : 0.0;
                     }
 
                     break;
@@ -248,8 +245,8 @@ public class JavaFiles : JavaCCGlobals
     {
         try
         {
-            string file = System.IO.Path.Combine(Options.getOutputDirectory(), "JavaCharStream.java");
-            var outputFile = new OutputFile(file, charStreamVersion, new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+            string file = Path.Combine(Options.getOutputDirectory(), "JavaCharStream.java");
+            var outputFile = new OutputFile(file, charStreamVersion, new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
             {
@@ -259,18 +256,18 @@ public class JavaFiles : JavaCCGlobals
             TextWriter ostr = outputFile.getPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
-                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+                cu_to_insertion_point_1[0].kind == PACKAGE
             )
             {
                 for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
                 {
-                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
                     {
-                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        cline = cu_to_insertion_point_1[0].beginLine;
+                        ccol = cu_to_insertion_point_1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                            PrintToken(cu_to_insertion_point_1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -278,7 +275,7 @@ public class JavaFiles : JavaCCGlobals
                     }
                 }
             }
-            string prefix = (Options.getStatic() ? "static " : "");
+            string prefix = Options.getStatic() ? "static " : "";
             Dictionary<string,object> options = new (Options.getOptions());
             options.Add("PREFIX", prefix);
 
@@ -303,8 +300,8 @@ public class JavaFiles : JavaCCGlobals
     {
         try
         {
-            string file = System.IO.Path.Combine(Options.getOutputDirectory(), "SimpleCharStream.java");
-            var outputFile = new OutputFile(file, charStreamVersion, new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+            string file = Path.Combine(Options.getOutputDirectory(), "SimpleCharStream.java");
+            var outputFile = new OutputFile(file, charStreamVersion, new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
             {
@@ -314,18 +311,18 @@ public class JavaFiles : JavaCCGlobals
             TextWriter ostr = outputFile.getPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
-                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+                cu_to_insertion_point_1[0].kind == PACKAGE
             )
             {
                 for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
                 {
-                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
                     {
-                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        cline = cu_to_insertion_point_1[0].beginLine;
+                        ccol = cu_to_insertion_point_1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                            PrintToken(cu_to_insertion_point_1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -333,7 +330,7 @@ public class JavaFiles : JavaCCGlobals
                     }
                 }
             }
-            string prefix = (Options.getStatic() ? "static " : "");
+            string prefix = Options.getStatic() ? "static " : "";
             var options = new Dictionary<string,object>(Options.getOptions());
             options.Add("PREFIX", prefix);
 
@@ -358,8 +355,8 @@ public class JavaFiles : JavaCCGlobals
     {
         try
         {
-            var file = System.IO.Path.Combine(Options.getOutputDirectory(), "CharStream.java");
-            var outputFile = new OutputFile(file, charStreamVersion, new String[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+            var file = Path.Combine(Options.getOutputDirectory(), "CharStream.java");
+            var outputFile = new OutputFile(file, charStreamVersion, new string[] { Options.USEROPTION__STATIC, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
             {
@@ -369,18 +366,18 @@ public class JavaFiles : JavaCCGlobals
             TextWriter ostr = outputFile.getPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
-                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+                cu_to_insertion_point_1[0].kind == PACKAGE
             )
             {
                 for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
                 {
-                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
                     {
-                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        cline = cu_to_insertion_point_1[0].beginLine;
+                        ccol = cu_to_insertion_point_1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                            PrintToken(cu_to_insertion_point_1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -419,8 +416,8 @@ public class JavaFiles : JavaCCGlobals
     {
         try
         {
-            var file =System.IO.Path.Combine(Options.getOutputDirectory(), fileName);
-            var outputFile = new OutputFile(file, parseExceptionVersion, new String[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN });
+            var file = Path.Combine(Options.getOutputDirectory(), fileName);
+            var outputFile = new OutputFile(file, parseExceptionVersion, new string[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN });
 
             if (!outputFile.NeedToWrite)
             {
@@ -430,18 +427,18 @@ public class JavaFiles : JavaCCGlobals
             TextWriter ostr = outputFile.getPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
-                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+                cu_to_insertion_point_1[0].kind == PACKAGE
             )
             {
                 for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
                 {
-                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
                     {
-                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        cline = cu_to_insertion_point_1[0].beginLine;
+                        ccol = cu_to_insertion_point_1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                            PrintToken(cu_to_insertion_point_1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -469,8 +466,8 @@ public class JavaFiles : JavaCCGlobals
     {
         try
         {
-            string file = System.IO.Path.Combine(Options.getOutputDirectory(), "ParseException.java");
-            OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new String[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN });
+            string file = Path.Combine(Options.getOutputDirectory(), "ParseException.java");
+            OutputFile outputFile = new OutputFile(file, parseExceptionVersion, new string[] {/* cba -- 2013/07/22 -- previously wired to a typo version of this option -- KEEP_LINE_COL */ Options.USEROPTION__KEEP_LINE_COLUMN });
 
             if (!outputFile.NeedToWrite)
             {
@@ -480,18 +477,18 @@ public class JavaFiles : JavaCCGlobals
             TextWriter ostr = outputFile.getPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
-                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+                cu_to_insertion_point_1[0].kind == PACKAGE
             )
             {
                 for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
                 {
-                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
                     {
-                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        cline = cu_to_insertion_point_1[0].beginLine;
+                        ccol = cu_to_insertion_point_1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                            PrintToken(cu_to_insertion_point_1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -526,8 +523,8 @@ public class JavaFiles : JavaCCGlobals
         try
         {
 
-            File file = new File(Options.getOutputDirectory(), filename);
-            OutputFile outputFile = new OutputFile(file, tokenMgrErrorVersion, new String[0]);
+            string file = Path.Combine(Options.getOutputDirectory(), filename);
+            OutputFile outputFile = new OutputFile(file, tokenMgrErrorVersion, new string[0]);
 
             if (!outputFile.NeedToWrite)
             {
@@ -537,18 +534,18 @@ public class JavaFiles : JavaCCGlobals
             TextWriter ostr = outputFile.getPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
-                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+                cu_to_insertion_point_1[0].kind == PACKAGE
             )
             {
                 for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
                 {
-                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
                     {
-                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        cline = cu_to_insertion_point_1[0].beginLine;
+                        ccol = cu_to_insertion_point_1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                            PrintToken(cu_to_insertion_point_1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -581,8 +578,8 @@ public class JavaFiles : JavaCCGlobals
     {
         try
         {
-            File file = new File(Options.getOutputDirectory(), "Token.java");
-            OutputFile outputFile = new OutputFile(file, tokenVersion, new String[] { Options.USEROPTION__TOKEN_EXTENDS, Options.USEROPTION__KEEP_LINE_COLUMN, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+            string file = Path.Combine(Options.getOutputDirectory(), "Token.java");
+            OutputFile outputFile = new OutputFile(file, tokenVersion, new string[] { Options.USEROPTION__TOKEN_EXTENDS, Options.USEROPTION__KEEP_LINE_COLUMN, Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
             {
@@ -592,18 +589,18 @@ public class JavaFiles : JavaCCGlobals
             TextWriter ostr = outputFile.getPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
-                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+                cu_to_insertion_point_1[0].kind == PACKAGE
             )
             {
                 for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
                 {
-                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
                     {
-                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        cline = cu_to_insertion_point_1[0].beginLine;
+                        ccol = cu_to_insertion_point_1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                            PrintToken(cu_to_insertion_point_1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -633,8 +630,8 @@ public class JavaFiles : JavaCCGlobals
     {
         try
         {
-            File file = new File(Options.getOutputDirectory(), "TokenManager.java");
-            OutputFile outputFile = new OutputFile(file, tokenManagerVersion, new String[] { Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
+            string file = Path.Combine(Options.getOutputDirectory(), "TokenManager.java");
+            OutputFile outputFile = new OutputFile(file, tokenManagerVersion, new string[] { Options.USEROPTION__SUPPORT_CLASS_VISIBILITY_PUBLIC });
 
             if (!outputFile.NeedToWrite)
             {
@@ -644,18 +641,18 @@ public class JavaFiles : JavaCCGlobals
             TextWriter ostr = outputFile.getPrintWriter();
 
             if (cu_to_insertion_point_1.Count != 0 &&
-                ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+                cu_to_insertion_point_1[0].kind == PACKAGE
             )
             {
                 for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
                 {
-                    if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                    if (cu_to_insertion_point_1[i].kind == SEMICOLON)
                     {
-                        cline = ((Token)(cu_to_insertion_point_1[0])).beginLine;
-                        ccol = ((Token)(cu_to_insertion_point_1[0])).beginColumn;
+                        cline = cu_to_insertion_point_1[0].beginLine;
+                        ccol = cu_to_insertion_point_1[0].beginColumn;
                         for (int j = 0; j <= i; j++)
                         {
-                            PrintToken((Token)(cu_to_insertion_point_1[j]), ostr);
+                            PrintToken(cu_to_insertion_point_1[j], ostr);
                         }
                         ostr.WriteLine("");
                         ostr.WriteLine("");
@@ -680,7 +677,7 @@ public class JavaFiles : JavaCCGlobals
     }
 
 
-    public static void ReInit()
+    public static new void ReInit()
     {
     }
 

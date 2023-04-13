@@ -385,7 +385,7 @@ public class OutputFile
         return toolName;
     }
 
-    /**
+    /** s
      * @param toolName
      *            the toolName to set
      */

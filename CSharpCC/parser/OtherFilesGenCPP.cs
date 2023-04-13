@@ -105,7 +105,7 @@ public class OtherFilesGenCPP : JavaCCGlobals
             ostr.WriteLine("namespace " + Options.stringValue("NAMESPACE_OPEN"));
         }
 
-        RegularExpression re;
+        RegularExpression re; 
         string constPrefix = "const";
         ostr.WriteLine("  /** End of File. */");
         ostr.WriteLine(constPrefix + "  int _EOF = 0;");

@@ -128,7 +128,7 @@ public class Expansion :Descriptor
         {
             if (next is BNFProduction production)
             {
-                return production.getLhs();
+                return production.GetLhs();
             }
             else if (next is Expansion expansion)
             {

@@ -42,7 +42,7 @@ public static class JavaCCErrors
         {
             case NormalProduction n:
                 {
-                    Console.Error.Write("Line " + n.getLine() + ", Column " + n.getColumn() + ": ");
+                    Console.Error.Write("Line " + n.GetLine() + ", Column " + n.GetColumn() + ": ");
                     break;
                 }
 

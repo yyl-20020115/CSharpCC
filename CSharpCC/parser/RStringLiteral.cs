@@ -40,8 +40,8 @@ public class KindInfo
     public long[] finalKinds;
     public int validKindCnt = 0;
     public int finalKindCnt = 0;
-    public HashSet<int> finalKindSet = new ();
-    public HashSet<int> validKindSet = new ();
+    public HashSet<int> finalKindSet = new();
+    public HashSet<int> validKindSet = new();
 
     public KindInfo(int maxKind)
     {
@@ -90,7 +90,7 @@ public class RStringLiteral : RegularExpression
     private static int maxStrKind = 0;
     private static int maxLen = 0;
     private static int charCnt = 0;
-    private static List charPosKind = new(); // Elements are hashtables
+    private static List<Dictionary<string,object>> charPosKind = new(); // Elements are hashtables
                                              // with single char keys;
     private static int[] maxLenForActive = new int[100]; // 6400 tokens
     public static String[] allImages;
@@ -112,7 +112,7 @@ public class RStringLiteral : RegularExpression
     {
         maxStrKind = 0;
         maxLen = 0;
-        charPosKind = new ();
+        charPosKind = new();
         maxLenForActive = new int[100]; // 6400 tokens
         intermediateKinds = null;
         intermediateMatchedPos = null;
@@ -1360,7 +1360,7 @@ public class RStringLiteral : RegularExpression
         int i, j, kind, jjmatchedPos = 0;
         int maxKindsReqd = maxStrKind / 64 + 1;
         long[] actives;
-        List newStates = new ();
+        List newStates = new();
         List oldStates = null, jjtmpStates;
 
         statesForPos = new Dictionary[maxLen];
@@ -1645,7 +1645,7 @@ public class RStringLiteral : RegularExpression
         codeGenerator.GenCodeLine("   }");
         codeGenerator.GenCodeLine("}");
 
-        _params.Capacity=0;
+        _params.Capacity = 0;
         _params.Append("(int pos, ");
         for (i = 0; i < maxKindsReqd - 1; i++)
             _params.Append("" + Options.getLongType() + " active" + i + ", ");
@@ -1817,7 +1817,7 @@ public class RStringLiteral : RegularExpression
             {
                 literalsByLength.Add(key, l = new());
                 //assert(kinds == null);
-                kinds = new ();
+                kinds = new();
                 literalKinds.Add(key, kinds = new List<int>());
             }
             while (j < l.Count && l[j].Length > s.Length) j++;

@@ -70,7 +70,7 @@ public class Semanticize : JavaCCGlobals
          */
         for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
         {
-            ExpansionTreeWalker.PostOrderWalk(((NormalProduction)it.next()).getExpansion(),
+            ExpansionTreeWalker.PostOrderWalk(((NormalProduction)it.next()).GetExpansion(),
                                               new LookaheadFixer());
         }
 
@@ -80,9 +80,9 @@ public class Semanticize : JavaCCGlobals
         for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
         {
             NormalProduction p = it.next();
-            if (production_table.Add(p.getLhs(), p) != null)
+            if (production_table.Add(p.GetLhs(), p) != null)
             {
-                JavaCCErrors.SemanticError(p, p.getLhs() + " occurs on the left hand side of more than one production.");
+                JavaCCErrors.SemanticError(p, p.GetLhs() + " occurs on the left hand side of more than one production.");
             }
         }
 
@@ -471,11 +471,11 @@ public class Semanticize : JavaCCGlobals
             for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
             {
                 NormalProduction prod = (NormalProduction)it.next();
-                if (emptyExpansionExists(prod.getExpansion()))
+                if (emptyExpansionExists(prod.GetExpansion()))
                 {
-                    if (!prod.isEmptyPossible())
+                    if (!prod.IsEmptyPossible())
                     {
-                        emptyUpdate = prod.setEmptyPossible(true);
+                        emptyUpdate = prod.SetEmptyPossible(true);
                     }
                 }
             }
@@ -488,7 +488,7 @@ public class Semanticize : JavaCCGlobals
             // do not contain expansions that can expand to the empty token list.
             for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
             {
-                ExpansionTreeWalker.PreOrderWalk(((NormalProduction)it.next()).getExpansion(), new EmptyChecker());
+                ExpansionTreeWalker.PreOrderWalk(((NormalProduction)it.next()).GetExpansion(), new EmptyChecker());
             }
 
             // The following code goes through the productions and adds pointers to other
@@ -497,7 +497,7 @@ public class Semanticize : JavaCCGlobals
             for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
             {
                 NormalProduction prod = it.next();
-                addLeftMost(prod, prod.getExpansion());
+                addLeftMost(prod, prod.GetExpansion());
             }
 
             // Now the following loop calls a recursive walk routine that searches for
@@ -507,7 +507,7 @@ public class Semanticize : JavaCCGlobals
             for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
             {
                 NormalProduction prod = it.next();
-                if (prod.getWalkStatus() == 0)
+                if (prod.GetWalkStatus() == 0)
                 {
                     prodWalk(prod);
                 }
@@ -587,7 +587,7 @@ public class Semanticize : JavaCCGlobals
     {
         if (exp is NonTerminal)
         {
-            return ((NonTerminal)exp).GetProd().isEmptyPossible();
+            return ((NonTerminal)exp).GetProd().IsEmptyPossible();
         }
         else if (exp is Action)
         {
@@ -648,18 +648,18 @@ public class Semanticize : JavaCCGlobals
         {
             for (int i = 0; i < prod.leIndex; i++)
             {
-                if (prod.getLeftExpansions()[i] == ((NonTerminal)exp).GetProd())
+                if (prod.GetLeftExpansions()[i] == ((NonTerminal)exp).GetProd())
                 {
                     return;
                 }
             }
-            if (prod.leIndex == prod.getLeftExpansions().Length)
+            if (prod.leIndex == prod.GetLeftExpansions().Length)
             {
                 NormalProduction[] newle = new NormalProduction[prod.leIndex * 2];
-                Array.Copy(prod.getLeftExpansions(), 0, newle, 0, prod.leIndex);
-                prod.setLeftExpansions(newle);
+                Array.Copy(prod.GetLeftExpansions(), 0, newle, 0, prod.leIndex);
+                prod.SetLeftExpansions(newle);
             }
-            prod.getLeftExpansions()[prod.leIndex++] = ((NonTerminal)exp).GetProd();
+            prod.GetLeftExpansions()[prod.leIndex++] = ((NonTerminal)exp).GetProd();
         }
         else if (exp is OneOrMore)
         {
@@ -705,45 +705,45 @@ public class Semanticize : JavaCCGlobals
     // and returns false otherwise.
     static private bool prodWalk(NormalProduction prod)
     {
-        prod.setWalkStatus(-1);
+        prod.SetWalkStatus(-1);
         for (int i = 0; i < prod.leIndex; i++)
         {
-            if (prod.getLeftExpansions()[i].getWalkStatus() == -1)
+            if (prod.GetLeftExpansions()[i].GetWalkStatus() == -1)
             {
-                prod.getLeftExpansions()[i].setWalkStatus(-2);
-                loopString = prod.getLhs() + "... --> " + prod.getLeftExpansions()[i].getLhs() + "...";
-                if (prod.getWalkStatus() == -2)
+                prod.GetLeftExpansions()[i].SetWalkStatus(-2);
+                loopString = prod.GetLhs() + "... --> " + prod.GetLeftExpansions()[i].GetLhs() + "...";
+                if (prod.GetWalkStatus() == -2)
                 {
-                    prod.setWalkStatus(1);
+                    prod.SetWalkStatus(1);
                     JavaCCErrors.SemanticError(prod, "Left recursion detected: \"" + loopString + "\"");
                     return false;
                 }
                 else
                 {
-                    prod.setWalkStatus(1);
+                    prod.SetWalkStatus(1);
                     return true;
                 }
             }
-            else if (prod.getLeftExpansions()[i].getWalkStatus() == 0)
+            else if (prod.GetLeftExpansions()[i].GetWalkStatus() == 0)
             {
-                if (prodWalk(prod.getLeftExpansions()[i]))
+                if (prodWalk(prod.GetLeftExpansions()[i]))
                 {
-                    loopString = prod.getLhs() + "... --> " + loopString;
-                    if (prod.getWalkStatus() == -2)
+                    loopString = prod.GetLhs() + "... --> " + loopString;
+                    if (prod.GetWalkStatus() == -2)
                     {
-                        prod.setWalkStatus(1);
+                        prod.SetWalkStatus(1);
                         JavaCCErrors.SemanticError(prod, "Left recursion detected: \"" + loopString + "\"");
                         return false;
                     }
                     else
                     {
-                        prod.setWalkStatus(1);
+                        prod.SetWalkStatus(1);
                         return true;
                     }
                 }
             }
         }
-        prod.setWalkStatus(1);
+        prod.SetWalkStatus(1);
         return false;
     }
 
@@ -790,7 +790,7 @@ public class Semanticize : JavaCCGlobals
         }
         else if (rexp is RChoice)
         {
-            for (Iterator it = ((RChoice)rexp).getChoices().iterator(); it.hasNext();)
+            for (Iterator it = ((RChoice)rexp).GetChoices().iterator(); it.hasNext();)
             {
                 if (rexpWalk((RegularExpression)it.next()))
                 {

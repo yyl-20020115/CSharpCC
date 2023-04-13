@@ -163,14 +163,14 @@ public class JJDoc : JJDocGlobals
         gen.NonterminalsStart();
         foreach (NormalProduction np in prods)
         {
-            EmitTopLevelSpecialTokens(np.getFirstToken(), gen);
+            EmitTopLevelSpecialTokens(np.GetFirstToken(), gen);
             if (np is BNFProduction)
             {
                 gen.ProductionStart(np);
-                if (np.getExpansion() is Choice)
+                if (np.GetExpansion() is Choice)
                 {
                     bool first = true;
-                    Choice c = (Choice)np.getExpansion();
+                    Choice c = (Choice)np.GetExpansion();
                     foreach (Expansion e in c.GetChoices())
                     {
                         gen.ExpansionStart(e, first);
@@ -181,9 +181,9 @@ public class JJDoc : JJDocGlobals
                 }
                 else
                 {
-                    gen.ExpansionStart(np.getExpansion(), true);
-                    EmitExpansionTree(np.getExpansion(), gen);
-                    gen.ExpansionEnd(np.getExpansion(), true);
+                    gen.ExpansionStart(np.GetExpansion(), true);
+                    EmitExpansionTree(np.GetExpansion(), gen);
+                    gen.ExpansionEnd(np.GetExpansion(), true);
                 }
                 gen.ProductionEnd(np);
             }
@@ -410,7 +410,7 @@ public class JJDoc : JJDocGlobals
         {
             RChoice c = (RChoice)re;
             var first = true;
-            foreach (RegularExpression sub in c.getChoices())
+            foreach (RegularExpression sub in c.GetChoices())
             {
                 if (!first)
                 {

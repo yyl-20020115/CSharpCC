@@ -44,7 +44,7 @@ public class RChoice : RegularExpression
     /**
      * @param choices the choices to set
      */
-    public void setChoices(List<Expansion> choices)
+    public void SetChoices(List<Expansion> choices)
     {
         this.choices = choices;
     }
@@ -52,7 +52,7 @@ public class RChoice : RegularExpression
     /**
      * @return the choices
      */
-    public List<Expansion> getChoices()
+    public List<Expansion> GetChoices()
     {
         return choices;
     }
@@ -61,17 +61,17 @@ public class RChoice : RegularExpression
     {
         CompressCharLists();
 
-        if (getChoices().Count == 1)
-            return ((RegularExpression)getChoices()[0]).GenerateNfa(ignoreCase);
+        if (GetChoices().Count == 1)
+            return ((RegularExpression)GetChoices()[0]).GenerateNfa(ignoreCase);
 
         Nfa retVal = new Nfa();
         NfaState startState = retVal.start;
         NfaState finalState = retVal.end;
 
-        for (int i = 0; i < getChoices().Count; i++)
+        for (int i = 0; i < GetChoices().Count; i++)
         {
             Nfa temp;
-            RegularExpression curRE = (RegularExpression)getChoices()[i];
+            RegularExpression curRE = (RegularExpression)GetChoices()[i];
 
             temp = curRE.GenerateNfa(ignoreCase);
 
@@ -88,16 +88,16 @@ public class RChoice : RegularExpression
         RegularExpression curRE;
         RCharacterList curCharList = null;
 
-        for (int i = 0; i < getChoices().Count; i++)
+        for (int i = 0; i < GetChoices().Count; i++)
         {
-            curRE = (RegularExpression)getChoices()[i];
+            curRE = (RegularExpression)GetChoices()[i];
 
             while (curRE is RJustName)
                 curRE = ((RJustName)curRE).regexpr;
 
             if (curRE is RStringLiteral &&
                 ((RStringLiteral)curRE).image.Length == 1)
-                getChoices()[i] = curRE = new RCharacterList(
+                GetChoices()[i] = curRE = new RCharacterList(
                            ((RStringLiteral)curRE).image[0]);
 
             if (curRE is RCharacterList)
@@ -108,9 +108,9 @@ public class RChoice : RegularExpression
                 var tmp = ((RCharacterList)curRE).descriptors;
 
                 if (curCharList == null)
-                    getChoices()[i] = curRE = curCharList = new RCharacterList();
+                    GetChoices()[i] = curRE = curCharList = new RCharacterList();
                 else
-                    getChoices().RemoveAt(i--);
+                    GetChoices().RemoveAt(i--);
 
                 for (int j = tmp.Count; j-- > 0;)
                     curCharList.descriptors.Add(tmp[j]);
@@ -123,18 +123,18 @@ public class RChoice : RegularExpression
     {
         RegularExpression curRE;
 
-        for (int i = 0; i < getChoices().Count; i++)
+        for (int i = 0; i < GetChoices().Count; i++)
         {
-            curRE = (RegularExpression)getChoices()[i];
+            curRE = (RegularExpression)GetChoices()[i];
 
             while (curRE is RJustName)
                 curRE = ((RJustName)curRE).regexpr;
 
             if (curRE is RChoice)
             {
-                getChoices().RemoveAt(i--);
-                for (int j = ((RChoice)curRE).getChoices().Count; j-- > 0;)
-                    getChoices().Add(((RChoice)curRE).getChoices()[j]);
+                GetChoices().RemoveAt(i--);
+                for (int j = ((RChoice)curRE).GetChoices().Count; j-- > 0;)
+                    GetChoices().Add(((RChoice)curRE).GetChoices()[j]);
             }
         }
     }
@@ -144,9 +144,9 @@ public class RChoice : RegularExpression
         RegularExpression curRE;
         int numStrings = 0;
 
-        for (int i = 0; i < getChoices().Count; i++)
+        for (int i = 0; i < GetChoices().Count; i++)
         {
-            if (!(curRE = (RegularExpression)getChoices()[i]).private_rexp &&
+            if (!(curRE = (RegularExpression)GetChoices()[i]).private_rexp &&
                 //curRE is RJustName &&
                 curRE.ordinal > 0 && curRE.ordinal < ordinal &&
                 LexGen.lexStates[curRE.ordinal] == LexGen.lexStates[ordinal])

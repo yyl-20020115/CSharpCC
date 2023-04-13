@@ -577,7 +577,7 @@ public class Options
                     Val = s.substring(index + 1);
                     if (s.Length > index + 2)
                     {
-                        // i.e., there is space for two '"'s in value
+                        // i.e., there is space for two '"'s in value 
                         if (s[index + 1] == '"'
                                 && s[^1] == '"')
                         {

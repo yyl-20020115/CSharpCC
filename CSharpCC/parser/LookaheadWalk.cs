@@ -78,7 +78,7 @@ public static class LookaheadWalk
             }
             else
             {
-                return GenFirstSet(partialMatches, prod.getExpansion());
+                return GenFirstSet(partialMatches, prod.GetExpansion());
             }
         }
         else if (exp is Choice choice)

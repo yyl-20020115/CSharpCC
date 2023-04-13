@@ -73,7 +73,7 @@ public static class ExpansionTreeWalker
             else if (node is Lookahead lookahead)
             {
                 var nested_e = lookahead.GetLaExpansion();
-                if (!(nested_e is Sequence && (Expansion)(((Sequence)nested_e).units[0]) == node))
+                if (!(nested_e is Sequence sequence1 && sequence1.units[0] == node))
                 {
                     PreOrderWalk(nested_e, opObj);
                 }
@@ -84,7 +84,7 @@ public static class ExpansionTreeWalker
             }
             else if (node is RChoice choice1)
             {
-                foreach(Expansion e in choice1.getChoices())
+                foreach(Expansion e in choice1.GetChoices())
                 {
                     PreOrderWalk(e, opObj);
                 }
@@ -153,7 +153,7 @@ public static class ExpansionTreeWalker
             else if (node is Lookahead lookahead)
             {
                 Expansion nested_e = lookahead.GetLaExpansion();
-                if (!(nested_e is Sequence && (Expansion)(((Sequence)nested_e).units[0]) == node))
+                if (!(nested_e is Sequence sequence1 && sequence1.units[0] == node))
                 {
                     PostOrderWalk(nested_e, opObj);
                 }
@@ -164,7 +164,7 @@ public static class ExpansionTreeWalker
             }
             else if (node is RChoice choice1)
             {
-                foreach(Expansion cs in choice1.getChoices())
+                foreach(Expansion cs in choice1.GetChoices())
                 {
                     PostOrderWalk(cs, opObj);
                 }

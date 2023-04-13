@@ -96,7 +96,7 @@ public class ParseEngine
             }
             else
             {
-                return javaCodeCheck(prod.getExpansion());
+                return javaCodeCheck(prod.GetExpansion());
             }
         }
         else if (exp is Choice)
@@ -182,7 +182,7 @@ public class ParseEngine
         {
             if (!(((NonTerminal)exp).GetProd() is CodeProduction))
             {
-                genFirstSet(((BNFProduction)(((NonTerminal)exp).GetProd())).getExpansion());
+                genFirstSet(((BNFProduction)(((NonTerminal)exp).GetProd())).GetExpansion());
             }
         }
         else if (exp is Choice)
@@ -597,7 +597,7 @@ public class ParseEngine
         string ret, _params;
         Token t = null;
 
-        string method_name = p.getLhs();
+        string method_name = p.GetLhs();
         bool void_ret = false;
         bool ptr_ret = false;
 
@@ -609,9 +609,9 @@ public class ParseEngine
         //    if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
         //    if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
 
-        for (int i = 0; i < p.getReturnTypeTokens().Count; i++)
+        for (int i = 0; i < p.GetReturnTypeTokens().Count; i++)
         {
-            t = (Token)(p.getReturnTypeTokens()[i]);
+            t = (Token)(p.GetReturnTypeTokens()[i]);
             string s = codeGenerator.GetStringToPrint(t);
             sig.Append(t.ToString());
             sig.Append(" ");
@@ -626,10 +626,10 @@ public class ParseEngine
 
         sig.Capacity=0;
         sig.Append("(");
-        if (p.getParameterListTokens().Count != 0)
+        if (p.GetParameterListTokens().Count != 0)
         {
-            codeGenerator.PrintTokenSetup((Token)(p.getParameterListTokens()[0]));
-            for (Iterator it = p.getParameterListTokens().iterator(); it.hasNext();)
+            codeGenerator.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
+            for (Iterator it = p.GetParameterListTokens().iterator(); it.hasNext();)
             {
                 t = (Token)it.next();
                 sig.Append(codeGenerator.GetStringToPrint(t));
@@ -640,7 +640,7 @@ public class ParseEngine
         _params = sig.ToString();
 
         // For now, just ignore comments
-        codeGenerator.GenerateMethodDefHeader(ret, cu_name, p.getLhs() + _params, sig.ToString());
+        codeGenerator.GenerateMethodDefHeader(ret, cu_name, p.GetLhs() + _params, sig.ToString());
 
         return "";
     }
@@ -651,7 +651,7 @@ public class ParseEngine
         StringBuilder sig = new StringBuilder();
         string ret, _params;
 
-        string method_name = p.getLhs();
+        string method_name = p.GetLhs();
         bool void_ret = false;
         bool ptr_ret = false;
 
@@ -663,9 +663,9 @@ public class ParseEngine
         if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
         if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
 
-        for (int i = 1; i < p.getReturnTypeTokens().Count; i++)
+        for (int i = 1; i < p.GetReturnTypeTokens().Count; i++)
         {
-            t = (Token)(p.getReturnTypeTokens()[i]);
+            t = (Token)(p.GetReturnTypeTokens()[i]);
             sig.Append(codeGenerator.GetStringToPrint(t));
             if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
             if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
@@ -676,10 +676,10 @@ public class ParseEngine
 
         sig.Capacity=0;
         sig.Append("(");
-        if (p.getParameterListTokens().Count != 0)
+        if (p.GetParameterListTokens().Count != 0)
         {
-            codeGenerator.PrintTokenSetup((Token)(p.getParameterListTokens()[0]));
-            for (Iterator it = p.getParameterListTokens().iterator(); it.hasNext();)
+            codeGenerator.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
+            for (Iterator it = p.GetParameterListTokens().iterator(); it.hasNext();)
             {
                 t = (Token)it.next();
                 sig.Append(codeGenerator.GetStringToPrint(t));
@@ -690,7 +690,7 @@ public class ParseEngine
         _params = sig.ToString();
 
         // For now, just ignore comments
-        codeGenerator.generateMethodDefHeader(ret, cu_name, p.getLhs() + _params, sig.ToString());
+        codeGenerator.generateMethodDefHeader(ret, cu_name, p.GetLhs() + _params, sig.ToString());
 
         // Generate a default value for error return.
         string default_return;
@@ -765,7 +765,7 @@ public class ParseEngine
     void buildPhase1Routine(BNFProduction p)
     {
         Token t;
-        t = (Token)(p.getReturnTypeTokens()[0]);
+        t = (Token)(p.GetReturnTypeTokens()[0]);
         bool voidReturn = false;
         if (t.kind == JavaCCParserConstants.VOID)
         {
@@ -776,20 +776,20 @@ public class ParseEngine
         {
             codeGenerator.PrintTokenSetup(t); ccol = 1;
             codeGenerator.PrintLeadingComments(t);
-            codeGenerator.GenCode("  " + staticOpt() + "final " + (p.getAccessMod() != null ? p.getAccessMod() : "public") + " ");
+            codeGenerator.GenCode("  " + staticOpt() + "final " + (p.GetAccessMod() != null ? p.GetAccessMod() : "public") + " ");
             cline = t.beginLine; ccol = t.beginColumn;
             codeGenerator.PrintTokenOnly(t);
-            for (int i = 1; i < p.getReturnTypeTokens().Count; i++)
+            for (int i = 1; i < p.GetReturnTypeTokens().Count; i++)
             {
-                t = (Token)(p.getReturnTypeTokens()[i]);
+                t = (Token)(p.GetReturnTypeTokens()[i]);
                 codeGenerator.PrintToken(t);
             }
             codeGenerator.PrintTrailingComments(t);
-            codeGenerator.GenCode(" " + p.getLhs() + "(");
-            if (p.getParameterListTokens().Count != 0)
+            codeGenerator.GenCode(" " + p.GetLhs() + "(");
+            if (p.GetParameterListTokens().Count != 0)
             {
-                codeGenerator.PrintTokenSetup((Token)(p.getParameterListTokens()[0]));
-                for (Iterator it = p.getParameterListTokens().iterator(); it.hasNext();)
+                codeGenerator.PrintTokenSetup((Token)(p.GetParameterListTokens()[0]));
+                for (Iterator it = p.GetParameterListTokens().iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
                     codeGenerator.PrintToken(t);
@@ -835,12 +835,12 @@ public class ParseEngine
             codeGenerator.GenCodeLine("");
             if (isJavaDialect)
             {
-                codeGenerator.GenCodeLine("    trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(p.getLhs()) + "\");");
+                codeGenerator.GenCodeLine("    trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\");");
             }
             else
             {
-                codeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + JavaCCGlobals.AddUnicodeEscapes(p.getLhs()) + "\"); });");
-                codeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(p.getLhs()) + "\"); });");
+                codeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\"); });");
+                codeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\"); });");
             }
             codeGenerator.GenCodeLine("    try {");
             indentamt = 6;
@@ -858,7 +858,7 @@ public class ParseEngine
             codeGenerator.PrintTrailingComments(t);
         }
 
-        string code = phase1ExpansionGen(p.getExpansion());
+        string code = phase1ExpansionGen(p.GetExpansion());
         dumpFormattedString(code);
         codeGenerator.GenCodeLine("");
 
@@ -879,7 +879,7 @@ public class ParseEngine
             if (isJavaDialect)
             {
                 codeGenerator.GenCodeLine("    } finally {");
-                codeGenerator.GenCodeLine("      trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(p.getLhs()) + "\");");
+                codeGenerator.GenCodeLine("      trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(p.GetLhs()) + "\");");
             }
             else
             {
@@ -1287,7 +1287,7 @@ public class ParseEngine
         string retval = (value ? "true" : "false");
         if (Options.getDebugLookahead() && jj3_expansion != null)
         {
-            string tracecode = "trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(((NormalProduction)jj3_expansion.parent).getLhs()) +
+            string tracecode = "trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(((NormalProduction)jj3_expansion.parent).GetLhs()) +
             "(LOOKAHEAD " + (value ? "FAILED" : "SUCCEEDED") + ")\");";
             if (Options.getErrorReporting())
             {
@@ -1322,7 +1322,7 @@ public class ParseEngine
                     }
                     else
                     {
-                        seq = ntprod.getExpansion();
+                        seq = ntprod.GetExpansion();
                     }
                 }
                 else
@@ -1374,7 +1374,7 @@ public class ParseEngine
             }
             else
             {
-                generate3R(ntprod.getExpansion(), inf);
+                generate3R(ntprod.GetExpansion(), inf);
             }
         }
         else if (e is Choice)
@@ -1471,7 +1471,7 @@ public class ParseEngine
                 {
                     codeGenerator.GenCode("if (!jj_rescan) ");
                 }
-                codeGenerator.GenCodeLine("trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(((NormalProduction)e.parent).getLhs()) + "(LOOKING AHEAD...)\");");
+                codeGenerator.GenCodeLine("trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(((NormalProduction)e.parent).GetLhs()) + "(LOOKING AHEAD...)\");");
                 jj3_expansion = e;
             }
             else
@@ -1514,7 +1514,7 @@ public class ParseEngine
             }
             else
             {
-                Expansion ntexp = ntprod.getExpansion();
+                Expansion ntexp = ntprod.GetExpansion();
                 //codeGenerator.GenCodeLine("    if (jj_3" + ntexp.internal_name + "()) " + genReturn(true));
                 codeGenerator.GenCodeLine("    if (" + genjj_3Call(ntexp) + ") " + genReturn(true));
                 //codeGenerator.GenCodeLine("    if (jj_la == 0 && jj_scanpos == jj_lastpos) " + genReturn(false));
@@ -1695,7 +1695,7 @@ public class ParseEngine
             }
             else
             {
-                Expansion ntexp = ntprod.getExpansion();
+                Expansion ntexp = ntprod.GetExpansion();
                 retval = minimumSize(ntexp);
             }
         }
@@ -1816,12 +1816,12 @@ public class ParseEngine
                     codeGenerator.GenCodeLine("");
                     if (isJavaDialect)
                     {
-                        codeGenerator.GenCodeLine("    trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(cp.getLhs()) + "\");");
+                        codeGenerator.GenCodeLine("    trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(cp.GetLhs()) + "\");");
                     }
                     else
                     {
-                        codeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + JavaCCGlobals.AddUnicodeEscapes(cp.getLhs()) + "\"); });");
-                        codeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(cp.getLhs()) + "\"); });");
+                        codeGenerator.GenCodeLine("    JJEnter<std::function<void()>> jjenter([this]() {trace_call  (\"" + JavaCCGlobals.AddUnicodeEscapes(cp.GetLhs()) + "\"); });");
+                        codeGenerator.GenCodeLine("    JJExit <std::function<void()>> jjexit ([this]() {trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(cp.GetLhs()) + "\"); });");
                     }
                     codeGenerator.GenCodeLine("    try {");
                 }
@@ -1847,23 +1847,23 @@ public class ParseEngine
                     continue;
                 }
                 jp = (JavaCodeProduction)p;
-                t = (Token)(jp.getReturnTypeTokens()[0]);
+                t = (Token)(jp.GetReturnTypeTokens()[0]);
                 codeGenerator.PrintTokenSetup(t); ccol = 1;
                 codeGenerator.PrintLeadingComments(t);
-                codeGenerator.GenCode("  " + staticOpt() + (p.getAccessMod() != null ? p.getAccessMod() + " " : ""));
+                codeGenerator.GenCode("  " + staticOpt() + (p.GetAccessMod() != null ? p.GetAccessMod() + " " : ""));
                 cline = t.beginLine; ccol = t.beginColumn;
                 codeGenerator.PrintTokenOnly(t);
-                for (int i = 1; i < jp.getReturnTypeTokens().Count; i++)
+                for (int i = 1; i < jp.GetReturnTypeTokens().Count; i++)
                 {
-                    t = (Token)(jp.getReturnTypeTokens()[i]);
+                    t = (Token)(jp.GetReturnTypeTokens()[i]);
                     codeGenerator.PrintToken(t);
                 }
                 codeGenerator.PrintTrailingComments(t);
-                codeGenerator.GenCode(" " + jp.getLhs() + "(");
-                if (jp.getParameterListTokens().Count != 0)
+                codeGenerator.GenCode(" " + jp.GetLhs() + "(");
+                if (jp.GetParameterListTokens().Count != 0)
                 {
-                    codeGenerator.PrintTokenSetup((Token)(jp.getParameterListTokens()[0]));
-                    for (Iterator it = jp.getParameterListTokens().iterator(); it.hasNext();)
+                    codeGenerator.PrintTokenSetup((Token)(jp.GetParameterListTokens()[0]));
+                    for (Iterator it = jp.GetParameterListTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
                         codeGenerator.PrintToken(t);
@@ -1889,7 +1889,7 @@ public class ParseEngine
                 if (Options.getDebugParser())
                 {
                     codeGenerator.GenCodeLine("");
-                    codeGenerator.GenCodeLine("    trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(jp.getLhs()) + "\");");
+                    codeGenerator.GenCodeLine("    trace_call(\"" + JavaCCGlobals.AddUnicodeEscapes(jp.GetLhs()) + "\");");
                     codeGenerator.GenCode("    try {");
                 }
                 if (jp.GetCodeTokens().Count != 0)
@@ -1901,7 +1901,7 @@ public class ParseEngine
                 if (Options.getDebugParser())
                 {
                     codeGenerator.GenCodeLine("    } finally {");
-                    codeGenerator.GenCodeLine("      trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(jp.getLhs()) + "\");");
+                    codeGenerator.GenCodeLine("      trace_return(\"" + JavaCCGlobals.AddUnicodeEscapes(jp.GetLhs()) + "\");");
                     codeGenerator.GenCodeLine("    }");
                 }
                 codeGenerator.GenCodeLine("  }");
@@ -1978,7 +1978,7 @@ public class ParseEngine
             }
             else
             {
-                Expansion ntexp = ntprod.getExpansion();
+                Expansion ntexp = ntprod.GetExpansion();
                 // nt exp's table.
                 Console.Error.WriteLine("PRODUCTION, " + ntexp.internal_index);
                 //buildPhase3Table(new Phase3Data(ntexp, inf.count));
@@ -2030,7 +2030,7 @@ public class ParseEngine
                         (NormalProduction)(
                             production_table.get(((NonTerminal)tmp).GetName()));
                     if (ntprod is CodeProduction) break;
-                    tmp = ntprod.getExpansion();
+                    tmp = ntprod.GetExpansion();
                 }
                 buildPhase3Table(new Phase3Data(tmp, cnt));
             }

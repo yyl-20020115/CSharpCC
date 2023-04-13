@@ -445,17 +445,17 @@ public class JavaCCParser : JavaCCParserInternals
         JavaCodeProduction p = new JavaCodeProduction();
         String lhs;
         Token t = getToken(1);
-        p.setFirstToken(t);
+        p.SetFirstToken(t);
         List excName;
-        p.setThrowsList(new ());
-        p.setLine(t.beginLine);
-        p.setColumn(t.beginColumn);
+        p.SetThrowsList(new ());
+        p.SetLine(t.beginLine);
+        p.SetColumn(t.beginColumn);
         jj_consume_token(_JAVACODE);
         AccessModifier(p);
-        ResultType(p.getReturnTypeTokens());
+        ResultType(p.GetReturnTypeTokens());
         lhs = identifier();
-        p.setLhs(lhs);
-        FormalParameters(p.getParameterListTokens());
+        p.SetLhs(lhs);
+        FormalParameters(p.GetParameterListTokens());
         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case THROWS:
@@ -486,7 +486,7 @@ public class JavaCCParser : JavaCCParserInternals
                 ;
         }
         Block(p.GetCodeTokens());
-        p.setLastToken(getToken(0));
+        p.SetLastToken(getToken(0));
         AddProduction(p);
     }
 
@@ -495,17 +495,17 @@ public class JavaCCParser : JavaCCParserInternals
         CppCodeProduction p = new CppCodeProduction();
         String lhs;
         Token t = getToken(1);
-        p.setFirstToken(t);
+        p.SetFirstToken(t);
         List excName;
-        p.setThrowsList(new ());
-        p.setLine(t.beginLine);
-        p.setColumn(t.beginColumn);
+        p.SetThrowsList(new ());
+        p.SetLine(t.beginLine);
+        p.SetColumn(t.beginColumn);
         jj_consume_token(_CPPCODE);
         AccessModifier(p);
-        ResultType(p.getReturnTypeTokens());
+        ResultType(p.GetReturnTypeTokens());
         lhs = identifier();
-        p.setLhs(lhs);
-        FormalParameters(p.getParameterListTokens());
+        p.SetLhs(lhs);
+        FormalParameters(p.GetParameterListTokens());
         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case THROWS:
@@ -536,7 +536,7 @@ public class JavaCCParser : JavaCCParserInternals
                 ;
         }
         Block(p.GetCodeTokens());
-        p.setLastToken(getToken(0));
+        p.SetLastToken(getToken(0));
         AddProduction(p);
     }
 
@@ -545,18 +545,18 @@ public class JavaCCParser : JavaCCParserInternals
         BNFProduction p = new BNFProduction();
         Container c = new Container();
         Token t = getToken(1);
-        p.setFirstToken(t);
+        p.SetFirstToken(t);
         List excName;
         String lhs;
-        p.setThrowsList(new ());
-        p.setLine(t.beginLine);
-        p.setColumn(t.beginColumn);
+        p.SetThrowsList(new ());
+        p.SetLine(t.beginLine);
+        p.SetColumn(t.beginColumn);
         jumpPatched = false;
         AccessModifier(p);
-        ResultType(p.getReturnTypeTokens());
+        ResultType(p.GetReturnTypeTokens());
         lhs = identifier();
-        p.setLhs(lhs);
-        FormalParameters(p.getParameterListTokens());
+        p.SetLhs(lhs);
+        FormalParameters(p.GetParameterListTokens());
         switch ((jj_ntk == -1) ? jj_ntk_() : jj_ntk)
         {
             case THROWS:
@@ -591,7 +591,7 @@ public class JavaCCParser : JavaCCParserInternals
         jj_consume_token(LBRACE);
         expansion_choices(c);
         t = jj_consume_token(RBRACE);
-        p.setLastToken(t);
+        p.SetLastToken(t);
         p.SetJumpPatched(jumpPatched);
         ProductionAddexpansion(p, (Expansion)(c.Member));
         AddProduction(p);
@@ -628,7 +628,7 @@ public class JavaCCParser : JavaCCParserInternals
         }
         if (t != null)
         {
-            p.setAccessMod(t.image);
+            p.SetAccessMod(t.image);
         }
     }
 
@@ -1425,7 +1425,7 @@ public class JavaCCParser : JavaCCParserInternals
             complex_regular_expression(c2);
             if (morethanone)
             {
-                ch.getChoices().Add(c2.Member);
+                ch.GetChoices().Add(c2.Member);
             }
             else
             {
@@ -1433,8 +1433,8 @@ public class JavaCCParser : JavaCCParserInternals
                 ch = new RChoice();
                 ch.SetLine(((RegularExpression)c1.Member).GetLine());
                 ch.SetColumn(((RegularExpression)c1.Member).GetColumn());
-                ch.getChoices().Add(c1.Member);
-                ch.getChoices().Add(c2.Member);
+                ch.GetChoices().Add(c1.Member);
+                ch.GetChoices().Add(c2.Member);
             }
         }
         if (morethanone)

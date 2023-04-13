@@ -116,7 +116,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
     static protected void ProductionAddexpansion(BNFProduction p, Expansion e)
     {
         e.parent = p;
-        p.setExpansion(e);
+        p.SetExpansion(e);
     }
 
     static private int nextFreeLexState = 1;

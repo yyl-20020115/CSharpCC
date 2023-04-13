@@ -32,41 +32,42 @@ namespace org.javacc.parser;
  * Describes one-or-more regular expressions (<foo+>).
  */
 
-public class RRepetitionRange:RegularExpression {
+public class RRepetitionRange : RegularExpression
+{
 
-  /**
-   * The regular expression which is repeated one or more times.
-   */
-  public RegularExpression regexpr;
-  public int min = 0;
-  public int max = -1;
-  public bool hasMax;
+    /**
+     * The regular expression which is repeated one or more times.
+     */
+    public RegularExpression regexpr;
+    public int min = 0;
+    public int max = -1;
+    public bool hasMax;
 
-  public override Nfa GenerateNfa(bool ignoreCase)
-  {
-     List<RegularExpression> units = new ();
-     RSequence seq;
-     int i;
+    public override Nfa GenerateNfa(bool ignoreCase)
+    {
+        List<RegularExpression> units = new();
+        RSequence seq;
+        int i;
 
-     for (i = 0; i < min; i++)
-     {
-        units.Add(regexpr);
-     }
+        for (i = 0; i < min; i++)
+        {
+            units.Add(regexpr);
+        }
 
-     if (hasMax && max == -1) // Unlimited
-     {
-        var zoo = new RZeroOrMore();
-        zoo.regexpr = regexpr;
-        units.Add(zoo);
-     }
+        if (hasMax && max == -1) // Unlimited
+        {
+            var zoo = new RZeroOrMore();
+            zoo.regexpr = regexpr;
+            units.Add(zoo);
+        }
 
-     while (i++ < max)
-     {
-        var zoo = new RZeroOrOne();
-        zoo.regexpr = regexpr;
-        units.Add(zoo);
-     }
-     seq = new RSequence(units);
-     return seq.GenerateNfa(ignoreCase);
-  }
+        while (i++ < max)
+        {
+            var zoo = new RZeroOrOne();
+            zoo.regexpr = regexpr;
+            units.Add(zoo);
+        }
+        seq = new RSequence(units);
+        return seq.GenerateNfa(ignoreCase);
+    }
 }
