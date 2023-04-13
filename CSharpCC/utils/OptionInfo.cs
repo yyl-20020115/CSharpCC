@@ -22,22 +22,12 @@ public class OptionInfo : IComparable<OptionInfo>
         _default = default1;
     }
 
-    public string GetName()
-    {
-        return _name;
-    }
+    public string Name => _name;
 
-    public OptionType GetOptionType()
-    {
-        return _type;
-    }
+    public OptionType OptionType => _type;
 
-    public object GetDefault()
-    {
-        return _default;
-    }
+    public object Default => _default;
 
-    //@Override
     public override int GetHashCode()
     {
         const int prime = 31;

@@ -33,9 +33,9 @@
 public static class JJDoc
 {
 
-    public static void main(string[] args)
+    public static void Main(string[] args)
     {
-        org.javacc.jjdoc.JJDocMain.main(args);
+        org.javacc.jjdoc.JJDocMain.Main(args);
     }
 
 }

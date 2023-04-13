@@ -88,7 +88,7 @@ public class JJDocMain : JJDocGlobals
     /**
      * A main program that exercises the parser.
      */
-    public static void main(string[] args)
+    public static void Main(string[] args)
     {
         int errorcode = mainProgram(args);
         Environment.Exit(errorcode);
@@ -102,7 +102,7 @@ public class JJDocMain : JJDocGlobals
     public static int mainProgram(string[] args)
     {
 
-        Main.reInitAll();
+        javacc.parser.MainParser.ReInitAll();
         JJDocOptions.Init();
 
         bannerLine("Documentation Generator", "0.1.4");

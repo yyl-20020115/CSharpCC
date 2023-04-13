@@ -33,9 +33,9 @@
 
 public static class JJTree
 {
-    public static void main(string[] args)
+    public static void Main(string[] args)
     {
-        org.javacc.jjtree.Main.main(args);
+        org.javacc.jjtree.MainClass.Main(args);
     }
 
 }

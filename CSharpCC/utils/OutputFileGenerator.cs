@@ -64,6 +64,7 @@ public class OutputFileGenerator
      */
     public void Generate(TextWriter _out)
     {
+        //TODO:
         InputStream _is = getClass().getResourceAsStream(templateName);
         if (_is == null)
             throw new IOException("Invalid template name: " + templateName);
@@ -190,8 +191,7 @@ public class OutputFileGenerator
      */
     private string SubstituteWithDefault(string variableName, string defaultValue)
     {
-        Object obj = options.get(variableName.Trim());
-        if (obj == null || obj.ToString().Length == 0)
+        if (!options.TryGetValue(variableName.Trim(),out var obj) || obj.ToString().Length == 0)
             return Substitute(defaultValue);
 
         return obj.ToString();

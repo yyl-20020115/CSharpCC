@@ -153,13 +153,13 @@ public class RStringLiteral : RegularExpression
             for (i = 0; i < allImages.Length; i++)
             {
                 if ((image = allImages[i]) == null ||
-                    ((Main.lg.toSkip[i / 64] & (1L << (i % 64))) == 0L &&
-                     (Main.lg.toMore[i / 64] & (1L << (i % 64))) == 0L &&
-                     (Main.lg.toToken[i / 64] & (1L << (i % 64))) == 0L) ||
-                    (Main.lg.toSkip[i / 64] & (1L << (i % 64))) != 0L ||
-                    (Main.lg.toMore[i / 64] & (1L << (i % 64))) != 0L ||
-                    Main.lg.canReachOnMore[Main.lg.lexStates[i]] ||
-                    ((Options.getIgnoreCase() || Main.lg.ignoreCase[i]) &&
+                    ((MainParser.lg.toSkip[i / 64] & (1L << (i % 64))) == 0L &&
+                     (MainParser.lg.toMore[i / 64] & (1L << (i % 64))) == 0L &&
+                     (MainParser.lg.toToken[i / 64] & (1L << (i % 64))) == 0L) ||
+                    (MainParser.lg.toSkip[i / 64] & (1L << (i % 64))) != 0L ||
+                    (MainParser.lg.toMore[i / 64] & (1L << (i % 64))) != 0L ||
+                    MainParser.lg.canReachOnMore[MainParser.lg.lexStates[i]] ||
+                    ((Options.getIgnoreCase() || MainParser.lg.ignoreCase[i]) &&
                      (!image == (image.ToLower(Locale.ENGLISH)) ||
                       !image == (image.ToUpper(Locale.ENGLISH)))))
                 {
@@ -195,7 +195,7 @@ public class RStringLiteral : RegularExpression
                 codeGenerator.GenCodeLine(toPrint);
             }
 
-            while (++i < Main.lg.maxOrdinal)
+            while (++i < MainParser.lg.maxOrdinal)
             {
                 if ((charCnt += 6) > 80)
                 {
@@ -243,13 +243,13 @@ public class RStringLiteral : RegularExpression
         for (i = 0; i < allImages.Length; i++)
         {
             if ((image = allImages[i]) == null ||
-                ((Main.lg.toSkip[i / 64] & (1L << (i % 64))) == 0L &&
-                 (Main.lg.toMore[i / 64] & (1L << (i % 64))) == 0L &&
-                 (Main.lg.toToken[i / 64] & (1L << (i % 64))) == 0L) ||
-                (Main.lg.toSkip[i / 64] & (1L << (i % 64))) != 0L ||
-                (Main.lg.toMore[i / 64] & (1L << (i % 64))) != 0L ||
-                Main.lg.canReachOnMore[Main.lg.lexStates[i]] ||
-                ((Options.getIgnoreCase() || Main.lg.ignoreCase[i]) &&
+                ((MainParser.lg.toSkip[i / 64] & (1L << (i % 64))) == 0L &&
+                 (MainParser.lg.toMore[i / 64] & (1L << (i % 64))) == 0L &&
+                 (MainParser.lg.toToken[i / 64] & (1L << (i % 64))) == 0L) ||
+                (MainParser.lg.toSkip[i / 64] & (1L << (i % 64))) != 0L ||
+                (MainParser.lg.toMore[i / 64] & (1L << (i % 64))) != 0L ||
+                MainParser.lg.canReachOnMore[MainParser.lg.lexStates[i]] ||
+                ((Options.getIgnoreCase() || MainParser.lg.ignoreCase[i]) &&
                  (!image == (image.ToLower(Locale.ENGLISH)) ||
                   !image == (image.ToUpper(Locale.ENGLISH)))))
             {
@@ -289,7 +289,7 @@ public class RStringLiteral : RegularExpression
             codeGenerator.GenCode(toPrint);
         }
 
-        while (++i < Main.lg.maxOrdinal)
+        while (++i < MainParser.lg.maxOrdinal)
         {
             if ((charCnt += 6) > 80)
             {
@@ -333,7 +333,7 @@ public class RStringLiteral : RegularExpression
                 !Options.getUserCharStream())
             {
                 NfaState.unicodeWarningGiven = true;
-                JavaCCErrors.warning(Main.lg.curRE, "Non-ASCII characters used in regular expression." +
+                JavaCCErrors.warning(MainParser.lg.curRE, "Non-ASCII characters used in regular expression." +
                    "Please make sure you use the correct Reader when you create the parser, " +
                    "one that can handle your character set.");
             }
@@ -344,14 +344,14 @@ public class RStringLiteral : RegularExpression
                 temp = (Dictionary)charPosKind[i];
 
             if ((info = (KindInfo)temp.get(s)) == null)
-                temp.Add(s, info = new KindInfo(Main.lg.maxOrdinal));
+                temp.Add(s, info = new KindInfo(MainParser.lg.maxOrdinal));
 
             if (i + 1 == len)
                 info.InsertFinalKind(ordinal);
             else
                 info.InsertValidKind(ordinal);
 
-            if (!Options.getIgnoreCase() && Main.lg.ignoreCase[ordinal] &&
+            if (!Options.getIgnoreCase() && MainParser.lg.ignoreCase[ordinal] &&
                 c != char.ToLower(c))
             {
                 s = ("" + image[i]).ToLower(Locale.ENGLISH);
@@ -362,7 +362,7 @@ public class RStringLiteral : RegularExpression
                     temp = (Dictionary)charPosKind[i];
 
                 if ((info = (KindInfo)temp.get(s)) == null)
-                    temp.Add(s, info = new KindInfo(Main.lg.maxOrdinal));
+                    temp.Add(s, info = new KindInfo(MainParser.lg.maxOrdinal));
 
                 if (i + 1 == len)
                     info.InsertFinalKind(ordinal);
@@ -370,7 +370,7 @@ public class RStringLiteral : RegularExpression
                     info.InsertValidKind(ordinal);
             }
 
-            if (!Options.getIgnoreCase() && Main.lg.ignoreCase[ordinal] &&
+            if (!Options.getIgnoreCase() && MainParser.lg.ignoreCase[ordinal] &&
                 c != char.ToUpper(c))
             {
                 s = ("" + image[i]).ToUpper();
@@ -381,7 +381,7 @@ public class RStringLiteral : RegularExpression
                     temp = (Dictionary)charPosKind[i];
 
                 if ((info = (KindInfo)temp.get(s)) == null)
-                    temp.Add(s, info = new KindInfo(Main.lg.maxOrdinal));
+                    temp.Add(s, info = new KindInfo(MainParser.lg.maxOrdinal));
 
                 if (i + 1 == len)
                     info.InsertFinalKind(ordinal);
@@ -436,7 +436,7 @@ public class RStringLiteral : RegularExpression
         codeGenerator.GenCodeLine("{");
 
         if (NfaState.generatedStates != 0)
-            codeGenerator.genCodeLine("   return jjMoveNfa" + Main.lg.lexStateSuffix + "(" + NfaState.InitStateName() + ", 0);");
+            codeGenerator.genCodeLine("   return jjMoveNfa" + MainParser.lg.lexStateSuffix + "(" + NfaState.InitStateName() + ", 0);");
         else
             codeGenerator.GenCodeLine("   return 1;");
 
@@ -445,7 +445,7 @@ public class RStringLiteral : RegularExpression
 
     private static int GetStateSetForKind(int pos, int kind)
     {
-        if (Main.lg.mixed[Main.lg.lexStateIndex] || NfaState.generatedStates == 0)
+        if (MainParser.lg.mixed[MainParser.lg.lexStateIndex] || NfaState.generatedStates == 0)
             return -1;
 
         Dictionary allStateSets = statesForPos[pos];
@@ -478,7 +478,7 @@ public class RStringLiteral : RegularExpression
 
     static string GetLabel(int kind)
     {
-        RegularExpression re = Main.lg.rexprs[kind];
+        RegularExpression re = MainParser.lg.rexprs[kind];
 
         if (re is RStringLiteral)
             return " \"" + JavaCCGlobals.add_escapes(((RStringLiteral)re).image) + "\"";
@@ -490,12 +490,12 @@ public class RStringLiteral : RegularExpression
 
     static int GetLine(int kind)
     {
-        return Main.lg.rexprs[kind].GetLine();
+        return MainParser.lg.rexprs[kind].GetLine();
     }
 
     static int GetColumn(int kind)
     {
-        return Main.lg.rexprs[kind].GetColumn();
+        return MainParser.lg.rexprs[kind].GetColumn();
     }
 
     /**
@@ -529,10 +529,10 @@ public class RStringLiteral : RegularExpression
             subString[i] = false;
 
             if ((image = allImages[i]) == null ||
-                Main.lg.lexStates[i] != Main.lg.lexStateIndex)
+                MainParser.lg.lexStates[i] != MainParser.lg.lexStateIndex)
                 continue;
 
-            if (Main.lg.mixed[Main.lg.lexStateIndex])
+            if (MainParser.lg.mixed[MainParser.lg.lexStateIndex])
             {
                 // We will not optimize for mixed case
                 subString[i] = true;
@@ -542,7 +542,7 @@ public class RStringLiteral : RegularExpression
 
             for (int j = 0; j < maxStrKind; j++)
             {
-                if (j != i && Main.lg.lexStates[j] == Main.lg.lexStateIndex &&
+                if (j != i && MainParser.lg.lexStates[j] == MainParser.lg.lexStateIndex &&
                     ((String)allImages[j]) != null)
                 {
                     if (((String)allImages[j]).IndexOf(image) == 0)
@@ -569,11 +569,11 @@ public class RStringLiteral : RegularExpression
         if (Options.isOutputLanguageJava())
         {
             codeGenerator.genCodeLine((Options.getStatic() ? "static " : "") + "private int " +
-                         "jjStartNfaWithStates" + Main.lg.lexStateSuffix + "(int pos, int kind, int state)");
+                         "jjStartNfaWithStates" + MainParser.lg.lexStateSuffix + "(int pos, int kind, int state)");
         }
         else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
-            codeGenerator.generateMethodDefHeader("int", Main.lg.tokMgrClassName, "jjStartNfaWithStates" + Main.lg.lexStateSuffix + "(int pos, int kind, int state)");
+            codeGenerator.generateMethodDefHeader("int", MainParser.lg.tokMgrClassName, "jjStartNfaWithStates" + MainParser.lg.lexStateSuffix + "(int pos, int kind, int state)");
         }
         else
         {
@@ -636,7 +636,7 @@ public class RStringLiteral : RegularExpression
             }
         }
 
-        codeGenerator.genCodeLine("   return jjMoveNfa" + Main.lg.lexStateSuffix + "(state, pos + 1);");
+        codeGenerator.genCodeLine("   return jjMoveNfa" + MainParser.lg.lexStateSuffix + "(state, pos + 1);");
         codeGenerator.GenCodeLine("}");
     }
 
@@ -651,7 +651,7 @@ public class RStringLiteral : RegularExpression
         }
         else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
-            codeGenerator.generateMethodDefHeader(" int ", Main.lg.tokMgrClassName, "jjStopAtPos(int pos, int kind)");
+            codeGenerator.generateMethodDefHeader(" int ", MainParser.lg.tokMgrClassName, "jjStopAtPos(int pos, int kind)");
         }
         else
         {
@@ -718,7 +718,7 @@ public class RStringLiteral : RegularExpression
         int maxLongsReqd = maxStrKind / 64 + 1;
         int i, j, k;
         bool ifGenerated;
-        Main.lg.maxLongsReqd[Main.lg.lexStateIndex] = maxLongsReqd;
+        MainParser.lg.maxLongsReqd[MainParser.lg.lexStateIndex] = maxLongsReqd;
 
         if (maxLen == 0)
         {
@@ -726,11 +726,11 @@ public class RStringLiteral : RegularExpression
             if (Options.isOutputLanguageJava())
             {
                 codeGenerator.genCodeLine((Options.getStatic() ? "static " : "") + "private int " +
-                               "jjMoveStringLiteralDfa0" + Main.lg.lexStateSuffix + "()");
+                               "jjMoveStringLiteralDfa0" + MainParser.lg.lexStateSuffix + "()");
             }
             else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
             {
-                codeGenerator.generateMethodDefHeader(" int ", Main.lg.tokMgrClassName, "jjMoveStringLiteralDfa0" + Main.lg.lexStateSuffix + "()");
+                codeGenerator.generateMethodDefHeader(" int ", MainParser.lg.tokMgrClassName, "jjMoveStringLiteralDfa0" + MainParser.lg.lexStateSuffix + "()");
             }
             else
             {
@@ -803,11 +803,11 @@ public class RStringLiteral : RegularExpression
             if (Options.isOutputLanguageJava())
             {
                 codeGenerator.genCode((Options.getStatic() ? "static " : "") + "private int " +
-                               "jjMoveStringLiteralDfa" + i + Main.lg.lexStateSuffix + _params);
+                               "jjMoveStringLiteralDfa" + i + MainParser.lg.lexStateSuffix + _params);
             }
             else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
             {
-                codeGenerator.generateMethodDefHeader(" int ", Main.lg.tokMgrClassName, "jjMoveStringLiteralDfa" + i + Main.lg.lexStateSuffix + _params);
+                codeGenerator.generateMethodDefHeader(" int ", MainParser.lg.tokMgrClassName, "jjMoveStringLiteralDfa" + i + MainParser.lg.lexStateSuffix + _params);
             }
             else
             {
@@ -841,9 +841,9 @@ public class RStringLiteral : RegularExpression
                     }
 
                     codeGenerator.GenCodeLine(") == 0L)");
-                    if (!Main.lg.mixed[Main.lg.lexStateIndex] && NfaState.generatedStates != 0)
+                    if (!MainParser.lg.mixed[MainParser.lg.lexStateIndex] && NfaState.generatedStates != 0)
                     {
-                        codeGenerator.genCode("      return jjStartNfa" + Main.lg.lexStateSuffix +
+                        codeGenerator.genCode("      return jjStartNfa" + MainParser.lg.lexStateSuffix +
                                         "(" + (i - 2) + ", ");
                         for (j = 0; j < maxLongsReqd - 1; j++)
                             if (i <= maxLenForActive[j] + 1)
@@ -856,7 +856,7 @@ public class RStringLiteral : RegularExpression
                             codeGenerator.GenCodeLine("0L);");
                     }
                     else if (NfaState.generatedStates != 0)
-                        codeGenerator.genCodeLine("      return jjMoveNfa" + Main.lg.lexStateSuffix +
+                        codeGenerator.genCodeLine("      return jjMoveNfa" + MainParser.lg.lexStateSuffix +
                                 "(" + NfaState.InitStateName() + ", " + (i - 1) + ");");
                     else
                         codeGenerator.GenCodeLine("      return " + i + ";");
@@ -935,9 +935,9 @@ public class RStringLiteral : RegularExpression
                     throw new Exception("Output language type not fully implemented : " + Options.getOutputLanguage());
                 }
 
-                if (!Main.lg.mixed[Main.lg.lexStateIndex] && NfaState.generatedStates != 0)
+                if (!MainParser.lg.mixed[MainParser.lg.lexStateIndex] && NfaState.generatedStates != 0)
                 {
-                    codeGenerator.genCode("      jjStopStringLiteralDfa" + Main.lg.lexStateSuffix + "(" + (i - 1) + ", ");
+                    codeGenerator.genCode("      jjStopStringLiteralDfa" + MainParser.lg.lexStateSuffix + "(" + (i - 1) + ", ");
                     for (k = 0; k < maxLongsReqd - 1; k++)
                     {
                         if (i <= maxLenForActive[k])
@@ -974,7 +974,7 @@ public class RStringLiteral : RegularExpression
                 }
                 else if (NfaState.generatedStates != 0)
                 {
-                    codeGenerator.genCodeLine("   return jjMoveNfa" + Main.lg.lexStateSuffix + "(" + NfaState.InitStateName() +
+                    codeGenerator.genCodeLine("   return jjMoveNfa" + MainParser.lg.lexStateSuffix + "(" + NfaState.InitStateName() +
                             ", " + (i - 1) + ");");
                 }
                 else
@@ -1046,23 +1046,23 @@ public class RStringLiteral : RegularExpression
                                  intermediateKinds[(j * 64 + k)][i] < (j * 64 + k) &&
                                  intermediateMatchedPos != null &&
                                  intermediateMatchedPos[(j * 64 + k)][i] == i) ||
-                                (Main.lg.canMatchAnyChar[Main.lg.lexStateIndex] >= 0 &&
-                                 Main.lg.canMatchAnyChar[Main.lg.lexStateIndex] < (j * 64 + k)))
+                                (MainParser.lg.canMatchAnyChar[MainParser.lg.lexStateIndex] >= 0 &&
+                                 MainParser.lg.canMatchAnyChar[MainParser.lg.lexStateIndex] < (j * 64 + k)))
                                 break;
-                            else if ((Main.lg.toSkip[kind / 64] & (1L << (kind % 64))) != 0L &&
-                                     (Main.lg.toSpecial[kind / 64] & (1L << (kind % 64))) == 0L &&
-                                     Main.lg.actions[kind] == null &&
-                                     Main.lg.newLexState[kind] == null)
+                            else if ((MainParser.lg.toSkip[kind / 64] & (1L << (kind % 64))) != 0L &&
+                                     (MainParser.lg.toSpecial[kind / 64] & (1L << (kind % 64))) == 0L &&
+                                     MainParser.lg.actions[kind] == null &&
+                                     MainParser.lg.newLexState[kind] == null)
                             {
-                                Main.lg.AddCharToSkip(c, kind);
+                                MainParser.lg.AddCharToSkip(c, kind);
 
                                 if (Options.getIgnoreCase())
                                 {
                                     if (c != char.ToUpper(c))
-                                        Main.lg.AddCharToSkip(char.ToUpper(c), kind);
+                                        MainParser.lg.AddCharToSkip(char.ToUpper(c), kind);
 
                                     if (c != char.ToLower(c))
-                                        Main.lg.AddCharToSkip(char.ToLower(c), kind);
+                                        MainParser.lg.AddCharToSkip(char.ToLower(c), kind);
                                 }
                                 continue CaseLoop;
                             }
@@ -1127,16 +1127,16 @@ public class RStringLiteral : RegularExpression
                                 kindToPrint = intermediateKinds[(j * 64 + k)][i];
                             }
                             else if (i == 0 &&
-                                 Main.lg.canMatchAnyChar[Main.lg.lexStateIndex] >= 0 &&
-                                 Main.lg.canMatchAnyChar[Main.lg.lexStateIndex] < (j * 64 + k))
+                                 MainParser.lg.canMatchAnyChar[MainParser.lg.lexStateIndex] >= 0 &&
+                                 MainParser.lg.canMatchAnyChar[MainParser.lg.lexStateIndex] < (j * 64 + k))
                             {
                                 JavaCCErrors.warning(" \"" +
                                     JavaCCGlobals.add_escapes(allImages[j * 64 + k]) +
                                     "\" cannot be matched as a string literal token " +
                                     "at line " + GetLine(j * 64 + k) + ", column " + GetColumn(j * 64 + k) +
                                     ". It will be matched as " +
-                                    GetLabel(Main.lg.canMatchAnyChar[Main.lg.lexStateIndex]) + ".");
-                                kindToPrint = Main.lg.canMatchAnyChar[Main.lg.lexStateIndex];
+                                    GetLabel(MainParser.lg.canMatchAnyChar[MainParser.lg.lexStateIndex]) + ".");
+                                kindToPrint = MainParser.lg.canMatchAnyChar[MainParser.lg.lexStateIndex];
                             }
                             else
                                 kindToPrint = j * 64 + k;
@@ -1149,7 +1149,7 @@ public class RStringLiteral : RegularExpression
                                 {
                                     createStartNfa = true;
                                     codeGenerator.genCodeLine(prefix + "return jjStartNfaWithStates" +
-                                        Main.lg.lexStateSuffix + "(" + i +
+                                        MainParser.lg.lexStateSuffix + "(" + i +
                                         ", " + kindToPrint + ", " + stateSetName + ");");
                                 }
                                 else
@@ -1157,8 +1157,8 @@ public class RStringLiteral : RegularExpression
                             }
                             else
                             {
-                                if ((Main.lg.initMatch[Main.lg.lexStateIndex] != 0 &&
-                                     Main.lg.initMatch[Main.lg.lexStateIndex] != int.MaxValue) ||
+                                if ((MainParser.lg.initMatch[MainParser.lg.lexStateIndex] != 0 &&
+                                     MainParser.lg.initMatch[MainParser.lg.lexStateIndex] != int.MaxValue) ||
                                      i != 0)
                                 {
                                     codeGenerator.GenCodeLine("         {");
@@ -1184,7 +1184,7 @@ public class RStringLiteral : RegularExpression
                         codeGenerator.GenCode("         return ");
 
                         codeGenerator.genCode("jjMoveStringLiteralDfa" + (i + 1) +
-                                       Main.lg.lexStateSuffix + "(");
+                                       MainParser.lg.lexStateSuffix + "(");
                         for (j = 0; j < maxLongsReqd - 1; j++)
                             if ((i + 1) <= maxLenForActive[j])
                             {
@@ -1210,7 +1210,7 @@ public class RStringLiteral : RegularExpression
                         codeGenerator.GenCode("         return ");
 
                         codeGenerator.genCode("jjMoveStringLiteralDfa" + (i + 1) +
-                                       Main.lg.lexStateSuffix + "(");
+                                       MainParser.lg.lexStateSuffix + "(");
 
                         for (j = 0; j < maxLongsReqd - 1; j++)
                             if ((i + 1) <= maxLenForActive[j] + 1)
@@ -1244,11 +1244,11 @@ public class RStringLiteral : RegularExpression
                 else
                 {
                     // A very special case.
-                    if (i == 0 && Main.lg.mixed[Main.lg.lexStateIndex])
+                    if (i == 0 && MainParser.lg.mixed[MainParser.lg.lexStateIndex])
                     {
 
                         if (NfaState.generatedStates != 0)
-                            codeGenerator.genCodeLine("         return jjMoveNfa" + Main.lg.lexStateSuffix +
+                            codeGenerator.genCodeLine("         return jjMoveNfa" + MainParser.lg.lexStateSuffix +
                                     "(" + NfaState.InitStateName() + ", 0);");
                         else
                             codeGenerator.GenCodeLine("         return 1;");
@@ -1283,7 +1283,7 @@ public class RStringLiteral : RegularExpression
                 {
                     /* This means no string literal is possible. Just move nfa with
                        this guy and return. */
-                    codeGenerator.genCodeLine("         return jjMoveNfa" + Main.lg.lexStateSuffix +
+                    codeGenerator.genCodeLine("         return jjMoveNfa" + MainParser.lg.lexStateSuffix +
                             "(" + NfaState.InitStateName() + ", 0);");
                 }
                 else
@@ -1304,13 +1304,13 @@ public class RStringLiteral : RegularExpression
             {
                 if (startNfaNeeded)
                 {
-                    if (!Main.lg.mixed[Main.lg.lexStateIndex] && NfaState.generatedStates != 0)
+                    if (!MainParser.lg.mixed[MainParser.lg.lexStateIndex] && NfaState.generatedStates != 0)
                     {
                         /* Here, a string literal is successfully matched and no more
                            string literals are possible. So set the kind and state set
                            upto and including this position for the matched string. */
 
-                        codeGenerator.genCode("   return jjStartNfa" + Main.lg.lexStateSuffix + "(" + (i - 1) + ", ");
+                        codeGenerator.genCode("   return jjStartNfa" + MainParser.lg.lexStateSuffix + "(" + (i - 1) + ", ");
                         for (k = 0; k < maxLongsReqd - 1; k++)
                             if (i <= maxLenForActive[k])
                                 codeGenerator.GenCode("active" + k + ", ");
@@ -1322,7 +1322,7 @@ public class RStringLiteral : RegularExpression
                             codeGenerator.GenCodeLine("0L);");
                     }
                     else if (NfaState.generatedStates != 0)
-                        codeGenerator.genCodeLine("   return jjMoveNfa" + Main.lg.lexStateSuffix +
+                        codeGenerator.genCodeLine("   return jjMoveNfa" + MainParser.lg.lexStateSuffix +
                                 "(" + NfaState.InitStateName() + ", " + i + ");");
                     else
                         codeGenerator.GenCodeLine("   return " + (i + 1) + ";");
@@ -1332,7 +1332,7 @@ public class RStringLiteral : RegularExpression
             codeGenerator.GenCodeLine("}");
         }
 
-        if (!Main.lg.mixed[Main.lg.lexStateIndex] && NfaState.generatedStates != 0 && createStartNfa)
+        if (!MainParser.lg.mixed[MainParser.lg.lexStateIndex] && NfaState.generatedStates != 0 && createStartNfa)
             DumpStartWithStates(codeGenerator);
     }
 
@@ -1340,7 +1340,7 @@ public class RStringLiteral : RegularExpression
     {
         for (int i = 0; i < maxStrKind; i++)
         {
-            if (Main.lg.lexStates[i] != Main.lg.lexStateIndex)
+            if (MainParser.lg.lexStates[i] != MainParser.lg.lexStateIndex)
                 continue;
 
             string image = allImages[i];
@@ -1369,7 +1369,7 @@ public class RStringLiteral : RegularExpression
 
         for (i = 0; i < maxStrKind; i++)
         {
-            if (Main.lg.lexStates[i] != Main.lg.lexStateIndex)
+            if (MainParser.lg.lexStates[i] != MainParser.lg.lexStateIndex)
                 continue;
 
             string image = allImages[i];
@@ -1410,9 +1410,9 @@ public class RStringLiteral : RegularExpression
                     oldStates.Clear();
 
                     if (j == 0 && kind != int.MaxValue &&
-                        Main.lg.canMatchAnyChar[Main.lg.lexStateIndex] != -1 &&
-                        kind > Main.lg.canMatchAnyChar[Main.lg.lexStateIndex])
-                        kind = Main.lg.canMatchAnyChar[Main.lg.lexStateIndex];
+                        MainParser.lg.canMatchAnyChar[MainParser.lg.lexStateIndex] != -1 &&
+                        kind > MainParser.lg.canMatchAnyChar[MainParser.lg.lexStateIndex])
+                        kind = MainParser.lg.canMatchAnyChar[MainParser.lg.lexStateIndex];
 
                     if (GetStrKind(image.substring(0, j + 1)) < kind)
                     {
@@ -1505,11 +1505,11 @@ public class RStringLiteral : RegularExpression
         if (Options.isOutputLanguageJava())
         {
             codeGenerator.genCode("private" + (Options.getStatic() ? " static" : "") + " final int jjStopStringLiteralDfa" +
-                         Main.lg.lexStateSuffix + "(int pos, " + _params);
+                         MainParser.lg.lexStateSuffix + "(int pos, " + _params);
         }
         else if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
-            codeGenerator.generateMethodDefHeader(" int", Main.lg.tokMgrClassName, "jjStopStringLiteralDfa" + Main.lg.lexStateSuffix + "(int pos, " + _params);
+            codeGenerator.generateMethodDefHeader(" int", MainParser.lg.tokMgrClassName, "jjStopStringLiteralDfa" + MainParser.lg.lexStateSuffix + "(int pos, " + _params);
         }
         else
         {
@@ -1586,8 +1586,8 @@ public class RStringLiteral : RegularExpression
                         {
                             codeGenerator.GenCodeLine("            jjmatchedKind = " + kindStr + ";");
 
-                            if ((Main.lg.initMatch[Main.lg.lexStateIndex] != 0 &&
-                                Main.lg.initMatch[Main.lg.lexStateIndex] != int.MaxValue))
+                            if ((MainParser.lg.initMatch[MainParser.lg.lexStateIndex] != 0 &&
+                                MainParser.lg.initMatch[MainParser.lg.lexStateIndex] != int.MaxValue))
                                 codeGenerator.GenCodeLine("            jjmatchedPos = 0;");
                         }
                         else if (i == jjmatchedPos)
@@ -1654,18 +1654,18 @@ public class RStringLiteral : RegularExpression
         if (codeGenerator.isJavaLanguage())
         {
             codeGenerator.genCode("private" + (Options.getStatic() ? " static" : "") + " final int jjStartNfa" +
-                       Main.lg.lexStateSuffix + _params);
+                       MainParser.lg.lexStateSuffix + _params);
         }
         else
         {
-            codeGenerator.generateMethodDefHeader("int ", Main.lg.tokMgrClassName, "jjStartNfa" + Main.lg.lexStateSuffix + _params);
+            codeGenerator.generateMethodDefHeader("int ", MainParser.lg.tokMgrClassName, "jjStartNfa" + MainParser.lg.lexStateSuffix + _params);
         }
         codeGenerator.GenCodeLine("{");
 
-        if (Main.lg.mixed[Main.lg.lexStateIndex])
+        if (MainParser.lg.mixed[MainParser.lg.lexStateIndex])
         {
             if (NfaState.generatedStates != 0)
-                codeGenerator.genCodeLine("   return jjMoveNfa" + Main.lg.lexStateSuffix +
+                codeGenerator.genCodeLine("   return jjMoveNfa" + MainParser.lg.lexStateSuffix +
                         "(" + NfaState.InitStateName() + ", pos + 1);");
             else
                 codeGenerator.GenCodeLine("   return pos + 1;");
@@ -1674,8 +1674,8 @@ public class RStringLiteral : RegularExpression
             return;
         }
 
-        codeGenerator.genCode("   return jjMoveNfa" + Main.lg.lexStateSuffix + "(" +
-                  "jjStopStringLiteralDfa" + Main.lg.lexStateSuffix + "(pos, ");
+        codeGenerator.genCode("   return jjMoveNfa" + MainParser.lg.lexStateSuffix + "(" +
+                  "jjStopStringLiteralDfa" + MainParser.lg.lexStateSuffix + "(pos, ");
         for (i = 0; i < maxKindsReqd - 1; i++)
             codeGenerator.GenCode("active" + i + ", ");
         codeGenerator.GenCode("active" + i + ")");
@@ -1782,7 +1782,7 @@ public class RStringLiteral : RegularExpression
         for (int kind = 0; kind < allImages.Length; kind++)
         {
             if (allImages[kind] == null || allImages[kind] == ("") ||
-                Main.lg.lexStates[kind] != lexStateIndex)
+                MainParser.lg.lexStates[kind] != lexStateIndex)
             {
                 continue;
             }
@@ -1809,7 +1809,7 @@ public class RStringLiteral : RegularExpression
                 s = s.ToLower(Locale.ENGLISH);
             }
             char c = s.charAt(0);
-            int key = (int)Main.lg.lexStateIndex << 16 | (int)c;
+            int key = (int)MainParser.lg.lexStateIndex << 16 | (int)c;
             List<string> l = literalsByLength.get(key);
             List<int> kinds = literalKinds.get(key);
             int j = 0;

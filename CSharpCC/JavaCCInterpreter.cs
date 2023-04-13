@@ -2,10 +2,10 @@ using org.javacc.parser;
 
 public class JavaCCInterpreter
 {
-    public static void main(String[] args)
+    public static void Main(String[] args)
     {
         // Initialize all static state
-        Main.reInitAll();
+        org.javacc.parser.MainParser.ReInitAll();
         JavaCCParser parser = null;
         for (int arg = 0; arg < args.Length - 2; arg++)
         {

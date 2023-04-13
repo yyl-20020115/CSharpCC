@@ -189,7 +189,7 @@ public class ConditionParser : ConditionParserConstants
     {
         String name;
         jj_consume_token(IDENTIFIER);
-        name = getToken(0).image.trim();
+        name = getToken(0).image.Trim();
 
         Object obj = options.get(name);
 

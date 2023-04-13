@@ -58,7 +58,7 @@ public class ParseGen : CodeGenerator, JavaCCParserConstants {
 
 			if (cu_to_insertion_point_1.Count != 0) {
 				object firstToken = cu_to_insertion_point_1[0];
-				printTokenSetup((Token) firstToken);
+				PrintTokenSetup((Token) firstToken);
 				this.ccol = 1;
 				for (Iterator<Token> it = cu_to_insertion_point_1.iterator(); it.hasNext();) {
 					t = it.next();

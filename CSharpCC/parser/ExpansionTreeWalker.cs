@@ -52,7 +52,7 @@ public static class ExpansionTreeWalker
                 }
             }
             else if (node is Sequence sequence)
-            {
+            { 
                 foreach(var expansion in sequence.units)
                 {
                     PreOrderWalk(expansion, opObj);

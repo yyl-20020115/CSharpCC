@@ -106,14 +106,14 @@ public class JJTree
     /**
      * A main program that exercises the parser.
      */
-    public int main(string[] args)
+    public int Main(string[] args)
     {
 
         // initialize static state for allowing repeat runs without exiting
         ASTNodeDescriptor.NodeIds = new ();
         ASTNodeDescriptor.NodeNames = new ();
         ASTNodeDescriptor.nodeSeen = new ();
-        org.javacc.parser.Main.reInitAll();
+        org.javacc.parser.MainParser.ReInitAll();
 
         JavaCCGlobals.bannerLine("Tree Builder", "");
 

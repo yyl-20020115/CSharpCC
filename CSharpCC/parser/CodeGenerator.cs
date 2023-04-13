@@ -37,7 +37,7 @@ public class CodeGenerator : JavaCCParserConstants
         outputBuffer.Append('{');
         for (int i = 0; i < s.Length; i++)
         {
-            outputBuffer.Append("0x" + int.toHexString((int)s[i]) + ", ");
+            outputBuffer.Append("0x" + Convert.ToString((int)s[i],16) + ", ");
         }
         outputBuffer.Append("0}");
     }
@@ -87,7 +87,7 @@ public class CodeGenerator : JavaCCParserConstants
             saveOutput(incfilePath, includeBuffer);
         }
 
-        mainBuffer.Insert(0, "/* " + new File(fileName) + " */\n");
+        mainBuffer.Insert(0, "/* " + fileName + " */\n");
         saveOutput(fileName, mainBuffer);
     }
 
@@ -128,15 +128,9 @@ public class CodeGenerator : JavaCCParserConstants
         }
         try
         {
-            File tmp = new File(fileName);
-            fw = new TextWriter(
-                    new BufferedWriter(
-                    new FileWriter(tmp),
-                    8092
-                )
-            );
+            fw = new StreamWriter(fileName);
 
-            fw.print(sb.ToString());
+            fw.Write(sb.ToString());
         }
         catch (IOException ioe)
         {
@@ -153,7 +147,7 @@ public class CodeGenerator : JavaCCParserConstants
 
     protected int cline, ccol;
 
-    public void printTokenSetup(Token t)
+    public void PrintTokenSetup(Token t)
     {
         Token tt = t;
 
@@ -179,12 +173,12 @@ public class CodeGenerator : JavaCCParserConstants
             printTrailingComments(t);
     }
 
-    public void printTokenOnly(Token t)
+    public void PrintTokenOnly(Token t)
     {
-        GenCode(getStringForTokenOnly(t));
+        GenCode(GetStringForTokenOnly(t));
     }
 
-    protected string getStringForTokenOnly(Token t)
+    protected string GetStringForTokenOnly(Token t)
     {
         string retval = "";
         for (; cline < t.beginLine; cline++)
@@ -204,7 +198,7 @@ public class CodeGenerator : JavaCCParserConstants
         ccol = t.endColumn + 1;
         if (t.image.Length > 0)
         {
-            char last = t.image.charAt(t.image.Length - 1);
+            char last = t.image[^1];
             if (last == '\n' || last == '\r')
             {
                 cline++; ccol = 1;
@@ -228,12 +222,12 @@ public class CodeGenerator : JavaCCParserConstants
             while (tt.specialToken != null) tt = tt.specialToken;
             while (tt != null)
             {
-                retval += getStringForTokenOnly(tt);
+                retval += GetStringForTokenOnly(tt);
                 tt = tt.next;
             }
         }
 
-        return retval + getStringForTokenOnly(t);
+        return retval + GetStringForTokenOnly(t);
     }
 
     public void printLeadingComments(Token t)
@@ -249,7 +243,7 @@ public class CodeGenerator : JavaCCParserConstants
         while (tt.specialToken != null) tt = tt.specialToken;
         while (tt != null)
         {
-            retval += getStringForTokenOnly(tt);
+            retval += GetStringForTokenOnly(tt);
             tt = tt.next;
         }
         if (ccol != 1 && cline != t.beginLine)

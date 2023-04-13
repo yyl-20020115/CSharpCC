@@ -30,13 +30,13 @@ namespace org.javacc.jjtree;
 /**
  * Entry point.
  */
-public static class Main
+public static class MainClass
 {
 
-    public static void main(string[] args)
+    public static void Main(string[] args)
     {
         var jjtree = new JJTree();
-        int result = jjtree.main(args);
+        int result = jjtree.Main(args);
         Environment.Exit(result);
     }
 }

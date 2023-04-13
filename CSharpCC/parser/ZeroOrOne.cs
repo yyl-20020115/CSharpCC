@@ -53,7 +53,7 @@ public class ZeroOrOne : Expansion
         e.parent = this;
     }
 
-    public StringBuilder dump(int indent, HashSet<Expansion> alreadyDumped)
+    public override StringBuilder Dump(int indent, HashSet<Expansion> alreadyDumped)
     {
         var sb = base.Dump(indent, alreadyDumped);
         if (alreadyDumped.Contains(this))

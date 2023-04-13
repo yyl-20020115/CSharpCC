@@ -115,7 +115,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
       bool commonTokenActionSeen = false;
       bool commonTokenActionNeeded = Options.getCommonTokenAction();
 
-      printTokenSetup((Token)token_mgr_decls[0]);
+      PrintTokenSetup((Token)token_mgr_decls[0]);
       ccol = 1;
 
       switchToMainFile();
@@ -1129,7 +1129,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
             GenCodeLine("(input_stream->GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));");
           }
 
-          printTokenSetup((Token)act.GetActionTokens()[0]);
+          PrintTokenSetup((Token)act.GetActionTokens()[0]);
           ccol = 1;
 
           for (int j = 0; j < act.GetActionTokens().Count; j++)
@@ -1202,7 +1202,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
             GenCodeLine("(input_stream->GetSuffix(jjimageLen));");
 
           GenCodeLine("         jjimageLen = 0;");
-          printTokenSetup((Token)act.GetActionTokens()[0]);
+          PrintTokenSetup((Token)act.GetActionTokens()[0]);
           ccol = 1;
 
           for (int j = 0; j < act.GetActionTokens().Count; j++)
@@ -1282,7 +1282,7 @@ public class LexGenCPP:LexGen //CodeGenerator implements JavaCCParserConstants
             }
           }
 
-          printTokenSetup((Token)act.GetActionTokens()[0]);
+          PrintTokenSetup((Token)act.GetActionTokens()[0]);
           ccol = 1;
 
           for (int j = 0; j < act.GetActionTokens().Count; j++)

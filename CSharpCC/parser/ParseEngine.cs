@@ -347,7 +347,7 @@ public class ParseEngine
                             retval += "\n" + "if (";
                             indentAmt++;
                     }
-                    codeGenerator.printTokenSetup((Token)(la.getActionTokens()[0]));
+                    codeGenerator.PrintTokenSetup((Token)(la.getActionTokens()[0]));
                     for (Iterator it = la.getActionTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
@@ -495,7 +495,7 @@ public class ParseEngine
                     // In addition, there is also a semantic lookahead.  So concatenate
                     // the semantic check with the syntactic one.
                     retval += " && (";
-                    codeGenerator.printTokenSetup((Token)(la.getActionTokens()[0]));
+                    codeGenerator.PrintTokenSetup((Token)(la.getActionTokens()[0]));
                     for (Iterator it = la.getActionTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
@@ -628,7 +628,7 @@ public class ParseEngine
         sig.Append("(");
         if (p.getParameterListTokens().Count != 0)
         {
-            codeGenerator.printTokenSetup((Token)(p.getParameterListTokens()[0]));
+            codeGenerator.PrintTokenSetup((Token)(p.getParameterListTokens()[0]));
             for (Iterator it = p.getParameterListTokens().iterator(); it.hasNext();)
             {
                 t = (Token)it.next();
@@ -655,7 +655,7 @@ public class ParseEngine
         bool void_ret = false;
         bool ptr_ret = false;
 
-        codeGenerator.printTokenSetup(t); ccol = 1;
+        codeGenerator.PrintTokenSetup(t); ccol = 1;
         string comment1 = codeGenerator.getLeadingComments(t);
         cline = t.beginLine;
         ccol = t.beginColumn;
@@ -678,7 +678,7 @@ public class ParseEngine
         sig.Append("(");
         if (p.getParameterListTokens().Count != 0)
         {
-            codeGenerator.printTokenSetup((Token)(p.getParameterListTokens()[0]));
+            codeGenerator.PrintTokenSetup((Token)(p.getParameterListTokens()[0]));
             for (Iterator it = p.getParameterListTokens().iterator(); it.hasNext();)
             {
                 t = (Token)it.next();
@@ -774,11 +774,11 @@ public class ParseEngine
         string error_ret = null;
         if (isJavaDialect)
         {
-            codeGenerator.printTokenSetup(t); ccol = 1;
+            codeGenerator.PrintTokenSetup(t); ccol = 1;
             codeGenerator.printLeadingComments(t);
             codeGenerator.genCode("  " + staticOpt() + "final " + (p.getAccessMod() != null ? p.getAccessMod() : "public") + " ");
             cline = t.beginLine; ccol = t.beginColumn;
-            codeGenerator.printTokenOnly(t);
+            codeGenerator.PrintTokenOnly(t);
             for (int i = 1; i < p.getReturnTypeTokens().Count; i++)
             {
                 t = (Token)(p.getReturnTypeTokens()[i]);
@@ -788,7 +788,7 @@ public class ParseEngine
             codeGenerator.GenCode(" " + p.getLhs() + "(");
             if (p.getParameterListTokens().Count != 0)
             {
-                codeGenerator.printTokenSetup((Token)(p.getParameterListTokens()[0]));
+                codeGenerator.PrintTokenSetup((Token)(p.getParameterListTokens()[0]));
                 for (Iterator it = p.getParameterListTokens().iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
@@ -849,7 +849,7 @@ public class ParseEngine
         if (!Options.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) &&
             p.GetDeclarationTokens().Count != 0)
         {
-            codeGenerator.printTokenSetup((Token)(p.GetDeclarationTokens()[0])); cline--;
+            codeGenerator.PrintTokenSetup((Token)(p.GetDeclarationTokens()[0])); cline--;
             for (Iterator it = p.GetDeclarationTokens().iterator(); it.hasNext();)
             {
                 t = (Token)it.next();
@@ -926,7 +926,7 @@ public class ParseEngine
             retval += "\n";
             if (e_nrw.lhsTokens.Count != 0)
             {
-                codeGenerator.printTokenSetup((Token)(e_nrw.lhsTokens[0]));
+                codeGenerator.PrintTokenSetup((Token)(e_nrw.lhsTokens[0]));
                 for (Iterator it = e_nrw.lhsTokens.iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
@@ -966,7 +966,7 @@ public class ParseEngine
             retval += "\n";
             if (e_nrw.getLhsTokens().Count != 0)
             {
-                codeGenerator.printTokenSetup((Token)(e_nrw.getLhsTokens()[0]));
+                codeGenerator.PrintTokenSetup((Token)(e_nrw.getLhsTokens()[0]));
                 for (Iterator it = e_nrw.getLhsTokens().iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
@@ -978,7 +978,7 @@ public class ParseEngine
             retval += e_nrw.getName() + "(";
             if (e_nrw.getArgumentTokens().Count != 0)
             {
-                codeGenerator.printTokenSetup((Token)(e_nrw.getArgumentTokens()[0]));
+                codeGenerator.PrintTokenSetup((Token)(e_nrw.getArgumentTokens()[0]));
                 for (Iterator it = e_nrw.getArgumentTokens().iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
@@ -999,7 +999,7 @@ public class ParseEngine
             if (!Options.booleanValue(Options.USEROPTION__CPP_IGNORE_ACTIONS) &&
                 e_nrw.GetActionTokens().Count != 0)
             {
-                codeGenerator.printTokenSetup((Token)(e_nrw.GetActionTokens()[0])); ccol = 1;
+                codeGenerator.PrintTokenSetup((Token)(e_nrw.GetActionTokens()[0])); ccol = 1;
                 for (Iterator it = e_nrw.GetActionTokens().iterator(); it.hasNext();)
                 {
                     t = (Token)it.next();
@@ -1183,7 +1183,7 @@ public class ParseEngine
                 list = (List)(e_nrw.types[i]);
                 if (list.Count != 0)
                 {
-                    codeGenerator.printTokenSetup((Token)(list[0]));
+                    codeGenerator.PrintTokenSetup((Token)(list[0]));
                     for (Iterator it = list.iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
@@ -1193,14 +1193,14 @@ public class ParseEngine
                 }
                 retval += " ";
                 t = (Token)(e_nrw.ids[i]);
-                codeGenerator.printTokenSetup(t);
+                codeGenerator.PrintTokenSetup(t);
                 retval += codeGenerator.getStringToPrint(t);
                 retval += codeGenerator.getTrailingComments(t);
                 retval += ") {\u0003\n";
                 list = (List)(e_nrw.catchblks[i]);
                 if (list.Count != 0)
                 {
-                    codeGenerator.printTokenSetup((Token)(list[0])); ccol = 1;
+                    codeGenerator.PrintTokenSetup((Token)(list[0])); ccol = 1;
                     for (Iterator it = list.iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
@@ -1223,7 +1223,7 @@ public class ParseEngine
 
                 if (e_nrw.finallyblk.Count != 0)
                 {
-                    codeGenerator.printTokenSetup((Token)(e_nrw.finallyblk[0])); ccol = 1;
+                    codeGenerator.PrintTokenSetup((Token)(e_nrw.finallyblk[0])); ccol = 1;
                     for (Iterator it = e_nrw.finallyblk.iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
@@ -1543,7 +1543,7 @@ public class ParseEngine
                     lookaheadNeeded = true;
                     codeGenerator.GenCodeLine("    jj_lookingAhead = true;");
                     codeGenerator.GenCode("    jj_semLA = ");
-                    codeGenerator.printTokenSetup((Token)(la.getActionTokens()[0]));
+                    codeGenerator.PrintTokenSetup((Token)(la.getActionTokens()[0]));
                     for (Iterator it = la.getActionTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
@@ -1827,7 +1827,7 @@ public class ParseEngine
                 }
                 if (cp.GetCodeTokens().Count != 0)
                 {
-                    codeGenerator.printTokenSetup((Token)(cp.GetCodeTokens()[0])); cline--;
+                    codeGenerator.PrintTokenSetup((Token)(cp.GetCodeTokens()[0])); cline--;
                     codeGenerator.printTokenList(cp.GetCodeTokens());
                 }
                 codeGenerator.GenCodeLine("");
@@ -1848,11 +1848,11 @@ public class ParseEngine
                 }
                 jp = (JavaCodeProduction)p;
                 t = (Token)(jp.getReturnTypeTokens()[0]);
-                codeGenerator.printTokenSetup(t); ccol = 1;
+                codeGenerator.PrintTokenSetup(t); ccol = 1;
                 codeGenerator.printLeadingComments(t);
                 codeGenerator.genCode("  " + staticOpt() + (p.getAccessMod() != null ? p.getAccessMod() + " " : ""));
                 cline = t.beginLine; ccol = t.beginColumn;
-                codeGenerator.printTokenOnly(t);
+                codeGenerator.PrintTokenOnly(t);
                 for (int i = 1; i < jp.getReturnTypeTokens().Count; i++)
                 {
                     t = (Token)(jp.getReturnTypeTokens()[i]);
@@ -1862,7 +1862,7 @@ public class ParseEngine
                 codeGenerator.GenCode(" " + jp.getLhs() + "(");
                 if (jp.getParameterListTokens().Count != 0)
                 {
-                    codeGenerator.printTokenSetup((Token)(jp.getParameterListTokens()[0]));
+                    codeGenerator.PrintTokenSetup((Token)(jp.getParameterListTokens()[0]));
                     for (Iterator it = jp.getParameterListTokens().iterator(); it.hasNext();)
                     {
                         t = (Token)it.next();
@@ -1894,7 +1894,7 @@ public class ParseEngine
                 }
                 if (jp.GetCodeTokens().Count != 0)
                 {
-                    codeGenerator.printTokenSetup((Token)(jp.GetCodeTokens()[0])); cline--;
+                    codeGenerator.PrintTokenSetup((Token)(jp.GetCodeTokens()[0])); cline--;
                     codeGenerator.printTokenList(jp.GetCodeTokens());
                 }
                 codeGenerator.GenCodeLine("");

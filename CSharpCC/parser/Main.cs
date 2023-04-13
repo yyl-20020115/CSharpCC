@@ -39,9 +39,9 @@ namespace org.javacc.parser;
 /**
  * Entry point.
  */
-public class Main
+public class MainParser
 {
-    protected Main() { }
+    protected MainParser() { }
 
     public static LexGen lg;
     static void help_message()
@@ -83,18 +83,18 @@ public class Main
 
         foreach (OptionInfo i in options)
         {
-            int length = i.GetName().Length;
+            int length = i.Name.Length;
 
-            if (i.GetOptionType() == OptionType.INTEGER)
+            if (i.OptionType == OptionType.INTEGER)
             {
                 maxLengthInt = length > maxLengthInt ? length : maxLengthInt;
             }
-            else if (i.GetOptionType() == OptionType.BOOLEAN)
+            else if (i.OptionType == OptionType.BOOLEAN)
             {
                 maxLengthBool = length > maxLengthBool ? length : maxLengthBool;
 
             }
-            else if (i.GetOptionType() == OptionType.STRING)
+            else if (i.OptionType == OptionType.STRING)
             {
                 maxLengthString = length > maxLengthString ? length : maxLengthString;
 
@@ -142,10 +142,10 @@ public class Main
 
     private static void printOptionInfo(OptionType filter, OptionInfo optionInfo, int padLength)
     {
-        if (optionInfo.GetOptionType() == filter)
+        if (optionInfo.OptionType == filter)
         {
-            object default1 = optionInfo.GetDefault();
-            Console.WriteLine("    " + padRight(optionInfo.GetName(), padLength + 1) + (default1 == null ? "" : ("(default : " + (default1.ToString().Length == 0 ? "<<empty>>" : default1) + ")")));
+            object default1 = optionInfo.Default;
+            Console.WriteLine("    " + padRight(optionInfo.Name, padLength + 1) + (default1 == null ? "" : ("(default : " + (default1.ToString().Length == 0 ? "<<empty>>" : default1) + ")")));
         }
     }
 
@@ -174,7 +174,7 @@ public class Main
     /**
        * A main program that exercises the parser.
        */
-    public static void main(string[] args)
+    public static void Main(string[] args)
     {
         int errorcode = mainProgram(args);
         Environment.Exit(errorcode);
@@ -195,7 +195,7 @@ public class Main
         }
 
         // Initialize all static state
-        reInitAll();
+        ReInitAll();
 
         JavaCCGlobals.bannerLine("Parser Generator", "");
 
@@ -379,7 +379,7 @@ public class Main
         return 1;
     }
 
-    public static void reInitAll()
+    public static void ReInitAll()
     {
         org.javacc.parser.Expansion.ReInit();
         org.javacc.parser.JavaCCErrors.reInit();

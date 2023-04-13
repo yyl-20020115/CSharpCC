@@ -33,8 +33,8 @@
 namespace org.javacc;
 public static class Javacc
 {
-    public static void main(string[] args)
+    public static void Main(string[] args)
     {
-        org.javacc.parser.Main.main(args);
+        org.javacc.parser.MainParser.Main(args);
     }
 }
