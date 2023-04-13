@@ -53,5 +53,4 @@ public class RZeroOrOne : RegularExpression
 
         return retVal;
     }
-
 }

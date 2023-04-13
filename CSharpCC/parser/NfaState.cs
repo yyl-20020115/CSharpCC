@@ -1041,7 +1041,7 @@ public class NfaState
 
                 if ((ind = (int)lohiByteTab.get(tmp)) == null)
                 {
-                    allBitVectors.Add(tmp);
+                    allBitVectors.Add(tmp); 
 
                     if (!AllBitsSet(tmp))
                         if (CodeGenerator.IsJavaLanguage())

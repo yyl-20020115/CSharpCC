@@ -34,7 +34,7 @@ using org.javacc.jjtree;
 namespace org.javacc.parser;
 
 /**
- * Generate lexer.
+ * Generate lexer. 
  */
 public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 {
@@ -224,7 +224,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         actions = new Action[maxOrdinal];
         actions[0] = actForEof;
         hasTokenActions = actForEof != null;
-        initStates = new Dictionary();
+        initStates = new ();
         canMatchAnyChar = new int[maxLexStates];
         canLoop = new bool[maxLexStates];
         stateHasActions = new bool[maxLexStates];
@@ -264,7 +264,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         singlesToSkip[lexStateIndex].kind = kind;
     }
 
-    public void start()
+    public new void Start()
     {
         if (!Options.getBuildTokenManager() ||
             Options.getUserTokenManager() ||
@@ -272,7 +272,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             return;
 
         keepLineCol = Options.getKeepLineColumn();
-        List choices = new();
+        List<Expansion> choices = new();
         Enumeration e;
         TokenProduction tp;
         int i, j;
@@ -875,7 +875,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             }
             else
             {
-                GenCodeLine(prefix + "jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
+                GenCodeLine(prefix + "jjmatchedKind = 0x" + Convert.ToString(int.MaxValue, 16) + ";");
                 GenCodeLine(prefix + "jjmatchedPos = 0;");
             }
 
@@ -918,7 +918,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         if (maxLexStates > 1)
             GenCodeLine(endSwitch);
         else if (maxLexStates == 0)
-            GenCodeLine("       jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
+            GenCodeLine("       jjmatchedKind = 0x" + Convert.ToString(int.MaxValue, 16) + ";");
 
         if (maxLexStates > 1)
             prefix = "  ";
@@ -927,7 +927,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
         if (maxLexStates > 0)
         {
-            GenCodeLine(prefix + "   if (jjmatchedKind != 0x" + int.toHexString(int.MaxValue) + ")");
+            GenCodeLine(prefix + "   if (jjmatchedKind != 0x" + Convert.ToString(int.MaxValue, 16) + ")");
             GenCodeLine(prefix + "   {");
             GenCodeLine(prefix + "      if (jjmatchedPos + 1 < curPos)");
 
@@ -1046,7 +1046,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                         GenCodeLine(prefix + "      curLexState = jjnewLexState[jjmatchedKind];");
                     }
                     GenCodeLine(prefix + "      curPos = 0;");
-                    GenCodeLine(prefix + "      jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
+                    GenCodeLine(prefix + "      jjmatchedKind = 0x" + Convert.ToString(int.MaxValue,16) + ";");
 
                     GenCodeLine(prefix + "   if (!input_stream->endOfInput()) {");
                     GenCodeLine(prefix + "         curChar = input_stream->readChar();");
@@ -1112,7 +1112,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 if (((act = (Action)actions[i]) == null ||
                     act.GetActionTokens() == null ||
                     act.GetActionTokens().Count == 0) && !canLoop[lexStates[i]])
-                    continue Outer;
+                    goto OuterExit;
 
                 GenCodeLine("      case " + i + " : {");
 
@@ -1157,6 +1157,8 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
             GenCodeLine("         break;");
             GenCodeLine("       }");
+        OuterExit:
+            ;
         }
 
         GenCodeLine("      default :");
@@ -1186,7 +1188,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 if (((act = (Action)actions[i]) == null ||
                     act.GetActionTokens() == null ||
                     act.GetActionTokens().Count == 0) && !canLoop[lexStates[i]])
-                    continue Outer;
+                    goto OuterExit;
 
                 GenCodeLine("      case " + i + " : {");
 
@@ -1230,6 +1232,8 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
             GenCodeLine("         break;");
             GenCodeLine("       }");
+        OuterExit:
+            ;
         }
 
         GenCodeLine("      default :");
@@ -1239,7 +1243,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         GenCodeLine("}");
     }
 
-    public void DumpTokenActions()
+    public new void DumpTokenActions()
     {
         Action act;
         int i;
@@ -1260,7 +1264,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 if (((act = (Action)actions[i]) == null ||
                     act.GetActionTokens() == null ||
                     act.GetActionTokens().Count == 0) && !canLoop[lexStates[i]])
-                    continue Outer;
+                    goto OuterExit;
 
                 GenCodeLine("      case " + i + " : {");
 
@@ -1313,6 +1317,8 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
             GenCodeLine("         break;");
             GenCodeLine("       }");
+        OuterExit:
+            ;
         }
 
         GenCodeLine("      default :");

@@ -60,8 +60,8 @@ public class OtherFilesGen : JavaCCGlobals
                 JavaFiles.GenJavaModernFiles();
             }
 
-            JavaFiles.gen_TokenMgrError(templateLoc);
-            JavaFiles.gen_ParseException(templateLoc);
+            JavaFiles.GenTokenMgrError(templateLoc);
+            JavaFiles.GenParseException(templateLoc);
             JavaFiles.GenToken(templateLoc);
         }
 
@@ -76,7 +76,7 @@ public class OtherFilesGen : JavaCCGlobals
             // Added this if condition -- 2012/10/17 -- cba
             if (Options.isGenerateBoilerplateCode())
             {
-                JavaFiles.gen_CharStream(templateLoc);
+                JavaFiles.GenCharStream(templateLoc);
             }
         }
         else
@@ -85,26 +85,21 @@ public class OtherFilesGen : JavaCCGlobals
 
             if (Options.isGenerateBoilerplateCode())
             {
-                if (Options.getJavaUnicodeEscape())
+                if (Options.getJavaUnicodeEscape()) 
                 { 
-                    JavaFiles.gen_JavaCharStream(templateLoc);
+                    JavaFiles.GenJavaCharStream(templateLoc);
                 }
                 else
                 {
-                    JavaFiles.gen_SimpleCharStream(templateLoc);
+                    JavaFiles.GenSimpleCharStream(templateLoc);
                 }
             }
         }
 
         try
         {
-            ostr = new TextWriter(
-                      new BufferedWriter(
-                         new FileWriter(
-                           new File(Options.getOutputDirectory(), CuName + CONSTANTS_FILENAME_SUFFIX)
-                         ),
-                         8192
-                      )
+            ostr = new StreamWriter(
+                           System.IO.Path.Combine(Options.getOutputDirectory(), CuName + CONSTANTS_FILENAME_SUFFIX)
                    );
         }
         catch (IOException e)
@@ -146,24 +141,22 @@ public class OtherFilesGen : JavaCCGlobals
 
         if (Options.getSupportClassVisibilityPublic())
         {
-            ostr.print("public ");
+            ostr.Write("public ");
         }
         ostr.WriteLine("interface " + CuName + "Constants {");
         ostr.WriteLine("");
 
-        RegularExpression re;
         ostr.WriteLine("  /** End of File. */");
         ostr.WriteLine("  int EOF = 0;");
-        for (Iterator<RegularExpression> it = ordered_named_tokens.iterator(); it.hasNext();)
+        foreach(var re in ordered_named_tokens)
         {
-            re = it.next();
             ostr.WriteLine("  /** RegularExpression Id. */");
             ostr.WriteLine("  int " + re.label + " = " + re.ordinal + ";");
         }
         ostr.WriteLine("");
         if (!Options.getUserTokenManager() && Options.getBuildTokenManager())
         {
-            for (int i = 0; i < MainParser.LexGenerator.lexStateName.Length; i++)
+            for (int i = 0; i < LexGen.lexStateName.Length; i++)
             {
                 ostr.WriteLine("  /** Lexical state. */");
                 ostr.WriteLine("  int " + LexGen.lexStateName[i] + " = " + i + ";");
@@ -182,7 +175,7 @@ public class OtherFilesGen : JavaCCGlobals
             {
                 RegExprSpec res = (RegExprSpec)(it2.next());
                 re = res.rexp;
-                ostr.print("    ");
+                ostr.Write("    ");
                 if (re is RStringLiteral)
                 { 
                     ostr.WriteLine("\"\\\"" + AddEscapes(AddEscapes(((RStringLiteral)re).image)) + "\\\"\",");

@@ -156,7 +156,7 @@ public class LookaheadCalc : JavaCCGlobals
                 for (int i = first; i < ch.GetChoices().Count - 1; i++)
                 {
                     Expansion exp = (Expansion)ch.GetChoices()[i];
-                    if (Semanticize.emptyExpansionExists(exp))
+                    if (Semanticize.EmptyExpansionExists(exp))
                     {
                         JavaCCErrors.Warning(exp, "This choice can expand to the empty token sequence " +
                                 "and will therefore always be taken in favor of the choices appearing later.");

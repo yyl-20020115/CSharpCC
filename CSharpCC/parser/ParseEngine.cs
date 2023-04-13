@@ -128,7 +128,7 @@ public class ParseEngine
                 {
                     return true;
                 }
-                else if (!Semanticize.emptyExpansionExists(units[i]))
+                else if (!Semanticize.EmptyExpansionExists(units[i]))
                 {
                     return false;
                 }
@@ -219,7 +219,7 @@ public class ParseEngine
                 {
                     genFirstSet((Expansion)(seq.units[i]));
                 }
-                if (!Semanticize.emptyExpansionExists((Expansion)(seq.units[i])))
+                if (!Semanticize.EmptyExpansionExists((Expansion)(seq.units[i])))
                 {
                     break;
                 }
@@ -303,7 +303,7 @@ public class ParseEngine
             jj2LA = false;
 
             if ((la.GetAmount() == 0) ||
-                Semanticize.emptyExpansionExists(la.GetLaExpansion()) ||
+                Semanticize.EmptyExpansionExists(la.GetLaExpansion()) ||
                 javaCodeCheck(la.GetLaExpansion())
             )
             {
@@ -660,7 +660,7 @@ public class ParseEngine
         cline = t.beginLine;
         ccol = t.beginColumn;
         sig.Append(t.image); 
-        if (t.kind == JavaCCParserConstants.VOID) void_ret = true;
+        if (t.kind == JavaCCParserConstants.VOID) void_ret = true; 
         if (t.kind == JavaCCParserConstants.STAR) ptr_ret = true;
          
         for (int i = 1; i < p.GetReturnTypeTokens().Count; i++)

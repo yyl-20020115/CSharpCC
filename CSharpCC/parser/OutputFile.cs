@@ -32,7 +32,7 @@ namespace org.javacc.parser;
 
 /**
  * This class handles the creation and maintenance of the boiler-plate classes,
- * such as Token.java, JavaCharStream.java etc.
+ * such as Token.java, JavaCharStream.java etc. 
  *
  * It is responsible for:
  *
@@ -134,7 +134,7 @@ public class OutputFile
 
                 if (compatibleVersion != null)
                 {
-                    checkVersion(file, compatibleVersion);
+                    CheckVersion(file, compatibleVersion);
                 }
 
                 if (options != null)
@@ -172,9 +172,9 @@ public class OutputFile
      * Output a warning if the file was created with an incompatible version
      * of JavaCC.
      * @param fileName
-     * @param versionId 
+     * @param versionId
      */
-    private void checkVersion(string file, string versionId)
+    private void CheckVersion(string file, string versionId)
     { 
         string firstLine = "/* " + JavaCCGlobals.GetIdString(toolName, file) + " Version ";
 

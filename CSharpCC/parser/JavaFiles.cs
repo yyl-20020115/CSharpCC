@@ -681,4 +681,8 @@ public partial class JavaFiles : JavaCCGlobals
     {
     }
 
+    internal static void gen_JavaCharStream(JavaResourceTemplateLocations templateLoc)
+    {
+        throw new NotImplementedException();
+    }
 }

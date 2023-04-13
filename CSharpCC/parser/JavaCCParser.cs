@@ -7,7 +7,7 @@ using System.Text;
 * This file contains the code for JavaCCParser generated
 * by JavaCCParser itself.
 */
-namespace org.javacc.parser;
+namespace org.javacc.parser; 
 
 
 public class JavaCCParser : JavaCCParserInternals

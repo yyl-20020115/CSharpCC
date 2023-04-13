@@ -140,7 +140,7 @@ public class ParseGenCPP : ParseGen
             SwitchToStaticsFile();
             for (int i = 0; i < tokenMaskSize; i++)
             { 
-                if (maskVals.Count > 0) 
+                if (maskVals.Count > 0)
                 {
                     GenCodeLine("  unsigned int jj_la1_" + i + "[] = {");
                     for (Iterator it = maskVals.iterator(); it.hasNext();)

@@ -31,6 +31,4 @@ namespace org.javacc.parser;
  * Describes JAVACODE productions.
  */
 
-public class JavaCodeProduction : CodeProduction
-{
-}
+public class JavaCodeProduction : CodeProduction { }

@@ -69,14 +69,14 @@ public class OtherFilesGenCPP : JavaCCGlobals
         ostr.WriteLine("/* " + GetIdString(tn, CuName + "Constants.java") + " */");
 
         if (cu_to_insertion_point_1.Count != 0 &&
-            ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
+            cu_to_insertion_point_1[0].kind == PACKAGE
            )
         {
             for (int i = 1; i < cu_to_insertion_point_1.Count; i++)
             {
-                if (((Token)cu_to_insertion_point_1[i]).kind == SEMICOLON)
+                if (cu_to_insertion_point_1[i].kind == SEMICOLON)
                 {
-                    PrintTokenSetup((Token)(cu_to_insertion_point_1[0]));
+                    PrintTokenSetup(cu_to_insertion_point_1[0]);
                     for (int j = 0; j <= i; j++)
                     {
                         t = (Token)(cu_to_insertion_point_1[j]);
@@ -105,13 +105,11 @@ public class OtherFilesGenCPP : JavaCCGlobals
             ostr.WriteLine("namespace " + Options.stringValue("NAMESPACE_OPEN"));
         }
 
-        RegularExpression re; 
         string constPrefix = "const"; 
         ostr.WriteLine("  /** End of File. */");
         ostr.WriteLine(constPrefix + "  int _EOF = 0;");
-        for (Iterator<RegularExpression> it = ordered_named_tokens.iterator(); it.hasNext();)
+        foreach(var re in ordered_named_tokens)
         {
-            re = it.next();
             ostr.WriteLine("  /** RegularExpression Id. */");
             ostr.WriteLine(constPrefix + "  int " + re.label + " = " + re.ordinal + ";");
         }
@@ -119,7 +117,7 @@ public class OtherFilesGenCPP : JavaCCGlobals
 
         if (!Options.getUserTokenManager() && Options.getBuildTokenManager())
         {
-            for (int i = 0; i < MainParser.LexGenerator.lexStateName.Length; i++)
+            for (int i = 0; i < LexGen.lexStateName.Length; i++)
             {
                 ostr.WriteLine("  /** Lexical state. */");
                 ostr.WriteLine(constPrefix + "  int " + LexGen.lexStateName[i] + " = " + i + ";");
@@ -129,25 +127,24 @@ public class OtherFilesGenCPP : JavaCCGlobals
         ostr.WriteLine("  /** Literal token values. */");
         int cnt = 0;
         ostr.WriteLine("  static const JJChar tokenImage_arr_" + cnt + "[] = ");
-        printCharArray(ostr, "<EOF>");
+        PrintCharArray(ostr, "<EOF>");
         ostr.WriteLine(";");
 
-        for (Iterator<TokenProduction> it = rexprlist.iterator(); it.hasNext();)
+        foreach(var tp in rexprlist)
         {
-            TokenProduction tp = it.next();
             List<RegExprSpec> respecs = tp.respecs;
             for (Iterator<RegExprSpec> it2 = respecs.iterator(); it2.hasNext();)
             {
                 RegExprSpec res = it2.next();
-                re = res.rexp;
+                var re = res.rexp;
                 ostr.WriteLine("  static const JJChar tokenImage_arr_" + ++cnt + "[] = ");
                 if (re is RStringLiteral)
                 {
-                    printCharArray(ostr, "\"" + ((RStringLiteral)re).image + "\"");
+                    PrintCharArray(ostr, "\"" + ((RStringLiteral)re).image + "\"");
                 }
-                else if (!re.label == (""))
+                else if (re.label != (""))
                 {
-                    printCharArray(ostr, "\"<" + re.label + ">\"");
+                    PrintCharArray(ostr, "\"<" + re.label + ">\"");
                 }
                 else
                 {
@@ -155,7 +152,7 @@ public class OtherFilesGenCPP : JavaCCGlobals
                     {
                         JavaCCErrors.Warning(re, "Consider giving this non-string token a label for better error reporting.");
                     }
-                    printCharArray(ostr, "\"<token of kind " + re.ordinal + ">\"");
+                    PrintCharArray(ostr, "\"<token of kind " + re.ordinal + ">\"");
                 }
                 ostr.WriteLine(";");
             }
@@ -178,19 +175,19 @@ public class OtherFilesGenCPP : JavaCCGlobals
     }
 
     // Used by the CPP code generatror
-    public static void printCharArray(TextWriter ostr, string s)
+    public static void PrintCharArray(TextWriter ostr, string s)
     {
         ostr.Write("{");
         for (int i = 0; i < s.Length; i++)
         {
-            ostr.Write("0x" + int.toHexString((int)s[i]) + ", ");
+            ostr.Write("0x" + Convert.ToString((int)s[i],16) + ", ");
         }
         ostr.Write("0}");
     }
 
     static private TextWriter ostr;
 
-    public static void ReInit()
+    public static new void ReInit()
     {
         ostr = null;
     }

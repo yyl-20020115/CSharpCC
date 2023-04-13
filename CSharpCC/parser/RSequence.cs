@@ -73,9 +73,7 @@ public class RSequence : RegularExpression
         return retVal;
     }
 
-    public RSequence()
-    {
-    }
+    public RSequence() { }
 
     public RSequence(List<RegularExpression> seq)
     {

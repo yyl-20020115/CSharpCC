@@ -34,13 +34,13 @@ public class Semanticize : JavaCCGlobals
     static List removeList = new();
     static List itemList = new();
 
-    static void prepareToRemove(List vec, Object item)
+    static void PrepareToRemove(List vec, Object item)
     {
         removeList.Add(vec);
         itemList.Add(item);
     }
 
-    static void removePreparedItems()
+    static void RemovePreparedItems()
     {
         for (int i = 0; i < removeList.Count; i++)
         {
@@ -155,7 +155,7 @@ public class Semanticize : JavaCCGlobals
             }
         }
 
-        removePreparedItems();
+        RemovePreparedItems();
 
         /*
          * The following loop inserts all names of regular expressions into
@@ -285,7 +285,7 @@ public class Semanticize : JavaCCGlobals
                             {
                                 sl.ordinal = tokenCount++;
                             } 
-                            table2.Add(sl.image, sl);
+                            table2.Add(sl.image, sl); 
                             // The above "put" may override an existing entry (that is not IGNORE_CASE) and that's
                             // the desired behavior. 
                         }
@@ -353,7 +353,7 @@ public class Semanticize : JavaCCGlobals
             }
         }
 
-        removePreparedItems();
+        RemovePreparedItems();
 
         /*
          * The following code performs a tree walk on all regular expressions
@@ -386,7 +386,7 @@ public class Semanticize : JavaCCGlobals
             }
         }
 
-        removePreparedItems();
+        RemovePreparedItems();
 
         /*
          * The following code is executed only if Options.getUserTokenManager() is
@@ -430,7 +430,7 @@ public class Semanticize : JavaCCGlobals
             }
         }
 
-        removePreparedItems();
+        RemovePreparedItems();
 
         /*
          * The following code is executed only if Options.getUserTokenManager() is
@@ -471,7 +471,7 @@ public class Semanticize : JavaCCGlobals
             for (Iterator<NormalProduction> it = bnfproductions.iterator(); it.hasNext();)
             {
                 NormalProduction prod = (NormalProduction)it.next();
-                if (emptyExpansionExists(prod.GetExpansion()))
+                if (EmptyExpansionExists(prod.GetExpansion()))
                 {
                     if (!prod.IsEmptyPossible())
                     {
@@ -583,7 +583,7 @@ public class Semanticize : JavaCCGlobals
     }
 
     // returns true if "exp" can expand to the empty string, returns false otherwise.
-    public static bool emptyExpansionExists(Expansion exp)
+    public static bool EmptyExpansionExists(Expansion exp)
     {
         if (exp is NonTerminal)
         {
@@ -599,7 +599,7 @@ public class Semanticize : JavaCCGlobals
         }
         else if (exp is OneOrMore)
         {
-            return emptyExpansionExists(((OneOrMore)exp).expansion);
+            return EmptyExpansionExists(((OneOrMore)exp).expansion);
         }
         else if (exp is ZeroOrMore || exp is ZeroOrOne)
         {
@@ -613,7 +613,7 @@ public class Semanticize : JavaCCGlobals
         {
             for (Iterator it = ((Choice)exp).GetChoices().iterator(); it.hasNext();)
             {
-                if (emptyExpansionExists((Expansion)it.next()))
+                if (EmptyExpansionExists((Expansion)it.next()))
                 {
                     return true;
                 }
@@ -624,7 +624,7 @@ public class Semanticize : JavaCCGlobals
         {
             for (Iterator it = ((Sequence)exp).units.iterator(); it.hasNext();)
             {
-                if (!emptyExpansionExists((Expansion)it.next()))
+                if (!EmptyExpansionExists((Expansion)it.next()))
                 {
                     return false;
                 }
@@ -633,7 +633,7 @@ public class Semanticize : JavaCCGlobals
         }
         else if (exp is TryBlock)
         {
-            return emptyExpansionExists(((TryBlock)exp).exp);
+            return EmptyExpansionExists(((TryBlock)exp).exp);
         }
         else
         {
@@ -686,7 +686,7 @@ public class Semanticize : JavaCCGlobals
             {
                 Expansion e = (Expansion)it.next();
                 addLeftMost(prod, e);
-                if (!emptyExpansionExists(e))
+                if (!EmptyExpansionExists(e))
                 {
                     break;
                 }
@@ -978,7 +978,7 @@ public class Semanticize : JavaCCGlobals
 
     }
 
-    class EmptyChecker : JavaCCGlobals implements TreeWalkerOp
+    class EmptyChecker : JavaCCGlobals , TreeWalkerOp
     {
 
         public bool GoDeeper(Expansion e)
@@ -995,23 +995,23 @@ public class Semanticize : JavaCCGlobals
 
         public void Action(Expansion e)
         {
-            if (e is OneOrMore)
+            if (e is OneOrMore more1)
             {
-                if (Semanticize.emptyExpansionExists(((OneOrMore)e).expansion))
+                if (Semanticize.EmptyExpansionExists(more1.expansion))
                 {
                     JavaCCErrors.SemanticError(e, "Expansion within \"(...)+\" can be matched by empty string.");
                 }
             }
-            else if (e is ZeroOrMore)
+            else if (e is ZeroOrMore more)
             {
-                if (Semanticize.emptyExpansionExists(((ZeroOrMore)e).expansion))
+                if (Semanticize.EmptyExpansionExists(more.expansion))
                 {
                     JavaCCErrors.SemanticError(e, "Expansion within \"(...)*\" can be matched by empty string.");
                 }
             }
-            else if (e is ZeroOrOne)
+            else if (e is ZeroOrOne one)
             {
-                if (Semanticize.emptyExpansionExists(((ZeroOrOne)e).expansion))
+                if (Semanticize.EmptyExpansionExists(one.expansion))
                 {
                     JavaCCErrors.SemanticError(e, "Expansion within \"(...)?\" can be matched by empty string.");
                 }
@@ -1041,58 +1041,41 @@ public class Semanticize : JavaCCGlobals
 
         public void Action(Expansion e)
         {
-            if (e is Choice)
+            if (e is Choice choice)
             {
                 if (Options.getLookahead() == 1 || Options.GetForceLaCheck())
                 {
-                    LookaheadCalc.ChoiceCalc((Choice)e);
+                    LookaheadCalc.ChoiceCalc(choice);
                 }
             }
-            else if (e is OneOrMore)
+            else if (e is OneOrMore exp)
             {
-                OneOrMore exp = (OneOrMore)e;
-                if (Options.GetForceLaCheck() || (implicitLA(exp.expansion) && Options.getLookahead() == 1))
+                if (Options.GetForceLaCheck() || (ImplicitLA(exp.expansion) && Options.getLookahead() == 1))
                 {
                     LookaheadCalc.EbnfCalc(exp, exp.expansion);
                 }
             }
-            else if (e is ZeroOrMore)
+            else if (e is ZeroOrMore exp2)
             {
-                ZeroOrMore exp = (ZeroOrMore)e;
-                if (Options.GetForceLaCheck() || (implicitLA(exp.expansion) && Options.getLookahead() == 1))
+                if (Options.GetForceLaCheck() || (ImplicitLA(exp2.expansion) && Options.getLookahead() == 1))
                 {
-                    LookaheadCalc.EbnfCalc(exp, exp.expansion);
+                    LookaheadCalc.EbnfCalc(exp2, exp2.expansion);
                 }
             }
-            else if (e is ZeroOrOne)
-            {
-                ZeroOrOne exp = (ZeroOrOne)e;
-                if (Options.GetForceLaCheck() || (implicitLA(exp.expansion) && Options.getLookahead() == 1))
+            else if (e is ZeroOrOne exp3)
+            {   if (Options.GetForceLaCheck() || (ImplicitLA(exp3.expansion) && Options.getLookahead() == 1))
                 {
-                    LookaheadCalc.EbnfCalc(exp, exp.expansion);
+                    LookaheadCalc.EbnfCalc(exp3, exp3.expansion);
                 }
             }
         }
 
-        static bool implicitLA(Expansion exp)
-        {
-            if (!(exp is Sequence))
-            {
-                return true;
-            }
-            Sequence seq = (Sequence)exp;
-            Object obj = seq.units[0];
-            if (!(obj is Lookahead))
-            {
-                return true;
-            }
-            Lookahead la = (Lookahead)obj;
-            return !la.IsExplicit();
-        }
+        static bool ImplicitLA(Expansion exp)
+            => exp is not Sequence seq || seq.units[0] is not Lookahead la || !la.IsExplicit();
 
     }
 
-    public static void reInit()
+    public static new void ReInit()
     {
         removeList = new();
         itemList = new();

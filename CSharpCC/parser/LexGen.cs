@@ -99,7 +99,7 @@ public class LexGen : CodeGenerator
     {
         int i, j;
         bool bHasImport = false;
-
+         
         List<string> tn = new(ToolNames);
         tn.Add(ToolName);
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class

@@ -623,7 +623,7 @@ public class Options
     {
         if (getDebugLookahead() && !getDebugParser())
         {
-            if (cmdLineSetting.Contains(USEROPTION__DEBUG_PARSER)
+            if (cmdLineSetting.Contains(USEROPTION__DEBUG_PARSER) 
                     || inputFileSetting.Contains(USEROPTION__DEBUG_PARSER))
             {
                 JavaCCErrors

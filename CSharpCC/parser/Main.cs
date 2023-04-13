@@ -321,7 +321,7 @@ public class MainParser
                 }
                 if (isBuildParser)
                 {
-                    new LexGenCPP().start();
+                    new LexGenCPP().Start();
                 }
                 Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.CuName);
                 OtherFilesGenCPP.start();
@@ -389,7 +389,7 @@ public class MainParser
         NfaState.reInit();
         MatchInfo.ReInit();
         LookaheadWalk.reInit();
-        Semanticize.reInit();
+        Semanticize.ReInit();
         OtherFilesGen.reInit();
         LexGen.reInit();
     }

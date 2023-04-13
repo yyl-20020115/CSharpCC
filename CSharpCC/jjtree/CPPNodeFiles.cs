@@ -407,7 +407,7 @@ public static class CPPNodeFiles
                 ostr.WriteLine("  static JJChar jjtNodeName_arr_" + i + "[] = ");
                 string n = (String)nodeNames[i];
                 //ostr.WriteLine("    (JJChar*)\"" + n + "\",");
-                OtherFilesGenCPP.printCharArray(ostr, n);
+                OtherFilesGenCPP.PrintCharArray(ostr, n);
                 ostr.WriteLine(";");
             }
             ostr.WriteLine("  static JJString jjtNodeName[] = {");
