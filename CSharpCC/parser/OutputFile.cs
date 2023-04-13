@@ -24,6 +24,7 @@
  */
 
 using org.javacc.jjtree;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace org.javacc.parser;
@@ -56,14 +57,32 @@ public class OutputFile
     private static readonly string MD5_LINE_PART_2 = " (do not edit this line) */";
     private static readonly string MD5_LINE_PART_2q = " \\(do not edit this line\\) \\*/";
 
-    TrapClosePrintWriter pw;
-    readonly TextWriter dos;
-
+    TrapClosePrintWriter writer;
+    
     string toolName = JavaCCGlobals.ToolName;
     readonly string file;
     readonly string compatibleVersion;
     readonly String[] options;
-
+    public static string GetMD5HashFromFile(string file)
+    {
+        try
+        {
+            using var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
+            using var md5 = MD5.Create();
+            var retVal = md5.ComputeHash(fileStream);
+            fileStream.Close();
+            var builder = new StringBuilder();
+            for (int i = 0; i < retVal.Length; i++)
+            {
+                builder.Append(retVal[i].ToString("x2"));
+            }
+            return builder.ToString();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error getting MD5:" + ex.Message);
+        }
+    }
     /**
      * Create a new OutputFile.
      *
@@ -88,64 +107,7 @@ public class OutputFile
             // stored
             // in the file.
 
-            StreamReader reader = new StreamReader(file);
-            MessageDigest digest;
-            try
-            {
-                digest = MessageDigest.getInstance("MD5");
-            }
-            catch (  e)
-            {
-                throw (IOException)(new IOException("No MD5 implementation")
-                .initCause(e));
-            }
-            DigestOutputStream digestStream = new DigestOutputStream(
-                new NullOutputStream(), digest);
-            TextWriter pw = new TextWriter(digestStream);
-            string line;
-            string existingMD5 = null;
-            while ((line = br.readLine()) != null)
-            {
-                if (line.StartsWith(MD5_LINE_PART_1))
-                {
-                    existingMD5 = line.replaceAll(MD5_LINE_PART_1q, "").replaceAll(
-                        MD5_LINE_PART_2q, "");
-                }
-                else
-                {
-                    pw.WriteLine(line);
-                }
-            }
-
-            pw.Close();
-
-            string calculatedDigest = ToHexString(digestStream
-                .getMessageDigest().digest());
-
-            if (existingMD5 == null || existingMD5 != (calculatedDigest))
-            {
-                // No checksum in file, or checksum differs.
-                NeedToWrite = false;
-
-                if (compatibleVersion != null)
-                {
-                    CheckVersion(file, compatibleVersion);
-                }
-
-                if (options != null)
-                {
-                    CheckOptions(file, options); 
-                }
-                 
-            }
-            else
-            {
-                // The file has not been altered since JavaCC created it.
-                // Rebuild it.
-                Console.WriteLine("File \"" + file
-                    + "\" is being rebuilt.");
-                NeedToWrite = true;
-            }
+            NeedToWrite = true;
         }
         else
         {
@@ -259,22 +221,22 @@ public class OutputFile
      */
     public TextWriter GetPrintWriter()
     {
-        if (pw == null)
+        if (writer == null)
         {
-            pw = new TrapClosePrintWriter(this.dos, this); ;
+            writer = new TrapClosePrintWriter(this); ;
 
             // Write the headers....
             string version = compatibleVersion ?? Version.VersionNumber;
-            pw.WriteLine("/* "
+            writer.WriteLine("/* "
                 + JavaCCGlobals.GetIdString(toolName, file)
                 + " Version " + version + " */");
             if (options != null)
             {
-                pw.WriteLine("/* JavaCCOptions:" + Options.GetOptionsString(options) + " */");
+                writer.WriteLine("/* JavaCCOptions:" + Options.GetOptionsString(options) + " */");
             }
         }
 
-        return pw;
+        return writer;
     }
 
     /**
@@ -287,59 +249,20 @@ public class OutputFile
 
         // Write the trailer (checksum).
         // Possibly rename the .java.tmp to .java??
-        if (pw != null)
+        if (writer != null)
         {
-            pw.WriteLine(MD5_LINE_PART_1 + GetMD5sum() + MD5_LINE_PART_2);
-            pw.ClosePrintWriter();
+            writer.ClosePrintWriter();
             //    file.renameTo(dest)
         }
     }
 
-    private string GetMD5sum()
-    {
-        pw.Flush();
-        byte[] digest = dos.getMessageDigest().digest();
-        return ToHexString(digest);
-    }
-
-    private static readonly char[] HEX_DIGITS = new char[] { '0', '1', '2', '3',
-    '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-
-    private static string ToHexString(byte[] bytes)
-    {
-        var sb = new StringBuilder(32);
-        for (int i = 0; i < bytes.Length; i++)
-        {
-            byte b = bytes[i];
-            sb.Append(HEX_DIGITS[(b & 0xF0) >> 4]).Append(HEX_DIGITS[b & 0x0F]);
-        }
-        return sb.ToString();
-    }
-
-
-    public class NullOutputStream : FileStream
-    {
-
-        public void write(byte[] arg0, int arg1, int arg2)
-        {
-        }
-
-        public void write(byte[] arg0)
-        {
-        }
-
-        public void write(int arg0)
-        {
-        }
-    }
-
-    public class TrapClosePrintWriter : TextWriter
+    public class TrapClosePrintWriter : StreamWriter
     {
         public override Encoding Encoding => Encoding.Default;
 
         readonly OutputFile file;
-        public TrapClosePrintWriter(TextWriter writer, OutputFile file)
-            :base()
+        public TrapClosePrintWriter(OutputFile file)
+            :base(file.file)
         {
             this.file = file;
         }
