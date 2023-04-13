@@ -45,11 +45,11 @@ public class ParseGen : CodeGenerator {
 		}
 
 		if (Options.getBuildParser()) {
-			List<string> tn = new (toolNames);
-			tn.Add(toolName);
+			List<string> tn = new (ToolNames);
+			tn.Add(ToolName);
 
 			// This is the first line generated -- the the comment line at the top of the generated parser
-			GenCodeLine("/* " + GetIdString(tn, cu_name + ".java") + " */");
+			GenCodeLine("/* " + GetIdString(tn, CuName + ".java") + " */");
 
 			bool implementsExists = false;
 			//bool extendsExists = false;
@@ -75,7 +75,7 @@ public class ParseGen : CodeGenerator {
 			} else {
 				GenCode(" implements ");
 			}
-			GenCode(cu_name + "Constants ");
+			GenCode(CuName + "Constants ");
 			if (cu_to_insertion_point_2.Count != 0) {
                 JavaCCGlobals.PrintTokenSetup((cu_to_insertion_point_2[0]));
 				for (Iterator<Token> it = cu_to_insertion_point_2.iterator(); it.hasNext();) {
@@ -94,42 +94,42 @@ public class ParseGen : CodeGenerator {
 			}
 			if (Options.getUserTokenManager()) {
 				GenCodeLine("  /** User defined Token Manager. */");
-				GenCodeLine("  " + staticOpt() + "public TokenManager token_source;");
+				GenCodeLine("  " + StaticOpt() + "public TokenManager token_source;");
 			} else {
 				GenCodeLine("  /** Generated Token Manager. */");
-				GenCodeLine("  " + staticOpt() + "public " + cu_name + "TokenManager token_source;");
+				GenCodeLine("  " + StaticOpt() + "public " + CuName + "TokenManager token_source;");
 				if (!Options.getUserCharStream()) {
 					if (Options.getJavaUnicodeEscape()) {
-						GenCodeLine("  " + staticOpt() + "JavaCharStream jj_input_stream;");
+						GenCodeLine("  " + StaticOpt() + "JavaCharStream jj_input_stream;");
 					} else {
-						GenCodeLine("  " + staticOpt() + "SimpleCharStream jj_input_stream;");
+						GenCodeLine("  " + StaticOpt() + "SimpleCharStream jj_input_stream;");
 					}
 				}
 			}
 			GenCodeLine("  /** Current token. */");
-			GenCodeLine("  " + staticOpt() + "public Token token;");
+			GenCodeLine("  " + StaticOpt() + "public Token token;");
 			GenCodeLine("  /** Next token. */");
-			GenCodeLine("  " + staticOpt() + "public Token jj_nt;");
+			GenCodeLine("  " + StaticOpt() + "public Token jj_nt;");
 			if (!Options.getCacheTokens()) {
-				GenCodeLine("  " + staticOpt() + "private int jj_ntk;");
+				GenCodeLine("  " + StaticOpt() + "private int jj_ntk;");
 			}
 			if (Options.getDepthLimit() > 0) {
-				GenCodeLine("  " + staticOpt() + "private int jj_depth;");
+				GenCodeLine("  " + StaticOpt() + "private int jj_depth;");
 			}
 			if (jj2index != 0) {
-				GenCodeLine("  " + staticOpt() + "private Token jj_scanpos, jj_lastpos;");
-				GenCodeLine("  " + staticOpt() + "private int jj_la;");
+				GenCodeLine("  " + StaticOpt() + "private Token jj_scanpos, jj_lastpos;");
+				GenCodeLine("  " + StaticOpt() + "private int jj_la;");
 				if (lookaheadNeeded) {
 					GenCodeLine("  /** Whether we are looking ahead. */");
-					GenCodeLine("  " + staticOpt() + "private " + Options.getBooleanType()
+					GenCodeLine("  " + StaticOpt() + "private " + Options.getBooleanType()
 							+ " jj_lookingAhead = false;");
-					GenCodeLine("  " + staticOpt() + "private " + Options.getBooleanType()
+					GenCodeLine("  " + StaticOpt() + "private " + Options.getBooleanType()
 							+ " jj_semLA;");
 				}
 			}
 			if (Options.getErrorReporting()) {
-				GenCodeLine("  " + staticOpt() + "private int jj_gen;");
-				GenCodeLine("  " + staticOpt() + "private int[] jj_la1 = new int["
+				GenCodeLine("  " + StaticOpt() + "private int jj_gen;");
+				GenCodeLine("  " + StaticOpt() + "private int[] jj_la1 = new int["
 						+ maskindex + "];");
 				int tokenMaskSize = (tokenCount - 1) / 32 + 1;
 				for (int i = 0; i < tokenMaskSize; i++) {
@@ -152,11 +152,11 @@ public class ParseGen : CodeGenerator {
 				}
 			}
 			if (jj2index != 0 && Options.getErrorReporting()) {
-				GenCodeLine("  " + staticOpt() + "final private JJCalls[] jj_2_rtns = new JJCalls["
+				GenCodeLine("  " + StaticOpt() + "final private JJCalls[] jj_2_rtns = new JJCalls["
 						+ jj2index + "];");
-				GenCodeLine("  " + staticOpt() + "private " + Options.getBooleanType()
+				GenCodeLine("  " + StaticOpt() + "private " + Options.getBooleanType()
 						+ " jj_rescan = false;");
-				GenCodeLine("  " + staticOpt() + "private int jj_gc = 0;");
+				GenCodeLine("  " + StaticOpt() + "private int jj_gc = 0;");
 			}
 			GenCodeLine("");
 
@@ -169,7 +169,7 @@ public class ParseGen : CodeGenerator {
 			if (!Options.getUserTokenManager()) {
 				if (Options.getUserCharStream()) {
 					GenCodeLine("  /** Constructor with user supplied CharStream. */");
-					GenCodeLine("  public " + cu_name + "(CharStream stream) {");
+					GenCodeLine("  public " + CuName + "(CharStream stream) {");
 					if (Options.getStatic()) {
 						GenCodeLine("	 if (jj_initialized_once) {");
 						GenCodeLine("	   System.out.println(\"ERROR: Second call to constructor of static parser.  \");");
@@ -181,10 +181,10 @@ public class ParseGen : CodeGenerator {
 						GenCodeLine("	 jj_initialized_once = true;");
 					}
 					if (Options.getTokenManagerUsesParser()) {
-						GenCodeLine("	 token_source = new " + cu_name
+						GenCodeLine("	 token_source = new " + CuName
 								+ "TokenManager(this, stream);");
 					} else {
-						GenCodeLine("	 token_source = new " + cu_name + "TokenManager(stream);");
+						GenCodeLine("	 token_source = new " + CuName + "TokenManager(stream);");
 					}
 					GenCodeLine("	 token = new Token();");
 					if (Options.getCacheTokens()) {
@@ -208,7 +208,7 @@ public class ParseGen : CodeGenerator {
 					GenCodeLine("  }");
 					GenCodeLine("");
 					GenCodeLine("  /** Reinitialise. */");
-					GenCodeLine("  " + staticOpt() + "public void ReInit(CharStream stream) {");
+					GenCodeLine("  " + StaticOpt() + "public void ReInit(CharStream stream) {");
 
 					if (Options.isTokenManagerRequiresParserAccess()) {
 						GenCodeLine("	 token_source.ReInit(this,stream);");
@@ -229,7 +229,7 @@ public class ParseGen : CodeGenerator {
 					if (lookaheadNeeded) {
 						GenCodeLine("	 jj_lookingAhead = false;");
 					}
-					if (jjtreeGenerated) {
+					if (JjtreeGenerated) {
 						GenCodeLine("	 jjtree.reset();");
 					}
 					if (Options.getErrorReporting()) {
@@ -247,11 +247,11 @@ public class ParseGen : CodeGenerator {
 
 					if (!isJavaModernMode) {
 						GenCodeLine("  /** Constructor with InputStream. */");
-						GenCodeLine("  public " + cu_name + "(java.io.InputStream stream) {");
+						GenCodeLine("  public " + CuName + "(java.io.InputStream stream) {");
 						GenCodeLine("	  this(stream, null);");
 						GenCodeLine("  }");
 						GenCodeLine("  /** Constructor with InputStream and supplied encoding */");
-						GenCodeLine("  public " + cu_name
+						GenCodeLine("  public " + CuName
 								+ "(java.io.InputStream stream, String encoding) {");
 						if (Options.getStatic()) {
 							GenCodeLine("	 if (jj_initialized_once) {");
@@ -284,10 +284,10 @@ public class ParseGen : CodeGenerator {
 							}
 						}
 						if (Options.getTokenManagerUsesParser() && !Options.getStatic()) {
-							GenCodeLine("	 token_source = new " + cu_name
+							GenCodeLine("	 token_source = new " + CuName
 									+ "TokenManager(this, jj_input_stream);");
 						} else {
-							GenCodeLine("	 token_source = new " + cu_name
+							GenCodeLine("	 token_source = new " + CuName
 									+ "TokenManager(jj_input_stream);");
 						}
 						GenCodeLine("	 token = new Token();");
@@ -313,14 +313,14 @@ public class ParseGen : CodeGenerator {
 						GenCodeLine("");
 
 						GenCodeLine("  /** Reinitialise. */");
-						GenCodeLine("  " + staticOpt()
+						GenCodeLine("  " + StaticOpt()
 								+ "public void ReInit(java.io.InputStream stream) {");
 						GenCodeLine("	  ReInit(stream, null);");
 						GenCodeLine("  }");
 
 						GenCodeLine("  /** Reinitialise. */");
 						GenCodeLine("  "
-								+ staticOpt()
+								+ StaticOpt()
 								+ "public void ReInit(java.io.InputStream stream, String encoding) {");
 						if (!Options.getGenerateChainedException()) {
 							GenCodeLine("	 try { jj_input_stream.ReInit(stream, encoding, 1, 1); } "
@@ -346,7 +346,7 @@ public class ParseGen : CodeGenerator {
 						if (Options.getDepthLimit() > 0) {
 							GenCodeLine("    jj_depth = -1;");
 						}
-						if (jjtreeGenerated) {
+						if (JjtreeGenerated) {
 							GenCodeLine("	 jjtree.reset();");
 						}
 						if (Options.getErrorReporting()) {
@@ -368,7 +368,7 @@ public class ParseGen : CodeGenerator {
 
 
 					GenCodeLine("  /** Constructor. */");
-					GenCodeLine("  public " + cu_name + "(" + readerInterfaceName + " stream) {");
+					GenCodeLine("  public " + CuName + "(" + readerInterfaceName + " stream) {");
 					if (Options.getStatic()) {
 						GenCodeLine("	 if (jj_initialized_once) {");
 						GenCodeLine("	   System.out.println(\"ERROR: Second call to constructor of static parser. \");");
@@ -385,10 +385,10 @@ public class ParseGen : CodeGenerator {
 						GenCodeLine("	 jj_input_stream = new SimpleCharStream(stream, 1, 1);");
 					}
 					if (Options.getTokenManagerUsesParser() && !Options.getStatic()) {
-						GenCodeLine("	 token_source = new " + cu_name
+						GenCodeLine("	 token_source = new " + CuName
 								+ "TokenManager(this, jj_input_stream);");
 					} else {
-						GenCodeLine("	 token_source = new " + cu_name
+						GenCodeLine("	 token_source = new " + CuName
 								+ "TokenManager(jj_input_stream);");
 					}
 					GenCodeLine("	 token = new Token();");
@@ -416,7 +416,7 @@ public class ParseGen : CodeGenerator {
 					// Add-in a string based constructor because its convenient (modern only to prevent regressions)
 					if (isJavaModernMode) {
 						GenCodeLine("  /** Constructor. */");
-						GenCodeLine("  public " + cu_name
+						GenCodeLine("  public " + CuName
 								+ "(String dsl), "+Options.getTokenMgrErrorClass() +" {");
 						GenCodeLine("	   this(new " + stringReaderClass + "(dsl));");
 						GenCodeLine("  }");
@@ -430,7 +430,7 @@ public class ParseGen : CodeGenerator {
 
 
 					GenCodeLine("  /** Reinitialise. */");
-					GenCodeLine("  " + staticOpt() + "public void ReInit(" + readerInterfaceName
+					GenCodeLine("  " + StaticOpt() + "public void ReInit(" + readerInterfaceName
 							+ " stream) {");
 					if (Options.getJavaUnicodeEscape()) {
 						GenCodeLine("	if (jj_input_stream == null) {");
@@ -449,9 +449,9 @@ public class ParseGen : CodeGenerator {
 					GenCodeLine("	if (token_source == null) {");
 
 					if (Options.getTokenManagerUsesParser() && !Options.getStatic()) {
-						GenCodeLine(" token_source = new " + cu_name + "TokenManager(this, jj_input_stream);");
+						GenCodeLine(" token_source = new " + CuName + "TokenManager(this, jj_input_stream);");
 					} else {
-						GenCodeLine(" token_source = new " + cu_name + "TokenManager(jj_input_stream);");
+						GenCodeLine(" token_source = new " + CuName + "TokenManager(jj_input_stream);");
 					}
 
 					GenCodeLine("	}");
@@ -472,7 +472,7 @@ public class ParseGen : CodeGenerator {
 					if (Options.getDepthLimit() > 0) {
 						GenCodeLine("    jj_depth = -1;");
 					}
-					if (jjtreeGenerated) {
+					if (JjtreeGenerated) {
 						GenCodeLine("	 jjtree.reset();");
 					}
 					if (Options.getErrorReporting()) {
@@ -492,10 +492,10 @@ public class ParseGen : CodeGenerator {
 			GenCodeLine("");
 			if (Options.getUserTokenManager()) {
 				GenCodeLine("  /** Constructor with user supplied Token Manager. */");
-				GenCodeLine("  public " + cu_name + "(TokenManager tm) {");
+				GenCodeLine("  public " + CuName + "(TokenManager tm) {");
 			} else {
 				GenCodeLine("  /** Constructor with generated Token Manager. */");
-				GenCodeLine("  public " + cu_name + "(" + cu_name + "TokenManager tm) {");
+				GenCodeLine("  public " + CuName + "(" + CuName + "TokenManager tm) {");
 			}
 			if (Options.getStatic()) {
 				GenCodeLine("	 if (jj_initialized_once) {");
@@ -533,7 +533,7 @@ public class ParseGen : CodeGenerator {
 				GenCodeLine("  public void ReInit(TokenManager tm) {");
 			} else {
 				GenCodeLine("  /** Reinitialise. */");
-				GenCodeLine("  public void ReInit(" + cu_name + "TokenManager tm) {");
+				GenCodeLine("  public void ReInit(" + CuName + "TokenManager tm) {");
 			}
 			GenCodeLine("	 token_source = tm;");
 			GenCodeLine("	 token = new Token();");
@@ -545,7 +545,7 @@ public class ParseGen : CodeGenerator {
 			if (Options.getDepthLimit() > 0) {
 				GenCodeLine("    jj_depth = -1;");
 			}
-			if (jjtreeGenerated) {
+			if (JjtreeGenerated) {
 				GenCodeLine("	 jjtree.reset();");
 			}
 			if (Options.getErrorReporting()) {
@@ -559,7 +559,7 @@ public class ParseGen : CodeGenerator {
 			}
 			GenCodeLine("  }");
 			GenCodeLine("");
-			GenCodeLine("  " + staticOpt()
+			GenCodeLine("  " + StaticOpt()
 					+ "private Token jj_consume_token(int kind) throws ParseException {");
 			if (Options.getCacheTokens()) {
 				GenCodeLine("	 Token oldToken = token;");
@@ -611,7 +611,7 @@ public class ParseGen : CodeGenerator {
 				GenCodeLine("    }");
 				GenCodeLine("  }");
 				GenCodeLine("  static private final LookaheadSuccess jj_ls = new LookaheadSuccess();");
-				GenCodeLine("  " + staticOpt() + "private " + Options.getBooleanType()
+				GenCodeLine("  " + StaticOpt() + "private " + Options.getBooleanType()
 						+ " jj_scan_token(int kind) {");
 				GenCodeLine("	 if (jj_scanpos == jj_lastpos) {");
 				GenCodeLine("	   jj_la--;");
@@ -644,7 +644,7 @@ public class ParseGen : CodeGenerator {
 			}
 			GenCodeLine("");
 			GenCodeLine("/** Get the next Token. */");
-			GenCodeLine("  " + staticOpt() + "final public Token getNextToken() {");
+			GenCodeLine("  " + StaticOpt() + "final public Token getNextToken() {");
 			if (Options.getCacheTokens()) {
 				GenCodeLine("	 if ((token = jj_nt).next != null) jj_nt = jj_nt.next;");
 				GenCodeLine("	 else jj_nt = jj_nt.next = token_source.getNextToken();");
@@ -663,7 +663,7 @@ public class ParseGen : CodeGenerator {
 			GenCodeLine("  }");
 			GenCodeLine("");
 			GenCodeLine("/** Get the specific Token. */");
-			GenCodeLine("  " + staticOpt() + "final public Token getToken(int index) {");
+			GenCodeLine("  " + StaticOpt() + "final public Token getToken(int index) {");
 			if (lookaheadNeeded) {
 				GenCodeLine("	 Token t = jj_lookingAhead ? jj_scanpos : token;");
 			} else {
@@ -677,7 +677,7 @@ public class ParseGen : CodeGenerator {
 			GenCodeLine("  }");
 			GenCodeLine("");
 			if (!Options.getCacheTokens()) {
-				GenCodeLine("  " + staticOpt() + "private int jj_ntk_f() {");
+				GenCodeLine("  " + StaticOpt() + "private int jj_ntk_f() {");
 				GenCodeLine("	 if ((jj_nt=token.next) == null)");
 				GenCodeLine("	   return (jj_ntk = (token.next=token_source.getNextToken()).kind);");
 				GenCodeLine("	 else");
@@ -687,20 +687,20 @@ public class ParseGen : CodeGenerator {
 			}
 			if (Options.getErrorReporting()) {
 				if (!Options.getGenerateGenerics()) {
-					GenCodeLine("  " + staticOpt()
+					GenCodeLine("  " + StaticOpt()
 							+ "private java.util.List jj_expentries = new java.util.ArrayList();");
 				} else {
 					GenCodeLine("  "
-							+ staticOpt()
+							+ StaticOpt()
 							+ "private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();");
 				}
-				GenCodeLine("  " + staticOpt() + "private int[] jj_expentry;");
-				GenCodeLine("  " + staticOpt() + "private int jj_kind = -1;");
+				GenCodeLine("  " + StaticOpt() + "private int[] jj_expentry;");
+				GenCodeLine("  " + StaticOpt() + "private int jj_kind = -1;");
 				if (jj2index != 0) {
-					GenCodeLine("  " + staticOpt() + "private int[] jj_lasttokens = new int[100];");
-					GenCodeLine("  " + staticOpt() + "private int jj_endpos;");
+					GenCodeLine("  " + StaticOpt() + "private int[] jj_lasttokens = new int[100];");
+					GenCodeLine("  " + StaticOpt() + "private int jj_endpos;");
 					GenCodeLine("");
-					GenCodeLine("  " + staticOpt()
+					GenCodeLine("  " + StaticOpt()
 							+ "private void jj_add_error_token(int kind, int pos) {");
 					GenCodeLine("	 if (pos >= 100) {");
 					GenCodeLine("		return;");
@@ -747,7 +747,7 @@ public class ParseGen : CodeGenerator {
 				}
 				GenCodeLine("");
 				GenCodeLine("  /** Generate ParseException. */");
-				GenCodeLine("  " + staticOpt() + "public ParseException generateParseException() {");
+				GenCodeLine("  " + StaticOpt() + "public ParseException generateParseException() {");
 				GenCodeLine("	 jj_expentries.clear();");
 				GenCodeLine("	 " + Options.getBooleanType() + "[] la1tokens = new "
 						+ Options.getBooleanType() + "[" + tokenCount + "];");
@@ -794,7 +794,7 @@ public class ParseGen : CodeGenerator {
 
 				if (isJavaModernMode) {
 					// Add the lexical state onto the exception message
-					GenCodeLine("	 return new ParseException(token, exptokseq, tokenImage, token_source == null ? null : " +cu_name+ "TokenManager.lexStateNames[token_source.curLexState]);");
+					GenCodeLine("	 return new ParseException(token, exptokseq, tokenImage, token_source == null ? null : " +CuName+ "TokenManager.lexStateNames[token_source.curLexState]);");
 				} else {
 					GenCodeLine("	 return new ParseException(token, exptokseq, tokenImage);");
 				}
@@ -802,7 +802,7 @@ public class ParseGen : CodeGenerator {
 				GenCodeLine("  }");
 			} else {
 				GenCodeLine("  /** Generate ParseException. */");
-				GenCodeLine("  " + staticOpt() + "public ParseException generateParseException() {");
+				GenCodeLine("  " + StaticOpt() + "public ParseException generateParseException() {");
 				GenCodeLine("	 Token errortok = token.next;");
 				if (Options.getKeepLineColumn()) {
 					GenCodeLine("	 int line = errortok.beginLine, column = errortok.beginColumn;");
@@ -820,29 +820,29 @@ public class ParseGen : CodeGenerator {
 			}
 			GenCodeLine("");
 
-            GenCodeLine("  " + staticOpt() + "private " + Options.getBooleanType()
+            GenCodeLine("  " + StaticOpt() + "private " + Options.getBooleanType()
 					+ " trace_enabled;");
 			GenCodeLine("");
 			GenCodeLine("/** Trace enabled. */");
-            GenCodeLine("  " + staticOpt() + "final public boolean trace_enabled() {");
+            GenCodeLine("  " + StaticOpt() + "final public boolean trace_enabled() {");
 			GenCodeLine("	 return trace_enabled;");
 			GenCodeLine("  }");
 			GenCodeLine("");
 
 			if (Options.getDebugParser()) {
-				GenCodeLine("  " + staticOpt() + "private int trace_indent = 0;");
+				GenCodeLine("  " + StaticOpt() + "private int trace_indent = 0;");
 
 				GenCodeLine("/** Enable tracing. */");
-				GenCodeLine("  " + staticOpt() + "final public void enable_tracing() {");
+				GenCodeLine("  " + StaticOpt() + "final public void enable_tracing() {");
 				GenCodeLine("	 trace_enabled = true;");
 				GenCodeLine("  }");
 				GenCodeLine("");
 				GenCodeLine("/** Disable tracing. */");
-                GenCodeLine("  " + staticOpt() + "final public void disable_tracing() {");
+                GenCodeLine("  " + StaticOpt() + "final public void disable_tracing() {");
 				GenCodeLine("	 trace_enabled = false;");
 				GenCodeLine("  }");
 				GenCodeLine("");
-                GenCodeLine("  " + staticOpt() + "protected void trace_call(String s) {");
+                GenCodeLine("  " + StaticOpt() + "protected void trace_call(String s) {");
 				GenCodeLine("	 if (trace_enabled) {");
 				GenCodeLine("	   for (int i = 0; i < trace_indent; i++) { System.out.print(\" \"); }");
 				GenCodeLine("	   System.out.println(\"Call:	\" + s);");
@@ -850,7 +850,7 @@ public class ParseGen : CodeGenerator {
 				GenCodeLine("	 trace_indent = trace_indent + 2;");
 				GenCodeLine("  }");
 				GenCodeLine("");
-                GenCodeLine("  " + staticOpt() + "protected void trace_return(String s) {");
+                GenCodeLine("  " + StaticOpt() + "protected void trace_return(String s) {");
 				GenCodeLine("	 trace_indent = trace_indent - 2;");
 				GenCodeLine("	 if (trace_enabled) {");
 				GenCodeLine("	   for (int i = 0; i < trace_indent; i++) { System.out.print(\" \"); }");
@@ -858,7 +858,7 @@ public class ParseGen : CodeGenerator {
 				GenCodeLine("	 }");
 				GenCodeLine("  }");
 				GenCodeLine("");
-				GenCodeLine("  " + staticOpt()
+				GenCodeLine("  " + StaticOpt()
 						+ "protected void trace_token(Token t, String where) {");
 				GenCodeLine("	 if (trace_enabled) {");
 				GenCodeLine("	   for (int i = 0; i < trace_indent; i++) { System.out.print(\" \"); }");
@@ -871,7 +871,7 @@ public class ParseGen : CodeGenerator {
 				GenCodeLine("	 }");
 				GenCodeLine("  }");
 				GenCodeLine("");
-				GenCodeLine("  " + staticOpt() + "protected void trace_scan(Token t1, int t2) {");
+				GenCodeLine("  " + StaticOpt() + "protected void trace_scan(Token t1, int t2) {");
 				GenCodeLine("	 if (trace_enabled) {");
 				GenCodeLine("	   for (int i = 0; i < trace_indent; i++) { System.out.print(\" \"); }");
 				GenCodeLine("	   System.out.print(\"Visited token: <\" + tokenImage[t1.kind]);");
@@ -885,17 +885,17 @@ public class ParseGen : CodeGenerator {
 				GenCodeLine("");
 			} else {
 				GenCodeLine("  /** Enable tracing. */");
-				GenCodeLine("  " + staticOpt() + "final public void enable_tracing() {");
+				GenCodeLine("  " + StaticOpt() + "final public void enable_tracing() {");
 				GenCodeLine("  }");
 				GenCodeLine("");
 				GenCodeLine("  /** Disable tracing. */");
-				GenCodeLine("  " + staticOpt() + "final public void disable_tracing() {");
+				GenCodeLine("  " + StaticOpt() + "final public void disable_tracing() {");
 				GenCodeLine("  }");
 				GenCodeLine("");
 			}
 
 			if (jj2index != 0 && Options.getErrorReporting()) {
-				GenCodeLine("  " + staticOpt() + "private void jj_rescan_token() {");
+				GenCodeLine("  " + StaticOpt() + "private void jj_rescan_token() {");
 				GenCodeLine("	 jj_rescan = true;");
 				GenCodeLine("	 for (int i = 0; i < " + jj2index + "; i++) {");
 				GenCodeLine("	   try {");
@@ -918,7 +918,7 @@ public class ParseGen : CodeGenerator {
 				GenCodeLine("	 jj_rescan = false;");
 				GenCodeLine("  }");
 				GenCodeLine("");
-				GenCodeLine("  " + staticOpt() + "private void jj_save(int index, int xla) {");
+				GenCodeLine("  " + StaticOpt() + "private void jj_save(int index, int xla) {");
 				GenCodeLine("	 JJCalls p = jj_2_rtns[index];");
 				GenCodeLine("	 while (p.gen > jj_gen) {");
 				GenCodeLine("	   if (p.next == null) { p = p.next = new JJCalls(); break; }");
@@ -953,7 +953,7 @@ public class ParseGen : CodeGenerator {
 			}
 			GenCodeLine("");
 
-			saveOutput(Options.getOutputDirectory() + File.separator + cu_name
+			saveOutput(Options.getOutputDirectory() + File.separator + CuName
 					+ GetFileExtension(Options.getOutputLanguage()));
 
 		} // matches "if (Options.getBuildParser())"

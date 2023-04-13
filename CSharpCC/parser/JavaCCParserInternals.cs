@@ -47,7 +47,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
 
     static protected void Addcuname(string id)
     {
-        cu_name = id;
+        CuName = id;
     }
 
     static protected void Compare(Token t, string id1, string id2)
@@ -374,7 +374,7 @@ public abstract class JavaCCParserInternals : JavaCCGlobals
         result.Member = tblk;
     }
 
-    public static void ReInit()
+    public static new void ReInit()
     {
         add_cu_token_here = cu_to_insertion_point_1;
         first_cu_token = null;

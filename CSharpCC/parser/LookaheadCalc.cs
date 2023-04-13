@@ -90,7 +90,7 @@ public class LookaheadCalc : JavaCCGlobals
                 if (rexps_of_tokens.TryGetValue(m.match[i], out var re) 
                     && re is RStringLiteral rs)
                 {
-                    ret += " \"" + add_escapes(rs.image) + "\"";
+                    ret += " \"" + AddEscapes(rs.image) + "\"";
                 }
                 else if (!string.IsNullOrEmpty(re?.label))
                 {

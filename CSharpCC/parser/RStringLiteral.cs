@@ -481,7 +481,7 @@ public class RStringLiteral : RegularExpression
         RegularExpression re = MainParser.LexGenerator.rexprs[kind];
 
         if (re is RStringLiteral)
-            return " \"" + JavaCCGlobals.add_escapes(((RStringLiteral)re).image) + "\"";
+            return " \"" + JavaCCGlobals.AddEscapes(((RStringLiteral)re).image) + "\"";
         else if (!re.label == (""))
             return " <" + re.label + ">";
         else
@@ -1119,7 +1119,7 @@ public class RStringLiteral : RegularExpression
                                 intermediateMatchedPos[(j * 64 + k)][i] == i)
                             {
                                 JavaCCErrors.Warning(" \"" +
-                                    JavaCCGlobals.add_escapes(allImages[j * 64 + k]) +
+                                    JavaCCGlobals.AddEscapes(allImages[j * 64 + k]) +
                                     "\" cannot be matched as a string literal token " +
                                     "at line " + GetLine(j * 64 + k) + ", column " + GetColumn(j * 64 + k) +
                                     ". It will be matched as " +
@@ -1131,7 +1131,7 @@ public class RStringLiteral : RegularExpression
                                  MainParser.LexGenerator.canMatchAnyChar[MainParser.LexGenerator.lexStateIndex] < (j * 64 + k))
                             {
                                 JavaCCErrors.warning(" \"" +
-                                    JavaCCGlobals.add_escapes(allImages[j * 64 + k]) +
+                                    JavaCCGlobals.AddEscapes(allImages[j * 64 + k]) +
                                     "\" cannot be matched as a string literal token " +
                                     "at line " + GetLine(j * 64 + k) + ", column " + GetColumn(j * 64 + k) +
                                     ". It will be matched as " +

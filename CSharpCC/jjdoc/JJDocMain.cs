@@ -105,7 +105,7 @@ public class JJDocMain : JJDocGlobals
         javacc.parser.MainParser.ReInitAll();
         JJDocOptions.Init();
 
-        bannerLine("Documentation Generator", "0.1.4");
+        BannerLine("Documentation Generator", "0.1.4");
 
         JavaCCParser parser = null;
         if (args.Length == 0)

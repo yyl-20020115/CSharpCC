@@ -78,7 +78,7 @@ public partial class CPPFiles : JavaCCGlobals
     static Regex versionRegex = MyRegex();
     public static double GetVersion(string fileName)
     {
-        string commentHeader = "/* " + GetIdString(toolName, fileName) + " Version ";
+        string commentHeader = "/* " + GetIdString(ToolName, fileName) + " Version ";
         string file = Path.Combine(Options.getOutputDirectory(), ReplaceBackslash(fileName));
 
         if (!File.Exists(file))

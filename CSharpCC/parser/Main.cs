@@ -195,7 +195,7 @@ public class MainParser
         // Initialize all static state
         ReInitAll();
 
-        JavaCCGlobals.bannerLine("Parser Generator", "");
+        JavaCCGlobals.BannerLine("Parser Generator", "");
 
         JavaCCParser parser = null;
         if (args.Length == 0)
@@ -256,9 +256,9 @@ public class MainParser
         try
         {
             Console.WriteLine("Reading from file " + args[^1] + " . . .");
-            JavaCCGlobals.fileName = JavaCCGlobals.origFileName = args[^1];
-            JavaCCGlobals.jjtreeGenerated = JavaCCGlobals.IsGeneratedBy("JJTree", args[args.Length - 1]);
-            JavaCCGlobals.toolNames = JavaCCGlobals.GetToolNames(args[^1]);
+            JavaCCGlobals.FileName = JavaCCGlobals.OrigFileName = args[^1];
+            JavaCCGlobals.JjtreeGenerated = JavaCCGlobals.IsGeneratedBy("JJTree", args[args.Length - 1]);
+            JavaCCGlobals.ToolNames = JavaCCGlobals.GetToolNames(args[^1]);
             parser.javacc_input();
 
             // 2012/05/02 - Moved this here as cannot evaluate output language
@@ -310,7 +310,7 @@ public class MainParser
                 // Must always create the lexer object even if not building a parser.
                 new LexGen().start();
 
-                Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.cu_name);
+                Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.CuName);
                 OtherFilesGen.start(isJavaModern);
             }
             else if (isCPPOutput)
@@ -323,7 +323,7 @@ public class MainParser
                 {
                     new LexGenCPP().start();
                 }
-                Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.cu_name);
+                Options.setStringOption(Options.NONUSER_OPTION__PARSER_NAME, JavaCCGlobals.CuName);
                 OtherFilesGenCPP.start();
             }
             else

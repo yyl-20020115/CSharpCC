@@ -171,7 +171,7 @@ public class JavaFiles : JavaCCGlobals
      */
     public static double GetVersion(string fileName)
     {
-        string commentHeader = "/* " + GetIdString(toolName, fileName) + " Version ";
+        string commentHeader = "/* " + GetIdString(ToolName, fileName) + " Version ";
         string file = System.IO.Path.Combine(Options.getOutputDirectory(), ReplaceBackslash(fileName));
 
         if (!File.Exists(file))

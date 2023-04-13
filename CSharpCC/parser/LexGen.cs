@@ -100,8 +100,8 @@ public class LexGen : CodeGenerator
         int i, j;
         bool bHasImport = false;
 
-        List<string> tn = new(toolNames);
-        tn.Add(toolName);
+        List<string> tn = new(ToolNames);
+        tn.Add(ToolName);
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
         GenCodeLine("/* " + GetIdString(tn, tokMgrClassName + GetFileExtension(Options.getOutputLanguage())) + " */");
 
@@ -160,7 +160,7 @@ public class LexGen : CodeGenerator
         //GenCodeLine("class " + tokMgrClassName + " implements " +
         //cu_name + "Constants");
         //String superClass = Options.stringValue(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS);
-        GenClassStart(null, tokMgrClassName, new String[] { }, new String[] { cu_name + "Constants" });
+        GenClassStart(null, tokMgrClassName, new String[] { }, new String[] { CuName + "Constants" });
         //GenCodeLine("{"); // }
 
         if (token_mgr_decls != null && token_mgr_decls.Count > 0)
@@ -208,7 +208,7 @@ public class LexGen : CodeGenerator
         if (Options.getTokenManagerUsesParser())
         {
             GenCodeLine("");
-            GenCodeLine("  public " + cu_name + " parser = null;");
+            GenCodeLine("  public " + CuName + " parser = null;");
         }
     }
 
@@ -233,7 +233,7 @@ public class LexGen : CodeGenerator
         foreach (int l in maxLongsReqd)
             x = Math.Max(x, l);
         options.Add("maxLongs", x);
-        options.Add("cu_name", cu_name);
+        options.Add("cu_name", CuName);
 
         // options.Add("", .valueOf(maxOrdinal));
 
@@ -366,7 +366,7 @@ public class LexGen : CodeGenerator
         int i, j;
 
         staticString = (Options.getStatic() ? "static " : "");
-        tokMgrClassName = cu_name + "TokenManager";
+        tokMgrClassName = CuName + "TokenManager";
 
         if (!GenerateDataOnly && codeGeneratorClass == null) PrintClassHead();
         BuildLexStatesTable();
@@ -564,7 +564,7 @@ public class LexGen : CodeGenerator
 
         if (GenerateDataOnly || codeGeneratorClass != null)
         {
-            tokenizerData.SetParserName(cu_name);
+            tokenizerData.SetParserName(CuName);
             NfaState.BuildTokenizerData(tokenizerData);
             RStringLiteral.BuildTokenizerData(tokenizerData);
             int[] newLexStateIndices = new int[maxOrdinal];

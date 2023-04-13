@@ -62,7 +62,7 @@ public class OutputFile
 
     TextWriter dos;
 
-    string toolName = JavaCCGlobals.toolName;
+    string toolName = JavaCCGlobals.ToolName;
 
     string file;
 

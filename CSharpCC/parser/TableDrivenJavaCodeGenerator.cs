@@ -272,15 +272,15 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
             "public static final String[] jjstrLiteralImages = {");
 
         int k = 0;
-        foreach (int i in allMatches.keySet())
+        foreach (int i in allMatches.Keys)
         {
             TokenizerData.MatchInfo matchInfo = allMatches[i];
             switch (matchInfo.matchType)
             {
-                case SKIP: toSkip.set(i); break;
-                case SPECIAL_TOKEN: toSpecial.set(i); break;
-                case MORE: toMore.set(i); break;
-                case TOKEN: toToken.set(i); break;
+                case MatchType.SKIP: toSkip.set(i); break;
+                case MatchType.SPECIAL_TOKEN: toSpecial.set(i); break;
+                case MatchType.MORE: toMore.set(i); break;
+                case MatchType.TOKEN: toToken.set(i); break;
             }
             newStates[i] = matchInfo.newLexState;
             string image = matchInfo.image;

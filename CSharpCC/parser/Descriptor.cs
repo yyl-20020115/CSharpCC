@@ -1,4 +1,4 @@
-/* Copyright (c) 2006, Sun Microsystems, Inc.
+﻿/* Copyright (c) 2006, Sun Microsystems, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,65 +26,11 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 namespace org.javacc.parser;
-/**
- * Describes single character descriptors in a character list.
- */
 
-public class SingleCharacter : Descriptor
+public interface Descriptor
 {
-
-    /**
-     * The line and column number of the construct that corresponds
-     * most closely to this node.
-     */
-    private int column;
-
-    private int line;
-
-    /**
-     * The character of this descriptor.
-     */
-    public char ch;
-
-    public SingleCharacter()
-    {
-    }
-
-    public SingleCharacter(char c)
-    {
-        ch = c;
-    }
-
-    /**
-     * @param line the line to set
-     */
-    public void SetLine(int line)
-    {
-        this.line = line;
-    }
-
-    /**
-     * @return the line
-     */
-    public int GetLine()
-    {
-        return line;
-    }
-
-    /**
-     * @param column the column to set
-     */
-    public void SetColumn(int column)
-    {
-        this.column = column;
-    }
-
-    /**
-     * @return the column
-     */
-    public int GetColumn()
-    {
-        return column;
-    }
-
+    int GetLine();
+    void SetLine(int line);
+    int GetColumn();
+    void SetColumn(int column);
 }

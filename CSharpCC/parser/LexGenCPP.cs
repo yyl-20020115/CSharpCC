@@ -46,8 +46,8 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
     {
         int i, j;
 
-        List<string> tn = new(toolNames);
-        tn.Add(toolName);
+        List<string> tn = new(ToolNames);
+        tn.Add(ToolName);
 
         SwitchToStaticsFile();
 
@@ -59,7 +59,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         GenCodeLine("#include \"Token.h\"");
         GenCodeLine("#include \"ErrorHandler.h\"");
         GenCodeLine("#include \"TokenManager.h\"");
-        GenCodeLine("#include \"" + cu_name + "Constants.h\"");
+        GenCodeLine("#include \"" + CuName + "Constants.h\"");
 
         if (Options.stringValue(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDE).Length > 0)
         {
@@ -73,7 +73,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             GenCodeLine("namespace " + Options.stringValue("NAMESPACE_OPEN"));
         }
 
-        GenCodeLine("class " + cu_name + ";");
+        GenCodeLine("class " + CuName + ";");
 
         int l = 0, kind;
         i = 1;
@@ -130,7 +130,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 {
                     commonTokenActionSeen = t.image == ("CommonTokenAction");
                     if (commonTokenActionSeen)
-                        t.image = cu_name + "TokenManager::" + t.image;
+                        t.image = CuName + "TokenManager::" + t.image;
                 }
 
                 PrintToken(t);
@@ -142,7 +142,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             if (Options.getTokenManagerUsesParser())
             {
                 GenCodeLine("  void setParser(void* parser) {");
-                GenCodeLine("      this->parser = (" + cu_name + "*) parser;");
+                GenCodeLine("      this->parser = (" + CuName + "*) parser;");
                 GenCodeLine("  }");
             }
             GenCodeLine("");
@@ -173,7 +173,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         {
             GenCodeLine("");
             GenCodeLine("private:");
-            GenCodeLine("  " + cu_name + "* parser = nullptr;");
+            GenCodeLine("  " + CuName + "* parser = nullptr;");
         }
         SwitchToMainFile();
     }
@@ -281,7 +281,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         int i, j;
 
         staticString = (Options.getStatic() ? "static " : "");
-        tokMgrClassName = cu_name + "TokenManager";
+        tokMgrClassName = CuName + "TokenManager";
 
         PrintClassHead();
         BuildLexStatesTable();
@@ -506,7 +506,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
         writeTemplate("/templates/cpp/TokenManagerBoilerPlateMethods.template",
           "charStreamName", "CharStream",
-          "parserClassName", cu_name,
+          "parserClassName", CuName,
           "defaultLexState", "defaultLexState",
           "lexStateNameLength", lexStateName.Length);
 

@@ -40,35 +40,35 @@ public class JavaCCGlobals : JavaCCParserConstants
     /**
      * string that identifies the JavaCC generated files.
      */
-    public const string toolName = "JavaCC";
+    public const string ToolName = "JavaCC";
 
     /**
      * The name of the grammar file being processed.
      */
-    static public string fileName;
+    static public string FileName;
 
     /**
      * The name of the original file (before processing by JJTree).
      * Currently this is the same as fileName.
      */
-    static public string origFileName;
+    static public string OrigFileName;
 
     /**
      * Set to true if this file has been processed by JJTree.
      */
-    static public bool jjtreeGenerated = false;
+    static public bool JjtreeGenerated = false;
 
     /**
      * The list of tools that have participated in generating the
      * input grammar file.
      */
-    static public List<string> toolNames;
+    static public List<string> ToolNames = new();
 
     /**
      * This prints the banner line when the various tools are invoked.  This
      * takes as argument the tool's full name and its version.
      */
-    static public void bannerLine(string fullName, string ver)
+    static public void BannerLine(string fullName, string ver)
     {
         Console.Write("Java Compiler Compiler Version " + Version.VersionNumber + " (" + fullName);
         if (ver != (""))
@@ -81,83 +81,83 @@ public class JavaCCGlobals : JavaCCParserConstants
     /**
      * The name of the parser class (what appears in PARSER_BEGIN and PARSER_END).
      */
-    static public string cu_name;
+    static public string CuName;
 
     /**
      * This is a list of tokens that appear after "PARSER_BEGIN(name)" all the
      * way until (but not including) the opening brace "{" of the class "name".
      */
-    static public List<Token> cu_to_insertion_point_1 = new ();
+    static public List<Token> cu_to_insertion_point_1 = new();
 
     /**
      * This is the list of all tokens that appear after the tokens in
      * "cu_to_insertion_point_1" and until (but not including) the closing brace "}"
      * of the class "name".
      */
-    static public List<Token> cu_to_insertion_point_2 = new ();
+    static public List<Token> cu_to_insertion_point_2 = new();
 
     /**
      * This is the list of all tokens that appear after the tokens in
      * "cu_to_insertion_point_2" and until "PARSER_END(name)".
      */
-    static public List<Token> cu_from_insertion_point_2 = new ();
+    static public List<Token> cu_from_insertion_point_2 = new();
 
     /**
      * A list of all grammar productions - normal and JAVACODE - in the order
      * they appear in the input file.  Each entry here will be a subclass of
      * "NormalProduction".
      */
-    static public List<NormalProduction> bnfproductions = new ();
+    static public List<NormalProduction> bnfproductions = new();
 
     /**
      * A symbol table of all grammar productions - normal and JAVACODE.  The
      * symbol table is indexed by the name of the left hand side non-terminal.
      * Its contents are of type "NormalProduction".
      */
-    static public Dictionary<string,NormalProduction> production_table = new ();
+    static public Dictionary<string, NormalProduction> production_table = new();
 
     /**
      * A mapping of lexical state strings to their integer internal representation.
      * Integers are stored as java.lang.int's.
      */
-    static public Dictionary<String, int> lexstate_S2I = new ();
+    static public Dictionary<String, int> lexstate_S2I = new();
 
     /**
      * A mapping of the internal integer representations of lexical states to
      * their strings.  Integers are stored as java.lang.int's.
      */
-    static public Dictionary<int, String> lexstate_I2S = new ();
+    static public Dictionary<int, String> lexstate_I2S = new();
 
     /**
      * The declarations to be inserted into the TokenManager class.
      */
-    static public List<Token> token_mgr_decls;
+    static public List<Token> token_mgr_decls = new();
 
     /**
      * The list of all TokenProductions from the input file.  This list includes
      * implicit TokenProductions that are created for uses of regular expressions
      * within BNF productions.
      */
-    static public List<TokenProduction> rexprlist = new ();
+    static public List<TokenProduction> rexprlist = new();
 
     /**
      * The total number of distinct tokens.  This is therefore one more than the
      * largest assigned token ordinal.
      */
-    static public int tokenCount;
+    static public int tokenCount = 0;
 
     /**
      * This is a symbol table that contains all named tokens (those that are
      * defined with a label).  The index to the table is the image of the label
      * and the contents of the table are of type "RegularExpression".
      */
-    static public Dictionary named_tokens_table = new ();
+    static public Dictionary<string, RegularExpression> named_tokens_table = new();
 
     /**
      * Contains the same entries as "named_tokens_table", but this is an ordered
      * list which is ordered by the order of appearance in the input file.
      */
-    static public List<RegularExpression> ordered_named_tokens = new ();
+    static public List<RegularExpression> ordered_named_tokens = new();
 
     /**
      * A mapping of ordinal values (represented as objects of type "int") to
@@ -166,13 +166,13 @@ public class JavaCCGlobals : JavaCCParserConstants
      * If there are multiple labels representing the same ordinal value, then
      * only one label is stored.
      */
-    static public Dictionary<int, String> names_of_tokens = new ();
+    static public Dictionary<int, String> names_of_tokens = new();
 
     /**
      * A mapping of ordinal values (represented as objects of type "int") to
      * the corresponding RegularExpression's.
      */
-    static public Dictionary<int, RegularExpression> rexps_of_tokens = new Dictionary<int, RegularExpression>();
+    static public Dictionary<int, RegularExpression> rexps_of_tokens = new ();
 
     /**
      * This is a three-level symbol table that contains all simple tokens (those
@@ -183,7 +183,7 @@ public class JavaCCGlobals : JavaCCParserConstants
      * This third level hashtable contains the actual string of the simple token
      * and maps it to its RegularExpression.
      */
-    static public Dictionary<string, Dictionary<string,string>> simple_tokens_table = new();
+    static public Dictionary<string, Dictionary<string, string>> simple_tokens_table = new();
 
     /**
      * maskindex, jj2index, maskVals are variables that are shared between
@@ -192,7 +192,7 @@ public class JavaCCGlobals : JavaCCParserConstants
     static protected int maskindex = 0;
     static protected int jj2index = 0;
     public static bool lookaheadNeeded;
-    public static List<int[]> maskVals = new ();
+    public static List<int[]> maskVals = new();
 
     public static Action actForEof;
     public static string nextStateForEof;
@@ -208,7 +208,7 @@ public class JavaCCGlobals : JavaCCParserConstants
      */
     public static string GetIdString(string toolName, string fileName)
     {
-        List<string> toolNames = new ();
+        List<string> toolNames = new();
         toolNames.Add(toolName);
         return GetIdString(toolNames, fileName);
     }
@@ -223,8 +223,8 @@ public class JavaCCGlobals : JavaCCParserConstants
         string toolNamePrefix = "Generated By:";
 
         for (i = 0; i < toolNames.Count - 1; i++)
-            toolNamePrefix += (String)toolNames[i] + "&";
-        toolNamePrefix += (String)toolNames[i] + ":";
+            toolNamePrefix += (string)toolNames[i] + "&";
+        toolNamePrefix += (string)toolNames[i] + ":";
 
         if (toolNamePrefix.Length > 200)
         {
@@ -232,7 +232,7 @@ public class JavaCCGlobals : JavaCCParserConstants
             throw new Error();
         }
 
-        return toolNamePrefix + " Do not edit this line. " + addUnicodeEscapes(fileName);
+        return toolNamePrefix + " Do not edit this line. " + AddUnicodeEscapes(fileName);
     }
 
     /**
@@ -252,7 +252,7 @@ public class JavaCCGlobals : JavaCCParserConstants
 
     private static List<string> MakeToolNameList(string str)
     {
-        List<string> retVal = new ();
+        List<string> retVal = new();
 
         int limit1 = str.IndexOf('\n');
         if (limit1 == -1) limit1 = 1000;
@@ -260,36 +260,36 @@ public class JavaCCGlobals : JavaCCParserConstants
         if (limit2 == -1) limit2 = 1000;
         int limit = (limit1 < limit2) ? limit1 : limit2;
 
-        string tmp;
+        string text;
         if (limit == 1000)
         {
-            tmp = str;
+            text = str;
         }
         else
         {
-            tmp = str[..limit];
+            text = str[..limit];
         }
 
-        if (tmp.IndexOf(':') == -1)
+        if (!text.Contains(':'))
             return retVal;
 
-        tmp = tmp[(tmp.IndexOf(':') + 1)..];
+        text = text[(text.IndexOf(':') + 1)..];
 
-        if (tmp.IndexOf(':') == -1)
+        if (!text.Contains(':'))
             return retVal;
 
-        tmp = tmp[..tmp.IndexOf(':')];
+        text = text[..text.IndexOf(':')];
 
         int i = 0, j = 0;
 
-        while (j < tmp.Length && (i = tmp.IndexOf('&', j)) != -1)
+        while (j < text.Length && (i = text.IndexOf('&', j)) != -1)
         {
-            retVal.Add(tmp[j..i]);
+            retVal.Add(text[j..i]);
             j = i + 1;
         }
 
-        if (j < tmp.Length)
-            retVal.Add(tmp[j..]);
+        if (j < text.Length)
+            retVal.Add(text[j..]);
 
         return retVal;
     }
@@ -334,7 +334,7 @@ public class JavaCCGlobals : JavaCCParserConstants
                 catch (Exception e3) { }
         }
 
-        return new ();
+        return new();
     }
 
     public static void CreateOutputDir(string outputDir)
@@ -363,19 +363,12 @@ public class JavaCCGlobals : JavaCCParserConstants
         //}
     }
 
-    static public string staticOpt()
+    static public string StaticOpt()
     {
-        if (Options.getStatic())
-        {
-            return "static ";
-        }
-        else
-        {
-            return "";
-        }
+        return Options.getStatic() ? "static " : "";
     }
 
-    static public string add_escapes(string str)
+    static public string AddEscapes(string str)
     {
         string retval = "";
         char ch;
@@ -427,7 +420,7 @@ public class JavaCCGlobals : JavaCCParserConstants
         return retval;
     }
 
-    static public string addUnicodeEscapes(string str)
+    static public string AddUnicodeEscapes(string str)
     {
 
         if (Options.getOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
@@ -482,7 +475,7 @@ public class JavaCCGlobals : JavaCCParserConstants
         }
         if (t.kind == JavaCCParserConstants.STRING_LITERAL ||
             t.kind == JavaCCParserConstants.CHARACTER_LITERAL)
-            ostr.Write(addUnicodeEscapes(t.image));
+            ostr.Write(AddUnicodeEscapes(t.image));
         else
             ostr.Write(t.image);
         cline = t.endLine;
@@ -556,7 +549,7 @@ public class JavaCCGlobals : JavaCCParserConstants
         }
         if (t.kind == JavaCCParserConstants.STRING_LITERAL ||
             t.kind == JavaCCParserConstants.CHARACTER_LITERAL)
-            retval += addUnicodeEscapes(t.image);
+            retval += AddUnicodeEscapes(t.image);
         else
             retval += t.image;
         cline = t.endLine;
@@ -613,29 +606,29 @@ public class JavaCCGlobals : JavaCCParserConstants
 
     public static void ReInit()
     {
-        fileName = null;
-        origFileName = null;
-        jjtreeGenerated = false;
-        toolNames = null;
-        cu_name = null;
-        cu_to_insertion_point_1 = new ();
-        cu_to_insertion_point_2 = new ();
-        cu_from_insertion_point_2 = new ();
-        bnfproductions = new ();
-        production_table = new ();
-        lexstate_S2I = new ();
-        lexstate_I2S = new ();
+        FileName = null;
+        OrigFileName = null;
+        JjtreeGenerated = false;
+        ToolNames = null;
+        CuName = null;
+        cu_to_insertion_point_1 = new();
+        cu_to_insertion_point_2 = new();
+        cu_from_insertion_point_2 = new();
+        bnfproductions = new();
+        production_table = new();
+        lexstate_S2I = new();
+        lexstate_I2S = new();
         token_mgr_decls = null;
-        rexprlist = new ();
+        rexprlist = new();
         tokenCount = 0;
-        named_tokens_table = new ();
-        ordered_named_tokens = new ();
-        names_of_tokens = new ();
-        rexps_of_tokens = new ();
-        simple_tokens_table = new ();
+        named_tokens_table = new();
+        ordered_named_tokens = new();
+        names_of_tokens = new();
+        rexps_of_tokens = new();
+        simple_tokens_table = new();
         maskindex = 0;
         jj2index = 0;
-        maskVals = new ();
+        maskVals = new();
         cline = 0;
         ccol = 0;
         actForEof = null;

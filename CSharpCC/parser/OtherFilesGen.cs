@@ -101,7 +101,7 @@ public class OtherFilesGen : JavaCCGlobals
             ostr = new TextWriter(
                       new BufferedWriter(
                          new FileWriter(
-                           new File(Options.getOutputDirectory(), cu_name + CONSTANTS_FILENAME_SUFFIX)
+                           new File(Options.getOutputDirectory(), CuName + CONSTANTS_FILENAME_SUFFIX)
                          ),
                          8192
                       )
@@ -109,13 +109,13 @@ public class OtherFilesGen : JavaCCGlobals
         }
         catch (IOException e)
         {
-            JavaCCErrors.SemanticError("Could not open file " + cu_name + "Constants.java for writing.");
+            JavaCCErrors.SemanticError("Could not open file " + CuName + "Constants.java for writing.");
             throw new Error();
         }
 
-        List<string> tn = new(toolNames);
-        tn.Add(toolName);
-        ostr.WriteLine("/* " + GetIdString(tn, cu_name + CONSTANTS_FILENAME_SUFFIX) + " */");
+        List<string> tn = new(ToolNames);
+        tn.Add(ToolName);
+        ostr.WriteLine("/* " + GetIdString(tn, CuName + CONSTANTS_FILENAME_SUFFIX) + " */");
 
         if (cu_to_insertion_point_1.Count != 0 &&
             ((Token)cu_to_insertion_point_1[0]).kind == PACKAGE
@@ -148,7 +148,7 @@ public class OtherFilesGen : JavaCCGlobals
         {
             ostr.print("public ");
         }
-        ostr.WriteLine("interface " + cu_name + "Constants {");
+        ostr.WriteLine("interface " + CuName + "Constants {");
         ostr.WriteLine("");
 
         RegularExpression re;
@@ -185,7 +185,7 @@ public class OtherFilesGen : JavaCCGlobals
                 ostr.print("    ");
                 if (re is RStringLiteral)
                 {
-                    ostr.WriteLine("\"\\\"" + add_escapes(add_escapes(((RStringLiteral)re).image)) + "\\\"\",");
+                    ostr.WriteLine("\"\\\"" + AddEscapes(AddEscapes(((RStringLiteral)re).image)) + "\\\"\",");
                 }
                 else if (!re.label == (""))
                 {

@@ -115,7 +115,7 @@ public class JJTree
         ASTNodeDescriptor.nodeSeen = new ();
         org.javacc.parser.MainParser.ReInitAll();
 
-        JavaCCGlobals.bannerLine("Tree Builder", "");
+        JavaCCGlobals.BannerLine("Tree Builder", "");
 
         io = new IO();
 

@@ -386,17 +386,17 @@ public class JJDoc : JJDocGlobals
                 {
                     returnString += "\"";
                     char[] s = { character.ch };
-                    returnString += add_escapes(new String(s));
+                    returnString += AddEscapes(new String(s));
                     returnString += "\"";
                 }
                 else if (o is CharacterRange range)
                 {
                     returnString += "\"";
                     char[] s = { range.GetLeft() };
-                    returnString += add_escapes(new String(s));
+                    returnString += AddEscapes(new String(s));
                     returnString += "\"-\"";
                     s[0] = range.GetRight();
-                    returnString += add_escapes(new String(s));
+                    returnString += AddEscapes(new String(s));
                     returnString += "\"";
                 }
                 else
@@ -466,7 +466,7 @@ public class JJDoc : JJDocGlobals
         else if (re is RStringLiteral)
         {
             RStringLiteral sl = (RStringLiteral)re;
-            returnString += ("\"" + JavaCCParserInternals.add_escapes(sl.image) + "\"");
+            returnString += ("\"" + JavaCCParserInternals.AddEscapes(sl.image) + "\"");
         }
         else if (re is RZeroOrMore)
         {

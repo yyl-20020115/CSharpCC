@@ -78,12 +78,12 @@ public class CodeGenerator : JavaCCGlobals
                 includeBuffer.Append(Options.stringValue("NAMESPACE_CLOSE") + "\n");
             }
 
-            if (jjtreeGenerated)
+            if (JjtreeGenerated)
             {
                 mainBuffer.Insert(0, "#include \"SimpleNode.h\"\n");
             }
             if (Options.getTokenManagerUsesParser())
-                mainBuffer.Insert(0, "#include \"" + cu_name + ".h\"\n");
+                mainBuffer.Insert(0, "#include \"" + CuName + ".h\"\n");
             mainBuffer.Insert(0, "#include \"TokenMgrError.h\"\n");
             mainBuffer.Insert(0, "#include \"" + incfileName + "\"\n");
             includeBuffer.Append("#endif\n");
@@ -190,7 +190,7 @@ public class CodeGenerator : JavaCCGlobals
         }
         if (t.kind == JavaCCParserConstants.STRING_LITERAL ||
             t.kind == JavaCCParserConstants.CHARACTER_LITERAL)
-            retval += addUnicodeEscapes(t.image);
+            retval += AddUnicodeEscapes(t.image);
         else
             retval += t.image;
         cline = t.endLine;
