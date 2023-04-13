@@ -6,7 +6,6 @@ public class CSharpCCInterpreter
     {
         // Initialize all static state
         MainParser.ReInitAll();
-        CSharpCCParser parser;
         for (int arg = 0; arg < args.Length - 2; arg++)
         {
             if (!Options.IsOption(args[arg]))

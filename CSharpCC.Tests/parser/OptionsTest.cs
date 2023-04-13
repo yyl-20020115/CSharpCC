@@ -175,7 +175,7 @@ public class OptionsTest : CSharpCCTestCase
 
         Options.SetCmdLineOption("-STATIC=False");
         Options.SetCmdLineOption("-IGNORE_CASE=True");
-        String[] options = {
+        string[] options = {
            Options.USEROPTION__STATIC,
            Options.USEROPTION__IGNORE_CASE
         };

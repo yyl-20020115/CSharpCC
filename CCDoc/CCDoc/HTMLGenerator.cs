@@ -97,9 +97,9 @@ public class HTMLGenerator : TextGenerator
         {
             Println("<LINK REL=\"stylesheet\" type=\"text/css\" href=\"" + CCDocOptions.GetCSS() + "\"/>");
         }
-        if (CCDocGlobals.input_file != null)
+        if (CCDocGlobals.InputFile != null)
         {
-            Println("<TITLE>BNF for " + CCDocGlobals.input_file + "</TITLE>");
+            Println("<TITLE>BNF for " + CCDocGlobals.InputFile + "</TITLE>");
         }
         else
         {
@@ -107,7 +107,7 @@ public class HTMLGenerator : TextGenerator
         }
         Println("</HEAD>");
         Println("<BODY>");
-        Println("<H1 ALIGN=CENTER>BNF for " + CCDocGlobals.input_file + "</H1>");
+        Println("<H1 ALIGN=CENTER>BNF for " + CCDocGlobals.InputFile + "</H1>");
     }
 
     public override void DocumentEnd()

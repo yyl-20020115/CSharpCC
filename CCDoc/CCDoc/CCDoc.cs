@@ -41,11 +41,11 @@ public class CCDoc : CCDocGlobals
 
     public static void Start()
     {
-        generator = GetGenerator();
-        generator.DocumentStart();
-        EmitTokenProductions(generator, rexprlist);
-        EmitNormalProductions(generator, bnfproductions);
-        generator.DocumentEnd();
+        Generator = GetGenerator();
+        Generator.DocumentStart();
+        EmitTokenProductions(Generator, rexprlist);
+        EmitNormalProductions(Generator, bnfproductions);
+        Generator.DocumentEnd();
     }
     private static Token GetPrecedingSpecialToken(Token tok)
     {
@@ -252,7 +252,7 @@ public class CCDoc : CCDocGlobals
     private static void EmitExpansionChoice(Choice c, Generator gen)
     {
         var first = true;
-        foreach (Expansion e in c.GetChoices())
+        foreach (var e in c.GetChoices())
         {
             if (!first)
             {
@@ -280,7 +280,7 @@ public class CCDoc : CCDocGlobals
     private static void EmitExpansionRegularExpression(RegularExpression r,
         Generator gen)
     {
-        string reRendered = EmitRE(r);
+        var reRendered = EmitRE(r);
         if (reRendered != (""))
         {
             gen.ReStart(r);
@@ -316,7 +316,7 @@ public class CCDoc : CCDocGlobals
     }
     private static void EmitExpansionTryBlock(TryBlock t, Generator gen)
     {
-        bool needParens = t.exp is Choice;
+        var needParens = t.exp is Choice;
         if (needParens)
         {
             gen.Text("( ");

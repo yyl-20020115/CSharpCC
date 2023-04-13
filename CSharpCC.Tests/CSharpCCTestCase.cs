@@ -22,20 +22,11 @@ public abstract class CSharpCCTestCase
     /**
      * @return the documentation output directory name string relative to the root
      */
-    public string GetCCDocOutputDirectory()
-    {
-        return "www/doc/";
-        //return "src/site/resources/";
-    }
+    public string GetCCDocOutputDirectory() => "www/doc/";//return "src/site/resources/";
 
     /**
      * Where the input jj files are located
      * @return the directory name string relative to the root
      */
-    public string GetCCInputDirectory()
-    {
-        return "src/main/javacc/";
-        //return "src/org/javacc/parser/";
-        //return "src/main/javacc/org/javacc/parser/";
-    }
+    public string GetCCInputDirectory() => "src/main/javacc/";//return "src/org/javacc/parser/";//return "src/main/javacc/org/javacc/parser/";
 }

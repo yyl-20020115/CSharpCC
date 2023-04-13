@@ -26,8 +26,6 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
 using CSharpCC.Parser;
 using System.Security;
 using System.Text;
@@ -116,7 +114,7 @@ public class CCDocMain : CCDocGlobals
         }
         else
         {
-            Info("(type \"jjdoc\" with no arguments for help)");
+            Info("(type \"ccdoc\" with no arguments for help)");
         }
 
 
@@ -139,8 +137,8 @@ public class CCDocMain : CCDocGlobals
         {
             Info("Reading from standard input . . .");
             parser = new CSharpCCParser(Console.In);
-            CCDocGlobals.input_file = "standard input";
-            CCDocGlobals.output_file = "standard output";
+            CCDocGlobals.InputFile = "standard input";
+            CCDocGlobals.OutputFile = "standard output";
         }
         else
         {
@@ -158,15 +156,15 @@ public class CCDocMain : CCDocGlobals
                     Error(args[^1] + " is a directory. Please use a valid file name.");
                     return 1;
                 }
-                CCDocGlobals.input_file = fp;
+                CCDocGlobals.InputFile = fp;
                 parser = new CSharpCCParser(new StreamReader(args[^1],Encoding.GetEncoding(CCDocOptions.GetGrammarEncoding())));
             }
-            catch (SecurityException se)
+            catch (SecurityException)
             {
                 Error("Security violation while trying to open " + args[^1]);
                 return 1;
             }
-            catch (FileNotFoundException e)
+            catch (FileNotFoundException)
             {
                 Error("File " + args[^1] + " not found.");
                 return 1;
@@ -182,7 +180,7 @@ public class CCDocMain : CCDocGlobals
             {
                 if (CSharpCCErrors.GetWarningCount() == 0)
                 {
-                    Info("Grammar documentation generated successfully in " + CCDocGlobals.output_file);
+                    Info("Grammar documentation generated successfully in " + CCDocGlobals.OutputFile);
                 }
                 else
                 {

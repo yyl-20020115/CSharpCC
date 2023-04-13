@@ -35,8 +35,8 @@ public static class MainClass
 
     public static void Main(string[] args)
     {
-        var jjtree = new CCTree();
-        int result = jjtree.Main(args);
+        var cctree = new CCTree();
+        int result = cctree.Main(args);
         Environment.Exit(result);
     }
 }

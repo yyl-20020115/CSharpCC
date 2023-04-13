@@ -38,5 +38,4 @@ public static class CCTreeEntry
     {
         MainClass.Main(args);
     }
-
 }

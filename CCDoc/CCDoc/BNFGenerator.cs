@@ -33,7 +33,7 @@ public class BNFGenerator : Generator
 {
     private readonly Dictionary<string, string> IdMap = new();
     private int id = 1;
-    protected TextWriter ostr;
+    protected TextWriter? writer;
     private bool printing = true;
 
     protected string GetId(string nt)
@@ -51,28 +51,28 @@ public class BNFGenerator : Generator
 
         if (CCDocOptions.GetOutputFile() == (""))
         {
-            if (CCDocGlobals.input_file == ("standard input"))
+            if (CCDocGlobals.InputFile == ("standard input"))
             {
                 return Console.Out;
             }
             else
             {
                 var ext = ".bnf";
-                var i = CCDocGlobals.input_file.LastIndexOf('.');
+                var i = CCDocGlobals.InputFile.LastIndexOf('.');
                 if (i == -1)
                 {
-                    CCDocGlobals.output_file = CCDocGlobals.input_file + ext;
+                    CCDocGlobals.OutputFile = CCDocGlobals.InputFile + ext;
                 }
                 else
                 {
-                    var suffix = CCDocGlobals.input_file[i..];
+                    var suffix = CCDocGlobals.InputFile[i..];
                     if (suffix == (ext))
                     {
-                        CCDocGlobals.output_file = CCDocGlobals.input_file + ext;
+                        CCDocGlobals.OutputFile = CCDocGlobals.InputFile + ext;
                     }
                     else
                     {
-                        CCDocGlobals.output_file = CCDocGlobals.input_file[..i]
+                        CCDocGlobals.OutputFile = CCDocGlobals.InputFile[..i]
                             + ext;
                     }
                 }
@@ -80,19 +80,20 @@ public class BNFGenerator : Generator
         }
         else
         {
-            CCDocGlobals.output_file = CCDocOptions.GetOutputFile();
-        }
-        try
-        {
-            ostr = new StreamWriter(CCDocGlobals.output_file);
-        }
-        catch (IOException e)
-        {
-            Error($"JJDoc: can't open output stream on file {CCDocGlobals.output_file}.  Using standard output.");
-            ostr = Console.Out;
+            CCDocGlobals.OutputFile = CCDocOptions.GetOutputFile();
         }
 
-        return ostr;
+        try
+        {
+            writer = new StreamWriter(CCDocGlobals.OutputFile);
+        }
+        catch (IOException)
+        {
+            Error($"CCDoc: can't open output stream on file {CCDocGlobals.OutputFile}.  Using standard output.");
+            writer = Console.Out;
+        }
+
+        return writer;
     }
 
     private void Println(string s)
@@ -109,16 +110,16 @@ public class BNFGenerator : Generator
     }
     public void Print(string s)
     {
-        ostr.Write(s);
+        writer.Write(s);
     }
 
     public void DocumentStart()
     {
-        ostr = CreateOutputStream();
+        writer = CreateOutputStream();
     }
     public void DocumentEnd()
     {
-        ostr.Close();
+        writer.Close();
     }
     public void SpecialTokens(string s)
     {
@@ -168,19 +169,20 @@ public class BNFGenerator : Generator
         printing = true;
     }
 
-    public void Debug(string message) => Console.Error.WriteLine(message);
-    public void Info(string message) => Console.Error.WriteLine(message);
-    public void Warn(string message) => Console.Error.WriteLine(message);
-    public void Error(string message) => Console.Error.WriteLine(message);
+    public void Debug(string message)
+        => Console.Error.WriteLine(message);
+    public void Info(string message)
+        => Console.Error.WriteLine(message);
+    public void Warn(string message)
+        => Console.Error.WriteLine(message);
+    public void Error(string message)
+        => Console.Error.WriteLine(message);
 
     public void HandleTokenProduction(TokenProduction tp)
     {
         printing = false;
-        string _text = CCDoc.GetStandardTokenProductionText(tp);
+        var _text = CCDoc.GetStandardTokenProductionText(tp);
         Text(_text);
         printing = true;
     }
-
-
-
 }

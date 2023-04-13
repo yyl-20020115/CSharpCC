@@ -111,7 +111,7 @@ public class XTextGenerator : TextGenerator
     public override void DocumentStart()
     {
         writer = CreateOutputStream();
-        Println("grammar " + CCDocGlobals.input_file + " with org.eclipse.xtext.common.Terminals");
+        Println("grammar " + CCDocGlobals.InputFile + " with org.eclipse.xtext.common.Terminals");
         Println("import \"http://www.eclipse.org/emf/2002/Ecore\" as ecore");
         Println("");
         //

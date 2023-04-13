@@ -13,10 +13,10 @@ public class OutputFileGeneratorTest : CSharpCCTestCase
         Options.Init();
 
         //JavaResourceTemplateLocationImpl impl = new JavaResourceTemplateLocationImpl();
-        OutputFileGenerator generator = new OutputFileGenerator(
+        var generator = new OutputFileGenerator(
             "test.txt", new Dictionary<string, object>());
 
-        TextWriter stringWriter = new StringWriter();
+        var stringWriter = new StringWriter();
         generator.Generate(stringWriter);
 
         Assert.IsTrue(stringWriter.ToString().Contains("StringBuilder"));
@@ -33,7 +33,7 @@ public class OutputFileGeneratorTest : CSharpCCTestCase
         OutputFileGenerator generator = new OutputFileGenerator(
             "test.txt", new Dictionary<string, object>());
 
-        TextWriter writer = new StringWriter();
+        var writer = new StringWriter();
         generator.Generate(writer);
 
         Assert.IsTrue(writer.ToString().Contains("StringBuilder"));

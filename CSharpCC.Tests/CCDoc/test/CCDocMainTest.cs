@@ -26,8 +26,6 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using CSharpCC.CCDoc;
-
 namespace CSharpCC.Tests;
 
 /**

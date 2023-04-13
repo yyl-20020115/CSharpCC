@@ -236,7 +236,7 @@ public class TextGenerator : Generator
 
         if (CCDocOptions.GetOutputFile() == (""))
         {
-            if (CCDocGlobals.input_file == ("standard input"))
+            if (CCDocGlobals.InputFile == ("standard input"))
             {
                 return Console.Out;
             }
@@ -253,21 +253,21 @@ public class TextGenerator : Generator
                     ext = ".xtext";
                 }
 
-                int i = CCDocGlobals.input_file.LastIndexOf('.');
+                int i = CCDocGlobals.InputFile.LastIndexOf('.');
                 if (i == -1)
                 {
-                    CCDocGlobals.output_file = CCDocGlobals.input_file + ext;
+                    CCDocGlobals.OutputFile = CCDocGlobals.InputFile + ext;
                 }
                 else
                 {
-                    string suffix = CCDocGlobals.input_file[i..];
+                    string suffix = CCDocGlobals.InputFile[i..];
                     if (suffix == (ext))
                     {
-                        CCDocGlobals.output_file = CCDocGlobals.input_file + ext;
+                        CCDocGlobals.OutputFile = CCDocGlobals.InputFile + ext;
                     }
                     else
                     {
-                        CCDocGlobals.output_file = CCDocGlobals.input_file[..i]
+                        CCDocGlobals.OutputFile = CCDocGlobals.InputFile[..i]
                             + ext;
                     }
                 }
@@ -275,17 +275,17 @@ public class TextGenerator : Generator
         }
         else
         {
-            CCDocGlobals.output_file = CCDocOptions.GetOutputFile();
+            CCDocGlobals.OutputFile = CCDocOptions.GetOutputFile();
         }
 
         try
         {
-            writer = new StreamWriter(CCDocGlobals.output_file);
+            writer = new StreamWriter(CCDocGlobals.OutputFile);
         }
         catch (IOException e)
         {
             Error("CCDoc: can't open output stream on file "
-                + CCDocGlobals.output_file + ".  Using standard output.");
+                + CCDocGlobals.OutputFile + ".  Using standard output.");
             writer = Console.Out;
         }
 

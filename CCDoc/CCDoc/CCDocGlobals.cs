@@ -40,24 +40,24 @@ public class CCDocGlobals : CSharpCCGlobals
     /**
      * The name of the input file.
      */
-    public static string input_file;
+    public static string InputFile;
     /**
      * The name of the output file.
      */
-    public static string output_file;
+    public static string OutputFile;
 
     /**
      * The Generator to create output with.
      */
-    public static Generator generator;
+    public static Generator Generator;
 
     /**
      * @param generator
      *        The generator to set.
      */
-    public static void SetGenerator(Generator generator)
+    public static void SetGenerator(Generator Generator)
     {
-        CCDocGlobals.generator = generator;
+        CCDocGlobals.Generator = Generator;
     }
 
     /**
@@ -68,51 +68,51 @@ public class CCDocGlobals : CSharpCCGlobals
      */
     public static Generator GetGenerator()
     {
-        if (generator == null)
+        if (Generator == null)
         {
             if (CCDocOptions.GetText())
             {
-                generator = new TextGenerator();
+                Generator = new TextGenerator();
             }
             else if (CCDocOptions.GetBNF())
             {
-                generator = new BNFGenerator();
+                Generator = new BNFGenerator();
             }
             else if (CCDocOptions.GetXText())
             {
-                generator = new XTextGenerator();
+                Generator = new XTextGenerator();
             }
             else
             {
-                generator = new HTMLGenerator();
+                Generator = new HTMLGenerator();
             }
         }
         else
         {
             if (CCDocOptions.GetText())
             {
-                if (generator is HTMLGenerator)
+                if (Generator is HTMLGenerator)
                 {
-                    generator = new TextGenerator();
+                    Generator = new TextGenerator();
                 }
             }
             else if (CCDocOptions.GetBNF())
             {
-                generator = new BNFGenerator();
+                Generator = new BNFGenerator();
             }
             else if (CCDocOptions.GetXText())
             {
-                generator = new XTextGenerator();
+                Generator = new XTextGenerator();
             }
             else
             {
-                if (generator is TextGenerator)
+                if (Generator is TextGenerator)
                 {
-                    generator = new HTMLGenerator();
+                    Generator = new HTMLGenerator();
                 }
             }
         }
-        return generator;
+        return Generator;
     }
 
     /**
