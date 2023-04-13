@@ -61,7 +61,7 @@ public class ParseEngine
      */
     private List<Phase3Data> phase2list = new ();
     private List<Phase3Data> phase3list = new ();
-    private Dictionary<Expansion,Phase3Data> phase3table = new ();
+    private Dictionary<Expansion,Phase3Data> phase3table = new (); 
 
     /**
      * The phase 1 routines generates their output into String's and dumps

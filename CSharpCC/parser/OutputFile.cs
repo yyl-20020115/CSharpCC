@@ -84,7 +84,7 @@ public class OutputFile
 
         if (File.Exists(file))
         {
-            // Generate the checksum of the file, and compare with any value
+            // Generate the checksum of the file, and compare with any value 
             // stored
             // in the file.
 

@@ -29,6 +29,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 using org.javacc.jjtree;
+using System.Collections.Generic;
 
 namespace org.javacc.parser;
 
@@ -51,13 +52,13 @@ public class NfaState
     private static List<NfaState> allStates = new();
     private static List<NfaState> indexedAllStates = new();
     private static List<NfaState> nonAsciiTableForMethod = new();
-    private static Dictionary<string,NfaState> equivStatesTable = new();
-    private static Dictionary allNextStates = new();
-    private static Dictionary lohiByteTab = new();
-    private static Dictionary stateNameForComposite = new();
-    private static Dictionary compositeStateTable = new();
-    private static Dictionary stateBlockTable = new();
-    private static Dictionary stateSetsToFix = new();
+    private static Dictionary<string, NfaState> equivStatesTable = new();
+    private static Dictionary<string,int[]> allNextStates = new();
+    private static Dictionary<string,int> lohiByteTab = new();
+    private static Dictionary<string,int> stateNameForComposite = new();
+    private static Dictionary<string, int[]> compositeStateTable = new();
+    private static Dictionary<string,string> stateBlockTable = new();
+    private static Dictionary<string,int[]> stateSetsToFix = new();
 
     private static bool jjCheckNAddStatesUnaryNeeded = false;
     private static bool jjCheckNAddStatesDualNeeded = false;
@@ -117,9 +118,9 @@ public class NfaState
         lookingFor = LexGen.curKind;
     }
 
-    NfaState CreateClone()
+    public NfaState CreateClone()
     {
-        NfaState retVal = new NfaState();
+        var retVal = new NfaState();
 
         retVal.isFinal = isFinal;
         retVal.kind = kind;
@@ -147,7 +148,7 @@ public class NfaState
 
     private static char[] ExpandCharArr(char[] oldArr, int incr)
     {
-        char[] ret = new char[oldArr.Length + incr];
+        var ret = new char[oldArr.Length + incr];
         Array.Copy(oldArr, 0, ret, 0, oldArr.Length);
         return ret;
     }
@@ -156,7 +157,7 @@ public class NfaState
     {
         if (!epsilonMoves.Contains(newState))
             InsertInOrder(epsilonMoves, newState);
-    } 
+    }
 
     private void AddASCIIMove(char c)
     {
@@ -322,8 +323,8 @@ public class NfaState
         for (i = 0; i < epsilonMoves.Count; i++)
             epsilonMoves[i].EpsilonClosure();
 
-        
-        foreach(NfaState nfas1 in epsilonMoves)
+
+        foreach (NfaState nfas1 in epsilonMoves)
         {
             for (i = 0; i < nfas1.epsilonMoves.Count; i++)
             {
@@ -565,7 +566,7 @@ public class NfaState
             sometingOptimized = false;
             for (i = 0; optReqd && i < epsilonMoves.Count; i++)
             {
-                if ((tmp1 = (NfaState)epsilonMoves[i]).HasTransitions())
+                if ((tmp1 = epsilonMoves[i]).HasTransitions())
                 {
                     for (j = i + 1; j < epsilonMoves.Count; j++)
                     {
@@ -578,7 +579,7 @@ public class NfaState
                         {
                             if (equivStates == null)
                             {
-                                equivStates = new ();
+                                equivStates = new();
                                 equivStates.Add(tmp1);
                             }
 
@@ -595,7 +596,7 @@ public class NfaState
                     for (int l = 0; l < equivStates.Count; l++)
                         tmp += equivStates[l].id + ", ";
 
-                    if ((newState = (NfaState)equivStatesTable.get(tmp)) == null)
+                    if (!equivStatesTable.TryGetValue(tmp,out newState))
                     {
                         newState = CreateEquivState(equivStates);
                         equivStatesTable.Add(tmp, newState);
@@ -612,11 +613,11 @@ public class NfaState
             {
                 //if ((tmp1 = (NfaState)epsilonMoves.elementAt(i)).next == null)
                 //continue;
-                tmp1 = (NfaState)epsilonMoves[i];
+                tmp1 = epsilonMoves[i];
 
                 for (j = i + 1; j < epsilonMoves.Count; j++)
                 {
-                    tmp2 = (NfaState)epsilonMoves[j];
+                    tmp2 = epsilonMoves[j];
 
                     if (tmp1.next == tmp2.next)
                     {
@@ -628,13 +629,13 @@ public class NfaState
                         }
 
                         newState.MergeMoves(tmp2);
-                        epsilonMoves.removeElementAt(j--);
+                        epsilonMoves.RemoveAt(j--);
                     }
                 }
 
                 if (newState != null)
                 {
-                    epsilonMoves.removeElementAt(i--);
+                    epsilonMoves.RemoveAt(i--);
                     epsilonMoves.Add(newState);
                     newState = null;
                 }
@@ -648,7 +649,7 @@ public class NfaState
         {
             for (i = 0; i < epsilonMoves.Count; i++)
                 // Since we are doing a closure, just epsilon moves are unnecessary
-                if (((NfaState)epsilonMoves[i]).HasTransitions())
+                if (epsilonMoves[i].HasTransitions())
                     usefulEpsilonMoves++;
                 else
                     epsilonMoves.RemoveAt(i--);
@@ -681,7 +682,7 @@ public class NfaState
                     if (tempState.stateName == -1)
                         tempState.GenerateCode();
 
-                    ((NfaState)indexedAllStates.get(tempState.stateName)).inNextOf++;
+                    indexedAllStates[tempState.stateName].inNextOf++;
                     stateNames[cnt] = tempState.stateName;
                     epsilonMovesString += tempState.stateName + ", ";
                     if (cnt++ > 0 && cnt % 16 == 0)
@@ -694,7 +695,7 @@ public class NfaState
 
         usefulEpsilonMoves = cnt;
         if (epsilonMovesString != null &&
-            allNextStates.get(epsilonMovesString) == null)
+            !allNextStates.ContainsKey(epsilonMovesString))
         {
             int[] statesToPut = new int[usefulEpsilonMoves];
 
@@ -715,16 +716,16 @@ public class NfaState
         if (s == null || s == ("null;"))
             return false;
 
-        int[] states = (int[])allNextStates.get(s);
-
-        for (int i = 0; i < states.Length; i++)
+        if(allNextStates.TryGetValue(s, out var states))
         {
-            NfaState tmp = (NfaState)indexedAllStates.get(states[i]);
+            for (int i = 0; i < states.Length; i++)
+            {
+                var tmp = indexedAllStates[states[i]];
+                if ((tmp.asciiMoves[c / 64] & (1UL << c % 64)) != 0L)
+                    return true;
+            }
 
-            if ((tmp.asciiMoves[c / 64] & (1L << c % 64)) != 0L)
-                return true;
         }
-
         return false;
     }
 
@@ -802,7 +803,7 @@ public class NfaState
 
         for (int i = states.Count; i-- > 0;)
             if (retVal >
-                (tmp = ((NfaState)states[i]).MoveFrom(c, newStates)))
+                (tmp = states[i].MoveFrom(c, newStates)))
                 retVal = tmp;
 
         return retVal;
@@ -844,7 +845,7 @@ public class NfaState
         return int.MaxValue;
     }
 
-    static List allBitVectors = new ();
+    static List<string> allBitVectors = new();
 
     /* This function generates the bit vectors of low and hi bytes for common
        bit vectors and returns those that are not common with anything (in
@@ -859,7 +860,7 @@ public class NfaState
         int i = 0, j = 0;
         char hiByte;
         int cnt = 0;
-        ulong[][] loBytes = new long[256][4];
+        var loBytes = new ulong[256,4];
 
         if ((charMoves == null || charMoves[0] == 0) &&
             (rangeMoves == null || rangeMoves[0] == 0))
@@ -873,7 +874,7 @@ public class NfaState
                     break;
 
                 hiByte = (char)(charMoves[i] >> 8);
-                loBytes[hiByte][(charMoves[i] & 0xff) / 64] |=
+                loBytes[hiByte,(charMoves[i] & 0xff) / 64] |=
                                   (1UL << ((charMoves[i] & 0xff) % 64));
             }
         }
@@ -893,24 +894,24 @@ public class NfaState
                 if (hiByte == (char)(rangeMoves[i + 1] >> 8))
                 {
                     for (c = (char)(rangeMoves[i] & 0xff); c <= r; c++)
-                        loBytes[hiByte][c / 64] |= (1UL << (c % 64));
+                        loBytes[hiByte,c / 64] |= (1UL << (c % 64));
 
                     continue;
                 }
 
                 for (c = (char)(rangeMoves[i] & 0xff); c <= 0xff; c++)
-                    loBytes[hiByte][c / 64] |= (1UL << (c % 64));
+                    loBytes[hiByte,c / 64] |= (1UL << (c % 64));
 
                 while (++hiByte < (char)(rangeMoves[i + 1] >> 8))
                 {
-                    loBytes[hiByte][0] |= 0xffffffffffffffffL;
-                    loBytes[hiByte][1] |= 0xffffffffffffffffL;
-                    loBytes[hiByte][2] |= 0xffffffffffffffffL;
-                    loBytes[hiByte][3] |= 0xffffffffffffffffL;
+                    loBytes[hiByte,0] |= 0xffffffffffffffffL;
+                    loBytes[hiByte,1] |= 0xffffffffffffffffL;
+                    loBytes[hiByte,2] |= 0xffffffffffffffffL;
+                    loBytes[hiByte,3] |= 0xffffffffffffffffL;
                 }
 
                 for (c = 0; c <= r; c++)
-                    loBytes[hiByte][c / 64] |= (1UL << (c % 64));
+                    loBytes[hiByte,c / 64] |= (1UL << (c % 64));
             }
         }
 
@@ -921,10 +922,10 @@ public class NfaState
         {
             if (done[i] ||
                 (done[i] =
-                 loBytes[i][0] == 0 &&
-                 loBytes[i][1] == 0 &&
-                 loBytes[i][2] == 0 &&
-                 loBytes[i][3] == 0))
+                 loBytes[i,0] == 0 &&
+                 loBytes[i,1] == 0 &&
+                 loBytes[i,2] == 0 &&
+                 loBytes[i,3] == 0))
                 continue;
 
             for (j = i + 1; j < 256; j++)
@@ -932,10 +933,10 @@ public class NfaState
                 if (done[j])
                     continue;
 
-                if (loBytes[i][0] == loBytes[j][0] &&
-                    loBytes[i][1] == loBytes[j][1] &&
-                    loBytes[i][2] == loBytes[j][2] &&
-                    loBytes[i][3] == loBytes[j][3])
+                if (loBytes[i,0] == loBytes[j,0] &&
+                    loBytes[i,1] == loBytes[j,1] &&
+                    loBytes[i,2] == loBytes[j,2] &&
+                    loBytes[i,3] == loBytes[j,3])
                 {
                     done[j] = true;
                     if (common == null)
@@ -952,13 +953,13 @@ public class NfaState
             if (common != null)
             {
                 int ind;
-                string tmp; 
+                string tmp;
 
-                tmp = "{\n   0x" + Convert.ToString(common[0],16) + "L, " +
+                tmp = "{\n   0x" + Convert.ToString(common[0], 16) + "L, " +
                         "0x" + Convert.ToString(common[1], 16) + "L, " +
                         "0x" + Convert.ToString(common[2], 16) + "L, " +
                         "0x" + Convert.ToString(common[3], 16) + "L\n};";
-                if ((ind = (int)lohiByteTab.get(tmp)) == null)
+                if (!lohiByteTab.TryGetValue(tmp,out ind))
                 {
                     allBitVectors.Add(tmp);
 
@@ -979,11 +980,11 @@ public class NfaState
 
                 tmpIndices[cnt++] = ind;
 
-                tmp = "{\n   0x" + Long.toHexString(loBytes[i][0]) + "L, " +
-                        "0x" + Long.toHexString(loBytes[i][1]) + "L, " +
-                        "0x" + Long.toHexString(loBytes[i][2]) + "L, " +
-                        "0x" + Long.toHexString(loBytes[i][3]) + "L\n};";
-                if ((ind = (int)lohiByteTab.get(tmp)) == null)
+                tmp = "{\n   0x" + Convert.ToString((long)loBytes[i,0],16) + "L, " +
+                        "0x" + Convert.ToString((long)loBytes[i,1],16) + "L, " +
+                        "0x" + Convert.ToString((long)loBytes[i,2],16) + "L, " +
+                        "0x" + Convert.ToString((long)loBytes[i,3],16) + "L\n};";
+                if (!lohiByteTab.TryGetValue(tmp,out ind))
                 {
                     allBitVectors.Add(tmp);
 
@@ -1030,10 +1031,10 @@ public class NfaState
                 string tmp;
                 int ind;
 
-                tmp = "{\n   0x" + Long.toHexString(loBytes[i][0]) + "L, " +
-                        "0x" + Long.toHexString(loBytes[i][1]) + "L, " +
-                        "0x" + Long.toHexString(loBytes[i][2]) + "L, " +
-                        "0x" + Long.toHexString(loBytes[i][3]) + "L\n};";
+                tmp = "{\n   0x" + Long.toHexString(loBytes[i,0]) + "L, " +
+                        "0x" + Long.toHexString(loBytes[i,1]) + "L, " +
+                        "0x" + Long.toHexString(loBytes[i,2]) + "L, " +
+                        "0x" + Long.toHexString(loBytes[i,3]) + "L\n};";
                 if ((ind = (int)lohiByteTab.get(tmp)) == null)
                 {
                     allBitVectors.Add(tmp);
@@ -1052,7 +1053,7 @@ public class NfaState
                     lohiByteTab.Add(tmp, ind = (lohiByteCnt++));
                 }
 
-                loByteVec ??= new Vector();
+                loByteVec ??= new ();
 
                 loByteVec.Add((i));
                 loByteVec.Add(ind);
@@ -1066,7 +1067,7 @@ public class NfaState
     {
         for (int i = 0; i < nonAsciiTableForMethod.Count; i++)
         {
-            NfaState tmp = (NfaState)nonAsciiTableForMethod[i];
+            NfaState tmp = nonAsciiTableForMethod[i];
             if (EqualLoByteVectors(loByteVec, tmp.loByteVec) &&
                 EqualNonAsciiMoveIndices(nonAsciiMoveIndices, tmp.nonAsciiMoveIndices))
             {
@@ -1079,7 +1080,7 @@ public class NfaState
         nonAsciiTableForMethod.Add(this);
     }
 
-    private static bool EqualLoByteVectors(List vec1, List vec2)
+    private static bool EqualLoByteVectors(List<byte> vec1, List<byte> vec2)
     {
         if (vec1 == null || vec2 == null)
             return false;
@@ -1092,8 +1093,8 @@ public class NfaState
 
         for (int i = 0; i < vec1.Count; i++)
         {
-            if (((int)vec1[i]).intValue() !=
-                ((int)vec2[i]).intValue())
+            if (((int)vec1[i]) !=
+                ((int)vec2[i]))
                 return false;
         }
 
@@ -1139,11 +1140,11 @@ public class NfaState
     {
         int stateNameToReturn;
 
-        if ((stateNameToReturn = (int)stateNameForComposite.get(stateSetString)) != null)
-            return stateNameToReturn.intValue();
+        if (stateNameForComposite.TryGetValue(stateSetString,out stateNameToReturn))
+            return stateNameToReturn;
 
         int toRet = 0;
-        int[] nameSet = (int[])allNextStates.get(stateSetString);
+        int[] nameSet = (int[])allNextStates[stateSetString];
 
         if (!starts)
             stateBlockTable.Add(stateSetString, stateSetString);
@@ -1163,26 +1164,24 @@ public class NfaState
             if (nameSet[i] == -1)
                 continue;
 
-            NfaState st = (NfaState)indexedAllStates.get(nameSet[i]);
+            NfaState st = (NfaState)indexedAllStates[nameSet[i]];
             st.isComposite = true;
             st.compositeStates = nameSet;
         }
 
         while (toRet < nameSet.Length &&
-               (starts && ((NfaState)indexedAllStates.get(nameSet[toRet])).inNextOf > 1))
+               (starts && ((NfaState)indexedAllStates[nameSet[toRet]]).inNextOf > 1))
             toRet++;
 
-        Enumeration<string> e = compositeStateTable.keys();
-        string s;
-        while (e.hasMoreElements())
+        //string s;
+        foreach(var s in compositeStateTable.Keys)
         {
-            s = (String)e.nextElement();
             if (s != (stateSetString) && Intersect(stateSetString, s))
             {
-                int[] other = (int[])compositeStateTable.get(s);
+                int[] other = (int[])compositeStateTable[s];
 
                 while (toRet < nameSet.Length &&
-                       ((starts && ((NfaState)indexedAllStates.get(nameSet[toRet])).inNextOf > 1) ||
+                       ((starts && (indexedAllStates[nameSet[toRet]]).inNextOf > 1) ||
                         ElemOccurs(nameSet[toRet], other) >= 0))
                     toRet++;
             }
@@ -1218,7 +1217,7 @@ public class NfaState
 
     private static int StateNameForComposite(string stateSetString)
     {
-        return ((int)stateNameForComposite.get(stateSetString)).intValue();
+        return stateNameForComposite[stateSetString];
     }
 
     public static int InitStateName()
@@ -1240,19 +1239,19 @@ public class NfaState
     }
 
     static Dictionary tableToDump = new Dictionary();
-    static List orderedStateSet = new ();
+    static List<int[]> orderedStateSet = new();
 
     static int lastIndex = 0;
     private static int[] GetStateSetIndicesForUse(string arrayString)
     {
         int[] ret;
-        int[] set = (int[])allNextStates.get(arrayString);
+        int[] set = (int[])allNextStates[arrayString];
 
         if ((ret = (int[])tableToDump.get(arrayString)) == null)
         {
             ret = new int[2];
             ret[0] = lastIndex;
-            ret[1] = lastIndex + set.Length - 1;  
+            ret[1] = lastIndex + set.Length - 1;
             lastIndex += set.Length;
             tableToDump.Add(arrayString, ret);
             orderedStateSet.Add(set);
@@ -1323,7 +1322,7 @@ public class NfaState
         for (int i = 0; i < states.Count;)
         {
             int k;
-            retVal += (k = ((NfaState)states[i]).stateName) + ", ";
+            retVal += (k = states[i].stateName) + ", ";
             set[i] = k;
 
             if (i++ > 0 && i % 16 == 0)
@@ -1335,21 +1334,21 @@ public class NfaState
         return retVal;
     }
 
-    static int NumberOfBitsSet(long l)
+    static int NumberOfBitsSet(ulong l)
     {
         int ret = 0;
         for (int i = 0; i < 63; i++)
-            if (((l >> i) & 1L) != 0L)
+            if (((l >> i) & 1UL) != 0L)
                 ret++;
 
         return ret;
     }
 
-    static int OnlyOneBitSet(long l)
+    static int OnlyOneBitSet(ulong l)
     {
         int oneSeen = -1;
         for (int i = 0; i < 64; i++)
-            if (((l >> i) & 1L) != 0L)
+            if (((l >> i) & 1UL) != 0L)
             {
                 if (oneSeen >= 0)
                     return -1;
@@ -1398,12 +1397,11 @@ public class NfaState
         }
 
         int j, blockLen = 0, commonFreq = 0;
-        Enumeration e = allNextStates.keys();
         bool needUpdate;
 
-        while (e.hasMoreElements())
+        foreach(var key in allNextStates.Keys)
         {
-            int[] tmpSet = (int[])allNextStates.get(e.nextElement());
+            int[] tmpSet = (int[])allNextStates[key];
             if (tmpSet == nameSet)
                 continue;
 
@@ -1461,7 +1459,7 @@ public class NfaState
         {
             if (live[i])
             {
-                if (((NfaState)indexedAllStates.get(nameSet[i])).isComposite)
+                if (((NfaState)indexedAllStates[nameSet[i]]).isComposite)
                     return false;
 
                 stateDone[nameSet[i]] = true;
@@ -1473,15 +1471,14 @@ public class NfaState
         //Console.println("");
 
         string s = GetStateSetString(commonBlock);
-        e = allNextStates.keys();
-
+        
     Outer:
-        while (e.hasMoreElements())
+        foreach(var key in allNextStates.Keys)
         {
             int at;
             bool firstOne = true;
             string stringToFix;
-            int[] setToFix = (int[])allNextStates.get(stringToFix = (String)e.nextElement());
+            int[] setToFix = (int[])allNextStates[stringToFix = key];
 
             if (setToFix == commonBlock)
                 continue;
@@ -1495,11 +1492,13 @@ public class NfaState
                     firstOne = false;
                 }
                 else
-                    continue Outer;
+                    goto OuterExit;
             }
 
-            if (stateSetsToFix.get(stringToFix) == null)
+            if (!stateSetsToFix.ContainsKey(stringToFix))
                 stateSetsToFix.Add(stringToFix, setToFix);
+            OuterExit:
+            ;
         }
 
         next.usefulEpsilonMoves -= blockLen - 1;
@@ -1514,7 +1513,7 @@ public class NfaState
 
         string set = next.epsilonMovesString;
 
-        int[] nameSet = (int[])allNextStates.get(set);
+        int[] nameSet = allNextStates[set];
 
         if (nameSet.Length == 1 || compositeStateTable.get(set) != null ||
             stateSetsToFix.get(set) != null)
@@ -1639,8 +1638,8 @@ public class NfaState
         if (set1 == null || set2 == null)
             return false;
 
-        int[] nameSet1 = (int[])allNextStates.get(set1);
-        int[] nameSet2 = (int[])allNextStates.get(set2);
+        int[] nameSet1 = allNextStates[set1];
+        int[] nameSet2 = allNextStates[set2];
 
         if (nameSet1 == null || nameSet2 == null)
             return false;
@@ -1695,18 +1694,18 @@ public class NfaState
         codeGenerator.GenCodeLine("            {");
     }
 
-    private static Vector PartitionStatesSetForAscii(int[] states, int byteNum)
+    private static List<List<NfaState>> PartitionStatesSetForAscii(int[] states, int byteNum)
     {
         int[] cardinalities = new int[states.Length];
-        Vector original = new Vector();
-        Vector partition = new Vector();
+        var original = new List<NfaState>();
+        var partition = new List<List<NfaState>>();
         NfaState tmp;
 
-        original.setSize(states.Length);
+        original.Capacity = (states.Length);
         int cnt = 0;
         for (int i = 0; i < states.Length; i++)
         {
-            tmp = (NfaState)allStates.get(states[i]);
+            tmp = (NfaState)allStates[states[i]];
 
             if (tmp.asciiMoves[byteNum] != 0L)
             {
@@ -1722,7 +1721,7 @@ public class NfaState
 
                 cardinalities[j] = p;
 
-                original.insertElementAt(tmp, j);
+                original.Insert(tmp, j);
                 cnt++;
             }
         }
@@ -1731,22 +1730,22 @@ public class NfaState
 
         while (original.Count > 0)
         {
-            tmp = (NfaState)original[0];
-            original.removeElement(tmp);
+            tmp = original[0];
+            original.Remove(tmp);
 
-            long bitVec = tmp.asciiMoves[byteNum];
+            ulong bitVec = tmp.asciiMoves[byteNum];
             List<NfaState> subSet = new();
             subSet.Add(tmp);
 
             for (int j = 0; j < original.Count; j++)
             {
-                NfaState tmp1 = (NfaState)original[j];
+                NfaState tmp1 = original[j];
 
                 if ((tmp1.asciiMoves[byteNum] & bitVec) == 0L)
                 {
                     bitVec |= tmp1.asciiMoves[byteNum];
                     subSet.Add(tmp1);
-                    original.removeElementAt(j--);
+                    original.RemoveAt(j--);
                 }
             }
 
@@ -1787,7 +1786,7 @@ public class NfaState
     {
         int i;
 
-        int[] nameSet = (int[])allNextStates.get(key);
+        int[] nameSet = (int[])allNextStates[key];
 
         if (nameSet.Length == 1 || dumped[StateNameForComposite(key)])
             return;
@@ -1801,7 +1800,7 @@ public class NfaState
 
         for (i = 0; i < nameSet.Length; i++)
         {
-            tmp = (NfaState)allStates.get(nameSet[i]);
+            tmp = (NfaState)allStates[nameSet[i]];
 
             if (tmp.asciiMoves[byteNum] != 0L)
             {
@@ -1851,9 +1850,9 @@ public class NfaState
             return;
         }
 
-        List partition = PartitionStatesSetForAscii(nameSet, byteNum);
+        var partition = PartitionStatesSetForAscii(nameSet, byteNum);
 
-        if (!toPrint == (""))
+        if (toPrint != (""))
             codeGenerator.GenCode(toPrint);
 
         int keyState = StateNameForComposite(key);
@@ -1863,11 +1862,11 @@ public class NfaState
 
         for (i = 0; i < partition.Count; i++)
         {
-            List subSet = (List)partition[i];
+            List<NfaState> subSet = partition[i];
 
             for (int j = 0; j < subSet.Count; j++)
             {
-                tmp = (NfaState)subSet[j];
+                tmp = subSet[j] as NfaState;
 
                 if (stateBlock)
                     dumped[tmp.stateName] = true;
@@ -1886,7 +1885,7 @@ public class NfaState
         if (next == null || next.epsilonMovesString == null)
             return false;
 
-        int[] set = (int[])allNextStates.get(next.epsilonMovesString);
+        int[] set = (int[])allNextStates[next.epsilonMovesString];
         return ElemOccurs(stateName, set) >= 0;
     }
 
@@ -1921,7 +1920,7 @@ public class NfaState
                         (64 * byteNum + oneBit) + ")");
             else
                 codeGenerator.GenCodeLine("                  " + (elseNeeded ? "else " : "") +
-                        "if ((0x" + Long.toHexString(asciiMoves[byteNum]) + "L & l) != 0L)");
+                        "if ((0x" + Convert.ToString((long)asciiMoves[byteNum], 16) + "L & l) != 0L)");
             prefix = "   ";
         }
 
@@ -2036,7 +2035,7 @@ public class NfaState
                        (64 * byteNum + oneBit) + kindCheck + ")");
                 else
                     codeGenerator.GenCodeLine("                  if ((0x" +
-                        Long.toHexString(asciiMoves[byteNum]) +
+                        Convert.ToString((long)asciiMoves[byteNum],16) +
                         "L & l) != 0L" + kindCheck + ")");
 
                 codeGenerator.GenCodeLine("                     kind = " + kindToPrint + ";");
@@ -2062,7 +2061,7 @@ public class NfaState
             }
             else if (asciiMoves[byteNum] != 0xffffffffffffffffL)
             {
-                codeGenerator.GenCodeLine("                  if ((0x" + Long.toHexString(asciiMoves[byteNum]) + "L & l) == 0L)");
+                codeGenerator.GenCodeLine("                  if ((0x" + Convert.ToString((long)asciiMoves[byteNum],16) + "L & l) == 0L)");
                 codeGenerator.GenCodeLine("                     break;");
             }
 
@@ -2086,15 +2085,14 @@ public class NfaState
             }
             else if (asciiMoves[byteNum] != 0xffffffffffffffffL)
             {
-                codeGenerator.GenCodeLine("                  if ((0x" + Long.toHexString(asciiMoves[byteNum]) + "L & l) != 0L)");
+                codeGenerator.GenCodeLine("                  if ((0x" + Convert.ToString((long)asciiMoves[byteNum], 16) + "L & l) != 0L)");
                 prefix = "   ";
             }
         }
 
         if (next != null && next.usefulEpsilonMoves > 0)
         {
-            int[] stateNames = (int[])allNextStates.get(
-                                             next.epsilonMovesString);
+            int[] stateNames = (int[])allNextStates[next.epsilonMovesString];
             if (next.usefulEpsilonMoves == 1)
             {
                 int name = stateNames[0];
@@ -2142,12 +2140,11 @@ public class NfaState
     private static void DumpAsciiMoves(CodeGenerator codeGenerator, int byteNum)
     {
         bool[] dumped = new bool[Math.Max(generatedStates, dummyStateIndex + 1)];
-        Enumeration e = compositeStateTable.keys();
 
         DumpHeadForCase(codeGenerator, byteNum);
 
-        while (e.hasMoreElements())
-            DumpCompositeStatesAsciiMoves(codeGenerator, (String)e.nextElement(), byteNum, dumped);
+        foreach(var key in compositeStateTable.Keys)
+            DumpCompositeStatesAsciiMoves(codeGenerator, key, byteNum, dumped);
 
         for (int i = 0; i < allStates.Count; i++)
         {
@@ -2182,7 +2179,7 @@ public class NfaState
             if (temp.asciiMoves[byteNum] == 0L)
                 continue;
 
-            if (!toPrint == (""))
+            if (toPrint != (""))
                 codeGenerator.GenCode(toPrint);
 
             dumped[temp.stateName] = true;
@@ -2207,7 +2204,7 @@ public class NfaState
                                        string key, bool[] dumped)
     {
         int i;
-        int[] nameSet = (int[])allNextStates.get(key);
+        int[] nameSet = (int[])allNextStates[key];
 
         if (nameSet.Length == 1 || dumped[StateNameForComposite(key)])
             return;
@@ -2217,11 +2214,11 @@ public class NfaState
         NfaState tmp;
         NfaState stateForCase = null;
         string toPrint = "";
-        bool stateBlock = (stateBlockTable.get(key) != null);
+        bool stateBlock = stateBlockTable.ContainsKey(key);
 
         for (i = 0; i < nameSet.Length; i++)
         {
-            tmp = (NfaState)allStates.get(nameSet[i]);
+            tmp = (NfaState)allStates[nameSet[i]];
 
             if (tmp.nonAsciiMethod != -1)
             {
@@ -2255,7 +2252,7 @@ public class NfaState
 
         if (neededStates == 1)
         {
-            if (!toPrint == (""))
+            if (toPrint != (""))
                 codeGenerator.GenCode(toPrint);
 
             codeGenerator.GenCodeLine("               case " + StateNameForComposite(key) + ":");
@@ -2268,7 +2265,7 @@ public class NfaState
             return;
         }
 
-        if (!toPrint == (""))
+        if (toPrint != (""))
             codeGenerator.GenCode(toPrint);
 
         int keyState = StateNameForComposite(key);
@@ -2278,7 +2275,7 @@ public class NfaState
 
         for (i = 0; i < nameSet.Length; i++)
         {
-            tmp = (NfaState)allStates.get(nameSet[i]);
+            tmp = (NfaState)allStates[nameSet[i]];
 
             if (tmp.nonAsciiMethod != -1)
             {
@@ -2317,7 +2314,7 @@ public class NfaState
         {
             if (loByteVec != null && loByteVec.Count > 1)
                 codeGenerator.GenCodeLine("                  if ((jjbitVec" +
-                 ((int)loByteVec.get(1)).intValue() + "[i2" +
+                 ((int)loByteVec[1]) + "[i2" +
                     "] & l2) != 0L)");
         }
         else
@@ -2335,8 +2332,8 @@ public class NfaState
 
         if (next != null && next.usefulEpsilonMoves > 0)
         {
-            int[] stateNames = (int[])allNextStates.get(
-                                             next.epsilonMovesString);
+            int[] stateNames = (int[])allNextStates[
+                                             next.epsilonMovesString];
             if (next.usefulEpsilonMoves == 1)
             {
                 int name = stateNames[0];
@@ -2415,7 +2412,7 @@ public class NfaState
             {
                 if (loByteVec != null && loByteVec.Count > 1)
                     codeGenerator.GenCodeLine("                  if ((jjbitVec" +
-                     ((int)loByteVec.get(1)).intValue() + "[i2" +
+                     ((int)loByteVec[1]) + "[i2" +
                         "] & l2) != 0L" + kindCheck + ")");
             }
             else
@@ -2436,7 +2433,7 @@ public class NfaState
                 if (loByteVec != null && loByteVec.Count > 1)
                 {
                     codeGenerator.GenCodeLine("                  if ((jjbitVec" +
-                     ((int)loByteVec.get(1)).intValue() + "[i2" +
+                     ((int)loByteVec[1]) + "[i2" +
                      "] & l2) == 0L)");
                     codeGenerator.GenCodeLine("                     break;");
                 }
@@ -2456,7 +2453,7 @@ public class NfaState
         {
             if (loByteVec != null && loByteVec.Count > 1)
                 codeGenerator.GenCodeLine("                  if ((jjbitVec" +
-                 ((int)loByteVec.get(1)).intValue() + "[i2" +
+                 (int)loByteVec[1] + "[i2" +
                     "] & l2) != 0L)");
         }
         else
@@ -2467,8 +2464,7 @@ public class NfaState
 
         if (next != null && next.usefulEpsilonMoves > 0)
         {
-            int[] stateNames = (int[])allNextStates.get(
-                                             next.epsilonMovesString);
+            int[] stateNames = allNextStates[next.epsilonMovesString];
             if (next.usefulEpsilonMoves == 1)
             {
                 int name = stateNames[0];
@@ -2512,17 +2508,16 @@ public class NfaState
     public static void DumpCharAndRangeMoves(CodeGenerator codeGenerator)
     {
         bool[] dumped = new bool[Math.Max(generatedStates, dummyStateIndex + 1)];
-        Enumeration e = compositeStateTable.keys();
         int i;
 
         DumpHeadForCase(codeGenerator, -1);
 
-        while (e.hasMoreElements())
-            DumpCompositeStatesNonAsciiMoves(codeGenerator, (String)e.nextElement(), dumped);
+        foreach(var key in compositeStateTable.Keys)
+            DumpCompositeStatesNonAsciiMoves(codeGenerator, key, dumped);
 
         for (i = 0; i < allStates.Count; i++)
         {
-            NfaState temp = (NfaState)allStates[i];
+            NfaState temp = allStates[i];
 
             if (temp.stateName == -1 || dumped[temp.stateName] || temp.lexState != LexGen.lexStateIndex ||
                 !temp.HasTransitions() || temp.dummy)
@@ -2552,7 +2547,7 @@ public class NfaState
             if (temp.nonAsciiMethod == -1)
                 continue;
 
-            if (!toPrint == (""))
+            if (toPrint != (""))
                 codeGenerator.GenCode(toPrint);
 
             dumped[temp.stateName] = true;
@@ -2584,7 +2579,7 @@ public class NfaState
 
         for (int i = 0; i < nonAsciiTableForMethod.Count; i++)
         {
-            NfaState tmp = (NfaState)nonAsciiTableForMethod[i];
+            var tmp = nonAsciiTableForMethod[i];
             tmp.DumpNonAsciiMoveMethod(codeGenerator);
         }
     }
@@ -2611,12 +2606,12 @@ public class NfaState
             for (j = 0; j < loByteVec.Count; j += 2)
             {
                 codeGenerator.GenCodeLine("      case " +
-                             ((int)loByteVec[j]).intValue() + ":");
-                if (!AllBitsSet((String)allBitVectors.get(
-                     ((int)loByteVec.get(j + 1)).intValue())))
+                             ((int)loByteVec[j]) + ":");
+                if (!AllBitsSet(allBitVectors[
+                     ((int)loByteVec[j + 1])]))
                 {
                     codeGenerator.GenCodeLine("         return ((jjbitVec" +
-                     ((int)loByteVec.get(j + 1)).intValue() + "[i2" +
+                     ((int)loByteVec[j + 1]) + "[i2" +
                         "] & l2) != 0L);");
                 }
                 else
@@ -2631,12 +2626,12 @@ public class NfaState
         {
             do
             {
-                if (!AllBitsSet((String)allBitVectors.get(
-                                   nonAsciiMoveIndices[j - 2])))
+                if (!AllBitsSet(allBitVectors[
+                                   nonAsciiMoveIndices[j - 2]]))
                     codeGenerator.GenCodeLine("         if ((jjbitVec" + nonAsciiMoveIndices[j - 2] +
                                  "[i1] & l1) != 0L)");
-                if (!AllBitsSet((String)allBitVectors.get(
-                                   nonAsciiMoveIndices[j - 1])))
+                if (!AllBitsSet(allBitVectors[
+                                   nonAsciiMoveIndices[j - 1]]))
                 {
                     codeGenerator.GenCodeLine("            if ((jjbitVec" + nonAsciiMoveIndices[j - 1] +
                                  "[i2] & l2) == 0L)");
@@ -2655,16 +2650,16 @@ public class NfaState
 
     private static void ReArrange()
     {
-        List v = allStates;
-        allStates = new List(Collections.nCopies(generatedStates, null));
+        var v = allStates;
+        allStates = new List<NfaState>(generatedStates);// (Collections.nCopies(, null));
 
         if (allStates.Count != generatedStates) throw new Error("What??");
 
         for (int j = 0; j < v.Count; j++)
         {
-            NfaState tmp = (NfaState)v[j];
+            NfaState tmp = v[j];
             if (tmp.stateName != -1 && !tmp.dummy)
-                allStates[tmp.stateName]= tmp;
+                allStates[tmp.stateName] = tmp;
         }
     }
 
@@ -2773,7 +2768,7 @@ public class NfaState
 
     private static void FindStatesWithNoBreak()
     {
-        Dictionary printed = new Dictionary();
+        Dictionary<string,string> printed = new ();
         bool[] put = new bool[generatedStates];
         int cnt = 0;
         int i, j, foundAt = 0;
@@ -2782,7 +2777,7 @@ public class NfaState
         for (j = 0; j < allStates.Count; j++)
         {
             NfaState stateForCase = null;
-            NfaState tmpState = (NfaState)allStates[j];
+            NfaState tmpState = allStates[j];
 
             if (tmpState.stateName == -1 || tmpState.dummy || !tmpState.UsefulState() ||
                 tmpState.next == null || tmpState.next.usefulEpsilonMoves < 1)
@@ -2790,11 +2785,11 @@ public class NfaState
 
             string s = tmpState.next.epsilonMovesString;
 
-            if (compositeStateTable.get(s) != null || printed.get(s) != null)
+            if (compositeStateTable.ContainsKey(s) || printed.ContainsKey(s))
                 continue;
 
             printed.Add(s, s);
-            int[] nexts = (int[])allNextStates.get(s);
+            int[] nexts = (int[])allNextStates[s];
 
             if (nexts.Length == 1)
                 continue;
@@ -2806,7 +2801,7 @@ public class NfaState
                 if ((state = nexts[i]) == -1)
                     continue;
 
-                NfaState tmp = (NfaState)allStates.get(state);
+                var tmp = allStates[state];
 
                 if (!tmp.isComposite && tmp.inNextOf == 1)
                 {
@@ -2832,7 +2827,7 @@ public class NfaState
                 if ((state = nexts[i]) == -1)
                     continue;
 
-                NfaState tmp = (NfaState)allStates.get(state);
+                var tmp = allStates[state];
 
                 if (!put[state] && tmp.inNextOf > 1 && !tmp.isComposite && tmp.stateForCase == null)
                 {
@@ -2848,7 +2843,7 @@ public class NfaState
                     //Console.println("For : " + s + "; " + stateForCase.stateName +
                     //" and " + tmp.stateName);
 
-                    continue Outer;
+                    goto OuterExit;
                 }
             }
 
@@ -2857,10 +2852,12 @@ public class NfaState
                 if ((state = nexts[i]) == -1)
                     continue;
 
-                NfaState tmp = (NfaState)allStates.get(state);
+                var tmp = allStates[state];
                 if (tmp.inNextOf <= 1)
                     put[state] = false;
             }
+        OuterExit:
+            ;
         }
     }
 
@@ -2904,15 +2901,12 @@ public class NfaState
             temp.GenerateNonAsciiMoves(codeGenerator);
         }
 
-        Enumeration e = stateNameForComposite.keys();
-
-        while (e.hasMoreElements())
+        foreach(var s in stateNameForComposite.Keys)
         {
-            string s = (String)e.nextElement();
-            int state = ((int)stateNameForComposite.get(s)).intValue();
+            int state = stateNameForComposite[s];
 
             if (state >= generatedStates)
-                statesForState[LexGen.lexStateIndex][state] = (int[])allNextStates.get(s);
+                statesForState[LexGen.lexStateIndex][state] = allNextStates[s];
         }
 
         if (stateSetsToFix.Count != 0)
@@ -2993,10 +2987,10 @@ public class NfaState
             }
         }
 
-        codeGenerator.GenCodeLine("   int kind = 0x" + Convert.ToString(int.MaxValue,16) + ";");
+        codeGenerator.GenCodeLine("   int kind = 0x" + Convert.ToString(int.MaxValue, 16) + ";");
         codeGenerator.GenCodeLine("   for (;;)");
         codeGenerator.GenCodeLine("   {");
-        codeGenerator.GenCodeLine("      if (++jjround == 0x" + Convert.ToString(int.MaxValue,16) + ")");
+        codeGenerator.GenCodeLine("      if (++jjround == 0x" + Convert.ToString(int.MaxValue, 16) + ")");
         codeGenerator.GenCodeLine("         ReInitRounds();");
         codeGenerator.GenCodeLine("      if (curChar < 64)");
         codeGenerator.GenCodeLine("      {");
@@ -3020,11 +3014,11 @@ public class NfaState
 
         codeGenerator.GenCodeLine("      }");
 
-        codeGenerator.GenCodeLine("      if (kind != 0x" + Convert.ToString(int.MaxValue,16) + ")");
+        codeGenerator.GenCodeLine("      if (kind != 0x" + Convert.ToString(int.MaxValue, 16) + ")");
         codeGenerator.GenCodeLine("      {");
         codeGenerator.GenCodeLine("         jjmatchedKind = kind;");
         codeGenerator.GenCodeLine("         jjmatchedPos = curPos;");
-        codeGenerator.GenCodeLine("         kind = 0x" + Convert.ToString(int.MaxValue,16) + ";");
+        codeGenerator.GenCodeLine("         kind = 0x" + Convert.ToString(int.MaxValue, 16) + ";");
         codeGenerator.GenCodeLine("      }");
         codeGenerator.GenCodeLine("      ++curPos;");
 
@@ -3033,7 +3027,7 @@ public class NfaState
             if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" +
-                      Convert.ToString(int.MaxValue,16) + ")");
+                      Convert.ToString(int.MaxValue, 16) + ")");
                 codeGenerator.GenCodeLine("         debugStream.println(" +
                        "\"   Currently matched the first \" + (jjmatchedPos + 1) + \" characters as" +
                        " a \" + tokenImage[jjmatchedKind] + \" token.\");");
@@ -3041,7 +3035,7 @@ public class NfaState
             else
             {
                 codeGenerator.GenCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" +
-                      Convert.ToString(int.MaxValue,16) + ")");
+                      Convert.ToString(int.MaxValue, 16) + ")");
                 codeGenerator.GenCodeLine("   fprintf(debugStream, \"   Currently matched the first %d characters as a \\\"%s\\\" token.\\n\",  (jjmatchedPos + 1),  addUnicodeEscapes(tokenImage[jjmatchedKind]).c_str());");
             }
         }
@@ -3375,8 +3369,8 @@ public class NfaState
                       "0xffffffffffffffffL, " +
                       "0xffffffffffffffffL, " +
                       "0xffffffffffffffffL\n};";
-        tableToDump = new ();
-        orderedStateSet = new ();
+        tableToDump = new();
+        orderedStateSet = new();
         lastIndex = 0;
         //boilerPlateDumped = false; 
         jjCheckNAddStatesUnaryNeeded = false;
@@ -3431,7 +3425,7 @@ public class NfaState
     {
         NfaState[] cleanStates;
         List<NfaState> cleanStateList = new();
-        foreach (int l in statesForLexicalState.keySet())
+        foreach (int l in statesForLexicalState.Keys)
         {
             int offset = nfaStateOffset[l];
             List<NfaState> states = statesForLexicalState[l];
@@ -3441,7 +3435,7 @@ public class NfaState
                 if (state.stateName == -1) continue;
                 states[i].stateName += offset;
             }
-            cleanStateList.addAll(states);
+            cleanStateList.AddRange(states);
         }
         cleanStates = new NfaState[cleanStateList.Count];
         foreach (NfaState s in cleanStateList)
