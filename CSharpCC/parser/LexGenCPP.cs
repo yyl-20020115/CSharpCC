@@ -59,7 +59,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         GenCodeLine("#include \"Token.h\"");
         GenCodeLine("#include \"ErrorHandler.h\"");
         GenCodeLine("#include \"TokenManager.h\"");
-        genCodeLine("#include \"" + cu_name + "Constants.h\"");
+        GenCodeLine("#include \"" + cu_name + "Constants.h\"");
 
         if (Options.stringValue(Options.USEROPTION__CPP_TOKEN_MANAGER_INCLUDE).Length > 0)
         {
@@ -73,7 +73,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             GenCodeLine("namespace " + Options.stringValue("NAMESPACE_OPEN"));
         }
 
-        genCodeLine("class " + cu_name + ";");
+        GenCodeLine("class " + cu_name + ";");
 
         int l = 0, kind;
         i = 1;
@@ -96,7 +96,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 }
                 if (kind == SEMICOLON)
                   printToken((Token)(cu_to_insertion_point_1[j]));
-                genCodeLine("");
+                GenCodeLine("");
                 break;
               }
             }
@@ -142,7 +142,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             if (Options.getTokenManagerUsesParser())
             {
                 GenCodeLine("  void setParser(void* parser) {");
-                genCodeLine("      this->parser = (" + cu_name + "*) parser;");
+                GenCodeLine("      this->parser = (" + cu_name + "*) parser;");
                 GenCodeLine("  }");
             }
             GenCodeLine("");
@@ -173,7 +173,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         {
             GenCodeLine("");
             GenCodeLine("private:");
-            genCodeLine("  " + cu_name + "* parser = nullptr;");
+            GenCodeLine("  " + cu_name + "* parser = nullptr;");
         }
         SwitchToMainFile();
     }
@@ -628,7 +628,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
               genCode("\n   ");
             genCode("0x" + Long.toHexString(toMore[i]) + "L, ");
           }
-          genCodeLine("\n};");
+          GenCodeLine("\n};");
         }*/
     }
 
@@ -757,12 +757,12 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         GenCodeLine("  for (;;)");
         GenCodeLine("  {");
         GenCodeLine("   EOFLoop: ");
-        //genCodeLine("   {");
-        //genCodeLine("      curChar = input_stream->BeginToken();");
-        //genCodeLine("   }");
+        //GenCodeLine("   {");
+        //GenCodeLine("      curChar = input_stream->BeginToken();");
+        //GenCodeLine("   }");
         GenCodeLine("   if (input_stream->endOfInput())");
         GenCodeLine("   {");
-        //genCodeLine("     input_stream->backup(1);");
+        //GenCodeLine("     input_stream->backup(1);");
 
         if (Options.getDebugTokenManager())
             GenCodeLine("      fprintf(debugStream, \"Returning the <EOF> token.\\n\");");
@@ -826,7 +826,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 if (singlesToSkip[i].asciiMoves[0] != 0L &&
                     singlesToSkip[i].asciiMoves[1] != 0L)
                 {
-                    genCodeLine(prefix + "   while ((curChar < 64" + " && (0x" +
+                    GenCodeLine(prefix + "   while ((curChar < 64" + " && (0x" +
                         Long.toHexString(singlesToSkip[i].asciiMoves[0]) +
                         "L & (1L << curChar)) != 0L) || \n" +
                         prefix + "          (curChar >> 6) == 1" +
@@ -836,14 +836,14 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                 }
                 else if (singlesToSkip[i].asciiMoves[1] == 0L)
                 {
-                    genCodeLine(prefix + "   while (curChar <= " +
+                    GenCodeLine(prefix + "   while (curChar <= " +
                         (int)MaxChar(singlesToSkip[i].asciiMoves[0]) + " && (0x" +
                         Long.toHexString(singlesToSkip[i].asciiMoves[0]) +
                     "L & (1L << curChar)) != 0L)");
                 }
                 else if (singlesToSkip[i].asciiMoves[0] == 0L)
                 {
-                    genCodeLine(prefix + "   while (curChar > 63 && curChar <= " +
+                    GenCodeLine(prefix + "   while (curChar > 63 && curChar <= " +
                         ((int)MaxChar(singlesToSkip[i].asciiMoves[1]) + 64) +
                         " && (0x" +
                         Long.toHexString(singlesToSkip[i].asciiMoves[1]) +
@@ -878,7 +878,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
             }
             else
             {
-                genCodeLine(prefix + "jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
+                GenCodeLine(prefix + "jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
                 GenCodeLine(prefix + "jjmatchedPos = 0;");
             }
 
@@ -921,7 +921,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
         if (maxLexStates > 1)
             GenCodeLine(endSwitch);
         else if (maxLexStates == 0)
-            genCodeLine("       jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
+            GenCodeLine("       jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
 
         if (maxLexStates > 1)
             prefix = "  ";
@@ -930,7 +930,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
 
         if (maxLexStates > 0)
         {
-            genCodeLine(prefix + "   if (jjmatchedKind != 0x" + int.toHexString(int.MaxValue) + ")");
+            GenCodeLine(prefix + "   if (jjmatchedKind != 0x" + int.toHexString(int.MaxValue) + ")");
             GenCodeLine(prefix + "   {");
             GenCodeLine(prefix + "      if (jjmatchedPos + 1 < curPos)");
 
@@ -1049,7 +1049,7 @@ public class LexGenCPP : LexGen //CodeGenerator implements JavaCCParserConstants
                         GenCodeLine(prefix + "      curLexState = jjnewLexState[jjmatchedKind];");
                     }
                     GenCodeLine(prefix + "      curPos = 0;");
-                    genCodeLine(prefix + "      jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
+                    GenCodeLine(prefix + "      jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
 
                     GenCodeLine(prefix + "   if (!input_stream->endOfInput()) {");
                     GenCodeLine(prefix + "         curChar = input_stream->readChar();");

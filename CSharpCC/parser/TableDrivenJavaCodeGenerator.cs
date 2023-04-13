@@ -98,7 +98,7 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
 
         // Static block to actually initialize the map from the int array above.
         codeGenerator.GenCodeLine("static {");
-        for (int key : tokenizerData.literalSequence.keySet()) 
+        for (int key : tokenizerData.literalSequence.keySet())
         {
             int[] arr = startAndSize.get(key);
             codeGenerator.GenCodeLine("startAndSize.Add(" + key + ", new int[]{" +
@@ -290,14 +290,14 @@ public class TableDrivenJavaCodeGenerator : TokenManagerCodeGenerator
                 codeGenerator.GenCode("\"");
                 for (int j = 0; j < image.Length; j++)
                 {
-                    if (image.charAt(j) <= 0xff)
+                    if (image[j] <= 0xff)
                     {
                         codeGenerator.genCode(
-                            "\\" + int.toOctalString((int)image.charAt(j)));
+                            "\\" + int.toOctalString((int)image[j]));
                     }
                     else
                     {
-                        string hexVal = int.toHexString((int)image.charAt(j));
+                        string hexVal = int.toHexString((int)image[j]);
                         if (hexVal.Length == 3)
                             hexVal = "0" + hexVal;
                         codeGenerator.GenCode("\\u" + hexVal);

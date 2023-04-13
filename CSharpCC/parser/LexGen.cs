@@ -103,7 +103,7 @@ public class LexGen : CodeGenerator
         List<string> tn = new(toolNames);
         tn.Add(toolName);
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        genCodeLine("/* " + getIdString(tn, tokMgrClassName + GetFileExtension(Options.getOutputLanguage())) + " */");
+        GenCodeLine("/* " + getIdString(tn, tokMgrClassName + GetFileExtension(Options.getOutputLanguage())) + " */");
 
         int l = 0, kind;
         i = 1;
@@ -157,11 +157,11 @@ public class LexGen : CodeGenerator
             //genModifier("public ");
             GenModifier("public ");
         }
-        //genCodeLine("class " + tokMgrClassName + " implements " +
+        //GenCodeLine("class " + tokMgrClassName + " implements " +
         //cu_name + "Constants");
         //String superClass = Options.stringValue(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS);
         GenClassStart(null, tokMgrClassName, new String[] { }, new String[] { cu_name + "Constants" });
-        //genCodeLine("{"); // }
+        //GenCodeLine("{"); // }
 
         if (token_mgr_decls != null && token_mgr_decls.Count > 0)
         {
@@ -208,7 +208,7 @@ public class LexGen : CodeGenerator
         if (Options.getTokenManagerUsesParser())
         {
             GenCodeLine("");
-            genCodeLine("  public " + cu_name + " parser = null;");
+            GenCodeLine("  public " + cu_name + " parser = null;");
         }
     }
 
@@ -682,7 +682,7 @@ public class LexGen : CodeGenerator
         }
     }
 
-    static void CheckEmptyStringMatch()
+    public static void CheckEmptyStringMatch()
     {
         int i, j, k, len;
         bool[] seen = new bool[maxLexStates];
@@ -1033,7 +1033,7 @@ public class LexGen : CodeGenerator
                 if (singlesToSkip[i].asciiMoves[0] != 0L &&
                     singlesToSkip[i].asciiMoves[1] != 0L)
                 {
-                    genCodeLine(prefix + "   while ((curChar < 64" + " && (0x" +
+                    GenCodeLine(prefix + "   while ((curChar < 64" + " && (0x" +
                         Long.toHexString(singlesToSkip[i].asciiMoves[0]) +
                         "L & (1L << curChar)) != 0L) || \n" +
                         prefix + "          (curChar >> 6) == 1" +
@@ -1043,14 +1043,14 @@ public class LexGen : CodeGenerator
                 }
                 else if (singlesToSkip[i].asciiMoves[1] == 0L)
                 {
-                    genCodeLine(prefix + "   while (curChar <= " +
+                    GenCodeLine(prefix + "   while (curChar <= " +
                         (int)MaxChar(singlesToSkip[i].asciiMoves[0]) + " && (0x" +
                         Long.toHexString(singlesToSkip[i].asciiMoves[0]) +
                     "L & (1L << curChar)) != 0L)");
                 }
                 else if (singlesToSkip[i].asciiMoves[0] == 0L)
                 {
-                    genCodeLine(prefix + "   while (curChar > 63 && curChar <= " +
+                    GenCodeLine(prefix + "   while (curChar > 63 && curChar <= " +
                         ((int)MaxChar(singlesToSkip[i].asciiMoves[1]) + 64) +
                         " && (0x" +
                         Long.toHexString(singlesToSkip[i].asciiMoves[1]) +
@@ -1087,7 +1087,7 @@ public class LexGen : CodeGenerator
             }
             else
             {
-                genCodeLine(prefix + "jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
+                GenCodeLine(prefix + "jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
                 GenCodeLine(prefix + "jjmatchedPos = 0;");
             }
 
@@ -1127,7 +1127,7 @@ public class LexGen : CodeGenerator
         if (maxLexStates > 1)
             GenCodeLine(endSwitch);
         else if (maxLexStates == 0)
-            genCodeLine("       jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
+            GenCodeLine("       jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
 
         if (maxLexStates > 1)
             prefix = "  ";
@@ -1136,7 +1136,7 @@ public class LexGen : CodeGenerator
 
         if (maxLexStates > 0)
         {
-            genCodeLine(prefix + "   if (jjmatchedKind != 0x" + int.toHexString(int.MaxValue) + ")");
+            GenCodeLine(prefix + "   if (jjmatchedKind != 0x" + int.toHexString(int.MaxValue) + ")");
             GenCodeLine(prefix + "   {");
             GenCodeLine(prefix + "      if (jjmatchedPos + 1 < curPos)");
 
@@ -1262,7 +1262,7 @@ public class LexGen : CodeGenerator
                         GenCodeLine(prefix + "      curLexState = jjnewLexState[jjmatchedKind];");
                     }
                     GenCodeLine(prefix + "      curPos = 0;");
-                    genCodeLine(prefix + "      jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
+                    GenCodeLine(prefix + "      jjmatchedKind = 0x" + int.toHexString(int.MaxValue) + ";");
 
                     GenCodeLine(prefix + "      try {");
                     GenCodeLine(prefix + "         curChar = input_stream.readChar();");

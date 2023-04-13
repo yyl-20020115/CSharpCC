@@ -297,29 +297,29 @@ public static class NodeFiles
             ostr.WriteLine("  public " + returnType + " defaultVisit(SimpleNode node, " + argumentType + " data)" +
                 ve + "{");
             ostr.WriteLine("    node.childrenAccept(this, data);");
-            ostr.print("    return");
+            ostr.Write("    return");
             if (!isVoidReturnType)
             {
                 if (returnType == (argumentType))
-                    ostr.print(" data");
+                    ostr.Write(" data");
                 else if ("boolean" == (returnType))
-                    ostr.print(" false");
+                    ostr.Write(" false");
                 else if ("int" == (returnType))
-                    ostr.print(" 0");
+                    ostr.Write(" 0");
                 else if ("long" == (returnType))
-                    ostr.print(" 0L");
+                    ostr.Write(" 0L");
                 else if ("double" == (returnType))
-                    ostr.print(" 0.0d");
+                    ostr.Write(" 0.0d");
                 else if ("float" == (returnType))
-                    ostr.print(" 0.0f");
+                    ostr.Write(" 0.0f");
                 else if ("short" == (returnType))
-                    ostr.print(" 0");
+                    ostr.Write(" 0");
                 else if ("byte" == (returnType))
-                    ostr.print(" 0");
+                    ostr.Write(" 0");
                 else if ("char" == (returnType))
-                    ostr.print(" '\u0000'");
+                    ostr.Write(" '\u0000'");
                 else
-                    ostr.print(" null");
+                    ostr.Write(" null");
             }
             ostr.WriteLine(";");
             ostr.WriteLine("  }");

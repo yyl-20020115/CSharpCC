@@ -1018,7 +1018,7 @@ public class NfaState
               Console.println("state : " + stateName + " cnt : " + cnt);
               while (cnt > 0)
               {
-                 Console.print(nonAsciiMoveIndices[cnt - 1] + ", " + nonAsciiMoveIndices[cnt - 2] + ", ");
+                 Console.Write(nonAsciiMoveIndices[cnt - 1] + ", " + nonAsciiMoveIndices[cnt - 2] + ", ");
                  cnt -= 2;
               }
               Console.println("");
@@ -1030,7 +1030,7 @@ public class NfaState
                 loBytes[i] = null;
             else
             {
-                //Console.print(i + ", ");
+                //Console.Write(i + ", ");
                 string tmp;
                 int ind;
 
@@ -1473,7 +1473,7 @@ public class NfaState
 
                 stateDone[nameSet[i]] = true;
                 commonBlock[cnt++] = nameSet[i];
-                //Console.print(nameSet[i] + ", ");
+                //Console.Write(nameSet[i] + ", ");
             }
         }
 
@@ -1604,10 +1604,10 @@ public class NfaState
             int[] toFix = (int[])stateSetsToFix.get(s = (String)e.nextElement());
             int cnt = 0;
 
-            //Console.print("Fixing : ");
+            //Console.Write("Fixing : ");
             for (i = 0; i < toFix.Length; i++)
             {
-                //Console.print(toFix[i] + ", ");
+                //Console.Write(toFix[i] + ", ");
                 if (toFix[i] != -1)
                     tmp[cnt++] = toFix[i];
             }
@@ -1694,7 +1694,7 @@ public class NfaState
             codeGenerator.GenCodeLine("         " + Options.getLongType() + " l2 = 1L << (curChar & 077);");
         }
 
-        //codeGenerator.genCodeLine("         MatchLoop: do");
+        //codeGenerator.GenCodeLine("         MatchLoop: do");
         codeGenerator.GenCodeLine("         do");
         codeGenerator.GenCodeLine("         {");
 
@@ -1927,7 +1927,7 @@ public class NfaState
                 codeGenerator.GenCodeLine("                  " + (elseNeeded ? "else " : "") + "if (curChar == " +
                         (64 * byteNum + oneBit) + ")");
             else
-                codeGenerator.genCodeLine("                  " + (elseNeeded ? "else " : "") +
+                codeGenerator.GenCodeLine("                  " + (elseNeeded ? "else " : "") +
                         "if ((0x" + Long.toHexString(asciiMoves[byteNum]) + "L & l) != 0L)");
             prefix = "   ";
         }
@@ -2042,7 +2042,7 @@ public class NfaState
                     codeGenerator.GenCodeLine("                  if (curChar == " +
                        (64 * byteNum + oneBit) + kindCheck + ")");
                 else
-                    codeGenerator.genCodeLine("                  if ((0x" +
+                    codeGenerator.GenCodeLine("                  if ((0x" +
                         Long.toHexString(asciiMoves[byteNum]) +
                         "L & l) != 0L" + kindCheck + ")");
 
@@ -2069,7 +2069,7 @@ public class NfaState
             }
             else if (asciiMoves[byteNum] != 0xffffffffffffffffL)
             {
-                codeGenerator.genCodeLine("                  if ((0x" + Long.toHexString(asciiMoves[byteNum]) + "L & l) == 0L)");
+                codeGenerator.GenCodeLine("                  if ((0x" + Long.toHexString(asciiMoves[byteNum]) + "L & l) == 0L)");
                 codeGenerator.GenCodeLine("                     break;");
             }
 
@@ -2093,7 +2093,7 @@ public class NfaState
             }
             else if (asciiMoves[byteNum] != 0xffffffffffffffffL)
             {
-                codeGenerator.genCodeLine("                  if ((0x" + Long.toHexString(asciiMoves[byteNum]) + "L & l) != 0L)");
+                codeGenerator.GenCodeLine("                  if ((0x" + Long.toHexString(asciiMoves[byteNum]) + "L & l) != 0L)");
                 prefix = "   ";
             }
         }
@@ -2323,7 +2323,7 @@ public class NfaState
         if (!Options.getJavaUnicodeEscape() && !unicodeWarningGiven)
         {
             if (loByteVec != null && loByteVec.Count > 1)
-                codeGenerator.genCodeLine("                  if ((jjbitVec" +
+                codeGenerator.GenCodeLine("                  if ((jjbitVec" +
                  ((int)loByteVec.get(1)).intValue() + "[i2" +
                     "] & l2) != 0L)");
         }
@@ -2421,7 +2421,7 @@ public class NfaState
             if (!Options.getJavaUnicodeEscape() && !unicodeWarningGiven)
             {
                 if (loByteVec != null && loByteVec.Count > 1)
-                    codeGenerator.genCodeLine("                  if ((jjbitVec" +
+                    codeGenerator.GenCodeLine("                  if ((jjbitVec" +
                      ((int)loByteVec.get(1)).intValue() + "[i2" +
                         "] & l2) != 0L" + kindCheck + ")");
             }
@@ -2442,7 +2442,7 @@ public class NfaState
             {
                 if (loByteVec != null && loByteVec.Count > 1)
                 {
-                    codeGenerator.genCodeLine("                  if ((jjbitVec" +
+                    codeGenerator.GenCodeLine("                  if ((jjbitVec" +
                      ((int)loByteVec.get(1)).intValue() + "[i2" +
                      "] & l2) == 0L)");
                     codeGenerator.GenCodeLine("                     break;");
@@ -2462,7 +2462,7 @@ public class NfaState
         else if (!Options.getJavaUnicodeEscape() && !unicodeWarningGiven)
         {
             if (loByteVec != null && loByteVec.Count > 1)
-                codeGenerator.genCodeLine("                  if ((jjbitVec" +
+                codeGenerator.GenCodeLine("                  if ((jjbitVec" +
                  ((int)loByteVec.get(1)).intValue() + "[i2" +
                     "] & l2) != 0L)");
         }
@@ -2617,12 +2617,12 @@ public class NfaState
         {
             for (j = 0; j < loByteVec.Count; j += 2)
             {
-                codeGenerator.genCodeLine("      case " +
+                codeGenerator.GenCodeLine("      case " +
                              ((int)loByteVec[j]).intValue() + ":");
                 if (!AllBitsSet((String)allBitVectors.get(
                      ((int)loByteVec.get(j + 1)).intValue())))
                 {
-                    codeGenerator.genCodeLine("         return ((jjbitVec" +
+                    codeGenerator.GenCodeLine("         return ((jjbitVec" +
                      ((int)loByteVec.get(j + 1)).intValue() + "[i2" +
                         "] & l2) != 0L);");
                 }
@@ -2825,7 +2825,7 @@ public class NfaState
                     stateForCase = tmp;
                     put[state] = true;
 
-                    //Console.print(state + " : " + tmp.inNextOf + ", ");
+                    //Console.Write(state + " : " + tmp.inNextOf + ", ");
                     break;
                 }
             }
@@ -2932,12 +2932,12 @@ public class NfaState
 
         if (CodeGenerator.IsJavaLanguage())
         {
-            codeGenerator.genCodeLine((Options.getStatic() ? "static " : "") + "private int " +
+            codeGenerator.GenCodeLine((Options.getStatic() ? "static " : "") + "private int " +
                         "jjMoveNfa" + MainParser.LexGenerator.lexStateSuffix + "(int startState, int curPos)");
         }
         else
         {
-            codeGenerator.generateMethodDefHeader("int", MainParser.LexGenerator.tokMgrClassName, "jjMoveNfa" + MainParser.LexGenerator.lexStateSuffix + "(int startState, int curPos)");
+            codeGenerator.GenerateMethodDefHeader("int", MainParser.LexGenerator.tokMgrClassName, "jjMoveNfa" + MainParser.LexGenerator.lexStateSuffix + "(int startState, int curPos)");
         }
         codeGenerator.GenCodeLine("{");
         if (generatedStates == 0)
@@ -3003,10 +3003,10 @@ public class NfaState
             }
         }
 
-        codeGenerator.genCodeLine("   int kind = 0x" + int.toHexString(int.MaxValue) + ";");
+        codeGenerator.GenCodeLine("   int kind = 0x" + int.toHexString(int.MaxValue) + ";");
         codeGenerator.GenCodeLine("   for (;;)");
         codeGenerator.GenCodeLine("   {");
-        codeGenerator.genCodeLine("      if (++jjround == 0x" + int.toHexString(int.MaxValue) + ")");
+        codeGenerator.GenCodeLine("      if (++jjround == 0x" + int.toHexString(int.MaxValue) + ")");
         codeGenerator.GenCodeLine("         ReInitRounds();");
         codeGenerator.GenCodeLine("      if (curChar < 64)");
         codeGenerator.GenCodeLine("      {");
@@ -3030,11 +3030,11 @@ public class NfaState
 
         codeGenerator.GenCodeLine("      }");
 
-        codeGenerator.genCodeLine("      if (kind != 0x" + int.toHexString(int.MaxValue) + ")");
+        codeGenerator.GenCodeLine("      if (kind != 0x" + int.toHexString(int.MaxValue) + ")");
         codeGenerator.GenCodeLine("      {");
         codeGenerator.GenCodeLine("         jjmatchedKind = kind;");
         codeGenerator.GenCodeLine("         jjmatchedPos = curPos;");
-        codeGenerator.genCodeLine("         kind = 0x" + int.toHexString(int.MaxValue) + ";");
+        codeGenerator.GenCodeLine("         kind = 0x" + int.toHexString(int.MaxValue) + ";");
         codeGenerator.GenCodeLine("      }");
         codeGenerator.GenCodeLine("      ++curPos;");
 
@@ -3042,7 +3042,7 @@ public class NfaState
         {
             if (CodeGenerator.IsJavaLanguage())
             {
-                codeGenerator.genCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" +
+                codeGenerator.GenCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" +
                       int.toHexString(int.MaxValue) + ")");
                 codeGenerator.GenCodeLine("         debugStream.println(" +
                        "\"   Currently matched the first \" + (jjmatchedPos + 1) + \" characters as" +
@@ -3050,7 +3050,7 @@ public class NfaState
             }
             else
             {
-                codeGenerator.genCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" +
+                codeGenerator.GenCodeLine("      if (jjmatchedKind != 0 && jjmatchedKind != 0x" +
                       int.toHexString(int.MaxValue) + ")");
                 codeGenerator.GenCodeLine("   fprintf(debugStream, \"   Currently matched the first %d characters as a \\\"%s\\\" token.\\n\",  (jjmatchedPos + 1),  addUnicodeEscapes(tokenImage[jjmatchedKind]).c_str());");
             }

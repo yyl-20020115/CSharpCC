@@ -14,7 +14,7 @@ public class TokenMgrError : Error
     /**
      * Lexical error occurred.
      */
-    const int LEXICAL_ERROR = 0;
+    public const int LEXICAL_ERROR = 0;
 
     /**
      * An attempt was made to create a second instance of a static token manager.

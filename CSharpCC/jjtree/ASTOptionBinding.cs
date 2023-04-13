@@ -73,7 +73,7 @@ public class ASTOptionBinding : JJTreeNode
 
     /** Accept the visitor. **/
     public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
-        s=> visitor.visit(this, data);
+        => visitor.Visit(this, data);
 }
 
 

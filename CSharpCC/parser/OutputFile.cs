@@ -316,7 +316,7 @@ public class OutputFile
 
     private string getMD5sum()
     {
-        pw.flush();
+        pw.Flush();
         byte[] digest = dos.getMessageDigest().digest();
         return toHexString(digest);
     }
@@ -354,9 +354,9 @@ public class OutputFile
     private class TrapClosePrintWriter : TextWriter
     {
 
-        public TrapClosePrintWriter(OutputStream os)
+        public TrapClosePrintWriter(Stream os)
+            :base(os)
         {
-            super(os);
         }
 
         public void closePrintWriter()
@@ -372,7 +372,7 @@ public class OutputFile
             }
             catch (IOException e)
             {
-                Console.Error.WriteLine("Could not close " + file.getAbsolutePath());
+                Console.Error.WriteLine("Could not close " + file);
             }
         }
     }

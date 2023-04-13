@@ -315,14 +315,14 @@ public class RCharacterList : RegularExpression
                               if (descriptors[i] is SingleCharacter)
                               {
                                  char c = ((SingleCharacter)descriptors[i]).ch;
-                                 System.out.print((int)c + " ");
+                                 System.out.Write((int)c + " ");
                               }
                               else
                               {
                                  char l = ((CharacterRange)descriptors[i]).left;
                                  char r = ((CharacterRange)descriptors[i]).right;
 
-                                 System.out.print((int)l + "-" + (int)r + " ");
+                                 System.out.Write((int)l + "-" + (int)r + " ");
                               }
                               if ((i + 1) % 6 == 0)
                                  Console.WriteLine("");
@@ -340,14 +340,14 @@ public class RCharacterList : RegularExpression
                               if (descriptors[i] is SingleCharacter)
                               {
                                  char c = ((SingleCharacter)descriptors[i]).ch;
-                                 System.out.print((int)c + " ");
+                                 System.out.Write((int)c + " ");
                               }
                               else
                               {
                                  char l = ((CharacterRange)descriptors[i]).left;
                                  char r = ((CharacterRange)descriptors[i]).right;
 
-                                 System.out.print((int)l + "-" + (int)r + " ");
+                                 System.out.Write((int)l + "-" + (int)r + " ");
                               }
                               if ((i + 1) % 6 == 0)
                                  Console.WriteLine("");
@@ -513,14 +513,14 @@ public class RCharacterList : RegularExpression
                 if (descriptors[i] is SingleCharacter)
                 {
                    char c = ((SingleCharacter)descriptors[i]).ch;
-                   System.out.print((int)c + " ");
+                   System.out.Write((int)c + " ");
                 }
                 else
                 {
                    char l = ((CharacterRange)descriptors[i]).left;
                    char r = ((CharacterRange)descriptors[i]).right;
 
-                   System.out.print((int)l + "-" + (int)r + " ");
+                   System.out.Write((int)l + "-" + (int)r + " ");
                 }
              }
              Console.WriteLine("");
@@ -587,14 +587,14 @@ public class RCharacterList : RegularExpression
                 if (descriptors[i] is SingleCharacter)
                 {
                    char c = ((SingleCharacter)descriptors[i]).ch;
-                   System.out.print((int)c + " ");
+                   System.out.Write((int)c + " ");
                 }
                 else
                 {
                    char l = ((CharacterRange)descriptors[i]).left;
                    char r = ((CharacterRange)descriptors[i]).right;
 
-                   System.out.print((int)l + "-" + (int)r + " ");
+                   System.out.Write((int)l + "-" + (int)r + " ");
                 }
              }
              Console.WriteLine("");

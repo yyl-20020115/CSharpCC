@@ -535,11 +535,11 @@ public class Options
             {
                 Val = true;
             }
-            else if (name.Length() > 2 && name.charAt(0) == 'N'
+            else if (name.Length > 2 && name[0] == 'N'
                     && name[1] == 'O')
             {
                 Val = false;
-                name = name.substring(2);
+                name = name[2..];
             }
             else
             {
@@ -1045,13 +1045,13 @@ public class Options
 
     public static bool isValidOutputLanguage(string language)
     {
-        return language == null ? false : supportedLanguages.Contains(language.ToLower(Locale.ENGLISH));
+        return language == null ? false : supportedLanguages.Contains(language.ToLower());
     }
 
 
     public static bool isValidJavaTemplateType(string type)
     {
-        return type == null ? false : supportedJavaTemplateTypes.Contains(type.ToLower(Locale.ENGLISH));
+        return type == null ? false : supportedJavaTemplateTypes.Contains(type.ToLower());
     }
 
     /**

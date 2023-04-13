@@ -38,7 +38,7 @@ public class ASTNodeDescriptorExpression : JJTreeNode
 
     /** Accept the visitor. **/
     public override object jjtAccept(JJTreeParserVisitor visitor, object data) 
-        => visitor.visit(this, data);
+        => visitor.Visit(this, data);
 }
 
 /*end*/
