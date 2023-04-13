@@ -64,20 +64,13 @@ public class OutputFileGenerator
      */
     public void Generate(TextWriter _out)
     {
-        //TODO:
-        InputStream _is = getClass().getResourceAsStream(templateName);
-        if (_is == null)
-            throw new IOException("Invalid template name: " + templateName);
-        BufferedReader _in = new BufferedReader(new InputStreamReader(_is));
-        process(_in, _out, false);
+        //NOTICE:should use template name as input file
+        Process(Console.In, _out, false);
     }
 
     private string PeekLine(TextReader _in)
     {
-        if (currentLine == null)
-            currentLine = _in.ReadLine();
-
-        return currentLine;
+        return currentLine ??= _in.ReadLine();
     }
 
     private string GetLine(TextReader _in)
@@ -104,7 +97,10 @@ public class OutputFileGenerator
             return false;
         }
     }
-
+    public static bool IsJavaIdentifierPart(char t)
+    {
+        return t=='_'||char.IsLetterOrDigit(t);
+    }
     private string Substitute(string text)
     {
         int startPos;
@@ -150,16 +146,13 @@ public class OutputFileGenerator
                 value = SubstituteWithConditional(variableExpression[..i], variableExpression[(i + 1)..]);
                 break;
             }
-            else if (ch != '_' && !char.isJavaIdentifierPart(ch))
+            else if (ch != '_' && !IsJavaIdentifierPart(ch))
             {
                 throw new IOException("Invalid variable in " + text);
             }
         }
 
-        if (value == null)
-        {
-            value = SubstituteWithDefault(variableExpression, "");
-        }
+        value ??= SubstituteWithDefault(variableExpression, "");
 
         return text[..startPos] + value + text[endPos..];
     }

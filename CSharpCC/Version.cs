@@ -29,6 +29,8 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using CSharpCC.Properties;
+
 namespace org.javacc;
 
 
@@ -47,35 +49,11 @@ public static class Version
 
     static Version()
     {
-        string major = "??";
-        string minor = "??";
-        string patch = "??";
-
-        //TODO:
-        //Properties props = new Properties();
-        //InputStream _is = Version.GetType().getResourceAsStream("/version.properties");
-        //if (_is != null)
-        //{
-        //    try
-        //    {
-        //        props.load(is);
-        //    }
-        //    catch (IOException e)
-        //    {
-        //        Console.Error.WriteLine("Could not read version.properties: " + e);
-        //    }
-        //    major = props.getProperty("version.major", major);
-        //    minor = props.getProperty("version.minor", minor);
-        //    patch = props.getProperty("version.patch", patch);
-        //}
-
-        MajorVersion = major;
-        MinorVersion = minor;
-        PatchVersion = patch;
+        MajorVersion = Resources.MajorVersion;
+        MinorVersion = Resources.MinorVersion;
+        PatchVersion = Resources.PatchVersion;
         MajorDotMinor = MajorVersion + "." + MinorVersion;
         VersionNumber = MajorVersion + "." + MinorVersion +
-                        (patch == ("") ? "" : "." + patch);
+                        (PatchVersion == ("") ? "" : "." + PatchVersion);
     }
-
-
 }

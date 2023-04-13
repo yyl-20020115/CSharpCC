@@ -177,7 +177,7 @@ public class JavaCCInterpreter
                 if (matchInfo.matchType == TokenizerData.MatchType.TOKEN)
                 {
                     Console.Error.WriteLine("Token: " + matchedKind + "; image: \"" +
-                                       input.substring(beg, matchedPos + 1) + "\"");
+                                       input[beg.. (matchedPos + 1)] + "\"");
                 }
                 if (matchInfo.newLexState != -1)
                 {

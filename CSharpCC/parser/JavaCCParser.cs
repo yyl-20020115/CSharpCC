@@ -369,7 +369,7 @@ public class JavaCCParser : JavaCCParserInternals
 
     public List<string> StringList()
     {
-        List<string> strings = new ArrayList<string>(); 
+        List<string> strings = new (); 
         String s;
         jj_consume_token(LPAREN);
         s = StringLiteral();
