@@ -43,7 +43,7 @@ public abstract class CSharpCCParserInternals : CSharpCCGlobals
 
     static protected void Addcuname(string id)
     {
-        CuName = id;
+        cu_name = id;
     }
 
     static protected void Compare(Token t, string id1, string id2)

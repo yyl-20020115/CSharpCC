@@ -611,7 +611,7 @@ public class ParseEngine
         _params = sig.ToString();
 
         // For now, just ignore comments
-        _CodeGenerator.GenerateMethodDefHeader(ret, CSharpCCGlobals.CuName, p.Lhs + _params, sig.ToString());
+        _CodeGenerator.GenerateMethodDefHeader(ret, CSharpCCGlobals.cu_name, p.Lhs + _params, sig.ToString());
 
         return "";
     }
@@ -652,7 +652,7 @@ public class ParseEngine
         _params = sig.ToString();
 
         // For now, just ignore comments
-        _CodeGenerator.GenerateMethodDefHeader(ret, CSharpCCGlobals.CuName, p.Lhs + _params, sig.ToString());
+        _CodeGenerator.GenerateMethodDefHeader(ret, CSharpCCGlobals.cu_name, p.Lhs + _params, sig.ToString());
 
         // Generate a default value for error return.
         string default_return;

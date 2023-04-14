@@ -95,8 +95,8 @@ public class NfaState
     {
         id = idCnt++;
         allStates.Add(this);
-        lexState = LexGen.lexStateIndex;
-        lookingFor = LexGen.curKind;
+        lexState = LexGen.LexStateIndex;
+        lookingFor = LexGen.CurKind;
     }
 
     public NfaState CreateClone()
@@ -179,7 +179,7 @@ public class NfaState
             !Options.GetUserCharStream())
         {
             unicodeWarningGiven = true;
-            CSharpCCErrors.Warning(LexGen.curRE, "Non-ASCII characters used in regular expression.\n" +
+            CSharpCCErrors.Warning(LexGen.CurRE, "Non-ASCII characters used in regular expression.\n" +
                  "Please make sure you use the correct Reader when you create the parser, " +
                  "one that can handle your character set.");
         }
@@ -223,7 +223,7 @@ public class NfaState
             !Options.GetUserCharStream())
         {
             unicodeWarningGiven = true;
-            CSharpCCErrors.Warning(LexGen.curRE, "Non-ASCII characters used in regular expression.\n" +
+            CSharpCCErrors.Warning(LexGen.CurRE, "Non-ASCII characters used in regular expression.\n" +
                  "Please make sure you use the correct Reader when you create the parser, " +
                  "one that can handle your character set.");
         }
@@ -692,7 +692,7 @@ public class NfaState
         if (c >= 128)
             throw new Error("JavaCC Bug: Please send mail to sankar@cs.stanford.edu");
 
-        string s = LexGen.initialState.GetEpsilonMovesString();
+        string s = LexGen.InitialState.GetEpsilonMovesString();
 
         if (s == null || s == ("null;"))
             return false;
@@ -1207,9 +1207,9 @@ public class NfaState
 
     public static int InitStateName()
     {
-        string s = LexGen.initialState.GetEpsilonMovesString();
+        string s = LexGen.InitialState.GetEpsilonMovesString();
 
-        if (LexGen.initialState.usefulEpsilonMoves != 0)
+        if (LexGen.InitialState.usefulEpsilonMoves != 0)
             return StateNameForComposite(s);
         return -1;
     }
@@ -2128,7 +2128,7 @@ public class NfaState
         {
             NfaState temp = (NfaState)allStates[i];
 
-            if (dumped[temp.stateName] || temp.lexState != LexGen.lexStateIndex ||
+            if (dumped[temp.stateName] || temp.lexState != LexGen.LexStateIndex ||
                 !temp.HasTransitions() || temp.dummy ||
                 temp.stateName == -1)
                 continue;
@@ -2497,7 +2497,7 @@ public class NfaState
         {
             NfaState temp = allStates[i];
 
-            if (temp.stateName == -1 || dumped[temp.stateName] || temp.lexState != LexGen.lexStateIndex ||
+            if (temp.stateName == -1 || dumped[temp.stateName] || temp.lexState != LexGen.LexStateIndex ||
                 !temp.HasTransitions() || temp.dummy)
                 continue;
 
@@ -2572,7 +2572,7 @@ public class NfaState
         }
         else
         {
-            codeGenerator.GenerateMethodDefHeader("" + Options.GetBooleanType() + "", LexGen.tokMgrClassName, "jjCanMove_" + nonAsciiMethod +
+            codeGenerator.GenerateMethodDefHeader("" + Options.GetBooleanType() + "", LexGen.TokMgrClassName, "jjCanMove_" + nonAsciiMethod +
                            "(int hiByte, int i1, int i2, " + Options.GetLongType() + " l1, " + Options.GetLongType() + " l2)");
         }
         codeGenerator.GenCodeLine("{");
@@ -2852,8 +2852,8 @@ public class NfaState
 
         if (kinds == null)
         {
-            kinds = new int[LexGen.maxLexStates][];
-            statesForState = new int[LexGen.maxLexStates][][];
+            kinds = new int[LexGen.MaxLexStates][];
+            statesForState = new int[LexGen.MaxLexStates][][];
         }
 
         ReArrange();
@@ -2862,7 +2862,7 @@ public class NfaState
         {
             NfaState temp = (NfaState)allStates[i];
 
-            if (temp.lexState != LexGen.lexStateIndex ||
+            if (temp.lexState != LexGen.LexStateIndex ||
                 !temp.HasTransitions() || temp.dummy ||
                 temp.stateName == -1)
                 continue;
@@ -2870,11 +2870,11 @@ public class NfaState
             if (kindsForStates == null)
             {
                 kindsForStates = new int[generatedStates];
-                statesForState[LexGen.lexStateIndex] = new int[Math.Max(generatedStates, dummyStateIndex + 1)][];
+                statesForState[LexGen.LexStateIndex] = new int[Math.Max(generatedStates, dummyStateIndex + 1)][];
             }
 
             kindsForStates[temp.stateName] = temp.lookingFor;
-            statesForState[LexGen.lexStateIndex][temp.stateName] = temp.compositeStates;
+            statesForState[LexGen.LexStateIndex][temp.stateName] = temp.compositeStates;
 
             temp.GenerateNonAsciiMoves(codeGenerator);
         }
@@ -2884,22 +2884,22 @@ public class NfaState
             int state = stateNameForComposite[s];
 
             if (state >= generatedStates)
-                statesForState[LexGen.lexStateIndex][state] = allNextStates[s];
+                statesForState[LexGen.LexStateIndex][state] = allNextStates[s];
         }
 
         if (stateSetsToFix.Count != 0)
             FixStateSets();
 
-        kinds[LexGen.lexStateIndex] = kindsForStates;
+        kinds[LexGen.LexStateIndex] = kindsForStates;
 
         if (CodeGenerator.IsJavaLanguage())
         {
             codeGenerator.GenCodeLine((Options.GetStatic() ? "static " : "") + "private int " +
-                        "jjMoveNfa" + LexGen.lexStateSuffix + "(int startState, int curPos)");
+                        "jjMoveNfa" + LexGen.LexStateSuffix + "(int startState, int curPos)");
         }
         else
         {
-            codeGenerator.GenerateMethodDefHeader("int", LexGen.tokMgrClassName, "jjMoveNfa" + LexGen.lexStateSuffix + "(int startState, int curPos)");
+            codeGenerator.GenerateMethodDefHeader("int", LexGen.TokMgrClassName, "jjMoveNfa" + LexGen.LexStateSuffix + "(int startState, int curPos)");
         }
         codeGenerator.GenCodeLine("{");
         if (generatedStates == 0)
@@ -2909,7 +2909,7 @@ public class NfaState
             return;
         }
 
-        if (LexGen.mixed[LexGen.lexStateIndex])
+        if (LexGen.Mixed[LexGen.LexStateIndex])
         {
             codeGenerator.GenCodeLine("   int strKind = jjmatchedKind;");
             codeGenerator.GenCodeLine("   int strPos = jjmatchedPos;");
@@ -2951,7 +2951,7 @@ public class NfaState
         {
             if (CodeGenerator.IsJavaLanguage())
             {
-                codeGenerator.GenCodeLine("      debugStream.println(" + (LexGen.maxLexStates > 1 ?
+                codeGenerator.GenCodeLine("      debugStream.println(" + (LexGen.MaxLexStates > 1 ?
                         "\"<\" + lexStateNames[curLexState] + \">\" + " :
                         "") + "\"Current character : \" + " + Options.getTokenMgrErrorClass() +
                         ".addEscapes(String.valueOf(curChar)) + \" (\" + (int)curChar + \") " + "at line \" + input_stream.getEndLine() + \" column \" + input_stream.getEndColumn());");
@@ -3028,7 +3028,7 @@ public class NfaState
             codeGenerator.GenCodeLine("      if ((i = jjnewStateCnt), (jjnewStateCnt = startsAt), (i == (startsAt = " +
                        generatedStates + " - startsAt)))");
         }
-        if (LexGen.mixed[LexGen.lexStateIndex])
+        if (LexGen.Mixed[LexGen.LexStateIndex])
             codeGenerator.GenCodeLine("         break;");
         else
             codeGenerator.GenCodeLine("         return curPos;");
@@ -3052,7 +3052,7 @@ public class NfaState
         }
         else
         {
-            if (LexGen.mixed[LexGen.lexStateIndex])
+            if (LexGen.Mixed[LexGen.LexStateIndex])
             {
                 codeGenerator.GenCodeLine("      if (input_stream->endOfInput()) { break; }");
             }
@@ -3063,7 +3063,7 @@ public class NfaState
             codeGenerator.GenCodeLine("      curChar = input_stream->readChar();");
         }
 
-        if (LexGen.mixed[LexGen.lexStateIndex])
+        if (LexGen.Mixed[LexGen.LexStateIndex])
         {
             if (CodeGenerator.IsJavaLanguage())
             {
@@ -3082,7 +3082,7 @@ public class NfaState
         {
             if (CodeGenerator.IsJavaLanguage())
             {
-                codeGenerator.GenCodeLine("      debugStream.println(" + (LexGen.maxLexStates > 1 ?
+                codeGenerator.GenCodeLine("      debugStream.println(" + (LexGen.MaxLexStates > 1 ?
                         "\"<\" + lexStateNames[curLexState] + \">\" + " :
                         "") + "\"Current character : \" + " + Options.getTokenMgrErrorClass() +
                         ".addEscapes(String.valueOf(curChar)) + \" (\" + (int)curChar + \") " +
@@ -3099,7 +3099,7 @@ public class NfaState
 
         codeGenerator.GenCodeLine("   }");
 
-        if (LexGen.mixed[LexGen.lexStateIndex])
+        if (LexGen.Mixed[LexGen.LexStateIndex])
         {
             codeGenerator.GenCodeLine("   if (jjmatchedPos > strPos)");
             codeGenerator.GenCodeLine("      return curPos;");
@@ -3153,7 +3153,7 @@ public class NfaState
         }
 
         codeGenerator.SwitchToStaticsFile();
-        for (int i = 0; i < LexGen.maxLexStates; i++)
+        for (int i = 0; i < LexGen.MaxLexStates; i++)
         {
             if (statesForState[i] == null)
             {
@@ -3165,7 +3165,7 @@ public class NfaState
                 int[] stateSet = statesForState[i][j];
 
                 codeGenerator.GenCode("const int stateSet_" + i + "_" + j + "[" +
-                           LexGen.stateSetSize + "] = ");
+                           LexGen.StateSetSize + "] = ");
                 if (stateSet == null)
                 {
                     codeGenerator.GenCodeLine("   { " + j + " };");
@@ -3182,7 +3182,7 @@ public class NfaState
 
         }
 
-        for (int i = 0; i < LexGen.maxLexStates; i++)
+        for (int i = 0; i < LexGen.MaxLexStates; i++)
         {
             codeGenerator.GenCodeLine("const int *stateSet_" + i + "[] = {");
             if (statesForState[i] == null)
@@ -3200,7 +3200,7 @@ public class NfaState
         }
 
         codeGenerator.GenCode("const int** statesForState[] = { ");
-        for (int i = 0; i < LexGen.maxLexStates; i++)
+        for (int i = 0; i < LexGen.MaxLexStates; i++)
         {
             codeGenerator.GenCodeLine("stateSet_" + i + ", ");
         }
@@ -3225,7 +3225,7 @@ public class NfaState
             codeGenerator.GenCodeLine("{");
         }
 
-        for (int i = 0; i < LexGen.maxLexStates; i++)
+        for (int i = 0; i < LexGen.MaxLexStates; i++)
         {
             if (statesForState[i] == null)
             {
@@ -3277,7 +3277,7 @@ public class NfaState
         else
         {
             codeGenerator.SwitchToStaticsFile();
-            codeGenerator.GenCode("static const int kindForState[" + LexGen.stateSetSize + "][" + LexGen.stateSetSize + "] = ");
+            codeGenerator.GenCode("static const int kindForState[" + LexGen.StateSetSize + "][" + LexGen.StateSetSize + "] = ");
         }
 
         if (kinds == null)

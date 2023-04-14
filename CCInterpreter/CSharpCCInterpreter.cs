@@ -1,5 +1,7 @@
 using CSharpCC.Parser;
 
+namespace CSharpCC.Interpreter;
+
 public class CSharpCCInterpreter
 {
     public static void Main(string[] args)
@@ -10,18 +12,18 @@ public class CSharpCCInterpreter
         {
             if (!Options.IsOption(args[arg]))
             {
-                Console.WriteLine("Argument \"" + args[arg] + "\" must be an option setting.");
+                Console.WriteLine($"Argument \"{args[arg]}\" must be an option setting.");
                 Environment.Exit(1);
             }
             Options.SetCmdLineOption(args[arg]);
         }
 
-        string input = "";
-        string grammar = "";
+        var input = string.Empty;
+        var grammar = string.Empty;
         try
         {
-            string fp = args[^2];
-            string inputFile = args[^1];
+            var fp = args[^2];
+            var inputFile = args[^1];
             grammar = File.ReadAllText(fp);
             input = File.ReadAllText(inputFile);
         }
@@ -34,22 +36,22 @@ public class CSharpCCInterpreter
         {
             Environment.Exit(1);
         }
-        long l = DateTime.Now.Millisecond;
+        var start = DateTime.Now.Millisecond;
         new CSharpCCInterpreter().RunTokenizer(grammar, input);
-        Console.Error.WriteLine("Tokenized in: " + (DateTime.Now.Millisecond - l));
+        Console.Error.WriteLine("Tokenized in: " + (DateTime.Now.Millisecond - start));
     }
 
     public void RunTokenizer(string grammar, string input)
     {
         try
         {
-            var parser = new CSharpCCParser(new StringReader(grammar));
-            parser.CSharpCC_Input();
+            var Parser = new CSharpCCParser(new StringReader(grammar));
+            Parser.CSharpCC_Input();
             Semanticize.Start();
             LexGen.GenerateDataOnly = true;
             var lg = new LexGen();
             lg.Start();
-            TokenizerData td = LexGen.tokenizerData;
+            TokenizerData td = LexGen.TokenizerData;
             if (CSharpCCErrors.ErrorCount == 0)
             {
                 Tokenize(td, input);

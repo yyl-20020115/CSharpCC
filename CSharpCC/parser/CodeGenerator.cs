@@ -78,7 +78,7 @@ public class CodeGenerator : CSharpCCGlobals
                 mainBuffer.Insert(0, "#include \"SimpleNode.h\"\n");
             }
             if (Options.GetTokenManagerUsesParser())
-                mainBuffer.Insert(0, "#include \"" + CuName + ".h\"\n");
+                mainBuffer.Insert(0, "#include \"" + cu_name + ".h\"\n");
             mainBuffer.Insert(0, "#include \"TokenMgrError.h\"\n");
             mainBuffer.Insert(0, "#include \"" + incfileName + "\"\n");
             includeBuffer.Append("#endif\n");

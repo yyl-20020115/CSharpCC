@@ -98,12 +98,12 @@ public class OtherFilesGen : CSharpCCGlobals
         try
         {
             ostr = new StreamWriter(
-                           System.IO.Path.Combine(Options.GetOutputDirectory(), CuName + CONSTANTS_FILENAME_SUFFIX)
+                           System.IO.Path.Combine(Options.GetOutputDirectory(), cu_name + CONSTANTS_FILENAME_SUFFIX)
                    );
         }
         catch (IOException e)
         {
-            CSharpCCErrors.SemanticError("Could not open file " + CuName + "Constants.java for writing.");
+            CSharpCCErrors.SemanticError("Could not open file " + cu_name + "Constants.java for writing.");
             throw new Error();
         }
 
@@ -111,7 +111,7 @@ public class OtherFilesGen : CSharpCCGlobals
         {
             ToolName
         };
-        ostr.WriteLine("/* " + GetIdString(tn, CuName + CONSTANTS_FILENAME_SUFFIX) + " */");
+        ostr.WriteLine("/* " + GetIdString(tn, cu_name + CONSTANTS_FILENAME_SUFFIX) + " */");
 
         if (CuToInsertionPoint1.Count != 0 &&
             ((Token)CuToInsertionPoint1[0]).kind == PACKAGE
@@ -144,7 +144,7 @@ public class OtherFilesGen : CSharpCCGlobals
         {
             ostr.Write("public ");
         }
-        ostr.WriteLine("interface " + CuName + "Constants {");
+        ostr.WriteLine("interface " + cu_name + "Constants {");
         ostr.WriteLine("");
 
         ostr.WriteLine("  /** End of File. */");
@@ -158,10 +158,10 @@ public class OtherFilesGen : CSharpCCGlobals
         ostr.WriteLine("");
         if (!Options.GetUserTokenManager() && Options.GetBuildTokenManager())
         {
-            for (int i = 0; i < LexGen.lexStateName.Length; i++)
+            for (int i = 0; i < LexGen.LexStateName.Length; i++)
             {
                 ostr.WriteLine("  /** Lexical state. */");
-                ostr.WriteLine("  int " + LexGen.lexStateName[i] + " = " + i + ";");
+                ostr.WriteLine("  int " + LexGen.LexStateName[i] + " = " + i + ";");
             }
             ostr.WriteLine("");
         }

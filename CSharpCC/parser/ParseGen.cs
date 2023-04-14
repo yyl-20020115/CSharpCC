@@ -55,7 +55,7 @@ public class ParseGen : CodeGenerator
             };
 
             // This is the first line generated -- the the comment line at the top of the generated parser
-            GenCodeLine("/* " + GetIdString(tn, CuName + ".java") + " */");
+            GenCodeLine("/* " + GetIdString(tn, cu_name + ".java") + " */");
 
             bool implementsExists = false;
             //bool extendsExists = false;
@@ -89,7 +89,7 @@ public class ParseGen : CodeGenerator
             {
                 GenCode(" implements ");
             }
-            GenCode(CuName + "Constants ");
+            GenCode(cu_name + "Constants ");
             if (CuToInsertionPoint2.Count != 0)
             {
                 CSharpCCGlobals.PrintTokenSetup((CuToInsertionPoint2[0]));
@@ -117,7 +117,7 @@ public class ParseGen : CodeGenerator
             else
             {
                 GenCodeLine("  /** Generated Token Manager. */");
-                GenCodeLine("  " + StaticOpt + "public " + CuName + "TokenManager token_source;");
+                GenCodeLine("  " + StaticOpt + "public " + cu_name + "TokenManager token_source;");
                 if (!Options.GetUserCharStream())
                 {
                     if (Options.GetJavaUnicodeEscape())
@@ -205,7 +205,7 @@ public class ParseGen : CodeGenerator
                 if (Options.GetUserCharStream())
                 {
                     GenCodeLine("  /** Constructor with user supplied CharStream. */");
-                    GenCodeLine("  public " + CuName + "(CharStream stream) {");
+                    GenCodeLine("  public " + cu_name + "(CharStream stream) {");
                     if (Options.GetStatic())
                     {
                         GenCodeLine("	 if (jj_initialized_once) {");
@@ -219,12 +219,12 @@ public class ParseGen : CodeGenerator
                     }
                     if (Options.GetTokenManagerUsesParser())
                     {
-                        GenCodeLine("	 token_source = new " + CuName
+                        GenCodeLine("	 token_source = new " + cu_name
                                 + "TokenManager(this, stream);");
                     }
                     else
                     {
-                        GenCodeLine("	 token_source = new " + CuName + "TokenManager(stream);");
+                        GenCodeLine("	 token_source = new " + cu_name + "TokenManager(stream);");
                     }
                     GenCodeLine("	 token = new Token();");
                     if (Options.GetCacheTokens())
@@ -309,11 +309,11 @@ public class ParseGen : CodeGenerator
                     if (!isJavaModernMode)
                     {
                         GenCodeLine("  /** Constructor with InputStream. */");
-                        GenCodeLine("  public " + CuName + "(java.io.InputStream stream) {");
+                        GenCodeLine("  public " + cu_name + "(java.io.InputStream stream) {");
                         GenCodeLine("	  this(stream, null);");
                         GenCodeLine("  }");
                         GenCodeLine("  /** Constructor with InputStream and supplied encoding */");
-                        GenCodeLine("  public " + CuName
+                        GenCodeLine("  public " + cu_name
                                 + "(java.io.InputStream stream, String encoding) {");
                         if (Options.GetStatic())
                         {
@@ -357,12 +357,12 @@ public class ParseGen : CodeGenerator
                         }
                         if (Options.GetTokenManagerUsesParser() && !Options.GetStatic())
                         {
-                            GenCodeLine("	 token_source = new " + CuName
+                            GenCodeLine("	 token_source = new " + cu_name
                                     + "TokenManager(this, jj_input_stream);");
                         }
                         else
                         {
-                            GenCodeLine("	 token_source = new " + CuName
+                            GenCodeLine("	 token_source = new " + cu_name
                                     + "TokenManager(jj_input_stream);");
                         }
                         GenCodeLine("	 token = new Token();");
@@ -463,7 +463,7 @@ public class ParseGen : CodeGenerator
 
 
                     GenCodeLine("  /** Constructor. */");
-                    GenCodeLine("  public " + CuName + "(" + readerInterfaceName + " stream) {");
+                    GenCodeLine("  public " + cu_name + "(" + readerInterfaceName + " stream) {");
                     if (Options.GetStatic())
                     {
                         GenCodeLine("	 if (jj_initialized_once) {");
@@ -485,12 +485,12 @@ public class ParseGen : CodeGenerator
                     }
                     if (Options.GetTokenManagerUsesParser() && !Options.GetStatic())
                     {
-                        GenCodeLine("	 token_source = new " + CuName
+                        GenCodeLine("	 token_source = new " + cu_name
                                 + "TokenManager(this, jj_input_stream);");
                     }
                     else
                     {
-                        GenCodeLine("	 token_source = new " + CuName
+                        GenCodeLine("	 token_source = new " + cu_name
                                 + "TokenManager(jj_input_stream);");
                     }
                     GenCodeLine("	 token = new Token();");
@@ -526,7 +526,7 @@ public class ParseGen : CodeGenerator
                     if (isJavaModernMode)
                     {
                         GenCodeLine("  /** Constructor. */");
-                        GenCodeLine("  public " + CuName
+                        GenCodeLine("  public " + cu_name
                                 + "(String dsl), " + Options.getTokenMgrErrorClass() + " {");
                         GenCodeLine("	   this(new " + stringReaderClass + "(dsl));");
                         GenCodeLine("  }");
@@ -563,11 +563,11 @@ public class ParseGen : CodeGenerator
 
                     if (Options.GetTokenManagerUsesParser() && !Options.GetStatic())
                     {
-                        GenCodeLine(" token_source = new " + CuName + "TokenManager(this, jj_input_stream);");
+                        GenCodeLine(" token_source = new " + cu_name + "TokenManager(this, jj_input_stream);");
                     }
                     else
                     {
-                        GenCodeLine(" token_source = new " + CuName + "TokenManager(jj_input_stream);");
+                        GenCodeLine(" token_source = new " + cu_name + "TokenManager(jj_input_stream);");
                     }
 
                     GenCodeLine("	}");
@@ -620,12 +620,12 @@ public class ParseGen : CodeGenerator
             if (Options.GetUserTokenManager())
             {
                 GenCodeLine("  /** Constructor with user supplied Token Manager. */");
-                GenCodeLine("  public " + CuName + "(TokenManager tm) {");
+                GenCodeLine("  public " + cu_name + "(TokenManager tm) {");
             }
             else
             {
                 GenCodeLine("  /** Constructor with generated Token Manager. */");
-                GenCodeLine("  public " + CuName + "(" + CuName + "TokenManager tm) {");
+                GenCodeLine("  public " + cu_name + "(" + cu_name + "TokenManager tm) {");
             }
             if (Options.GetStatic())
             {
@@ -674,7 +674,7 @@ public class ParseGen : CodeGenerator
             else
             {
                 GenCodeLine("  /** Reinitialise. */");
-                GenCodeLine("  public void ReInit(" + CuName + "TokenManager tm) {");
+                GenCodeLine("  public void ReInit(" + cu_name + "TokenManager tm) {");
             }
             GenCodeLine("	 token_source = tm;");
             GenCodeLine("	 token = new Token();");
@@ -980,7 +980,7 @@ public class ParseGen : CodeGenerator
                 if (isJavaModernMode)
                 {
                     // Add the lexical state onto the exception message
-                    GenCodeLine("	 return new ParseException(token, exptokseq, tokenImage, token_source == null ? null : " + CuName + "TokenManager.lexStateNames[token_source.curLexState]);");
+                    GenCodeLine("	 return new ParseException(token, exptokseq, tokenImage, token_source == null ? null : " + cu_name + "TokenManager.lexStateNames[token_source.curLexState]);");
                 }
                 else
                 {
@@ -1154,7 +1154,7 @@ public class ParseGen : CodeGenerator
             }
             GenCodeLine("");
 
-            SaveOutput(Options.GetOutputDirectory() + Path.DirectorySeparatorChar + CuName
+            SaveOutput(Options.GetOutputDirectory() + Path.DirectorySeparatorChar + cu_name
                     + GetFileExtension(Options.GetOutputLanguage()));
 
         } // matches "if (Options.getBuildParser())"

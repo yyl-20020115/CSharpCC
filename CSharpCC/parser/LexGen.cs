@@ -44,53 +44,53 @@ public class LexGen : CodeGenerator
     private static readonly string DUMP_DEBUG_METHODS_TEMPLATE_RESOURCE_URL = "/templates/DumpDebugMethods.template";
     private static readonly string BOILERPLATER_METHOD_RESOURCE_URL = "/templates/TokenManagerBoilerPlateMethods.template";
 
-    public static string staticString;
-    public static string tokMgrClassName;
+    public static string StaticString;
+    public static string TokMgrClassName;
 
     // Dictionary of vectors
     public static Dictionary<string, List<TokenProduction>> AllTpsForState = new();
-    public static int lexStateIndex = 0;
-    public static int[] kinds;
-    public static int maxOrdinal = 1;
-    public static string lexStateSuffix;
-    public static String[] newLexState;
-    public static int[] lexStates;
-    public static bool[] ignoreCase;
-    public static Action[] actions;
+    public static int LexStateIndex = 0;
+    public static int[] Kinds;
+    public static int MaxOrdinal = 1;
+    public static string LexStateSuffix;
+    public static string[] NewLexState;
+    public static int[] LexStates;
+    public static bool[] IgnoreCase;
+    public static Action[] Actions;
     public static Dictionary<string, NfaState> InitStates = new();
-    public static int stateSetSize;
-    public static int totalNumStates;
-    public static int maxLexStates;
-    public static String[] lexStateName;
-    public static NfaState[] singlesToSkip;
-    public static ulong[] toSkip;
-    public static ulong[] toSpecial;
-    public static ulong[] toMore;
-    public static ulong[] toToken;
-    public static int defaultLexState;
-    public static RegularExpression[] rexprs;
-    public static int[] maxLongsReqd;
-    public static int[] initMatch;
-    public static int[] canMatchAnyChar;
-    public static bool hasEmptyMatch;
-    public static bool[] canLoop;
-    public static bool[] stateHasActions;
-    public static bool hasLoop = false;
-    public static bool[] canReachOnMore;
-    public static bool[] hasNfa;
-    public static bool[] mixed;
-    public static NfaState initialState;
-    public static int curKind;
-    public static bool hasSkipActions = false;
-    public static bool hasMoreActions = false;
-    public static bool hasTokenActions = false;
-    public static bool hasSpecial = false;
-    public static bool hasSkip = false;
-    public static bool hasMore = false;
-    public static RegularExpression curRE;
-    public static bool keepLineCol;
-    public static string errorHandlingClass;
-    public static TokenizerData tokenizerData;
+    public static int StateSetSize;
+    public static int TotalNumStates;
+    public static int MaxLexStates;
+    public static string[] LexStateName;
+    public static NfaState[] SinglesToSkip;
+    public static ulong[] ToSkip;
+    public static ulong[] ToSpecial;
+    public static ulong[] ToMore;
+    public static ulong[] ToToken;
+    public static int DefaultLexState;
+    public static RegularExpression[] Rexprs;
+    public static int[] MaxLongsReqd;
+    public static int[] InitMatch;
+    public static int[] CanMatchAnyChar;
+    public static bool HasEmptyMatch;
+    public static bool[] CanLoop;
+    public static bool[] StateHasActions;
+    public static bool HasLoop = false;
+    public static bool[] CanReachOnMore;
+    public static bool[] HasNfa;
+    public static bool[] Mixed;
+    public static NfaState InitialState;
+    public static int CurKind;
+    public static bool HasSkipActions = false;
+    public static bool HasMoreActions = false;
+    public static bool HasTokenActions = false;
+    public static bool HasSpecial = false;
+    public static bool HasSkip = false;
+    public static bool HasMore = false;
+    public static RegularExpression CurRE;
+    public static bool KeepLineCol;
+    public static string ErrorHandlingClass;
+    public static TokenizerData TokenizerData;
     public static bool GenerateDataOnly;
 
     void PrintClassHead()
@@ -101,7 +101,7 @@ public class LexGen : CodeGenerator
         List<string> tn = new(ToolNames);
         tn.Add(ToolName);
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        GenCodeLine("/* " + GetIdString(tn, tokMgrClassName + GetFileExtension(Options.GetOutputLanguage())) + " */");
+        GenCodeLine("/* " + GetIdString(tn, TokMgrClassName + GetFileExtension(Options.GetOutputLanguage())) + " */");
 
         int l = 0, kind;
         i = 1;
@@ -110,14 +110,14 @@ public class LexGen : CodeGenerator
             if (CuToInsertionPoint1.Count <= l)
                 break;
 
-            kind = ((Token)CuToInsertionPoint1[l]).kind;
+            kind = CuToInsertionPoint1[l].kind;
             if (kind == PACKAGE || kind == IMPORT)
             {
                 if (kind == IMPORT)
                     bHasImport = true;
                 for (; i < CuToInsertionPoint1.Count; i++)
                 {
-                    kind = ((Token)CuToInsertionPoint1[i]).kind;
+                    kind = CuToInsertionPoint1[i].kind;
                     if (kind == SEMICOLON ||
                         kind == ABSTRACT ||
                         kind == FINAL ||
@@ -129,10 +129,10 @@ public class LexGen : CodeGenerator
                         ccol = CuToInsertionPoint1[l].beginColumn;
                         for (j = l; j < i; j++)
                         {
-                            PrintToken((Token)(CuToInsertionPoint1[j]));
+                            PrintToken(CuToInsertionPoint1[j]);
                         }
                         if (kind == SEMICOLON)
-                            PrintToken((Token)(CuToInsertionPoint1[j]));
+                            PrintToken(CuToInsertionPoint1[j]);
                         GenCodeLine("");
                         break;
                     }
@@ -158,21 +158,21 @@ public class LexGen : CodeGenerator
         //GenCodeLine("class " + tokMgrClassName + " implements " +
         //cu_name + "Constants");
         //String superClass = Options.stringValue(Options.USEROPTION__TOKEN_MANAGER_SUPER_CLASS);
-        GenClassStart(null, tokMgrClassName, Array.Empty<string>(), new String[] { CuName + "Constants" });
+        GenClassStart(null, TokMgrClassName, Array.Empty<string>(), new String[] { cu_name + "Constants" });
         //GenCodeLine("{"); // }
 
         if (TokenManagerDeclarations != null && TokenManagerDeclarations.Count > 0)
         {
-            Token t = (Token)TokenManagerDeclarations[0];
+            var t = TokenManagerDeclarations[0];
             bool commonTokenActionSeen = false;
             bool commonTokenActionNeeded = Options.GetCommonTokenAction();
 
-            PrintTokenSetup((Token)TokenManagerDeclarations[0]);
+            PrintTokenSetup(TokenManagerDeclarations[0]);
             ccol = 1;
 
             for (j = 0; j < TokenManagerDeclarations.Count; j++)
             {
-                t = (Token)TokenManagerDeclarations[j];
+                t = TokenManagerDeclarations[j];
                 if (t.kind == IDENTIFIER &&
                     commonTokenActionNeeded &&
                     !commonTokenActionSeen)
@@ -185,7 +185,7 @@ public class LexGen : CodeGenerator
             if (commonTokenActionNeeded && !commonTokenActionSeen)
                 CSharpCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
                     "But it appears you have not defined the method :\n" +
-                    "      " + staticString + "void CommonTokenAction(Token t)\n" +
+                    "      " + StaticString + "void CommonTokenAction(Token t)\n" +
                 "in your TOKEN_MGR_DECLS. The generated token manager will not compile.");
 
         }
@@ -193,53 +193,53 @@ public class LexGen : CodeGenerator
         {
             CSharpCCErrors.Warning("You have the COMMON_TOKEN_ACTION option set. " +
                 "But you have not defined the method :\n" +
-                "      " + staticString + "void CommonTokenAction(Token t)\n" +
+                "      " + StaticString + "void CommonTokenAction(Token t)\n" +
             "in your TOKEN_MGR_DECLS. The generated token manager will not compile.");
         }
 
         GenCodeLine("");
         GenCodeLine("  /** Debug output. */");
-        GenCodeLine("  public " + staticString + " java.io.PrintStream debugStream = System.out;");
+        GenCodeLine("  public " + StaticString + " java.io.PrintStream debugStream = System.out;");
         GenCodeLine("  /** Set debug output. */");
-        GenCodeLine("  public " + staticString + " void setDebugStream(java.io.PrintStream ds) { debugStream = ds; }");
+        GenCodeLine("  public " + StaticString + " void setDebugStream(java.io.PrintStream ds) { debugStream = ds; }");
 
         if (Options.GetTokenManagerUsesParser())
         {
             GenCodeLine("");
-            GenCodeLine("  public " + CuName + " parser = null;");
+            GenCodeLine("  public " + cu_name + " parser = null;");
         }
     }
 
 
-    protected void writeTemplate(string name, params object[] additionalOptions)
+    protected void WriteTemplate(string name, params object[] additionalOptions)
     {
-        Dictionary<String, object> options = new(Options.getOptions())
+        Dictionary<string, object> options = new(Options.getOptions())
         {
-            { "maxOrdinal", (maxOrdinal) },
-            { "maxLexStates", (maxLexStates) },
-            { "hasEmptyMatch", (hasEmptyMatch) },
-            { "hasSkip", (hasSkip) },
-            { "hasMore", (hasMore) },
-            { "hasSpecial", (hasSpecial) },
-            { "hasMoreActions", (hasMoreActions) },
-            { "hasSkipActions", (hasSkipActions) },
-            { "hasTokenActions", (hasTokenActions) },
-            { "stateSetSize", stateSetSize },
-            { "hasActions", hasMoreActions || hasSkipActions || hasTokenActions },
-            { "tokMgrClassName", tokMgrClassName }
+            { "maxOrdinal", (MaxOrdinal) },
+            { "maxLexStates", (MaxLexStates) },
+            { "hasEmptyMatch", (HasEmptyMatch) },
+            { "hasSkip", (HasSkip) },
+            { "hasMore", (HasMore) },
+            { "hasSpecial", (HasSpecial) },
+            { "hasMoreActions", (HasMoreActions) },
+            { "hasSkipActions", (HasSkipActions) },
+            { "hasTokenActions", (HasTokenActions) },
+            { "stateSetSize", StateSetSize },
+            { "hasActions", HasMoreActions || HasSkipActions || HasTokenActions },
+            { "tokMgrClassName", TokMgrClassName }
         };
         int x = 0;
-        foreach (int l in maxLongsReqd)
+        foreach (int l in MaxLongsReqd)
             x = Math.Max(x, l);
         options.Add("maxLongs", x);
-        options.Add("cu_name", CuName);
+        options.Add("cu_name", cu_name);
 
         // options.Add("", .valueOf(maxOrdinal));
 
 
         for (int i = 0; i < additionalOptions.Length; i++)
         {
-            object o = additionalOptions[i];
+            var o = additionalOptions[i];
 
             if (o is Dictionary<string, object> d)
             {
@@ -259,31 +259,31 @@ public class LexGen : CodeGenerator
         }
 
         var gen = new OutputFileGenerator(name, options);
-        var sw = new StringWriter();
-        gen.Generate(sw);
-        sw.Close();
-        GenCode(sw.ToString());
+        var writer = new StringWriter();
+        gen.Generate(writer);
+        writer.Close();
+        GenCode(writer.ToString());
     }
 
     void DumpDebugMethods()
     {
-        writeTemplate(DUMP_DEBUG_METHODS_TEMPLATE_RESOURCE_URL);
+        WriteTemplate(DUMP_DEBUG_METHODS_TEMPLATE_RESOURCE_URL);
     }
 
     static void BuildLexStatesTable()
     {
         int i;
 
-        String[] tmpLexStateName = new String[LexstateI2S.Count];
+        var tmpLexStateName = new string[LexstateI2S.Count];
         foreach (var tp in RegexpList)
         {
-            List<RegExprSpec> respecs = tp.respecs;
+            var respecs = tp.respecs;
 
             for (i = 0; i < tp.lexStates.Length; i++)
             {
                 if (!AllTpsForState.TryGetValue(tp.lexStates[i], out var tps))
                 {
-                    tmpLexStateName[maxLexStates++] = tp.lexStates[i];
+                    tmpLexStateName[MaxLexStates++] = tp.lexStates[i];
                     AllTpsForState.Add(tp.lexStates[i], tps = new());
                 }
 
@@ -295,48 +295,48 @@ public class LexGen : CodeGenerator
 
             RegularExpression re;
             for (i = 0; i < respecs.Count; i++)
-                if (maxOrdinal <= (re = ((RegExprSpec)respecs[i]).Rexp).ordinal)
-                    maxOrdinal = re.ordinal + 1;
+                if (MaxOrdinal <= (re = respecs[i].Rexp).ordinal)
+                    MaxOrdinal = re.ordinal + 1;
         }
 
-        kinds = new int[maxOrdinal];
-        toSkip = new ulong[maxOrdinal / 64 + 1];
-        toSpecial = new ulong[maxOrdinal / 64 + 1];
-        toMore = new ulong[maxOrdinal / 64 + 1];
-        toToken = new ulong[maxOrdinal / 64 + 1];
-        toToken[0] = 1L;
-        actions = new Action[maxOrdinal];
-        actions[0] = actForEof;
-        hasTokenActions = actForEof != null;
+        Kinds = new int[MaxOrdinal];
+        ToSkip = new ulong[MaxOrdinal / 64 + 1];
+        ToSpecial = new ulong[MaxOrdinal / 64 + 1];
+        ToMore = new ulong[MaxOrdinal / 64 + 1];
+        ToToken = new ulong[MaxOrdinal / 64 + 1];
+        ToToken[0] = 1L;
+        Actions = new Action[MaxOrdinal];
+        Actions[0] = actForEof;
+        HasTokenActions = actForEof != null;
         InitStates = new();
-        canMatchAnyChar = new int[maxLexStates];
-        canLoop = new bool[maxLexStates];
-        stateHasActions = new bool[maxLexStates];
-        lexStateName = new String[maxLexStates];
-        singlesToSkip = new NfaState[maxLexStates];
-        Array.Copy(tmpLexStateName, 0, lexStateName, 0, maxLexStates);
+        CanMatchAnyChar = new int[MaxLexStates];
+        CanLoop = new bool[MaxLexStates];
+        StateHasActions = new bool[MaxLexStates];
+        LexStateName = new string[MaxLexStates];
+        SinglesToSkip = new NfaState[MaxLexStates];
+        Array.Copy(tmpLexStateName, 0, LexStateName, 0, MaxLexStates);
 
-        for (i = 0; i < maxLexStates; i++)
-            canMatchAnyChar[i] = -1;
+        for (i = 0; i < MaxLexStates; i++)
+            CanMatchAnyChar[i] = -1;
 
-        hasNfa = new bool[maxLexStates];
-        mixed = new bool[maxLexStates];
-        maxLongsReqd = new int[maxLexStates];
-        initMatch = new int[maxLexStates];
-        newLexState = new String[maxOrdinal];
-        newLexState[0] = nextStateForEof;
-        hasEmptyMatch = false;
-        lexStates = new int[maxOrdinal];
-        ignoreCase = new bool[maxOrdinal];
-        rexprs = new RegularExpression[maxOrdinal];
-        RStringLiteral.allImages = new String[maxOrdinal];
-        canReachOnMore = new bool[maxLexStates];
+        HasNfa = new bool[MaxLexStates];
+        Mixed = new bool[MaxLexStates];
+        MaxLongsReqd = new int[MaxLexStates];
+        InitMatch = new int[MaxLexStates];
+        NewLexState = new string[MaxOrdinal];
+        NewLexState[0] = nextStateForEof;
+        HasEmptyMatch = false;
+        LexStates = new int[MaxOrdinal];
+        IgnoreCase = new bool[MaxOrdinal];
+        Rexprs = new RegularExpression[MaxOrdinal];
+        RStringLiteral.AllImages = new string[MaxOrdinal];
+        CanReachOnMore = new bool[MaxLexStates];
     }
 
     static int GetIndex(string name)
     {
-        for (int i = 0; i < lexStateName.Length; i++)
-            if (lexStateName[i] != null && lexStateName[i] == (name))
+        for (int i = 0; i < LexStateName.Length; i++)
+            if (LexStateName[i] != null && LexStateName[i] == (name))
                 return i;
 
         throw new Error(); // Should never come here
@@ -344,8 +344,8 @@ public class LexGen : CodeGenerator
 
     public static void AddCharToSkip(char c, int kind)
     {
-        singlesToSkip[lexStateIndex].AddChar(c);
-        singlesToSkip[lexStateIndex].kind = kind;
+        SinglesToSkip[LexStateIndex].AddChar(c);
+        SinglesToSkip[LexStateIndex].kind = kind;
     }
 
     public void Start()
@@ -355,15 +355,15 @@ public class LexGen : CodeGenerator
             CSharpCCErrors.ErrorCount > 0)
             return;
 
-        string codeGeneratorClass = Options.GetTokenManagerCodeGenerator();
-        keepLineCol = Options.GetKeepLineColumn();
-        errorHandlingClass = Options.getTokenMgrErrorClass();
+        var codeGeneratorClass = Options.GetTokenManagerCodeGenerator();
+        KeepLineCol = Options.GetKeepLineColumn();
+        ErrorHandlingClass = Options.getTokenMgrErrorClass();
         List<RChoice> choices = new();
         TokenProduction tp;
         int i, j;
 
-        staticString = (Options.GetStatic() ? "static " : "");
-        tokMgrClassName = CuName + "TokenManager";
+        StaticString = (Options.GetStatic() ? "static " : "");
+        TokMgrClassName = cu_name + "TokenManager";
 
         if (!GenerateDataOnly && codeGeneratorClass == null) PrintClassHead();
         BuildLexStatesTable();
@@ -376,118 +376,118 @@ public class LexGen : CodeGenerator
             NfaState.ReInit();
             RStringLiteral.ReInit();
 
-            lexStateIndex = GetIndex(key);
-            lexStateSuffix = "_" + lexStateIndex;
+            LexStateIndex = GetIndex(key);
+            LexStateSuffix = "_" + LexStateIndex;
             var allTps = AllTpsForState[key];
-            InitStates.Add(key, initialState = new NfaState());
+            InitStates.Add(key, InitialState = new NfaState());
             ignoring = false;
 
-            singlesToSkip[lexStateIndex] = new();
-            singlesToSkip[lexStateIndex].dummy = true;
+            SinglesToSkip[LexStateIndex] = new();
+            SinglesToSkip[LexStateIndex].dummy = true;
 
-            if (key == ("DEFAULT"))
-                defaultLexState = lexStateIndex;
+            if (key == "DEFAULT")
+                DefaultLexState = LexStateIndex;
 
             for (i = 0; i < allTps.Count; i++)
             {
                 tp = allTps[i];
                 int kind = tp.kind;
                 bool ignore = tp.ignoreCase;
-                List<RegExprSpec> rexps = tp.respecs;
+                var rexps = tp.respecs;
 
                 if (i == 0)
                     ignoring = ignore;
 
                 for (j = 0; j < rexps.Count; j++)
                 {
-                    RegExprSpec respec = rexps[j];
-                    curRE = respec.Rexp;
+                    var respec = rexps[j];
+                    CurRE = respec.Rexp;
 
-                    rexprs[curKind = curRE.ordinal] = curRE;
-                    lexStates[curRE.ordinal] = lexStateIndex;
-                    ignoreCase[curRE.ordinal] = ignore;
+                    Rexprs[CurKind = CurRE.ordinal] = CurRE;
+                    LexStates[CurRE.ordinal] = LexStateIndex;
+                    IgnoreCase[CurRE.ordinal] = ignore;
 
-                    if (curRE.private_rexp)
+                    if (CurRE.private_rexp)
                     {
-                        kinds[curRE.ordinal] = -1;
+                        Kinds[CurRE.ordinal] = -1;
                         continue;
                     }
 
-                    if (!Options.GetNoDfa() && curRE is RStringLiteral &&
-                        ((RStringLiteral)curRE).image != (""))
+                    if (!Options.GetNoDfa() && CurRE is RStringLiteral literal &&
+                        literal.image != (""))
                     {
-                        ((RStringLiteral)curRE).GenerateDfa(this, curRE.ordinal);
-                        if (i != 0 && !mixed[lexStateIndex] && ignoring != ignore)
+                        literal.GenerateDfa(this, CurRE.ordinal);
+                        if (i != 0 && !Mixed[LexStateIndex] && ignoring != ignore)
                         {
-                            mixed[lexStateIndex] = true;
+                            Mixed[LexStateIndex] = true;
                         }
                     }
-                    else if (curRE.CanMatchAnyChar)
+                    else if (CurRE.CanMatchAnyChar)
                     {
-                        if (canMatchAnyChar[lexStateIndex] == -1 ||
-                            canMatchAnyChar[lexStateIndex] > curRE.ordinal)
-                            canMatchAnyChar[lexStateIndex] = curRE.ordinal;
+                        if (CanMatchAnyChar[LexStateIndex] == -1 ||
+                            CanMatchAnyChar[LexStateIndex] > CurRE.ordinal)
+                            CanMatchAnyChar[LexStateIndex] = CurRE.ordinal;
                     }
                     else
                     {
-                        Nfa temp;
+                        Nfa tnfa;
 
-                        if (curRE is RChoice rc)
+                        if (CurRE is RChoice rc)
                             choices.Add(rc);
 
-                        temp = curRE.GenerateNfa(ignore);
-                        temp.End.isFinal = true;
-                        temp.End.kind = curRE.ordinal;
-                        initialState.AddMove(temp.Start);
+                        tnfa = CurRE.GenerateNfa(ignore);
+                        tnfa.End.isFinal = true;
+                        tnfa.End.kind = CurRE.ordinal;
+                        InitialState.AddMove(tnfa.Start);
                     }
 
-                    if (kinds.Length < curRE.ordinal)
+                    if (Kinds.Length < CurRE.ordinal)
                     {
-                        int[] tmp = new int[curRE.ordinal + 1];
+                        int[] tmp = new int[CurRE.ordinal + 1];
 
-                        Array.Copy(kinds, 0, tmp, 0, kinds.Length);
-                        kinds = tmp;
+                        Array.Copy(Kinds, 0, tmp, 0, Kinds.Length);
+                        Kinds = tmp;
                     }
                     //System.out.WriteLine("   ordina : " + curRE.ordinal);
 
-                    kinds[curRE.ordinal] = kind;
+                    Kinds[CurRE.ordinal] = kind;
 
                     if (respec.NextState != null &&
-                        respec.NextState != (lexStateName[lexStateIndex]))
-                        newLexState[curRE.ordinal] = respec.NextState;
+                        respec.NextState != (LexStateName[LexStateIndex]))
+                        NewLexState[CurRE.ordinal] = respec.NextState;
 
                     if (respec.Act != null && respec.Act.ActionTokens != null &&
                         respec.Act.ActionTokens.Count > 0)
-                        actions[curRE.ordinal] = respec.Act;
+                        Actions[CurRE.ordinal] = respec.Act;
 
                     switch (kind)
                     {
                         case TokenProduction.SPECIAL:
-                            hasSkipActions |= (actions[curRE.ordinal] != null) ||
-                            (newLexState[curRE.ordinal] != null);
-                            hasSpecial = true;
-                            toSpecial[curRE.ordinal / 64] |= 1UL << (curRE.ordinal % 64);
-                            toSkip[curRE.ordinal / 64] |= 1UL << (curRE.ordinal % 64);
+                            HasSkipActions |= (Actions[CurRE.ordinal] != null) ||
+                            (NewLexState[CurRE.ordinal] != null);
+                            HasSpecial = true;
+                            ToSpecial[CurRE.ordinal / 64] |= 1UL << (CurRE.ordinal % 64);
+                            ToSkip[CurRE.ordinal / 64] |= 1UL << (CurRE.ordinal % 64);
                             break;
                         case TokenProduction.SKIP:
-                            hasSkipActions |= (actions[curRE.ordinal] != null);
-                            hasSkip = true;
-                            toSkip[curRE.ordinal / 64] |= 1UL << (curRE.ordinal % 64);
+                            HasSkipActions |= (Actions[CurRE.ordinal] != null);
+                            HasSkip = true;
+                            ToSkip[CurRE.ordinal / 64] |= 1UL << (CurRE.ordinal % 64);
                             break;
                         case TokenProduction.MORE:
-                            hasMoreActions |= (actions[curRE.ordinal] != null);
-                            hasMore = true;
-                            toMore[curRE.ordinal / 64] |= 1UL << (curRE.ordinal % 64);
+                            HasMoreActions |= (Actions[CurRE.ordinal] != null);
+                            HasMore = true;
+                            ToMore[CurRE.ordinal / 64] |= 1UL << (CurRE.ordinal % 64);
 
-                            if (newLexState[curRE.ordinal] != null)
-                                canReachOnMore[GetIndex(newLexState[curRE.ordinal])] = true;
+                            if (NewLexState[CurRE.ordinal] != null)
+                                CanReachOnMore[GetIndex(NewLexState[CurRE.ordinal])] = true;
                             else
-                                canReachOnMore[lexStateIndex] = true;
+                                CanReachOnMore[LexStateIndex] = true;
 
                             break;
                         case TokenProduction.TOKEN:
-                            hasTokenActions |= (actions[curRE.ordinal] != null);
-                            toToken[curRE.ordinal / 64] |= 1UL << (curRE.ordinal % 64);
+                            HasTokenActions |= (Actions[CurRE.ordinal] != null);
+                            ToToken[CurRE.ordinal / 64] |= 1UL << (CurRE.ordinal % 64);
                             break;
                     }
                 }
@@ -496,95 +496,95 @@ public class LexGen : CodeGenerator
             // Generate a static block for initializing the nfa transitions
             NfaState.ComputeClosures();
 
-            for (i = 0; i < initialState.epsilonMoves.Count; i++)
-                ((NfaState)initialState.epsilonMoves[i]).GenerateCode();
+            for (i = 0; i < InitialState.epsilonMoves.Count; i++)
+                InitialState.epsilonMoves[i].GenerateCode();
 
-            hasNfa[lexStateIndex] = (NfaState.generatedStates != 0);
-            if (hasNfa[lexStateIndex])
+            HasNfa[LexStateIndex] = NfaState.generatedStates != 0;
+            if (HasNfa[LexStateIndex])
             {
-                initialState.GenerateCode();
-                startState = initialState.GenerateInitMoves(this);
+                InitialState.GenerateCode();
+                startState = InitialState.GenerateInitMoves(this);
             }
 
-            if (initialState.kind != int.MaxValue && initialState.kind != 0)
+            if (InitialState.kind != int.MaxValue && InitialState.kind != 0)
             {
-                if ((toSkip[initialState.kind / 64] & (1UL << initialState.kind)) != 0L ||
-                    (toSpecial[initialState.kind / 64] & (1UL << initialState.kind)) != 0L)
-                    hasSkipActions = true;
-                else if ((toMore[initialState.kind / 64] & (1UL << initialState.kind)) != 0L)
-                    hasMoreActions = true;
+                if ((ToSkip[InitialState.kind / 64] & (1UL << InitialState.kind)) != 0L ||
+                    (ToSpecial[InitialState.kind / 64] & (1UL << InitialState.kind)) != 0L)
+                    HasSkipActions = true;
+                else if ((ToMore[InitialState.kind / 64] & (1UL << InitialState.kind)) != 0L)
+                    HasMoreActions = true;
                 else
-                    hasTokenActions = true;
+                    HasTokenActions = true;
 
-                if (initMatch[lexStateIndex] == 0 ||
-                    initMatch[lexStateIndex] > initialState.kind)
+                if (InitMatch[LexStateIndex] == 0 ||
+                    InitMatch[LexStateIndex] > InitialState.kind)
                 {
-                    initMatch[lexStateIndex] = initialState.kind;
-                    hasEmptyMatch = true;
+                    InitMatch[LexStateIndex] = InitialState.kind;
+                    HasEmptyMatch = true;
                 }
             }
-            else if (initMatch[lexStateIndex] == 0)
-                initMatch[lexStateIndex] = int.MaxValue;
+            else if (InitMatch[LexStateIndex] == 0)
+                InitMatch[LexStateIndex] = int.MaxValue;
 
             RStringLiteral.FillSubString();
 
-            if (hasNfa[lexStateIndex] && !mixed[lexStateIndex])
-                RStringLiteral.GenerateNfaStartStates(this, initialState);
+            if (HasNfa[LexStateIndex] && !Mixed[LexStateIndex])
+                RStringLiteral.GenerateNfaStartStates(this, InitialState);
 
             if (GenerateDataOnly || codeGeneratorClass != null)
             {
-                RStringLiteral.UpdateStringLiteralData(totalNumStates, lexStateIndex);
-                NfaState.UpdateNfaData(totalNumStates, startState, lexStateIndex,
-                                       canMatchAnyChar[lexStateIndex]);
+                RStringLiteral.UpdateStringLiteralData(TotalNumStates, LexStateIndex);
+                NfaState.UpdateNfaData(TotalNumStates, startState, LexStateIndex,
+                                       CanMatchAnyChar[LexStateIndex]);
             }
             else
             {
                 RStringLiteral.DumpDfaCode(this);
-                if (hasNfa[lexStateIndex])
+                if (HasNfa[LexStateIndex])
                 {
                     NfaState.DumpMoveNfa(this);
                 }
             }
-            totalNumStates += NfaState.generatedStates;
-            if (stateSetSize < NfaState.generatedStates)
-                stateSetSize = NfaState.generatedStates;
+            TotalNumStates += NfaState.generatedStates;
+            if (StateSetSize < NfaState.generatedStates)
+                StateSetSize = NfaState.generatedStates;
         }
 
         for (i = 0; i < choices.Count; i++)
-            ((RChoice)choices[i]).CheckUnmatchability();
+            choices[i].CheckUnmatchability();
 
         CheckEmptyStringMatch();
 
         if (GenerateDataOnly || codeGeneratorClass != null)
         {
-            tokenizerData.SetParserName(CuName);
-            NfaState.BuildTokenizerData(tokenizerData);
-            RStringLiteral.BuildTokenizerData(tokenizerData);
-            int[] newLexStateIndices = new int[maxOrdinal];
-            StringBuilder tokenMgrDecls = new StringBuilder();
+            TokenizerData.SetParserName(cu_name);
+            NfaState.BuildTokenizerData(TokenizerData);
+            RStringLiteral.BuildTokenizerData(TokenizerData);
+            int[] newLexStateIndices = new int[MaxOrdinal];
+            var tokenMgrDecls = new StringBuilder();
             if (TokenManagerDeclarations != null && TokenManagerDeclarations.Count > 0)
             {
-                Token t = (Token)TokenManagerDeclarations[0];
+                Token token = TokenManagerDeclarations[0];
                 for (j = 0; j < TokenManagerDeclarations.Count; j++)
                 {
-                    tokenMgrDecls.Append(((Token)TokenManagerDeclarations[j]).image + " ");
+                    tokenMgrDecls.Append(TokenManagerDeclarations[j].image + " ");
                 }
             }
-            tokenizerData.SetDecls(tokenMgrDecls.ToString());
+            TokenizerData.SetDecls(tokenMgrDecls.ToString());
             var actionStrings = new Dictionary<int, String>();
-            for (i = 0; i < maxOrdinal; i++)
+            for (i = 0; i < MaxOrdinal; i++)
             {
-                if (newLexState[i] == null)
+                if (NewLexState[i] == null)
                 {
                     newLexStateIndices[i] = -1;
                 }
                 else
                 {
-                    newLexStateIndices[i] = GetIndex(newLexState[i]);
+                    newLexStateIndices[i] = GetIndex(NewLexState[i]);
                 }
                 // For java, we have this but for other languages, eventually we will
                 // simply have a string.
-                Action act = actions[i];
+                Action act = Actions[i];
                 if (act == null) continue;
                 var sb = new StringBuilder();
                 for (int k = 0; k < act.ActionTokens.Count; k++)
@@ -594,11 +594,11 @@ public class LexGen : CodeGenerator
                 }
                 actionStrings.Add(i, sb.ToString());
             }
-            tokenizerData.SetDefaultLexState(defaultLexState);
-            tokenizerData.SetLexStateNames(lexStateName);
-            tokenizerData.UpdateMatchInfo(
+            TokenizerData.SetDefaultLexState(DefaultLexState);
+            TokenizerData.SetLexStateNames(LexStateName);
+            TokenizerData.UpdateMatchInfo(
                 actionStrings, newLexStateIndices,
-                toSkip, toSpecial, toMore, toToken);
+                ToSkip, ToSpecial, ToMore, ToToken);
             if (GenerateDataOnly) return;
             Type codeGenClazz;
             TokenManagerCodeGenerator gen;
@@ -615,8 +615,8 @@ public class LexGen : CodeGenerator
                     codeGeneratorClass + "\nError: " + ee.Message);
                 return;
             }
-            gen.GenerateCode(tokenizerData);
-            gen.Finish(tokenizerData);
+            gen.GenerateCode(TokenizerData);
+            gen.Finish(TokenizerData);
             return;
         }
 
@@ -632,11 +632,11 @@ public class LexGen : CodeGenerator
             DumpDebugMethods();
         }
 
-        if (hasLoop)
+        if (HasLoop)
         {
-            GenCodeLine(staticString + "int[] jjemptyLineNo = new int[" + maxLexStates + "];");
-            GenCodeLine(staticString + "int[] jjemptyColNo = new int[" + maxLexStates + "];");
-            GenCodeLine(staticString + "" + Options.GetBooleanType() + "[] jjbeenHere = new " + Options.GetBooleanType() + "[" + maxLexStates + "];");
+            GenCodeLine(StaticString + "int[] jjemptyLineNo = new int[" + MaxLexStates + "];");
+            GenCodeLine(StaticString + "int[] jjemptyColNo = new int[" + MaxLexStates + "];");
+            GenCodeLine(StaticString + "" + Options.GetBooleanType() + "[] jjbeenHere = new " + Options.GetBooleanType() + "[" + MaxLexStates + "];");
         }
 
         DumpSkipActions();
@@ -656,19 +656,19 @@ public class LexGen : CodeGenerator
                 charStreamName = "SimpleCharStream";
         }
 
-        writeTemplate(BOILERPLATER_METHOD_RESOURCE_URL,
+        WriteTemplate(BOILERPLATER_METHOD_RESOURCE_URL,
           "charStreamName", charStreamName,
-          "lexStateNameLength", lexStateName.Length,
-          "defaultLexState", defaultLexState,
+          "lexStateNameLength", LexStateName.Length,
+          "defaultLexState", DefaultLexState,
           "noDfa", Options.GetNoDfa(),
-          "generatedStates", totalNumStates);
+          "generatedStates", TotalNumStates);
 
         DumpStaticVarDeclarations(charStreamName);
         GenCodeLine(/*{*/ "}");
 
         // TODO :: CBA --  Require Unification of output language specific processing into a single Enum class
-        string fileName = Options.GetOutputDirectory() + Path.DirectorySeparatorChar +
-                          tokMgrClassName +
+        var fileName = Options.GetOutputDirectory() + Path.DirectorySeparatorChar +
+                          TokMgrClassName +
                           GetFileExtension(Options.GetOutputLanguage());
 
         if (Options.GetBuildParser())
@@ -680,16 +680,16 @@ public class LexGen : CodeGenerator
     public static void CheckEmptyStringMatch()
     {
         int i, j, k, len;
-        bool[] seen = new bool[maxLexStates];
-        bool[] done = new bool[maxLexStates];
+        bool[] seen = new bool[MaxLexStates];
+        bool[] done = new bool[MaxLexStates];
         string cycle;
         string reList;
 
     Outer:
-        for (i = 0; i < maxLexStates; i++)
+        for (i = 0; i < MaxLexStates; i++)
         {
-            if (done[i] || initMatch[i] == 0 || initMatch[i] == int.MaxValue ||
-                canMatchAnyChar[i] != -1)
+            if (done[i] || InitMatch[i] == 0 || InitMatch[i] == int.MaxValue ||
+                CanMatchAnyChar[i] != -1)
                 continue;
 
             done[i] = true;
@@ -697,52 +697,52 @@ public class LexGen : CodeGenerator
             cycle = "";
             reList = "";
 
-            for (k = 0; k < maxLexStates; k++)
+            for (k = 0; k < MaxLexStates; k++)
                 seen[k] = false;
 
             j = i;
             seen[i] = true;
-            cycle += lexStateName[j] + "-->";
-            while (newLexState[initMatch[j]] != null)
+            cycle += LexStateName[j] + "-->";
+            while (NewLexState[InitMatch[j]] != null)
             {
-                cycle += newLexState[initMatch[j]];
-                if (seen[j = GetIndex(newLexState[initMatch[j]])])
+                cycle += NewLexState[InitMatch[j]];
+                if (seen[j = GetIndex(NewLexState[InitMatch[j]])])
                     break;
 
                 cycle += "-->";
                 done[j] = true;
                 seen[j] = true;
-                if (initMatch[j] == 0 || initMatch[j] == int.MaxValue ||
-                    canMatchAnyChar[j] != -1)
+                if (InitMatch[j] == 0 || InitMatch[j] == int.MaxValue ||
+                    CanMatchAnyChar[j] != -1)
                     goto OuterExit;
                 if (len != 0)
                     reList += "; ";
-                reList += "line " + rexprs[initMatch[j]].Line + ", column " +
-                rexprs[initMatch[j]].Column;
+                reList += "line " + Rexprs[InitMatch[j]].Line + ", column " +
+                Rexprs[InitMatch[j]].Column;
                 len++;
             }
 
-            if (newLexState[initMatch[j]] == null)
-                cycle += lexStateName[lexStates[initMatch[j]]];
+            if (NewLexState[InitMatch[j]] == null)
+                cycle += LexStateName[LexStates[InitMatch[j]]];
 
-            for (k = 0; k < maxLexStates; k++)
-                canLoop[k] |= seen[k];
+            for (k = 0; k < MaxLexStates; k++)
+                CanLoop[k] |= seen[k];
 
-            hasLoop = true;
+            HasLoop = true;
             if (len == 0)
-                CSharpCCErrors.Warning(rexprs[initMatch[i]],
-                    "Regular expression" + ((rexprs[initMatch[i]].label == (""))
-                        ? "" : (" for " + rexprs[initMatch[i]].label)) +
+                CSharpCCErrors.Warning(Rexprs[InitMatch[i]],
+                    "Regular expression" + ((Rexprs[InitMatch[i]].label == (""))
+                        ? "" : (" for " + Rexprs[InitMatch[i]].label)) +
                         " can be matched by the empty string (\"\") in lexical state " +
-                        lexStateName[i] + ". This can result in an endless loop of " +
+                        LexStateName[i] + ". This can result in an endless loop of " +
                 "empty string matches.");
             else
             {
-                CSharpCCErrors.Warning(rexprs[initMatch[i]],
-                    "Regular expression" + ((rexprs[initMatch[i]].label == (""))
-                        ? "" : (" for " + rexprs[initMatch[i]].label)) +
+                CSharpCCErrors.Warning(Rexprs[InitMatch[i]],
+                    "Regular expression" + ((Rexprs[InitMatch[i]].label == (""))
+                        ? "" : (" for " + Rexprs[InitMatch[i]].label)) +
                         " can be matched by the empty string (\"\") in lexical state " +
-                        lexStateName[i] + ". This regular expression along with the " +
+                        LexStateName[i] + ". This regular expression along with the " +
                         "regular expressions at " + reList + " forms the cycle \n   " +
                         cycle + "\ncontaining regular expressions with empty matches." +
                 " This can result in an endless loop of empty string matches.");
@@ -759,8 +759,8 @@ public class LexGen : CodeGenerator
         GenCodeLine("");
         GenCodeLine("/** Lexer state names. */");
         GenCodeLine("public static final String[] lexStateNames = {");
-        for (i = 0; i < maxLexStates; i++)
-            GenCodeLine("   \"" + lexStateName[i] + "\",");
+        for (i = 0; i < MaxLexStates; i++)
+            GenCodeLine("   \"" + LexStateName[i] + "\",");
         GenCodeLine("};");
 
         {
@@ -768,15 +768,15 @@ public class LexGen : CodeGenerator
             GenCodeLine("/** Lex State array. */");
             GenCode("public static final int[] jjnewLexState = {");
 
-            for (i = 0; i < maxOrdinal; i++)
+            for (i = 0; i < MaxOrdinal; i++)
             {
                 if (i % 25 == 0)
                     GenCode("\n   ");
 
-                if (newLexState[i] == null)
+                if (NewLexState[i] == null)
                     GenCode("-1, ");
                 else
-                    GenCode(GetIndex(newLexState[i]) + ", ");
+                    GenCode(GetIndex(NewLexState[i]) + ", ");
             }
             GenCodeLine("\n};");
         }
@@ -784,11 +784,11 @@ public class LexGen : CodeGenerator
         {
             // Bit vector for TOKEN
             GenCode("static final long[] jjtoToken = {");
-            for (i = 0; i < maxOrdinal / 64 + 1; i++)
+            for (i = 0; i < MaxOrdinal / 64 + 1; i++)
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                GenCode("0x" + Convert.ToString((long)toToken[i], 16) + "L, ");
+                GenCode("0x" + Convert.ToString((long)ToToken[i], 16) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -796,11 +796,11 @@ public class LexGen : CodeGenerator
         {
             // Bit vector for SKIP
             GenCode("static final long[] jjtoSkip = {");
-            for (i = 0; i < maxOrdinal / 64 + 1; i++)
+            for (i = 0; i < MaxOrdinal / 64 + 1; i++)
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                GenCode("0x" + Convert.ToString((long)toSkip[i], 16) + "L, ");
+                GenCode("0x" + Convert.ToString((long)ToSkip[i], 16) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -808,11 +808,11 @@ public class LexGen : CodeGenerator
         {
             // Bit vector for SPECIAL
             GenCode("static final long[] jjtoSpecial = {");
-            for (i = 0; i < maxOrdinal / 64 + 1; i++)
+            for (i = 0; i < MaxOrdinal / 64 + 1; i++)
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                GenCode("0x" + Convert.ToString((long)toSpecial[i], 16) + "L, ");
+                GenCode("0x" + Convert.ToString((long)ToSpecial[i], 16) + "L, ");
             }
             GenCodeLine("\n};");
         }
@@ -820,21 +820,21 @@ public class LexGen : CodeGenerator
         {
             // Bit vector for MORE
             GenCode("static final long[] jjtoMore = {");
-            for (i = 0; i < maxOrdinal / 64 + 1; i++)
+            for (i = 0; i < MaxOrdinal / 64 + 1; i++)
             {
                 if (i % 4 == 0)
                     GenCode("\n   ");
-                GenCode("0x" + Convert.ToString((long)toMore[i], 16) + "L, ");
+                GenCode("0x" + Convert.ToString((long)ToMore[i], 16) + "L, ");
             }
             GenCodeLine("\n};");
         }
 
-        writeTemplate(DUMP_STATIC_VAR_DECLARATIONS_TEMPLATE_RESOURCE_URL,
+        WriteTemplate(DUMP_STATIC_VAR_DECLARATIONS_TEMPLATE_RESOURCE_URL,
           "charStreamName", charStreamName,
           "protected", IsJavaLanguage() ? "protected" : "",
           "private", IsJavaLanguage() ? "private" : "",
           "final", IsJavaLanguage() ? "final" : "",
-          "lexStateNameLength", lexStateName.Length);
+          "lexStateNameLength", LexStateName.Length);
     }
 
     // Assumes l != 0L
@@ -852,11 +852,11 @@ public class LexGen : CodeGenerator
         double tokenVersion = CSharpFiles.GetVersion("Token.java");
         bool hasBinaryNewToken = tokenVersion > 4.09;
 
-        GenCodeLine(staticString + "protected Token jjFillToken()");
+        GenCodeLine(StaticString + "protected Token jjFillToken()");
         GenCodeLine("{");
         GenCodeLine("   final Token t;");
         GenCodeLine("   final String curTokenImage;");
-        if (keepLineCol)
+        if (KeepLineCol)
         {
             GenCodeLine("   final int beginLine;");
             GenCodeLine("   final int endLine;");
@@ -864,7 +864,7 @@ public class LexGen : CodeGenerator
             GenCodeLine("   final int endColumn;");
         }
 
-        if (hasEmptyMatch)
+        if (HasEmptyMatch)
         {
             GenCodeLine("   if (jjmatchedPos < 0)");
             GenCodeLine("   {");
@@ -873,7 +873,7 @@ public class LexGen : CodeGenerator
             GenCodeLine("      else");
             GenCodeLine("         curTokenImage = image.toString();");
 
-            if (keepLineCol)
+            if (KeepLineCol)
             {
                 GenCodeLine("      beginLine = endLine = input_stream.getEndLine();");
                 GenCodeLine("      beginColumn = endColumn = input_stream.getEndColumn();");
@@ -885,7 +885,7 @@ public class LexGen : CodeGenerator
             GenCodeLine("      String im = jjstrLiteralImages[jjmatchedKind];");
             GenCodeLine("      curTokenImage = (im == null) ? input_stream.GetImage() : im;");
 
-            if (keepLineCol)
+            if (KeepLineCol)
             {
                 GenCodeLine("      beginLine = input_stream.getBeginLine();");
                 GenCodeLine("      beginColumn = input_stream.getBeginColumn();");
@@ -899,7 +899,7 @@ public class LexGen : CodeGenerator
         {
             GenCodeLine("   String im = jjstrLiteralImages[jjmatchedKind];");
             GenCodeLine("   curTokenImage = (im == null) ? input_stream.GetImage() : im;");
-            if (keepLineCol)
+            if (KeepLineCol)
             {
                 GenCodeLine("   beginLine = input_stream.getBeginLine();");
                 GenCodeLine("   beginColumn = input_stream.getBeginColumn();");
@@ -923,7 +923,7 @@ public class LexGen : CodeGenerator
             GenCodeLine("   t.image = curTokenImage;");
         }
 
-        if (keepLineCol)
+        if (KeepLineCol)
         {
             GenCodeLine("");
             GenCodeLine("   t.beginLine = beginLine;");
@@ -942,18 +942,18 @@ public class LexGen : CodeGenerator
         int i;
 
         GenCodeLine("");
-        GenCodeLine(staticString + "int curLexState = " + defaultLexState + ";");
-        GenCodeLine(staticString + "int defaultLexState = " + defaultLexState + ";");
-        GenCodeLine(staticString + "int jjnewStateCnt;");
-        GenCodeLine(staticString + "int jjround;");
-        GenCodeLine(staticString + "int jjmatchedPos;");
-        GenCodeLine(staticString + "int jjmatchedKind;");
+        GenCodeLine(StaticString + "int curLexState = " + DefaultLexState + ";");
+        GenCodeLine(StaticString + "int defaultLexState = " + DefaultLexState + ";");
+        GenCodeLine(StaticString + "int jjnewStateCnt;");
+        GenCodeLine(StaticString + "int jjround;");
+        GenCodeLine(StaticString + "int jjmatchedPos;");
+        GenCodeLine(StaticString + "int jjmatchedKind;");
         GenCodeLine("");
         GenCodeLine("/** Get the next Token. */");
-        GenCodeLine("public " + staticString + "Token getNextToken()" +
+        GenCodeLine("public " + StaticString + "Token getNextToken()" +
         " ");
         GenCodeLine("{");
-        if (hasSpecial)
+        if (HasSpecial)
         {
             GenCodeLine("  Token specialToken = null;");
         }
@@ -976,7 +976,7 @@ public class LexGen : CodeGenerator
         GenCodeLine("      jjmatchedPos = -1;");
         GenCodeLine("      matchedToken = jjFillToken();");
 
-        if (hasSpecial)
+        if (HasSpecial)
             GenCodeLine("      matchedToken.specialToken = specialToken;");
 
         if (nextStateForEof != null || actForEof != null)
@@ -988,7 +988,7 @@ public class LexGen : CodeGenerator
         GenCodeLine("      return matchedToken;");
         GenCodeLine("   }");
 
-        if (hasMoreActions || hasSkipActions || hasTokenActions)
+        if (HasMoreActions || HasSkipActions || HasTokenActions)
         {
             GenCodeLine("   image = jjimage;");
             GenCodeLine("   image.setLength(0);");
@@ -998,7 +998,7 @@ public class LexGen : CodeGenerator
         GenCodeLine("");
 
         string prefix = "";
-        if (hasMore)
+        if (HasMore)
         {
             GenCodeLine("   for (;;)");
             GenCodeLine("   {");
@@ -1008,7 +1008,7 @@ public class LexGen : CodeGenerator
         string endSwitch = "";
         string caseStr = "";
         // this also sets up the start state of the nfa
-        if (maxLexStates > 1)
+        if (MaxLexStates > 1)
         {
             GenCodeLine(prefix + "   switch(curLexState)");
             GenCodeLine(prefix + "   {");
@@ -1018,39 +1018,39 @@ public class LexGen : CodeGenerator
         }
 
         prefix += "   ";
-        for (i = 0; i < maxLexStates; i++)
+        for (i = 0; i < MaxLexStates; i++)
         {
-            if (maxLexStates > 1)
+            if (MaxLexStates > 1)
                 GenCodeLine(caseStr + i + ":");
 
-            if (singlesToSkip[i].HasTransitions())
+            if (SinglesToSkip[i].HasTransitions())
             {
                 // added the backup(0) to make JIT happy
                 GenCodeLine(prefix + "try { input_stream.backup(0);");
-                if (singlesToSkip[i].asciiMoves[0] != 0L &&
-                    singlesToSkip[i].asciiMoves[1] != 0L)
+                if (SinglesToSkip[i].asciiMoves[0] != 0L &&
+                    SinglesToSkip[i].asciiMoves[1] != 0L)
                 {
                     GenCodeLine(prefix + "   while ((curChar < 64" + " && (0x" +
-                        Convert.ToString((long)(singlesToSkip[i].asciiMoves[0]), 16) +
+                        Convert.ToString((long)(SinglesToSkip[i].asciiMoves[0]), 16) +
                         "L & (1L << curChar)) != 0L) || \n" +
                         prefix + "          (curChar >> 6) == 1" +
                         " && (0x" +
-                        Convert.ToString((long)singlesToSkip[i].asciiMoves[1], 16) +
+                        Convert.ToString((long)SinglesToSkip[i].asciiMoves[1], 16) +
                     "L & (1L << (curChar & 077))) != 0L)");
                 }
-                else if (singlesToSkip[i].asciiMoves[1] == 0L)
+                else if (SinglesToSkip[i].asciiMoves[1] == 0L)
                 {
                     GenCodeLine(prefix + "   while (curChar <= " +
-                        (int)MaxChar((long)singlesToSkip[i].asciiMoves[0]) + " && (0x" +
-                        Convert.ToString((long)singlesToSkip[i].asciiMoves[0], 16) +
+                        (int)MaxChar((long)SinglesToSkip[i].asciiMoves[0]) + " && (0x" +
+                        Convert.ToString((long)SinglesToSkip[i].asciiMoves[0], 16) +
                     "L & (1L << curChar)) != 0L)");
                 }
-                else if (singlesToSkip[i].asciiMoves[0] == 0L)
+                else if (SinglesToSkip[i].asciiMoves[0] == 0L)
                 {
                     GenCodeLine(prefix + "   while (curChar > 63 && curChar <= " +
-                        ((int)MaxChar((long)singlesToSkip[i].asciiMoves[1]) + 64) +
+                        ((int)MaxChar((long)SinglesToSkip[i].asciiMoves[1]) + 64) +
                         " && (0x" +
-                        Convert.ToString((long)singlesToSkip[i].asciiMoves[1], 16) +
+                        Convert.ToString((long)SinglesToSkip[i].asciiMoves[1], 16) +
                     "L & (1L << (curChar & 077))) != 0L)");
                 }
 
@@ -1058,10 +1058,10 @@ public class LexGen : CodeGenerator
                 {
                     GenCodeLine(prefix + "{");
                     GenCodeLine("      debugStream.println(" +
-                        (maxLexStates > 1 ?
+                        (MaxLexStates > 1 ?
                             "\"<\" + lexStateNames[curLexState] + \">\" + " : "") +
                             "\"Skipping character : \" + " +
-                    errorHandlingClass + ".addEscapes(String.valueOf(curChar)) + \" (\" + (int)curChar + \")\");");
+                    ErrorHandlingClass + ".addEscapes(String.valueOf(curChar)) + \" (\" + (int)curChar + \")\");");
                 }
                 GenCodeLine(prefix + "      curChar = input_stream.BeginToken();");
 
@@ -1072,13 +1072,13 @@ public class LexGen : CodeGenerator
                 GenCodeLine(prefix + "catch (java.io.IOException e1) { continue EOFLoop; }");
             }
 
-            if (initMatch[i] != int.MaxValue && initMatch[i] != 0)
+            if (InitMatch[i] != int.MaxValue && InitMatch[i] != 0)
             {
                 if (Options.GetDebugTokenManager())
                     GenCodeLine("      debugStream.println(\"   Matched the empty string as \" + tokenImage[" +
-                        initMatch[i] + "] + \" token.\");");
+                        InitMatch[i] + "] + \" token.\");");
 
-                GenCodeLine(prefix + "jjmatchedKind = " + initMatch[i] + ";");
+                GenCodeLine(prefix + "jjmatchedKind = " + InitMatch[i] + ";");
                 GenCodeLine(prefix + "jjmatchedPos = -1;");
                 GenCodeLine(prefix + "curPos = 0;");
             }
@@ -1090,48 +1090,48 @@ public class LexGen : CodeGenerator
 
             if (Options.GetDebugTokenManager())
                 GenCodeLine("      debugStream.println(" +
-                    (maxLexStates > 1 ? "\"<\" + lexStateNames[curLexState] + \">\" + " : "") +
+                    (MaxLexStates > 1 ? "\"<\" + lexStateNames[curLexState] + \">\" + " : "") +
                     "\"Current character : \" + " +
-                    errorHandlingClass + ".addEscapes(String.valueOf(curChar)) + \" (\" + (int)curChar + \") " +
+                    ErrorHandlingClass + ".addEscapes(String.valueOf(curChar)) + \" (\" + (int)curChar + \") " +
                 "at line \" + input_stream.getEndLine() + \" column \" + input_stream.getEndColumn());");
 
             GenCodeLine(prefix + "curPos = jjMoveStringLiteralDfa0_" + i + "();");
-            if (canMatchAnyChar[i] != -1)
+            if (CanMatchAnyChar[i] != -1)
             {
-                if (initMatch[i] != int.MaxValue && initMatch[i] != 0)
+                if (InitMatch[i] != int.MaxValue && InitMatch[i] != 0)
                     GenCodeLine(prefix + "if (jjmatchedPos < 0 || (jjmatchedPos == 0 && jjmatchedKind > " +
-                        canMatchAnyChar[i] + "))");
+                        CanMatchAnyChar[i] + "))");
                 else
                     GenCodeLine(prefix + "if (jjmatchedPos == 0 && jjmatchedKind > " +
-                        canMatchAnyChar[i] + ")");
+                        CanMatchAnyChar[i] + ")");
                 GenCodeLine(prefix + "{");
 
                 if (Options.GetDebugTokenManager())
                     GenCodeLine("           debugStream.println(\"   Current character matched as a \" + tokenImage[" +
-                        canMatchAnyChar[i] + "] + \" token.\");");
-                GenCodeLine(prefix + "   jjmatchedKind = " + canMatchAnyChar[i] + ";");
+                        CanMatchAnyChar[i] + "] + \" token.\");");
+                GenCodeLine(prefix + "   jjmatchedKind = " + CanMatchAnyChar[i] + ";");
 
-                if (initMatch[i] != int.MaxValue && initMatch[i] != 0)
+                if (InitMatch[i] != int.MaxValue && InitMatch[i] != 0)
                     GenCodeLine(prefix + "   jjmatchedPos = 0;");
 
                 GenCodeLine(prefix + "}");
             }
 
-            if (maxLexStates > 1)
+            if (MaxLexStates > 1)
                 GenCodeLine(prefix + "break;");
         }
 
-        if (maxLexStates > 1)
+        if (MaxLexStates > 1)
             GenCodeLine(endSwitch);
-        else if (maxLexStates == 0)
+        else if (MaxLexStates == 0)
             GenCodeLine("       jjmatchedKind = 0x" + Convert.ToString(int.MaxValue, 16) + ";");
 
-        if (maxLexStates > 1)
+        if (MaxLexStates > 1)
             prefix = "  ";
         else
             prefix = "";
 
-        if (maxLexStates > 0)
+        if (MaxLexStates > 0)
         {
             GenCodeLine(prefix + "   if (jjmatchedKind != 0x" + Convert.ToString(int.MaxValue, 16) + ")");
             GenCodeLine(prefix + "   {");
@@ -1155,16 +1155,16 @@ public class LexGen : CodeGenerator
                     Options.GetUserCharStream())
                     GenCodeLine("    debugStream.println(" +
                         "\"****** FOUND A \" + tokenImage[jjmatchedKind] + \" MATCH " +
-                        "(\" + " + errorHandlingClass + ".addEscapes(new String(input_stream.GetSuffix(jjmatchedPos + 1))) + " +
+                        "(\" + " + ErrorHandlingClass + ".addEscapes(new String(input_stream.GetSuffix(jjmatchedPos + 1))) + " +
                     "\") ******\\n\");");
                 else
                     GenCodeLine("    debugStream.println(" +
                         "\"****** FOUND A \" + tokenImage[jjmatchedKind] + \" MATCH " +
-                        "(\" + " + errorHandlingClass + ".addEscapes(new String(input_stream.GetSuffix(jjmatchedPos + 1))) + " +
+                        "(\" + " + ErrorHandlingClass + ".addEscapes(new String(input_stream.GetSuffix(jjmatchedPos + 1))) + " +
                     "\") ******\\n\");");
             }
 
-            if (hasSkip || hasMore || hasSpecial)
+            if (HasSkip || HasMore || HasSpecial)
             {
                 GenCodeLine(prefix + "      if ((jjtoToken[jjmatchedKind >> 6] & " +
                 "(1L << (jjmatchedKind & 077))) != 0L)");
@@ -1173,13 +1173,13 @@ public class LexGen : CodeGenerator
 
             GenCodeLine(prefix + "         matchedToken = jjFillToken();");
 
-            if (hasSpecial)
+            if (HasSpecial)
                 GenCodeLine(prefix + "         matchedToken.specialToken = specialToken;");
 
-            if (hasTokenActions)
+            if (HasTokenActions)
                 GenCodeLine(prefix + "         TokenLexicalActions(matchedToken);");
 
-            if (maxLexStates > 1)
+            if (MaxLexStates > 1)
             {
                 GenCodeLine("       if (jjnewLexState[jjmatchedKind] != -1)");
                 GenCodeLine(prefix + "       curLexState = jjnewLexState[jjmatchedKind];");
@@ -1190,13 +1190,13 @@ public class LexGen : CodeGenerator
 
             GenCodeLine(prefix + "         return matchedToken;");
 
-            if (hasSkip || hasMore || hasSpecial)
+            if (HasSkip || HasMore || HasSpecial)
             {
                 GenCodeLine(prefix + "      }");
 
-                if (hasSkip || hasSpecial)
+                if (HasSkip || HasSpecial)
                 {
-                    if (hasMore)
+                    if (HasMore)
                     {
                         GenCodeLine(prefix + "      else if ((jjtoSkip[jjmatchedKind >> 6] & " +
                         "(1L << (jjmatchedKind & 077))) != 0L)");
@@ -1206,7 +1206,7 @@ public class LexGen : CodeGenerator
 
                     GenCodeLine(prefix + "      {");
 
-                    if (hasSpecial)
+                    if (HasSpecial)
                     {
                         GenCodeLine(prefix + "         if ((jjtoSpecial[jjmatchedKind >> 6] & " +
                         "(1L << (jjmatchedKind & 077))) != 0L)");
@@ -1222,21 +1222,21 @@ public class LexGen : CodeGenerator
                         GenCodeLine(prefix + "               specialToken = (specialToken.next = matchedToken);");
                         GenCodeLine(prefix + "            }");
 
-                        if (hasSkipActions)
+                        if (HasSkipActions)
                             GenCodeLine(prefix + "            SkipLexicalActions(matchedToken);");
 
                         GenCodeLine(prefix + "         }");
 
-                        if (hasSkipActions)
+                        if (HasSkipActions)
                         {
                             GenCodeLine(prefix + "         else");
                             GenCodeLine(prefix + "            SkipLexicalActions(null);");
                         }
                     }
-                    else if (hasSkipActions)
+                    else if (HasSkipActions)
                         GenCodeLine(prefix + "         SkipLexicalActions(null);");
 
-                    if (maxLexStates > 1)
+                    if (MaxLexStates > 1)
                     {
                         GenCodeLine("         if (jjnewLexState[jjmatchedKind] != -1)");
                         GenCodeLine(prefix + "         curLexState = jjnewLexState[jjmatchedKind];");
@@ -1246,14 +1246,14 @@ public class LexGen : CodeGenerator
                     GenCodeLine(prefix + "      }");
                 }
 
-                if (hasMore)
+                if (HasMore)
                 {
-                    if (hasMoreActions)
+                    if (HasMoreActions)
                         GenCodeLine(prefix + "      MoreLexicalActions();");
-                    else if (hasSkipActions || hasTokenActions)
+                    else if (HasSkipActions || HasTokenActions)
                         GenCodeLine(prefix + "      jjimageLen += jjmatchedPos + 1;");
 
-                    if (maxLexStates > 1)
+                    if (MaxLexStates > 1)
                     {
                         GenCodeLine("      if (jjnewLexState[jjmatchedKind] != -1)");
                         GenCodeLine(prefix + "      curLexState = jjnewLexState[jjmatchedKind];");
@@ -1266,9 +1266,9 @@ public class LexGen : CodeGenerator
 
                     if (Options.GetDebugTokenManager())
                         GenCodeLine("   debugStream.println(" +
-                            (maxLexStates > 1 ? "\"<\" + lexStateNames[curLexState] + \">\" + " : "") +
+                            (MaxLexStates > 1 ? "\"<\" + lexStateNames[curLexState] + \">\" + " : "") +
                             "\"Current character : \" + " +
-                            "" + errorHandlingClass + ".addEscapes(String.valueOf(curChar)) + \" (\" + (int)curChar + \") " +
+                            "" + ErrorHandlingClass + ".addEscapes(String.valueOf(curChar)) + \" (\" + (int)curChar + \") " +
                         "at line \" + input_stream.getEndLine() + \" column \" + input_stream.getEndColumn());");
                     GenCodeLine(prefix + "         continue;");
                     GenCodeLine(prefix + "      }");
@@ -1296,11 +1296,11 @@ public class LexGen : CodeGenerator
             GenCodeLine(prefix + "      input_stream.backup(1);");
             GenCodeLine(prefix + "      error_after = curPos <= 1 ? \"\" : input_stream.GetImage();");
             GenCodeLine(prefix + "   }");
-            GenCodeLine(prefix + "   throw new " + errorHandlingClass + "(" +
-            "EOFSeen, curLexState, error_line, error_column, error_after, curChar, " + errorHandlingClass + ".LEXICAL_ERROR);");
+            GenCodeLine(prefix + "   throw new " + ErrorHandlingClass + "(" +
+            "EOFSeen, curLexState, error_line, error_column, error_after, curChar, " + ErrorHandlingClass + ".LEXICAL_ERROR);");
         }
 
-        if (hasMore)
+        if (HasMore)
             GenCodeLine(prefix + " }");
 
         GenCodeLine("  }");
@@ -1312,49 +1312,49 @@ public class LexGen : CodeGenerator
     {
         Action act;
 
-        GenCodeLine(staticString + "void SkipLexicalActions(Token matchedToken)");
+        GenCodeLine(StaticString + "void SkipLexicalActions(Token matchedToken)");
         GenCodeLine("{");
         GenCodeLine("   switch(jjmatchedKind)");
         GenCodeLine("   {");
 
     Outer:
-        for (int i = 0; i < maxOrdinal; i++)
+        for (int i = 0; i < MaxOrdinal; i++)
         {
-            if ((toSkip[i / 64] & (1UL << (i % 64))) == 0L)
+            if ((ToSkip[i / 64] & (1UL << (i % 64))) == 0L)
                 continue;
 
             for (; ; )
             {
-                if (((act = (Action)actions[i]) == null ||
+                if (((act = (Action)Actions[i]) == null ||
                     act.ActionTokens == null ||
-                    act.ActionTokens.Count == 0) && !canLoop[lexStates[i]])
+                    act.ActionTokens.Count == 0) && !CanLoop[LexStates[i]])
                     goto OuterExit;
 
                 GenCodeLine("      case " + i + " :");
 
-                if (initMatch[lexStates[i]] == i && canLoop[lexStates[i]])
+                if (InitMatch[LexStates[i]] == i && CanLoop[LexStates[i]])
                 {
                     GenCodeLine("         if (jjmatchedPos == -1)");
                     GenCodeLine("         {");
-                    GenCodeLine("            if (jjbeenHere[" + lexStates[i] + "] &&");
-                    GenCodeLine("                jjemptyLineNo[" + lexStates[i] + "] == input_stream.getBeginLine() &&");
-                    GenCodeLine("                jjemptyColNo[" + lexStates[i] + "] == input_stream.getBeginColumn())");
-                    GenCodeLine("               throw new " + errorHandlingClass + "(" +
+                    GenCodeLine("            if (jjbeenHere[" + LexStates[i] + "] &&");
+                    GenCodeLine("                jjemptyLineNo[" + LexStates[i] + "] == input_stream.getBeginLine() &&");
+                    GenCodeLine("                jjemptyColNo[" + LexStates[i] + "] == input_stream.getBeginColumn())");
+                    GenCodeLine("               throw new " + ErrorHandlingClass + "(" +
                         "(\"Error: Bailing out of infinite loop caused by repeated empty string matches " +
                         "at line \" + input_stream.getBeginLine() + \", " +
-                    "column \" + input_stream.getBeginColumn() + \".\"), " + errorHandlingClass + ".LOOP_DETECTED);");
-                    GenCodeLine("            jjemptyLineNo[" + lexStates[i] + "] = input_stream.getBeginLine();");
-                    GenCodeLine("            jjemptyColNo[" + lexStates[i] + "] = input_stream.getBeginColumn();");
-                    GenCodeLine("            jjbeenHere[" + lexStates[i] + "] = true;");
+                    "column \" + input_stream.getBeginColumn() + \".\"), " + ErrorHandlingClass + ".LOOP_DETECTED);");
+                    GenCodeLine("            jjemptyLineNo[" + LexStates[i] + "] = input_stream.getBeginLine();");
+                    GenCodeLine("            jjemptyColNo[" + LexStates[i] + "] = input_stream.getBeginColumn();");
+                    GenCodeLine("            jjbeenHere[" + LexStates[i] + "] = true;");
                     GenCodeLine("         }");
                 }
 
-                if ((act = (Action)actions[i]) == null ||
+                if ((act = (Action)Actions[i]) == null ||
                     act.ActionTokens.Count == 0)
                     break;
 
                 GenCode("         image.append");
-                if (RStringLiteral.allImages[i] != null)
+                if (RStringLiteral.AllImages[i] != null)
                 {
                     GenCodeLine("(jjstrLiteralImages[" + i + "]);");
                     GenCodeLine("        lengthOfMatch = jjstrLiteralImages[" + i + "].Length;");
@@ -1389,45 +1389,45 @@ public class LexGen : CodeGenerator
     {
         Action act;
 
-        GenCodeLine(staticString + "void MoreLexicalActions()");
+        GenCodeLine(StaticString + "void MoreLexicalActions()");
         GenCodeLine("{");
         GenCodeLine("   jjimageLen += (lengthOfMatch = jjmatchedPos + 1);");
         GenCodeLine("   switch(jjmatchedKind)");
         GenCodeLine("   {");
 
     Outer:
-        for (int i = 0; i < maxOrdinal; i++)
+        for (int i = 0; i < MaxOrdinal; i++)
         {
-            if ((toMore[i / 64] & (1UL << (i % 64))) == 0L)
+            if ((ToMore[i / 64] & (1UL << (i % 64))) == 0L)
                 continue;
 
             for (; ; )
             {
-                if (((act = (Action)actions[i]) == null ||
+                if (((act = (Action)Actions[i]) == null ||
                     act.ActionTokens == null ||
-                    act.ActionTokens.Count == 0) && !canLoop[lexStates[i]])
+                    act.ActionTokens.Count == 0) && !CanLoop[LexStates[i]])
                     goto OuterExit;
 
                 GenCodeLine("      case " + i + " :");
 
-                if (initMatch[lexStates[i]] == i && canLoop[lexStates[i]])
+                if (InitMatch[LexStates[i]] == i && CanLoop[LexStates[i]])
                 {
                     GenCodeLine("         if (jjmatchedPos == -1)");
                     GenCodeLine("         {");
-                    GenCodeLine("            if (jjbeenHere[" + lexStates[i] + "] &&");
-                    GenCodeLine("                jjemptyLineNo[" + lexStates[i] + "] == input_stream.getBeginLine() &&");
-                    GenCodeLine("                jjemptyColNo[" + lexStates[i] + "] == input_stream.getBeginColumn())");
-                    GenCodeLine("               throw new " + errorHandlingClass + "(" +
+                    GenCodeLine("            if (jjbeenHere[" + LexStates[i] + "] &&");
+                    GenCodeLine("                jjemptyLineNo[" + LexStates[i] + "] == input_stream.getBeginLine() &&");
+                    GenCodeLine("                jjemptyColNo[" + LexStates[i] + "] == input_stream.getBeginColumn())");
+                    GenCodeLine("               throw new " + ErrorHandlingClass + "(" +
                         "(\"Error: Bailing out of infinite loop caused by repeated empty string matches " +
                         "at line \" + input_stream.getBeginLine() + \", " +
-                    "column \" + input_stream.getBeginColumn() + \".\"), " + errorHandlingClass + ".LOOP_DETECTED);");
-                    GenCodeLine("            jjemptyLineNo[" + lexStates[i] + "] = input_stream.getBeginLine();");
-                    GenCodeLine("            jjemptyColNo[" + lexStates[i] + "] = input_stream.getBeginColumn();");
-                    GenCodeLine("            jjbeenHere[" + lexStates[i] + "] = true;");
+                    "column \" + input_stream.getBeginColumn() + \".\"), " + ErrorHandlingClass + ".LOOP_DETECTED);");
+                    GenCodeLine("            jjemptyLineNo[" + LexStates[i] + "] = input_stream.getBeginLine();");
+                    GenCodeLine("            jjemptyColNo[" + LexStates[i] + "] = input_stream.getBeginColumn();");
+                    GenCodeLine("            jjbeenHere[" + LexStates[i] + "] = true;");
                     GenCodeLine("         }");
                 }
 
-                if ((act = (Action)actions[i]) == null ||
+                if ((act = (Action)Actions[i]) == null ||
                     act.ActionTokens.Count == 0)
                 {
                     break;
@@ -1435,7 +1435,7 @@ public class LexGen : CodeGenerator
 
                 GenCode("         image.append");
 
-                if (RStringLiteral.allImages[i] != null)
+                if (RStringLiteral.AllImages[i] != null)
                     GenCodeLine("(jjstrLiteralImages[" + i + "]);");
                 else
                     GenCodeLine("(input_stream.GetSuffix(jjimageLen));");
@@ -1468,44 +1468,44 @@ public class LexGen : CodeGenerator
         Action act;
         int i;
 
-        GenCodeLine(staticString + "void TokenLexicalActions(Token matchedToken)");
+        GenCodeLine(StaticString + "void TokenLexicalActions(Token matchedToken)");
         GenCodeLine("{");
         GenCodeLine("   switch(jjmatchedKind)");
         GenCodeLine("   {");
 
     Outer:
-        for (i = 0; i < maxOrdinal; i++)
+        for (i = 0; i < MaxOrdinal; i++)
         {
-            if ((toToken[i / 64] & (1UL << (i % 64))) == 0L)
+            if ((ToToken[i / 64] & (1UL << (i % 64))) == 0L)
                 continue;
 
             for (; ; )
             {
-                if (((act = (Action)actions[i]) == null ||
+                if (((act = (Action)Actions[i]) == null ||
                     act.ActionTokens == null ||
-                    act.ActionTokens.Count == 0) && !canLoop[lexStates[i]])
+                    act.ActionTokens.Count == 0) && !CanLoop[LexStates[i]])
                     goto OuterExit;
 
                 GenCodeLine("      case " + i + " :");
 
-                if (initMatch[lexStates[i]] == i && canLoop[lexStates[i]])
+                if (InitMatch[LexStates[i]] == i && CanLoop[LexStates[i]])
                 {
                     GenCodeLine("         if (jjmatchedPos == -1)");
                     GenCodeLine("         {");
-                    GenCodeLine("            if (jjbeenHere[" + lexStates[i] + "] &&");
-                    GenCodeLine("                jjemptyLineNo[" + lexStates[i] + "] == input_stream.getBeginLine() &&");
-                    GenCodeLine("                jjemptyColNo[" + lexStates[i] + "] == input_stream.getBeginColumn())");
-                    GenCodeLine("               throw new " + errorHandlingClass + "(" +
+                    GenCodeLine("            if (jjbeenHere[" + LexStates[i] + "] &&");
+                    GenCodeLine("                jjemptyLineNo[" + LexStates[i] + "] == input_stream.getBeginLine() &&");
+                    GenCodeLine("                jjemptyColNo[" + LexStates[i] + "] == input_stream.getBeginColumn())");
+                    GenCodeLine("               throw new " + ErrorHandlingClass + "(" +
                         "(\"Error: Bailing out of infinite loop caused by repeated empty string matches " +
                         "at line \" + input_stream.getBeginLine() + \", " +
-                    "column \" + input_stream.getBeginColumn() + \".\"), " + errorHandlingClass + ".LOOP_DETECTED);");
-                    GenCodeLine("            jjemptyLineNo[" + lexStates[i] + "] = input_stream.getBeginLine();");
-                    GenCodeLine("            jjemptyColNo[" + lexStates[i] + "] = input_stream.getBeginColumn();");
-                    GenCodeLine("            jjbeenHere[" + lexStates[i] + "] = true;");
+                    "column \" + input_stream.getBeginColumn() + \".\"), " + ErrorHandlingClass + ".LOOP_DETECTED);");
+                    GenCodeLine("            jjemptyLineNo[" + LexStates[i] + "] = input_stream.getBeginLine();");
+                    GenCodeLine("            jjemptyColNo[" + LexStates[i] + "] = input_stream.getBeginColumn();");
+                    GenCodeLine("            jjbeenHere[" + LexStates[i] + "] = true;");
                     GenCodeLine("         }");
                 }
 
-                if ((act = actions[i]) == null ||
+                if ((act = Actions[i]) == null ||
                     act.ActionTokens.Count == 0)
                     break;
 
@@ -1517,7 +1517,7 @@ public class LexGen : CodeGenerator
                 {
                     GenCode("        image.append");
 
-                    if (RStringLiteral.allImages[i] != null)
+                    if (RStringLiteral.AllImages[i] != null)
                     {
                         GenCodeLine("(jjstrLiteralImages[" + i + "]);");
                         GenCodeLine("        lengthOfMatch = jjstrLiteralImages[" + i + "].Length;");
@@ -1551,50 +1551,50 @@ public class LexGen : CodeGenerator
 
     public static new void ReInit()
     {
-        actions = null;
+        Actions = null;
         AllTpsForState = new();
-        canLoop = null;
-        canMatchAnyChar = null;
-        canReachOnMore = null;
-        curKind = 0;
-        curRE = null;
-        defaultLexState = 0;
-        errorHandlingClass = null;
-        hasEmptyMatch = false;
-        hasLoop = false;
-        hasMore = false;
-        hasMoreActions = false;
-        hasNfa = null;
-        hasSkip = false;
-        hasSkipActions = false;
-        hasSpecial = false;
-        hasTokenActions = false;
-        ignoreCase = null;
-        initMatch = null;
+        CanLoop = null;
+        CanMatchAnyChar = null;
+        CanReachOnMore = null;
+        CurKind = 0;
+        CurRE = null;
+        DefaultLexState = 0;
+        ErrorHandlingClass = null;
+        HasEmptyMatch = false;
+        HasLoop = false;
+        HasMore = false;
+        HasMoreActions = false;
+        HasNfa = null;
+        HasSkip = false;
+        HasSkipActions = false;
+        HasSpecial = false;
+        HasTokenActions = false;
+        IgnoreCase = null;
+        InitMatch = null;
         InitStates = new();
-        initialState = null;
-        keepLineCol = false;
-        kinds = null;
-        lexStateIndex = 0;
-        lexStateName = null;
-        lexStateSuffix = null;
-        lexStates = null;
-        maxLexStates = 0;
-        maxLongsReqd = null;
-        maxOrdinal = 1;
-        mixed = null;
-        newLexState = null;
-        rexprs = null;
-        singlesToSkip = null;
-        stateHasActions = null;
-        stateSetSize = 0;
-        staticString = null;
-        toMore = null;
-        toSkip = null;
-        toSpecial = null;
-        toToken = null;
-        tokMgrClassName = null;
-        tokenizerData = new TokenizerData();
+        InitialState = null;
+        KeepLineCol = false;
+        Kinds = null;
+        LexStateIndex = 0;
+        LexStateName = null;
+        LexStateSuffix = null;
+        LexStates = null;
+        MaxLexStates = 0;
+        MaxLongsReqd = null;
+        MaxOrdinal = 1;
+        Mixed = null;
+        NewLexState = null;
+        Rexprs = null;
+        SinglesToSkip = null;
+        StateHasActions = null;
+        StateSetSize = 0;
+        StaticString = null;
+        ToMore = null;
+        ToSkip = null;
+        ToSpecial = null;
+        ToToken = null;
+        TokMgrClassName = null;
+        TokenizerData = new TokenizerData();
         GenerateDataOnly = false;
     }
 

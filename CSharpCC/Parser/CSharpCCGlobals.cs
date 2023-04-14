@@ -81,7 +81,7 @@ public class CSharpCCGlobals : CSharpCCParserConstants
     /**
      * The name of the parser class (what appears in PARSER_BEGIN and PARSER_END).
      */
-    static public string CuName;
+    static public string cu_name;
 
     /**
      * This is a list of tokens that appear after "PARSER_BEGIN(name)" all the
@@ -559,7 +559,7 @@ public class CSharpCCGlobals : CSharpCCParserConstants
         OrigFileName = null;
         CCTreeGenerated = false;
         ToolNames = null;
-        CuName = null;
+        cu_name = null;
         CuToInsertionPoint1 = new();
         CuToInsertionPoint2 = new();
         CuFromInsertionPoint2 = new();

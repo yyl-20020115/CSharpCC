@@ -60,7 +60,7 @@ public class RStringLiteral : RegularExpression
     private static List<Dictionary<string, KindInfo>> charPosKind = new(); // Elements are hashtables
                                                                            // with single char keys; 
     private static int[] maxLenForActive = new int[100]; // 6400 tokens
-    public static String[] allImages;
+    public static String[] AllImages;
     private static int[][] intermediateKinds;
     private static int[][] intermediateMatchedPos;
 
@@ -110,27 +110,27 @@ public class RStringLiteral : RegularExpression
             int literalCount = 0;
             codeGenerator.SwitchToStaticsFile();
 
-            if (allImages == null || allImages.Length == 0)
+            if (AllImages == null || AllImages.Length == 0)
             {
                 codeGenerator.GenCodeLine("static const JJString jjstrLiteralImages[] = {};");
                 return;
             }
 
-            allImages[0] = "";
-            for (i = 0; i < allImages.Length; i++)
+            AllImages[0] = "";
+            for (i = 0; i < AllImages.Length; i++)
             {
-                if ((image = allImages[i]) == null ||
-                    ((LexGen.toSkip[i / 64] & (1UL << (i % 64))) == 0L &&
-                     (LexGen.toMore[i / 64] & (1UL << (i % 64))) == 0L &&
-                     (LexGen.toToken[i / 64] & (1UL << (i % 64))) == 0L) ||
-                    (LexGen.toSkip[i / 64] & (1UL << (i % 64))) != 0L ||
-                    (LexGen.toMore[i / 64] & (1UL << (i % 64))) != 0L ||
-                    LexGen.canReachOnMore[LexGen.lexStates[i]] ||
-                    ((Options.GetIgnoreCase() || LexGen.ignoreCase[i]) &&
+                if ((image = AllImages[i]) == null ||
+                    ((LexGen.ToSkip[i / 64] & (1UL << (i % 64))) == 0L &&
+                     (LexGen.ToMore[i / 64] & (1UL << (i % 64))) == 0L &&
+                     (LexGen.ToToken[i / 64] & (1UL << (i % 64))) == 0L) ||
+                    (LexGen.ToSkip[i / 64] & (1UL << (i % 64))) != 0L ||
+                    (LexGen.ToMore[i / 64] & (1UL << (i % 64))) != 0L ||
+                    LexGen.CanReachOnMore[LexGen.LexStates[i]] ||
+                    ((Options.GetIgnoreCase() || LexGen.IgnoreCase[i]) &&
                      (image != (image.ToLower()) ||
                       image != (image.ToUpper()))))
                 {
-                    allImages[i] = null;
+                    AllImages[i] = null;
                     if ((charCnt += 6) > 80)
                     {
                         codeGenerator.GenCodeLine("");
@@ -162,7 +162,7 @@ public class RStringLiteral : RegularExpression
                 codeGenerator.GenCodeLine(toPrint);
             }
 
-            while (++i < LexGen.maxOrdinal)
+            while (++i < LexGen.MaxOrdinal)
             {
                 if ((charCnt += 6) > 80)
                 {
@@ -200,27 +200,27 @@ public class RStringLiteral : RegularExpression
         codeGenerator.GenCodeLine("/** Token literal values. */");
         codeGenerator.GenCodeLine("public static readonly String[] jjstrLiteralImages = {");
 
-        if (allImages == null || allImages.Length == 0)
+        if (AllImages == null || AllImages.Length == 0)
         {
             codeGenerator.GenCodeLine("};");
             return;
         }
 
-        allImages[0] = "";
-        for (i = 0; i < allImages.Length; i++)
+        AllImages[0] = "";
+        for (i = 0; i < AllImages.Length; i++)
         {
-            if ((image = allImages[i]) == null ||
-                ((LexGen.toSkip[i / 64] & (1UL << (i % 64))) == 0L &&
-                 (LexGen.toMore[i / 64] & (1UL << (i % 64))) == 0L &&
-                 (LexGen.toToken[i / 64] & (1UL << (i % 64))) == 0L) ||
-                (LexGen.toSkip[i / 64] & (1UL << (i % 64))) != 0L ||
-                (LexGen.toMore[i / 64] & (1UL << (i % 64))) != 0L ||
-                LexGen.canReachOnMore[LexGen.lexStates[i]] ||
-                ((Options.GetIgnoreCase() || LexGen.ignoreCase[i]) &&
+            if ((image = AllImages[i]) == null ||
+                ((LexGen.ToSkip[i / 64] & (1UL << (i % 64))) == 0L &&
+                 (LexGen.ToMore[i / 64] & (1UL << (i % 64))) == 0L &&
+                 (LexGen.ToToken[i / 64] & (1UL << (i % 64))) == 0L) ||
+                (LexGen.ToSkip[i / 64] & (1UL << (i % 64))) != 0L ||
+                (LexGen.ToMore[i / 64] & (1UL << (i % 64))) != 0L ||
+                LexGen.CanReachOnMore[LexGen.LexStates[i]] ||
+                ((Options.GetIgnoreCase() || LexGen.IgnoreCase[i]) &&
                  (image != (image.ToLower()) ||
                   image != (image.ToUpper()))))
             {
-                allImages[i] = null;
+                AllImages[i] = null;
                 if ((charCnt += 6) > 80)
                 {
                     codeGenerator.GenCodeLine("");
@@ -256,7 +256,7 @@ public class RStringLiteral : RegularExpression
             codeGenerator.GenCode(toPrint);
         }
 
-        while (++i < LexGen.maxOrdinal)
+        while (++i < LexGen.MaxOrdinal)
         {
             if ((charCnt += 6) > 80)
             {
@@ -299,7 +299,7 @@ public class RStringLiteral : RegularExpression
                 !Options.GetUserCharStream())
             {
                 NfaState.unicodeWarningGiven = true;
-                CSharpCCErrors.Warning(LexGen.curRE, "Non-ASCII characters used in regular expression." +
+                CSharpCCErrors.Warning(LexGen.CurRE, "Non-ASCII characters used in regular expression." +
                    "Please make sure you use the correct Reader when you create the parser, " +
                    "one that can handle your character set.");
             }
@@ -310,14 +310,14 @@ public class RStringLiteral : RegularExpression
                 dict = charPosKind[i];
 
             if (!dict.TryGetValue(s, out KindInfo info))
-                dict.Add(s, info = new KindInfo(LexGen.maxOrdinal));
+                dict.Add(s, info = new KindInfo(LexGen.MaxOrdinal));
 
             if (i + 1 == len)
                 info.InsertFinalKind(ordinal);
             else
                 info.InsertValidKind(ordinal);
 
-            if (!Options.GetIgnoreCase() && LexGen.ignoreCase[ordinal] &&
+            if (!Options.GetIgnoreCase() && LexGen.IgnoreCase[ordinal] &&
                 c != char.ToLower(c))
             {
                 s = ("" + image[i]).ToLower();
@@ -328,7 +328,7 @@ public class RStringLiteral : RegularExpression
                     dict = charPosKind[i];
 
                 if (!dict.TryGetValue(s, out info))
-                    dict.Add(s, info = new KindInfo(LexGen.maxOrdinal));
+                    dict.Add(s, info = new KindInfo(LexGen.MaxOrdinal));
 
                 if (i + 1 == len)
                     info.InsertFinalKind(ordinal);
@@ -336,7 +336,7 @@ public class RStringLiteral : RegularExpression
                     info.InsertValidKind(ordinal);
             }
 
-            if (!Options.GetIgnoreCase() && LexGen.ignoreCase[ordinal] &&
+            if (!Options.GetIgnoreCase() && LexGen.IgnoreCase[ordinal] &&
                 c != char.ToUpper(c))
             {
                 s = ("" + image[i]).ToUpper();
@@ -347,7 +347,7 @@ public class RStringLiteral : RegularExpression
                     dict = charPosKind[i];
 
                 if (!dict.TryGetValue(s, out info))
-                    dict.Add(s, info = new KindInfo(LexGen.maxOrdinal));
+                    dict.Add(s, info = new KindInfo(LexGen.MaxOrdinal));
 
                 if (i + 1 == len)
                     info.InsertFinalKind(ordinal);
@@ -358,7 +358,7 @@ public class RStringLiteral : RegularExpression
 
         maxLenForActive[ordinal / 64] = Math.Max(maxLenForActive[ordinal / 64],
                                                                            len - 1);
-        allImages[ordinal] = image;
+        AllImages[ordinal] = image;
     }
 
     public override Nfa GenerateNfa(bool ignoreCase)
@@ -402,7 +402,7 @@ public class RStringLiteral : RegularExpression
         codeGenerator.GenCodeLine("{");
 
         if (NfaState.generatedStates != 0)
-            codeGenerator.GenCodeLine("   return jjMoveNfa" + LexGen.lexStateSuffix + "(" + NfaState.InitStateName() + ", 0);");
+            codeGenerator.GenCodeLine("   return jjMoveNfa" + LexGen.LexStateSuffix + "(" + NfaState.InitStateName() + ", 0);");
         else
             codeGenerator.GenCodeLine("   return 1;");
 
@@ -411,7 +411,7 @@ public class RStringLiteral : RegularExpression
 
     private static int GetStateSetForKind(int pos, int kind)
     {
-        if (LexGen.mixed[LexGen.lexStateIndex] || NfaState.generatedStates == 0)
+        if (LexGen.Mixed[LexGen.LexStateIndex] || NfaState.generatedStates == 0)
             return -1;
 
         var allStateSets = statesForPos[pos];
@@ -442,7 +442,7 @@ public class RStringLiteral : RegularExpression
 
     static string GetLabel(int kind)
     {
-        var re = LexGen.rexprs[kind];
+        var re = LexGen.Rexprs[kind];
 
         if (re is RStringLiteral literal)
             return " \"" + StringEscapeHelpers.AddEscapes(literal.image) + "\"";
@@ -452,9 +452,9 @@ public class RStringLiteral : RegularExpression
             return " <token of kind " + kind + ">";
     }
 
-    static int GetLine(int kind) => LexGen.rexprs[kind].Line;
+    static int GetLine(int kind) => LexGen.Rexprs[kind].Line;
 
-    static int GetColumn(int kind) => LexGen.rexprs[kind].Column;
+    static int GetColumn(int kind) => LexGen.Rexprs[kind].Column;
 
     /**
      * Returns true if s1 starts with s2 (ignoring case for each character).
@@ -486,11 +486,11 @@ public class RStringLiteral : RegularExpression
         {
             subString[i] = false;
 
-            if ((image = allImages[i]) == null ||
-                LexGen.lexStates[i] != LexGen.lexStateIndex)
+            if ((image = AllImages[i]) == null ||
+                LexGen.LexStates[i] != LexGen.LexStateIndex)
                 continue;
 
-            if (LexGen.mixed[LexGen.lexStateIndex])
+            if (LexGen.Mixed[LexGen.LexStateIndex])
             {
                 // We will not optimize for mixed case
                 subString[i] = true;
@@ -500,17 +500,17 @@ public class RStringLiteral : RegularExpression
 
             for (int j = 0; j < maxStrKind; j++)
             {
-                if (j != i && LexGen.lexStates[j] == LexGen.lexStateIndex &&
-                    ((String)allImages[j]) != null)
+                if (j != i && LexGen.LexStates[j] == LexGen.LexStateIndex &&
+                    ((String)AllImages[j]) != null)
                 {
-                    if (((String)allImages[j]).IndexOf(image) == 0)
+                    if (((String)AllImages[j]).IndexOf(image) == 0)
                     {
                         subString[i] = true;
                         subStringAtPos[image.Length - 1] = true;
                         break;
                     }
                     else if (Options.GetIgnoreCase() &&
-                             StartsWithIgnoreCase((String)allImages[j], image))
+                             StartsWithIgnoreCase((String)AllImages[j], image))
                     {
                         subString[i] = true;
                         subStringAtPos[image.Length - 1] = true;
@@ -527,11 +527,11 @@ public class RStringLiteral : RegularExpression
         if (Options.IsOutputLanguageJava())
         {
             codeGenerator.GenCodeLine((Options.GetStatic() ? "static " : "") + "private int " +
-                         "jjStartNfaWithStates" + LexGen.lexStateSuffix + "(int pos, int kind, int state)");
+                         "jjStartNfaWithStates" + LexGen.LexStateSuffix + "(int pos, int kind, int state)");
         }
         else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
-            codeGenerator.GenerateMethodDefHeader("int", LexGen.tokMgrClassName, "jjStartNfaWithStates" + LexGen.lexStateSuffix + "(int pos, int kind, int state)");
+            codeGenerator.GenerateMethodDefHeader("int", LexGen.TokMgrClassName, "jjStartNfaWithStates" + LexGen.LexStateSuffix + "(int pos, int kind, int state)");
         }
         else
         {
@@ -576,7 +576,7 @@ public class RStringLiteral : RegularExpression
             if (CodeGenerator.IsJavaLanguage())
             {
                 codeGenerator.GenCodeLine("   debugStream.println(" +
-                     (LexGen.maxLexStates > 1 ? "\"<\" + lexStateNames[curLexState] + \">\" + " : "") +
+                     (LexGen.MaxLexStates > 1 ? "\"<\" + lexStateNames[curLexState] + \">\" + " : "") +
                      "\"Current character : \" + " + Options.getTokenMgrErrorClass() +
                      ".addEscapes(String.valueOf(curChar)) + \" (\" + (int)curChar + \") " +
                      "at line \" + input_stream.getEndLine() + \" column \" + input_stream.getEndColumn());");
@@ -594,7 +594,7 @@ public class RStringLiteral : RegularExpression
             }
         }
 
-        codeGenerator.GenCodeLine("   return jjMoveNfa" + LexGen.lexStateSuffix + "(state, pos + 1);");
+        codeGenerator.GenCodeLine("   return jjMoveNfa" + LexGen.LexStateSuffix + "(state, pos + 1);");
         codeGenerator.GenCodeLine("}");
     }
 
@@ -609,7 +609,7 @@ public class RStringLiteral : RegularExpression
         }
         else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
-            codeGenerator.GenerateMethodDefHeader(" int ", LexGen.tokMgrClassName, "jjStopAtPos(int pos, int kind)");
+            codeGenerator.GenerateMethodDefHeader(" int ", LexGen.TokMgrClassName, "jjStopAtPos(int pos, int kind)");
         }
         else
         {
@@ -675,7 +675,7 @@ public class RStringLiteral : RegularExpression
         int maxLongsReqd = maxStrKind / 64 + 1;
         int i, j, k;
         bool ifGenerated;
-        LexGen.maxLongsReqd[LexGen.lexStateIndex] = maxLongsReqd;
+        LexGen.MaxLongsReqd[LexGen.LexStateIndex] = maxLongsReqd;
 
         if (maxLen == 0)
         {
@@ -683,11 +683,11 @@ public class RStringLiteral : RegularExpression
             if (Options.IsOutputLanguageJava())
             {
                 codeGenerator.GenCodeLine((Options.GetStatic() ? "static " : "") + "private int " +
-                               "jjMoveStringLiteralDfa0" + LexGen.lexStateSuffix + "()");
+                               "jjMoveStringLiteralDfa0" + LexGen.LexStateSuffix + "()");
             }
             else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
             {
-                codeGenerator.GenerateMethodDefHeader(" int ", LexGen.tokMgrClassName, "jjMoveStringLiteralDfa0" + LexGen.lexStateSuffix + "()");
+                codeGenerator.GenerateMethodDefHeader(" int ", LexGen.TokMgrClassName, "jjMoveStringLiteralDfa0" + LexGen.LexStateSuffix + "()");
             }
             else
             {
@@ -760,11 +760,11 @@ public class RStringLiteral : RegularExpression
             if (Options.IsOutputLanguageJava())
             {
                 codeGenerator.GenCode((Options.GetStatic() ? "static " : "") + "private int " +
-                               "jjMoveStringLiteralDfa" + i + LexGen.lexStateSuffix + _params);
+                               "jjMoveStringLiteralDfa" + i + LexGen.LexStateSuffix + _params);
             }
             else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
             {
-                codeGenerator.GenerateMethodDefHeader(" int ", LexGen.tokMgrClassName, "jjMoveStringLiteralDfa" + i + LexGen.lexStateSuffix + _params);
+                codeGenerator.GenerateMethodDefHeader(" int ", LexGen.TokMgrClassName, "jjMoveStringLiteralDfa" + i + LexGen.LexStateSuffix + _params);
             }
             else
             {
@@ -798,9 +798,9 @@ public class RStringLiteral : RegularExpression
                     }
 
                     codeGenerator.GenCodeLine(") == 0L)");
-                    if (!LexGen.mixed[LexGen.lexStateIndex] && NfaState.generatedStates != 0)
+                    if (!LexGen.Mixed[LexGen.LexStateIndex] && NfaState.generatedStates != 0)
                     {
-                        codeGenerator.GenCode("      return jjStartNfa" + LexGen.lexStateSuffix +
+                        codeGenerator.GenCode("      return jjStartNfa" + LexGen.LexStateSuffix +
                                         "(" + (i - 2) + ", ");
                         for (j = 0; j < maxLongsReqd - 1; j++)
                             if (i <= maxLenForActive[j] + 1)
@@ -813,7 +813,7 @@ public class RStringLiteral : RegularExpression
                             codeGenerator.GenCodeLine("0L);");
                     }
                     else if (NfaState.generatedStates != 0)
-                        codeGenerator.GenCodeLine("      return jjMoveNfa" + LexGen.lexStateSuffix +
+                        codeGenerator.GenCodeLine("      return jjMoveNfa" + LexGen.LexStateSuffix +
                                 "(" + NfaState.InitStateName() + ", " + (i - 1) + ");");
                     else
                         codeGenerator.GenCodeLine("      return " + i + ";");
@@ -892,9 +892,9 @@ public class RStringLiteral : RegularExpression
                     throw new Exception("Output language type not fully implemented : " + Options.GetOutputLanguage());
                 }
 
-                if (!LexGen.mixed[LexGen.lexStateIndex] && NfaState.generatedStates != 0)
+                if (!LexGen.Mixed[LexGen.LexStateIndex] && NfaState.generatedStates != 0)
                 {
-                    codeGenerator.GenCode("      jjStopStringLiteralDfa" + LexGen.lexStateSuffix + "(" + (i - 1) + ", ");
+                    codeGenerator.GenCode("      jjStopStringLiteralDfa" + LexGen.LexStateSuffix + "(" + (i - 1) + ", ");
                     for (k = 0; k < maxLongsReqd - 1; k++)
                     {
                         if (i <= maxLenForActive[k])
@@ -931,7 +931,7 @@ public class RStringLiteral : RegularExpression
                 }
                 else if (NfaState.generatedStates != 0)
                 {
-                    codeGenerator.GenCodeLine("   return jjMoveNfa" + LexGen.lexStateSuffix + "(" + NfaState.InitStateName() +
+                    codeGenerator.GenCodeLine("   return jjMoveNfa" + LexGen.LexStateSuffix + "(" + NfaState.InitStateName() +
                             ", " + (i - 1) + ");");
                 }
                 else
@@ -957,7 +957,7 @@ public class RStringLiteral : RegularExpression
                 if (CodeGenerator.IsJavaLanguage())
                 {
                     codeGenerator.GenCodeLine("   debugStream.println(" +
-                           (LexGen.maxLexStates > 1 ? "\"<\" + lexStateNames[curLexState] + \">\" + " : "") +
+                           (LexGen.MaxLexStates > 1 ? "\"<\" + lexStateNames[curLexState] + \">\" + " : "") +
                            "\"Current character : \" + " + Options.getTokenMgrErrorClass() +
                            ".addEscapes(String.valueOf(curChar)) + \" (\" + (int)curChar + \") " +
                            "at line \" + input_stream.getEndLine() + \" column \" + input_stream.getEndColumn());");
@@ -1003,13 +1003,13 @@ public class RStringLiteral : RegularExpression
                                  intermediateKinds[(j * 64 + k)][i] < (j * 64 + k) &&
                                  intermediateMatchedPos != null &&
                                  intermediateMatchedPos[(j * 64 + k)][i] == i) ||
-                                (LexGen.canMatchAnyChar[LexGen.lexStateIndex] >= 0 &&
-                                 LexGen.canMatchAnyChar[LexGen.lexStateIndex] < (j * 64 + k)))
+                                (LexGen.CanMatchAnyChar[LexGen.LexStateIndex] >= 0 &&
+                                 LexGen.CanMatchAnyChar[LexGen.LexStateIndex] < (j * 64 + k)))
                                 break;
-                            else if ((LexGen.toSkip[kind / 64] & (1UL << (kind % 64))) != 0L &&
-                                     (LexGen.toSpecial[kind / 64] & (1UL << (kind % 64))) == 0L &&
-                                     LexGen.actions[kind] == null &&
-                                     LexGen.newLexState[kind] == null)
+                            else if ((LexGen.ToSkip[kind / 64] & (1UL << (kind % 64))) != 0L &&
+                                     (LexGen.ToSpecial[kind / 64] & (1UL << (kind % 64))) == 0L &&
+                                     LexGen.Actions[kind] == null &&
+                                     LexGen.NewLexState[kind] == null)
                             {
                                 LexGen.AddCharToSkip(c, kind);
 
@@ -1077,7 +1077,7 @@ public class RStringLiteral : RegularExpression
                                 intermediateMatchedPos[(j * 64 + k)][i] == i)
                             {
                                 CSharpCCErrors.Warning(" \"" +
-                                    StringEscapeHelpers.AddEscapes(allImages[j * 64 + k]) +
+                                    StringEscapeHelpers.AddEscapes(AllImages[j * 64 + k]) +
                                     "\" cannot be matched as a string literal token " +
                                     "at line " + GetLine(j * 64 + k) + ", column " + GetColumn(j * 64 + k) +
                                     ". It will be matched as " +
@@ -1085,16 +1085,16 @@ public class RStringLiteral : RegularExpression
                                 kindToPrint = intermediateKinds[(j * 64 + k)][i];
                             }
                             else if (i == 0 &&
-                                 LexGen.canMatchAnyChar[LexGen.lexStateIndex] >= 0 &&
-                                 LexGen.canMatchAnyChar[LexGen.lexStateIndex] < (j * 64 + k))
+                                 LexGen.CanMatchAnyChar[LexGen.LexStateIndex] >= 0 &&
+                                 LexGen.CanMatchAnyChar[LexGen.LexStateIndex] < (j * 64 + k))
                             {
                                 CSharpCCErrors.Warning(" \"" +
-                                    StringEscapeHelpers.AddEscapes(allImages[j * 64 + k]) +
+                                    StringEscapeHelpers.AddEscapes(AllImages[j * 64 + k]) +
                                     "\" cannot be matched as a string literal token " +
                                     "at line " + GetLine(j * 64 + k) + ", column " + GetColumn(j * 64 + k) +
                                     ". It will be matched as " +
-                                    GetLabel(LexGen.canMatchAnyChar[LexGen.lexStateIndex]) + ".");
-                                kindToPrint = LexGen.canMatchAnyChar[LexGen.lexStateIndex];
+                                    GetLabel(LexGen.CanMatchAnyChar[LexGen.LexStateIndex]) + ".");
+                                kindToPrint = LexGen.CanMatchAnyChar[LexGen.LexStateIndex];
                             }
                             else
                                 kindToPrint = j * 64 + k;
@@ -1107,7 +1107,7 @@ public class RStringLiteral : RegularExpression
                                 {
                                     createStartNfa = true;
                                     codeGenerator.GenCodeLine(prefix + "return jjStartNfaWithStates" +
-                                        LexGen.lexStateSuffix + "(" + i +
+                                        LexGen.LexStateSuffix + "(" + i +
                                         ", " + kindToPrint + ", " + stateSetName + ");");
                                 }
                                 else
@@ -1115,8 +1115,8 @@ public class RStringLiteral : RegularExpression
                             }
                             else
                             {
-                                if ((LexGen.initMatch[LexGen.lexStateIndex] != 0 &&
-                                     LexGen.initMatch[LexGen.lexStateIndex] != int.MaxValue) ||
+                                if ((LexGen.InitMatch[LexGen.LexStateIndex] != 0 &&
+                                     LexGen.InitMatch[LexGen.LexStateIndex] != int.MaxValue) ||
                                      i != 0)
                                 {
                                     codeGenerator.GenCodeLine("         {");
@@ -1142,7 +1142,7 @@ public class RStringLiteral : RegularExpression
                         codeGenerator.GenCode("         return ");
 
                         codeGenerator.GenCode("jjMoveStringLiteralDfa" + (i + 1) +
-                                       LexGen.lexStateSuffix + "(");
+                                       LexGen.LexStateSuffix + "(");
                         for (j = 0; j < maxLongsReqd - 1; j++)
                             if ((i + 1) <= maxLenForActive[j])
                             {
@@ -1168,7 +1168,7 @@ public class RStringLiteral : RegularExpression
                         codeGenerator.GenCode("         return ");
 
                         codeGenerator.GenCode("jjMoveStringLiteralDfa" + (i + 1) +
-                                       LexGen.lexStateSuffix + "(");
+                                       LexGen.LexStateSuffix + "(");
 
                         for (j = 0; j < maxLongsReqd - 1; j++)
                             if ((i + 1) <= maxLenForActive[j] + 1)
@@ -1202,11 +1202,11 @@ public class RStringLiteral : RegularExpression
                 else
                 {
                     // A very special case.
-                    if (i == 0 && LexGen.mixed[LexGen.lexStateIndex])
+                    if (i == 0 && LexGen.Mixed[LexGen.LexStateIndex])
                     {
 
                         if (NfaState.generatedStates != 0)
-                            codeGenerator.GenCodeLine("         return jjMoveNfa" + LexGen.lexStateSuffix +
+                            codeGenerator.GenCodeLine("         return jjMoveNfa" + LexGen.LexStateSuffix +
                                     "(" + NfaState.InitStateName() + ", 0);");
                         else
                             codeGenerator.GenCodeLine("         return 1;");
@@ -1241,7 +1241,7 @@ public class RStringLiteral : RegularExpression
                 {
                     /* This means no string literal is possible. Just move nfa with
                        this guy and return. */
-                    codeGenerator.GenCodeLine("         return jjMoveNfa" + LexGen.lexStateSuffix +
+                    codeGenerator.GenCodeLine("         return jjMoveNfa" + LexGen.LexStateSuffix +
                             "(" + NfaState.InitStateName() + ", 0);");
                 }
                 else
@@ -1262,13 +1262,13 @@ public class RStringLiteral : RegularExpression
             {
                 if (startNfaNeeded)
                 {
-                    if (!LexGen.mixed[LexGen.lexStateIndex] && NfaState.generatedStates != 0)
+                    if (!LexGen.Mixed[LexGen.LexStateIndex] && NfaState.generatedStates != 0)
                     {
                         /* Here, a string literal is successfully matched and no more
                            string literals are possible. So set the kind and state set
                            upto and including this position for the matched string. */
 
-                        codeGenerator.GenCode("   return jjStartNfa" + LexGen.lexStateSuffix + "(" + (i - 1) + ", ");
+                        codeGenerator.GenCode("   return jjStartNfa" + LexGen.LexStateSuffix + "(" + (i - 1) + ", ");
                         for (k = 0; k < maxLongsReqd - 1; k++)
                             if (i <= maxLenForActive[k])
                                 codeGenerator.GenCode("active" + k + ", ");
@@ -1280,7 +1280,7 @@ public class RStringLiteral : RegularExpression
                             codeGenerator.GenCodeLine("0L);");
                     }
                     else if (NfaState.generatedStates != 0)
-                        codeGenerator.GenCodeLine("   return jjMoveNfa" + LexGen.lexStateSuffix +
+                        codeGenerator.GenCodeLine("   return jjMoveNfa" + LexGen.LexStateSuffix +
                                 "(" + NfaState.InitStateName() + ", " + i + ");");
                     else
                         codeGenerator.GenCodeLine("   return " + (i + 1) + ";");
@@ -1290,7 +1290,7 @@ public class RStringLiteral : RegularExpression
             codeGenerator.GenCodeLine("}");
         }
 
-        if (!LexGen.mixed[LexGen.lexStateIndex] && NfaState.generatedStates != 0 && createStartNfa)
+        if (!LexGen.Mixed[LexGen.LexStateIndex] && NfaState.generatedStates != 0 && createStartNfa)
             DumpStartWithStates(codeGenerator);
     }
 
@@ -1298,10 +1298,10 @@ public class RStringLiteral : RegularExpression
     {
         for (int i = 0; i < maxStrKind; i++)
         {
-            if (LexGen.lexStates[i] != LexGen.lexStateIndex)
+            if (LexGen.LexStates[i] != LexGen.LexStateIndex)
                 continue;
 
-            string image = allImages[i];
+            string image = AllImages[i];
             if (image != null && image == (str))
                 return i;
         }
@@ -1326,10 +1326,10 @@ public class RStringLiteral : RegularExpression
 
         for (i = 0; i < maxStrKind; i++)
         {
-            if (LexGen.lexStates[i] != LexGen.lexStateIndex)
+            if (LexGen.LexStates[i] != LexGen.LexStateIndex)
                 continue;
 
-            string image = allImages[i];
+            string image = AllImages[i];
 
             if (image == null || image.Length < 1)
                 continue;
@@ -1367,9 +1367,9 @@ public class RStringLiteral : RegularExpression
                     oldStates.Clear();
 
                     if (j == 0 && kind != int.MaxValue &&
-                        LexGen.canMatchAnyChar[LexGen.lexStateIndex] != -1 &&
-                        kind > LexGen.canMatchAnyChar[LexGen.lexStateIndex])
-                        kind = LexGen.canMatchAnyChar[LexGen.lexStateIndex];
+                        LexGen.CanMatchAnyChar[LexGen.LexStateIndex] != -1 &&
+                        kind > LexGen.CanMatchAnyChar[LexGen.LexStateIndex])
+                        kind = LexGen.CanMatchAnyChar[LexGen.LexStateIndex];
 
                     if (GetStrKind(image[..(j + 1)]) < kind)
                     {
@@ -1462,11 +1462,11 @@ public class RStringLiteral : RegularExpression
         if (Options.IsOutputLanguageJava())
         {
             codeGenerator.GenCode("private" + (Options.GetStatic() ? " static" : "") + " final int jjStopStringLiteralDfa" +
-                         LexGen.lexStateSuffix + "(int pos, " + _params);
+                         LexGen.LexStateSuffix + "(int pos, " + _params);
         }
         else if (Options.GetOutputLanguage() == (Options.OUTPUT_LANGUAGE__CPP))
         {
-            codeGenerator.GenerateMethodDefHeader(" int", LexGen.tokMgrClassName, "jjStopStringLiteralDfa" + LexGen.lexStateSuffix + "(int pos, " + _params);
+            codeGenerator.GenerateMethodDefHeader(" int", LexGen.TokMgrClassName, "jjStopStringLiteralDfa" + LexGen.LexStateSuffix + "(int pos, " + _params);
         }
         else
         {
@@ -1544,8 +1544,8 @@ public class RStringLiteral : RegularExpression
                         {
                             codeGenerator.GenCodeLine("            jjmatchedKind = " + kindStr + ";");
 
-                            if ((LexGen.initMatch[LexGen.lexStateIndex] != 0 &&
-                                LexGen.initMatch[LexGen.lexStateIndex] != int.MaxValue))
+                            if ((LexGen.InitMatch[LexGen.LexStateIndex] != 0 &&
+                                LexGen.InitMatch[LexGen.LexStateIndex] != int.MaxValue))
                                 codeGenerator.GenCodeLine("            jjmatchedPos = 0;");
                         }
                         else if (i == jjmatchedPos)
@@ -1610,18 +1610,18 @@ public class RStringLiteral : RegularExpression
         if (CodeGenerator.IsJavaLanguage())
         {
             codeGenerator.GenCode("private" + (Options.GetStatic() ? " static" : "") + " final int jjStartNfa" +
-                       LexGen.lexStateSuffix + _params);
+                       LexGen.LexStateSuffix + _params);
         }
         else
         {
-            codeGenerator.GenerateMethodDefHeader("int ", LexGen.tokMgrClassName, "jjStartNfa" + LexGen.lexStateSuffix + _params);
+            codeGenerator.GenerateMethodDefHeader("int ", LexGen.TokMgrClassName, "jjStartNfa" + LexGen.LexStateSuffix + _params);
         }
         codeGenerator.GenCodeLine("{");
 
-        if (LexGen.mixed[LexGen.lexStateIndex])
+        if (LexGen.Mixed[LexGen.LexStateIndex])
         {
             if (NfaState.generatedStates != 0)
-                codeGenerator.GenCodeLine("   return jjMoveNfa" + LexGen.lexStateSuffix +
+                codeGenerator.GenCodeLine("   return jjMoveNfa" + LexGen.LexStateSuffix +
                         "(" + NfaState.InitStateName() + ", pos + 1);");
             else
                 codeGenerator.GenCodeLine("   return pos + 1;");
@@ -1630,8 +1630,8 @@ public class RStringLiteral : RegularExpression
             return;
         }
 
-        codeGenerator.GenCode("   return jjMoveNfa" + LexGen.lexStateSuffix + "(" +
-                  "jjStopStringLiteralDfa" + LexGen.lexStateSuffix + "(pos, ");
+        codeGenerator.GenCode("   return jjMoveNfa" + LexGen.LexStateSuffix + "(" +
+                  "jjStopStringLiteralDfa" + LexGen.LexStateSuffix + "(pos, ");
         for (i = 0; i < maxKindsReqd - 1; i++)
             codeGenerator.GenCode("active" + i + ", ");
         codeGenerator.GenCode("active" + i + ")");
@@ -1646,7 +1646,7 @@ public class RStringLiteral : RegularExpression
         ReInit();
 
         charCnt = 0;
-        allImages = null;
+        AllImages = null;
         boilerPlateDumped = false;
     }
 
@@ -1735,14 +1735,14 @@ public class RStringLiteral : RegularExpression
     public static void UpdateStringLiteralData(
         int generatedNfaStates, int lexStateIndex)
     {
-        for (int kind = 0; kind < allImages.Length; kind++)
+        for (int kind = 0; kind < AllImages.Length; kind++)
         {
-            if (allImages[kind] == null || allImages[kind] == ("") ||
-                LexGen.lexStates[kind] != lexStateIndex)
+            if (AllImages[kind] == null || AllImages[kind] == ("") ||
+                LexGen.LexStates[kind] != lexStateIndex)
             {
                 continue;
             }
-            string s = allImages[kind];
+            string s = AllImages[kind];
             int actualKind;
             if (intermediateKinds != null &&
                 intermediateKinds[kind][s.Length - 1] != int.MaxValue &&
@@ -1765,7 +1765,7 @@ public class RStringLiteral : RegularExpression
                 s = s.ToLower();
             }
             char c = s[0];
-            int key = (int)LexGen.lexStateIndex << 16 | (int)c;
+            int key = (int)LexGen.LexStateIndex << 16 | (int)c;
             int j = 0;
             if (literalsByLength.TryGetValue(key, out var l) && literalKinds.TryGetValue(key, out var kinds))
             {

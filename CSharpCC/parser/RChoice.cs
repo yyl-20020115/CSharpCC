@@ -141,7 +141,7 @@ public class RChoice : RegularExpression
             if (!(curRE = (RegularExpression)Choices[i]).private_rexp &&
                 //curRE is RJustName &&
                 curRE.ordinal > 0 && curRE.ordinal < ordinal &&
-                LexGen.lexStates[curRE.ordinal] == LexGen.lexStates[ordinal])
+                LexGen.LexStates[curRE.ordinal] == LexGen.LexStates[ordinal])
             {
                 if (label != null)
                     CSharpCCErrors.Warning(this, "Regular Expression choice : " +

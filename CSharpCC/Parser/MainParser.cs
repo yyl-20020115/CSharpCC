@@ -306,7 +306,7 @@ public class MainParser
                 // Must always create the lexer object even if not building a parser.
                 new LexGen().Start();
 
-                Options.SetStringOption(Options.NONUSER_OPTION__PARSER_NAME, CSharpCCGlobals.CuName);
+                Options.SetStringOption(Options.NONUSER_OPTION__PARSER_NAME, CSharpCCGlobals.cu_name);
                 OtherFilesGen.Start(isJavaModern);
             }
             else if (isCPPOutput)
@@ -319,7 +319,7 @@ public class MainParser
                 {
                     new LexGenCPP().Start();
                 }
-                Options.SetStringOption(Options.NONUSER_OPTION__PARSER_NAME, CSharpCCGlobals.CuName);
+                Options.SetStringOption(Options.NONUSER_OPTION__PARSER_NAME, CSharpCCGlobals.cu_name);
                 OtherFilesGenCPP.start();
             }
             else

@@ -185,7 +185,7 @@ public class TokenizerData
             }
             var matchInfo =
                 new MatchInfo(Options.GetIgnoreCase()
-                                  ? null : RStringLiteral.allImages[i], i, matchType,
+                                  ? null : RStringLiteral.AllImages[i], i, matchType,
                               newLexStateIndices[i], actions[i]);
             allMatches.Add(i, matchInfo);
         }

@@ -45,18 +45,18 @@ public class ParseGenCPP : ParseGen
             }
         }
 
-        GenCodeLine("#include \"" + CuName + "Constants.h\"");
+        GenCodeLine("#include \"" + cu_name + "Constants.h\"");
 
         if (CCTreeGenerated)
         {
-            GenCodeLine("#include \"JJT" + CuName + "State.h\"");
+            GenCodeLine("#include \"JJT" + cu_name + "State.h\"");
         }
 
         GenCodeLine("#include \"ErrorHandler.h\"");
 
         if (CCTreeGenerated)
         {
-            GenCodeLine("#include \"" + CuName + "Tree.h\"");
+            GenCodeLine("#include \"" + cu_name + "Tree.h\"");
         }
 
         if (Options.StringValue(Options.USEROPTION__CPP_NAMESPACE).Length > 0)
@@ -76,7 +76,7 @@ public class ParseGenCPP : ParseGen
 
 
         string superClass = Options.StringValue(Options.USEROPTION__PARSER_SUPER_CLASS);
-        GenClassStart("", CuName, Array.Empty<string>(),
+        GenClassStart("", cu_name, Array.Empty<string>(),
                       superClass == null ? Array.Empty<string>() : new String[] {
                    "public " + superClass});
         SwitchToMainFile();
@@ -157,8 +157,8 @@ public class ParseGenCPP : ParseGen
             GenCodeLine("  private: bool jj_depth_error;");
             GenCodeLine("  friend class __jj_depth_inc;");
             GenCodeLine("  class __jj_depth_inc {public:");
-            GenCodeLine("    " + CuName + "* parent;");
-            GenCodeLine("    __jj_depth_inc(" + CuName + "* p): parent(p) { parent->jj_depth++; };");
+            GenCodeLine("    " + cu_name + "* parent;");
+            GenCodeLine("    __jj_depth_inc(" + cu_name + "* p): parent(p) { parent->jj_depth++; };");
             GenCodeLine("    ~__jj_depth_inc(){ parent->jj_depth--; }");
             GenCodeLine("  };");
         }
@@ -176,7 +176,7 @@ public class ParseGenCPP : ParseGen
         SwitchToIncludeFile(); // TEMP
         GenCodeLine("  Token *head; ");
         GenCodeLine("public: ");
-        GenerateMethodDefHeader(" ", CuName, CuName + "(TokenManager *tokenManager)");
+        GenerateMethodDefHeader(" ", cu_name, cu_name + "(TokenManager *tokenManager)");
         if (superClass != null)
         {
             GenCodeLine(" : " + superClass + "()");
@@ -189,13 +189,13 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("}");
 
         SwitchToIncludeFile();
-        GenCodeLine("  virtual ~" + CuName + "();");
+        GenCodeLine("  virtual ~" + cu_name + "();");
         SwitchToMainFile();
-        GenCodeLine("" + CuName + "::~" + CuName + "()");
+        GenCodeLine("" + cu_name + "::~" + cu_name + "()");
         GenCodeLine("{");
         GenCodeLine("  clear();");
         GenCodeLine("}");
-        GenerateMethodDefHeader("void", CuName, "ReInit(TokenManager* tokenManager)");
+        GenerateMethodDefHeader("void", cu_name, "ReInit(TokenManager* tokenManager)");
         GenCodeLine("{");
         GenCodeLine("    clear();");
         GenCodeLine("    errorHandler = new ErrorHandler();");
@@ -246,7 +246,7 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("  }");
         GenCodeLine("");
 
-        GenerateMethodDefHeader("void", CuName, "clear()");
+        GenerateMethodDefHeader("void", cu_name, "clear()");
         GenCodeLine("{");
         GenCodeLine("  //Since token manager was generate from outside,");
         GenCodeLine("  //parser should not take care of deleting");
@@ -275,7 +275,7 @@ public class ParseGenCPP : ParseGen
             SwitchToIncludeFile();
             GenCodeLine(" virtual");
             SwitchToMainFile();
-            GenerateMethodDefHeader("bool ", CuName, "jj_stack_check(bool init)");
+            GenerateMethodDefHeader("bool ", cu_name, "jj_stack_check(bool init)");
             GenCodeLine("  {");
             GenCodeLine("     if(init) {");
             GenCodeLine("       jj_stack_base = nullptr;");
@@ -295,7 +295,7 @@ public class ParseGenCPP : ParseGen
         }
 
 
-        GenerateMethodDefHeader("Token *", CuName, "jj_consume_token(int kind)", "ParseException");
+        GenerateMethodDefHeader("Token *", cu_name, "jj_consume_token(int kind)", "ParseException");
         GenCodeLine("  {");
         if (Options.GetStackLimit() != (""))
         {
@@ -372,7 +372,7 @@ public class ParseGenCPP : ParseGen
         if (CC2Index != 0)
         {
             SwitchToMainFile();
-            GenerateMethodDefHeader("bool ", CuName, "jj_scan_token(int kind)");
+            GenerateMethodDefHeader("bool ", cu_name, "jj_scan_token(int kind)");
             GenCodeLine("{");
             if (Options.GetStackLimit() != (""))
             {
@@ -420,7 +420,7 @@ public class ParseGenCPP : ParseGen
         }
         GenCodeLine("");
         GenCodeLine("/** Get the next Token. */");
-        GenerateMethodDefHeader("Token *", CuName, "getNextToken()");
+        GenerateMethodDefHeader("Token *", cu_name, "getNextToken()");
         GenCodeLine("{");
         if (Options.GetCacheTokens())
         {
@@ -445,7 +445,7 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("  }");
         GenCodeLine("");
         GenCodeLine("/** Get the specific Token. */");
-        GenerateMethodDefHeader("Token *", CuName, "getToken(int index)");
+        GenerateMethodDefHeader("Token *", cu_name, "getToken(int index)");
         GenCodeLine("{");
         if (LookaheadNeeded)
         {
@@ -464,7 +464,7 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("");
         if (!Options.GetCacheTokens())
         {
-            GenerateMethodDefHeader("int", CuName, "jj_ntk_f()");
+            GenerateMethodDefHeader("int", cu_name, "jj_ntk_f()");
             GenCodeLine("{");
 
             GenCodeLine("    if ((jj_nt=token->next) == nullptr)");
@@ -490,7 +490,7 @@ public class ParseGenCPP : ParseGen
                 //GenCodeLine("  static int jj_endpos;");
                 GenCodeLine("");
 
-                GenerateMethodDefHeader("  void", CuName, "jj_add_error_token(int kind, int pos)");
+                GenerateMethodDefHeader("  void", cu_name, "jj_add_error_token(int kind, int pos)");
                 GenCodeLine("  {");
                 // For now we don't support ERROR_REPORTING in the C++ version.
 
@@ -523,7 +523,7 @@ public class ParseGenCPP : ParseGen
             SwitchToIncludeFile();
             GenCodeLine("protected:");
             GenCodeLine("  /** Generate ParseException. */");
-            GenerateMethodDefHeader("  virtual void ", CuName, "parseError()");
+            GenerateMethodDefHeader("  virtual void ", cu_name, "parseError()");
             GenCodeLine("   {");
             if (Options.GetErrorReporting())
             {
@@ -579,7 +579,7 @@ public class ParseGenCPP : ParseGen
         {
             GenCodeLine("protected:");
             GenCodeLine("  /** Generate ParseException. */");
-            GenerateMethodDefHeader("virtual void ", CuName, "parseError()");
+            GenerateMethodDefHeader("virtual void ", cu_name, "parseError()");
             GenCodeLine("   {");
             if (Options.GetErrorReporting())
             {
@@ -609,7 +609,7 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("  bool trace = " + Options.GetDebugParser() + "; // trace enabled if true");
         GenCodeLine("");
         GenCodeLine("public:");
-        GenerateMethodDefHeader("  bool", CuName, "trace_enabled()");
+        GenerateMethodDefHeader("  bool", cu_name, "trace_enabled()");
         GenCodeLine("  {");
         GenCodeLine("    return trace;");
         GenCodeLine("  }");
@@ -617,21 +617,21 @@ public class ParseGenCPP : ParseGen
         if (Options.GetDebugParser())
         {
             SwitchToIncludeFile();
-            GenerateMethodDefHeader("  void", CuName, "enable_tracing()");
+            GenerateMethodDefHeader("  void", cu_name, "enable_tracing()");
             GenCodeLine("{");
             GenCodeLine("    trace = true;");
             GenCodeLine("}");
             GenCodeLine("");
 
             SwitchToIncludeFile();
-            GenerateMethodDefHeader("  void", CuName, "disable_tracing()");
+            GenerateMethodDefHeader("  void", cu_name, "disable_tracing()");
             GenCodeLine("{");
             GenCodeLine("    trace = false;");
             GenCodeLine("}");
             GenCodeLine("");
 
             SwitchToIncludeFile();
-            GenerateMethodDefHeader("  void", CuName, "trace_call(const char *s)");
+            GenerateMethodDefHeader("  void", cu_name, "trace_call(const char *s)");
             GenCodeLine("  {");
             GenCodeLine("    if (trace_enabled()) {");
             GenCodeLine("      for (int i = 0; i < indent; i++) { printf(\" \"); }");
@@ -642,7 +642,7 @@ public class ParseGenCPP : ParseGen
             GenCodeLine("");
 
             SwitchToIncludeFile();
-            GenerateMethodDefHeader("  void", CuName, "trace_return(const char *s)");
+            GenerateMethodDefHeader("  void", cu_name, "trace_return(const char *s)");
             GenCodeLine("  {");
             GenCodeLine("    indent = indent - 2;");
             GenCodeLine("    if (trace_enabled()) {");
@@ -653,7 +653,7 @@ public class ParseGenCPP : ParseGen
             GenCodeLine("");
 
             SwitchToIncludeFile();
-            GenerateMethodDefHeader("  void", CuName, "trace_token(Token *t, const char *where)");
+            GenerateMethodDefHeader("  void", cu_name, "trace_token(Token *t, const char *where)");
             GenCodeLine("  {");
             GenCodeLine("    if (trace_enabled()) {");
             GenCodeLine("      for (int i = 0; i < indent; i++) { printf(\" \"); }");
@@ -667,7 +667,7 @@ public class ParseGenCPP : ParseGen
             GenCodeLine("");
 
             SwitchToIncludeFile();
-            GenerateMethodDefHeader("  void", CuName, "trace_scan(Token *t1, int t2)");
+            GenerateMethodDefHeader("  void", cu_name, "trace_scan(Token *t1, int t2)");
             GenCodeLine("  {");
             GenCodeLine("    if (trace_enabled()) {");
             GenCodeLine("      for (int i = 0; i < indent; i++) { printf(\" \"); }");
@@ -683,11 +683,11 @@ public class ParseGenCPP : ParseGen
         else
         {
             SwitchToIncludeFile();
-            GenerateMethodDefHeader("  void", CuName, "enable_tracing()");
+            GenerateMethodDefHeader("  void", cu_name, "enable_tracing()");
             GenCodeLine("  {");
             GenCodeLine("  }");
             SwitchToIncludeFile();
-            GenerateMethodDefHeader("  void", CuName, "disable_tracing()");
+            GenerateMethodDefHeader("  void", cu_name, "disable_tracing()");
             GenCodeLine("  {");
             GenCodeLine("  }");
             GenCodeLine("");
@@ -695,7 +695,7 @@ public class ParseGenCPP : ParseGen
 
         if (CC2Index != 0 && Options.GetErrorReporting())
         {
-            GenerateMethodDefHeader("  void", CuName, "jj_rescan_token()");
+            GenerateMethodDefHeader("  void", cu_name, "jj_rescan_token()");
             GenCodeLine("{");
             GenCodeLine("    jj_rescan = true;");
             GenCodeLine("    for (int i = 0; i < " + CC2Index + "; i++) {");
@@ -719,7 +719,7 @@ public class ParseGenCPP : ParseGen
             GenCodeLine("  }");
             GenCodeLine("");
 
-            GenerateMethodDefHeader("  void", CuName, "jj_save(int index, int xla)");
+            GenerateMethodDefHeader("  void", cu_name, "jj_save(int index, int xla)");
             GenCodeLine("{");
             GenCodeLine("    JJCalls *p = &jj_2_rtns[index];");
             GenCodeLine("    while (p->gen > jj_gen) {");
@@ -756,14 +756,14 @@ public class ParseGenCPP : ParseGen
         GenCodeLine("\n");
         if (CCTreeGenerated)
         {
-            GenCodeLine("  JJT" + CuName + "State jjtree;");
+            GenCodeLine("  JJT" + cu_name + "State jjtree;");
         }
         GenCodeLine("private:");
         GenCodeLine("  bool jj_done;");
 
         GenCodeLine("};");
 
-        SaveOutput(Options.GetOutputDirectory() + Path.DirectorySeparatorChar + CuName + GetFileExtension(Options.GetOutputLanguage()));
+        SaveOutput(Options.GetOutputDirectory() + Path.DirectorySeparatorChar + cu_name + GetFileExtension(Options.GetOutputLanguage()));
     }
 
     public static new void ReInit()
